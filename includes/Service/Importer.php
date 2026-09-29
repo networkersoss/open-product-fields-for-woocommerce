@@ -147,7 +147,7 @@ final class Importer {
 			if ( 'imported' === $result['result'] ) {
 				$report['imported']++;
 				if ( $result['needs_review'] ) {
-					$report['needs_review'][] = $result['opf_id'];
+					$report['needs_review'][] = $result['opf_id'] ?: $result['source'];
 				}
 			} else {
 				$report['skipped']++;
@@ -168,6 +168,15 @@ final class Importer {
 			// get_post_meta already unserializes clean payloads into arrays;
 			// corrupted ones stay strings and go through the repair parser.
 			$meta_value = get_post_meta( (int) $post_id, '_wapf_fieldgroup', true );
+			// WordPress may return false when a serialized value has damaged
+			// string lengths. Recover from storage before treating it as absent.
+			if ( false === $meta_value || '' === $meta_value ) {
+				$meta_value = $wpdb->get_var( $wpdb->prepare(
+					"SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id = %d AND meta_key = %s LIMIT 1",
+					(int) $post_id,
+					'_wapf_fieldgroup'
+				) );
+			}
 			if ( is_array( $meta_value ) ) {
 				$wapf   = $meta_value;
 				$strict = $wapf;
@@ -198,7 +207,7 @@ final class Importer {
 			if ( 'imported' === $result['result'] ) {
 				$report['imported']++;
 				if ( $result['needs_review'] ) {
-					$report['needs_review'][] = $result['opf_id'];
+					$report['needs_review'][] = $result['opf_id'] ?: $result['source'];
 				}
 			} else {
 				$report['skipped']++;
@@ -242,9 +251,14 @@ final class Importer {
 		}
 
 		$mapped = WapfMapper::map( $wapf, $overrides );
+		$post_status = $mapped['needs_review'] ? 'draft' : 'publish';
 
 		if ( $commit ) {
-			$opf_id = FieldGroups::save( 0, new FieldGroup( $mapped['group'] ), [ 'title' => $title, 'menu_order' => $menu_order ] );
+			$opf_id = FieldGroups::save(
+				0,
+				new FieldGroup( $mapped['group'] ),
+				[ 'title' => $title, 'status' => $post_status, 'menu_order' => $menu_order ]
+			);
 			if ( ! $opf_id ) {
 				return [ 'source' => $source_key, 'result' => 'save-failed' ];
 			}
@@ -271,6 +285,7 @@ final class Importer {
 			'result'       => 'imported',
 			'opf_id'       => $opf_id,
 			'title'        => $title,
+			'post_status'  => $post_status,
 			'fields'       => count( $mapped['group']['fields'] ),
 			'needs_review' => $mapped['needs_review'],
 			'notes'        => array_slice( $mapped['notes'], 0, 10 ),

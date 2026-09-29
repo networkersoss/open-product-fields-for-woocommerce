@@ -25,6 +25,71 @@ Evidence from this repository's test phase (disposable WP 7.1 + WooCommerce
 (charset damage). They were already **silently dead inside WAPF** — the OPF
 importer's recovering decoder resurrects them.
 
+## OPF-native group archive
+
+On a site already running OPF, create a versioned JSON archive with WP-CLI:
+
+```bash
+wp opf export --group=123 --output=/tmp/opf-group.json
+wp opf export --product=456 --output=/tmp/opf-product.json
+wp opf export --all --output=/tmp/opf-all.json
+```
+
+The package contains the OPF schema data and group title, status, order, and
+language metadata. Product scope includes the published groups that currently
+match that product; all scope includes drafts and other non-trashed groups.
+Each group and the package report portability warning codes when image files,
+product-target IDs, or referenced site-level formula resources are external to
+the archive. The export preserves image URLs but does not copy image bytes.
+
+This OPF-native archive is distinct from WAPF's export format. OPF package
+import is not implemented yet, so retain the archive as a recovery/interchange
+file; it cannot currently be imported through an OPF command.
+
+## WAPF-compatible single-group JSON
+
+WAPF also accepts one field group's JSON through its product/group editor.
+Export that format only when one OPF group maps cleanly to WAPF:
+
+```bash
+wp opf export --group=123 --format=wapf-json --output=/tmp/wapf-group.json
+wp opf export --product=456 --format=wapf-json --output=/tmp/wapf-product.json
+```
+
+WAPF's own JSON parser accepts this file for import into a product or an
+existing global group. OPF rejects unsupported values instead of silently
+dropping them. The currently verified subset covers text, textarea, email,
+URL, number, true/false, select, radio, checkbox, and plain paragraph fields;
+choice/field flat or per-unit fixed and per-unit percent pricing; supported
+show/all field conditions; and product/category/tag placement rules.
+Swatches/cards, choice images and descriptions, disabled choices, formulas,
+lookup tables, advanced constraints, flat percentage pricing, quantity-only
+add-ons, HTML paragraph content, and other unverified values are refused.
+
+This JSON contains fields and placement only. It does not transfer the OPF
+group title, status, order, language, or media files. Product/category/tag IDs
+remain source-site IDs and may need remapping on the destination. The CLI
+prints these caveats; `--all` is not offered in WAPF JSON because WAPF's
+documented all-groups transfer is WordPress WXR, not a JSON field-group file.
+The OPF-native `--all` archive remains available for OPF recovery.
+
+## WAPF all-groups WXR export
+
+WAPF's documented all-groups transfer uses WordPress's built-in WXR export.
+OPF can emit the same importable global-group post records after strict mapping:
+
+```bash
+wp opf export --all --format=wapf-wxr --output=/tmp/wapf-groups.xml
+```
+
+Import the XML with **Tools → Import → WordPress** on a site where WAPF is
+active. The file stores global groups as WAPF's `wapf_product` posts with its
+serialized field-group data. Each group passes the same loss checks as
+`wapf-json`; one unsupported group stops the whole export before writing.
+Product/category/tag placement IDs remain site-local. Image bytes, language
+assignments, and OPF-only metadata are not included. The OPF-native `--all`
+JSON archive remains available for lossless OPF recovery.
+
 ## Phase 0 — Snapshot (read-only, any time)
 
 ```bash
@@ -52,6 +117,10 @@ rehearsal.
 3. `wp opf report` — confirm count matches the staging run.
 4. Place a live test order on one product per type; verify cart line shows
    the choices and the order item stores per-field meta.
+
+Groups whose import report has `needs_review: true` are saved as drafts. Review
+the reported notes and complete the missing behavior before publishing them;
+the importer will not expose a partial form on the storefront.
 
 **Theme compatibility mode is ON by default** (`opf_theme_compat` option):
 OPF renders the legacy `wapf-*` class skeleton, `data-wapf-price` attributes,
