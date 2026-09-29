@@ -1,0 +1,57 @@
+import { createRequire } from 'node:module';
+const requireFromPlugin = createRequire(process.cwd() + '/index.js');
+const { chromium } = requireFromPlugin('playwright');
+const base = process.env.OPF_BASE_URL || 'http://127.0.0.1:8091';
+const browser = await chromium.launch();
+const page = await browser.newPage();
+const errors = [];
+page.on('pageerror', (error) => errors.push(error.message));
+let failures = 0;
+const check = (name, ok) => {
+	console.log(`${ok ? 'ok' : 'FAIL'} ${name}`);
+	if (!ok) failures++;
+};
+
+await page.goto(`${base}/product/e2e-repeat-product/`, { waitUntil: 'domcontentloaded' });
+const repeat = page.locator('[data-opf-field="names"][data-opf-repeat="1"]');
+const quantityRepeat = page.locator('[data-opf-field="unit_name"][data-opf-repeat-mode="quantity"]');
+await repeat.waitFor({ state: 'visible' });
+await quantityRepeat.waitFor({ state: 'visible' });
+const quantity = page.locator('form.cart input[name="quantity"], form.cart input.qty').first();
+check('button repeater begins with one row', await repeat.locator('[data-opf-repeat-row]').count() === 1);
+check('quantity repeater begins with one row for the initial product quantity', await quantityRepeat.locator('[data-opf-repeat-row]').count() === 1);
+await quantity.fill('3');
+check('quantity increase creates one row per product unit', await quantityRepeat.locator('[data-opf-repeat-row]').count() === 3);
+for (const [index, name] of ['Red', 'Blue', 'Green'].entries()) {
+  await quantityRepeat.locator('[data-opf-repeat-row]').nth(index).locator('input:not([type="hidden"])').fill(name);
+}
+await quantity.fill('2');
+check('quantity decrease removes only trailing visible rows and preserves order', await quantityRepeat.locator('[data-opf-repeat-row]').count() === 2 && await quantityRepeat.locator('[data-opf-repeat-row]').nth(1).locator('input:not([type="hidden"])').inputValue() === 'Blue');
+await quantity.fill('3');
+check('quantity increase restores the removed value in its original position', await quantityRepeat.locator('[data-opf-repeat-row]').count() === 3 && await quantityRepeat.locator('[data-opf-repeat-row]').nth(2).locator('input:not([type="hidden"])').inputValue() === 'Green');
+const rowCeiling = parseInt(await quantityRepeat.getAttribute('data-opf-repeat-max') || '0', 10);
+await quantity.fill(String(rowCeiling + 1));
+check('quantity above the computed ceiling is blocked without silently creating rows', !(await quantity.evaluate((input) => input.checkValidity())) && (await quantity.evaluate((input) => input.validationMessage)).includes('maximum supported') && await quantityRepeat.locator('[data-opf-repeat-row]').count() === 3);
+await quantity.fill('3');
+await repeat.locator('[data-opf-repeat-add]').click();
+check('button adds a row up to the configured maximum', await repeat.locator('[data-opf-repeat-row]').count() === 2 && await repeat.locator('[data-opf-repeat-add]').isDisabled());
+await repeat.locator('[data-opf-repeat-row]').nth(0).locator('input:not([type="hidden"])').fill('Temporary');
+await repeat.locator('[data-opf-repeat-row]').nth(1).locator('input:not([type="hidden"])').fill('Second');
+await repeat.locator('[data-opf-repeat-row]').nth(0).locator('[data-opf-repeat-remove]').click();
+const remainingName = await repeat.locator('[data-opf-repeat-row] input:not([type="hidden"])').getAttribute('name');
+check('remove reindexes the remaining row name and id', await repeat.locator('[data-opf-repeat-row]').count() === 1 && /^opf\[\d+\]\[names\]\[0\]$/.test(remainingName || ''));
+await repeat.locator('[data-opf-repeat-add]').click();
+await repeat.locator('[data-opf-repeat-row]').nth(0).locator('input:not([type="hidden"])').fill('First guest');
+await repeat.locator('[data-opf-repeat-row]').nth(1).locator('input:not([type="hidden"])').fill('Second guest');
+const rowNames = await repeat.locator('[data-opf-repeat-row] input:not([type="hidden"])').evaluateAll((inputs) => inputs.map((input) => input.name));
+check('add after removal uses distinct ordered indices', rowNames.length === 2 && rowNames[0].endsWith('[0]') && rowNames[1].endsWith('[1]'));
+await page.locator('form.cart button[name="add-to-cart"], button.single_add_to_cart_button').first().click();
+await page.waitForLoadState('domcontentloaded');
+await page.goto(`${base}/cart/`, { waitUntil: 'domcontentloaded' });
+await page.getByText('Guest names').first().waitFor({ state: 'visible', timeout: 15000 });
+const cartText = await page.locator('body').innerText();
+check('cart displays ordered repeated values', cartText.includes('1. First guest; 2. Second guest'));
+check('browser repeater produced no runtime errors', errors.length === 0);
+if (errors.length) console.log(errors.join('\n'));
+await browser.close();
+process.exit(failures ? 1 : 0);
