@@ -71,8 +71,30 @@ final class Builder {
 		$group      = \OPF\Service\FieldGroups::group_from_post( $post );
 		$cat_terms  = get_terms( [ 'taxonomy' => 'product_cat', 'hide_empty' => false, 'number' => 500 ] );
 		$tag_terms  = get_terms( [ 'taxonomy' => 'product_tag', 'hide_empty' => false, 'number' => 500 ] );
+		$attribute_terms = [];
+		if ( function_exists( 'wc_get_attribute_taxonomies' ) && function_exists( 'wc_attribute_taxonomy_name' ) ) {
+			foreach ( (array) wc_get_attribute_taxonomies() as $attribute ) {
+				$name = is_object( $attribute ) ? (string) ( $attribute->attribute_name ?? '' ) : '';
+				if ( '' === $name ) {
+					continue;
+				}
+				$taxonomy = wc_attribute_taxonomy_name( $name );
+				if ( ! is_string( $taxonomy ) || ! taxonomy_exists( $taxonomy ) ) {
+					continue;
+				}
+				$terms = get_terms( [ 'taxonomy' => $taxonomy, 'hide_empty' => false ] );
+				if ( is_wp_error( $terms ) || empty( $terms ) ) {
+					continue;
+				}
+				$attribute_terms[] = [
+					'label'    => (string) ( $attribute->attribute_label ?? $name ),
+					'taxonomy' => $taxonomy,
+					'terms'    => $terms,
+				];
+			}
+		}
 
-		$selected = [ 'product_cat' => [], 'product_tag' => [] ];
+		$selected = [ 'product_cat' => [], 'product_tag' => [], 'product_attribute' => [] ];
 		if ( $group ) {
 			foreach ( $group->data['rule_groups'] as $rule_group ) {
 				foreach ( $rule_group['rules'] as $rule ) {
@@ -83,7 +105,7 @@ final class Builder {
 			}
 		}
 		?>
-		<p class="description"><?php esc_html_e( 'Leave both empty to show this group on every product.', 'open-product-fields-for-woocommerce' ); ?></p>
+		<p class="description"><?php esc_html_e( 'Leave all placement selectors empty to show this group on every product.', 'open-product-fields-for-woocommerce' ); ?></p>
 		<p><strong><?php esc_html_e( 'Product categories', 'open-product-fields-for-woocommerce' ); ?></strong></p>
 		<select multiple size="8" id="opf-placement-cats" style="width:100%">
 			<?php foreach ( (array) $cat_terms as $term ) : ?>
@@ -100,6 +122,21 @@ final class Builder {
 				</option>
 			<?php endforeach; ?>
 		</select>
+		<?php if ( ! empty( $attribute_terms ) ) : ?>
+			<p><strong><?php esc_html_e( 'Product attributes', 'open-product-fields-for-woocommerce' ); ?></strong></p>
+			<select multiple size="8" id="opf-placement-attributes" style="width:100%">
+				<?php foreach ( $attribute_terms as $attribute ) : ?>
+					<optgroup label="<?php echo esc_attr( $attribute['label'] ); ?>">
+						<?php foreach ( (array) $attribute['terms'] as $term ) : ?>
+							<?php $key = $attribute['taxonomy'] . ':' . (string) $term->term_id; ?>
+							<option value="<?php echo esc_attr( $key ); ?>" <?php selected( in_array( $key, $selected['product_attribute'], true ) ); ?>>
+								<?php echo esc_html( $term->name ); ?>
+							</option>
+						<?php endforeach; ?>
+					</optgroup>
+				<?php endforeach; ?>
+			</select>
+		<?php endif; ?>
 		<p class="description"><?php esc_html_e( 'Placement changes are saved together with the fields.', 'open-product-fields-for-woocommerce' ); ?></p>
 		<?php
 	}

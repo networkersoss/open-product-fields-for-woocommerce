@@ -18,11 +18,50 @@
 	gap: 12px;
 }
 
+.opf-b-repeat { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+.opf-b-repeat-toggle, .opf-b-repeat-max { display: inline-flex; align-items: center; gap: 6px; }
+.opf-b-repeat-max input { width: 80px; }
+
+.opf-b-lookup {
+	margin: 16px 0;
+	padding: 12px;
+	border: 1px solid #c3c4c7;
+	background: #fff;
+}
+
+.opf-b-lookup textarea {
+	min-height: 140px;
+	font-family: monospace;
+}
+
 .opf-b-field {
 	border: 1px solid #c3c4c7;
 	border-radius: 4px;
 	padding: 12px;
 	background: #fff;
+}
+
+.opf-b-image-rules {
+	margin: 16px 0;
+	padding: 12px;
+	border: 1px solid #c3c4c7;
+	background: #fff;
+}
+
+.opf-b-image-rule {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	margin: 10px 0;
+	padding: 10px;
+	border: 1px solid #dcdcde;
+}
+
+.opf-b-image-rule-condition {
+	display: grid;
+	grid-template-columns: minmax(140px, 1fr) minmax(140px, 1fr) auto;
+	gap: 8px;
+	align-items: center;
 }
 
 .opf-b-field-head {
@@ -67,4 +106,16 @@
 	padding: 16px;
 	background: #fff;
 	min-height: 48px;
+}
+
+.opf-b-bulk-choices {
+	margin-top: 0.5rem;
+	font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.opf-b-bulk-replace {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	margin: 0.5rem 0;
 }
