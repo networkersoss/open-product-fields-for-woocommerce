@@ -1,10 +1,9 @@
 <?php
 /**
- * Declarative fixtures for OPF's WAPF replacement capability ledger.
+ * Declarative schema fixtures for OPF's WAPF replacement capability ledger.
  *
- * A fixture is intentionally data-only. Later feature slices can execute the
- * declared request/result through browser and WooCommerce harnesses without
- * making the acceptance contract depend on a particular test implementation.
+ * A fixture is intentionally data-only: supported_flows records intended
+ * coverage only. It is not evidence that a storefront/cart/order flow ran.
  *
  * @package open-product-fields-for-woocommerce
  */
@@ -30,7 +29,7 @@ final class CapabilityFixtureRegistry {
 	];
 
 	/**
-	 * Return all implemented capability fixtures, keyed by stable ledger ID.
+	 * Return declared schema fixtures, keyed by stable ledger ID.
 	 *
 	 * @return array<string,array<string,mixed>>
 	 */
@@ -83,39 +82,21 @@ final class CapabilityFixtureRegistry {
 				'field_group' => [
 					'schema' => 1,
 					'fields' => [
-						[
-							'id'       => 'contact-email',
-							'label'    => 'Contact email',
-							'type'     => 'email',
-							'required' => true,
-						],
+						[ 'id' => 'contact-email', 'label' => 'Contact email', 'type' => 'email', 'required' => true ],
 					],
 				],
 				'expected_normalization' => [
 					'schema' => 1,
 					'fields' => [
 						[
-							'id'           => 'contact-email',
-							'label'        => 'Contact email',
-							'description'  => '',
-							'type'         => 'email',
-							'required'     => true,
-							'width'        => 100,
-							'css_class'    => '',
-							'placeholder'  => '',
-							'choices'      => [],
-							'pricing'      => [ 'type' => 'none', 'amount' => 0.0, 'formula' => '', 'formula_raw' => '', 'per_unit' => true ],
-							'conditionals' => [],
+							'id' => 'contact-email', 'label' => 'Contact email', 'description' => '', 'type' => 'email', 'required' => true,
+							'width' => 100, 'css_class' => '', 'placeholder' => '', 'choices' => [],
+							'pricing' => [ 'type' => 'none', 'amount' => 0.0, 'formula' => '', 'formula_raw' => '', 'per_unit' => true ], 'conditionals' => [],
 						],
 					],
-					'rule_groups'     => [],
-					'mark_required'   => true,
-					'labels_position' => 'above',
+					'rule_groups' => [], 'mark_required' => true, 'labels_position' => 'above',
 				],
-				'expected_result' => [
-					'submitted_values' => [ 'contact-email' => 'ada@example.test' ],
-					'addon_per_unit'  => 0.0,
-				],
+				'expected_result' => [ 'submitted_values' => [ 'contact-email' => 'ada@example.test' ], 'addon_per_unit' => 0.0 ],
 				'supported_flows' => self::FLOWS,
 			],
 			'WAPF-FIELD-TOGGLE' => [
@@ -124,40 +105,190 @@ final class CapabilityFixtureRegistry {
 				'field_group' => [
 					'schema' => 1,
 					'fields' => [
-						[
-							'id'       => 'gift-wrap',
-							'label'    => 'Gift wrap',
-							'type'     => 'toggle',
-							'required' => false,
-						],
+						[ 'id' => 'gift-wrap', 'label' => 'Gift wrap', 'type' => 'toggle', 'required' => false ],
 					],
 				],
 				'expected_normalization' => [
 					'schema' => 1,
 					'fields' => [
 						[
-							'id'           => 'gift-wrap',
-							'label'        => 'Gift wrap',
-							'description'  => '',
-							'type'         => 'toggle',
-							'required'     => false,
-							'width'        => 100,
-							'css_class'    => '',
-							'placeholder'  => '',
-							'choices'      => [],
-							'pricing'      => [ 'type' => 'none', 'amount' => 0.0, 'formula' => '', 'formula_raw' => '', 'per_unit' => true ],
-							'conditionals' => [],
+							'id' => 'gift-wrap', 'label' => 'Gift wrap', 'description' => '', 'type' => 'toggle', 'required' => false,
+							'width' => 100, 'css_class' => '', 'placeholder' => '', 'choices' => [],
+							'pricing' => [ 'type' => 'none', 'amount' => 0.0, 'formula' => '', 'formula_raw' => '', 'per_unit' => true ], 'conditionals' => [],
 						],
 					],
-					'rule_groups'     => [],
-					'mark_required'   => true,
-					'labels_position' => 'above',
+					'rule_groups' => [], 'mark_required' => true, 'labels_position' => 'above',
 				],
-				'expected_result' => [
-					'submitted_values' => [ 'gift-wrap' => '0' ],
-					'addon_per_unit'  => 0.0,
-				],
+				'expected_result' => [ 'submitted_values' => [ 'gift-wrap' => '0' ], 'addon_per_unit' => 0.0 ],
 				'supported_flows' => self::FLOWS,
+			],
+			'WAPF-FIELD-NUMBER' => [
+				'ledger_id' => 'WAPF-FIELD-NUMBER',
+				'title' => 'Constrained number field',
+				'field_group' => [ 'schema' => 1, 'fields' => [ [ 'id' => 'quantity', 'label' => 'Quantity', 'type' => 'number', 'min' => 1, 'max' => 9, 'step' => 2 ] ] ],
+				'expected_normalization' => [
+					'schema' => 1,
+					'fields' => [ [ 'id' => 'quantity', 'label' => 'Quantity', 'description' => '', 'type' => 'number', 'required' => false, 'width' => 100, 'css_class' => '', 'placeholder' => '', 'choices' => [], 'pricing' => [ 'type' => 'none', 'amount' => 0.0, 'formula' => '', 'formula_raw' => '', 'per_unit' => true ], 'conditionals' => [], 'min' => 1.0, 'max' => 9.0, 'step' => 2.0 ] ],
+					'rule_groups' => [], 'mark_required' => true, 'labels_position' => 'above',
+				],
+				'expected_result' => [ 'submitted_values' => [ 'quantity' => '5' ], 'addon_per_unit' => 0.0 ],
+				'supported_flows' => self::FLOWS,
+			],
+			'WAPF-FIELD-DATE' => [
+				'ledger_id' => 'WAPF-FIELD-DATE',
+				'title' => 'Constrained date field',
+				'field_group' => [ 'schema' => 1, 'fields' => [ [ 'id' => 'event-date', 'label' => 'Event date', 'type' => 'date', 'min_date' => '2026-01-01', 'max_date' => '2026-12-31' ] ] ],
+				'expected_normalization' => [
+					'schema' => 1,
+					'fields' => [ [ 'id' => 'event-date', 'label' => 'Event date', 'description' => '', 'type' => 'date', 'required' => false, 'width' => 100, 'css_class' => '', 'placeholder' => '', 'choices' => [], 'pricing' => [ 'type' => 'none', 'amount' => 0.0, 'formula' => '', 'formula_raw' => '', 'per_unit' => true ], 'conditionals' => [], 'allow_past' => true, 'allow_future' => true, 'min_date' => '2026-01-01', 'max_date' => '2026-12-31' ] ],
+					'rule_groups' => [], 'mark_required' => true, 'labels_position' => 'above',
+				],
+				'expected_result' => [ 'submitted_values' => [ 'event-date' => '2026-06-15' ], 'addon_per_unit' => 0.0 ],
+				'supported_flows' => self::FLOWS,
+			],
+			'WAPF-FIELD-SWATCH-COLOUR' => [
+				'ledger_id' => 'WAPF-FIELD-SWATCH-COLOUR',
+				'title' => 'Colour swatch choices',
+				'field_group' => [ 'schema' => 1, 'fields' => [ [ 'id' => 'finish', 'type' => 'swatch', 'choices' => [ [ 'slug' => 'red', 'label' => 'Red', 'color' => '#F00' ] ] ] ] ],
+				'expected_normalization' => [
+					'schema' => 1,
+					'fields' => [ [ 'id' => 'finish', 'label' => '', 'description' => '', 'type' => 'swatch', 'required' => false, 'width' => 100, 'css_class' => '', 'placeholder' => '', 'choices' => [ [ 'slug' => 'red', 'label' => 'Red', 'selected' => false, 'disabled' => false, 'pricing' => [ 'type' => 'none', 'amount' => 0.0, 'formula' => '', 'formula_raw' => '', 'per_unit' => true ], 'color' => '#f00' ] ], 'pricing' => [ 'type' => 'none', 'amount' => 0.0, 'formula' => '', 'formula_raw' => '', 'per_unit' => true ], 'conditionals' => [] ] ],
+					'rule_groups' => [], 'mark_required' => true, 'labels_position' => 'above',
+				],
+				'expected_result' => [ 'submitted_values' => [ 'finish' => 'red' ], 'addon_per_unit' => 0.0 ],
+				'supported_flows' => self::FLOWS,
+			],
+			'WAPF-FIELD-SWATCH-IMAGE' => [
+				'ledger_id' => 'WAPF-FIELD-SWATCH-IMAGE',
+				'title' => 'Image swatch choices',
+				'field_group' => [ 'schema' => 1, 'fields' => [ [ 'id' => 'finish', 'type' => 'swatch', 'choices' => [ [ 'slug' => 'red', 'label' => 'Red', 'image' => 'https://example.test/red.png' ] ] ] ] ],
+				'expected_normalization' => [
+					'schema' => 1,
+					'fields' => [ [ 'id' => 'finish', 'label' => '', 'description' => '', 'type' => 'swatch', 'required' => false, 'width' => 100, 'css_class' => '', 'placeholder' => '', 'choices' => [ [ 'slug' => 'red', 'label' => 'Red', 'selected' => false, 'disabled' => false, 'pricing' => [ 'type' => 'none', 'amount' => 0.0, 'formula' => '', 'formula_raw' => '', 'per_unit' => true ], 'image' => 'https://example.test/red.png' ] ], 'pricing' => [ 'type' => 'none', 'amount' => 0.0, 'formula' => '', 'formula_raw' => '', 'per_unit' => true ], 'conditionals' => [] ] ],
+					'rule_groups' => [], 'mark_required' => true, 'labels_position' => 'above',
+				],
+				'expected_result' => [ 'submitted_values' => [ 'finish' => 'red' ], 'addon_per_unit' => 0.0 ],
+				'supported_flows' => self::FLOWS,
+			],
+			'WAPF-FIELD-CHECKBOX' => [
+				'ledger_id' => 'WAPF-FIELD-CHECKBOX',
+				'title' => 'Checkbox selection limits',
+				'field_group' => [ 'schema' => 1, 'fields' => [ [ 'id' => 'extras', 'label' => 'Extras', 'type' => 'checkbox', 'min_selections' => 1, 'max_selections' => 2, 'choices' => [ [ 'slug' => 'a', 'label' => 'A' ], [ 'slug' => 'b', 'label' => 'B' ], [ 'slug' => 'c', 'label' => 'C' ] ] ] ] ],
+				'expected_normalization' => [
+					'schema' => 1,
+					'fields' => [ [ 'id' => 'extras', 'label' => 'Extras', 'description' => '', 'type' => 'checkbox', 'required' => false, 'width' => 100, 'css_class' => '', 'placeholder' => '', 'choices' => [ [ 'slug' => 'a', 'label' => 'A', 'selected' => false, 'disabled' => false, 'pricing' => [ 'type' => 'none', 'amount' => 0.0, 'formula' => '', 'formula_raw' => '', 'per_unit' => true ] ], [ 'slug' => 'b', 'label' => 'B', 'selected' => false, 'disabled' => false, 'pricing' => [ 'type' => 'none', 'amount' => 0.0, 'formula' => '', 'formula_raw' => '', 'per_unit' => true ] ], [ 'slug' => 'c', 'label' => 'C', 'selected' => false, 'disabled' => false, 'pricing' => [ 'type' => 'none', 'amount' => 0.0, 'formula' => '', 'formula_raw' => '', 'per_unit' => true ] ] ], 'pricing' => [ 'type' => 'none', 'amount' => 0.0, 'formula' => '', 'formula_raw' => '', 'per_unit' => true ], 'conditionals' => [], 'min_selections' => 1, 'max_selections' => 2 ] ],
+					'rule_groups' => [], 'mark_required' => true, 'labels_position' => 'above',
+				],
+				'expected_result' => [ 'submitted_values' => [ 'extras' => [ 'a', 'b' ] ], 'addon_per_unit' => 0.0 ],
+				'supported_flows' => self::FLOWS,
+			],
+			'WAPF-FIELD-SWATCH-MULTI' => [
+				'ledger_id' => 'WAPF-FIELD-SWATCH-MULTI',
+				'title' => 'Multiple swatch selections',
+				'field_group' => [ 'schema' => 1, 'fields' => [ [ 'id' => 'colors', 'label' => 'Colors', 'type' => 'swatch', 'multiple' => true, 'min_selections' => 1, 'max_selections' => 2, 'choices' => [ [ 'slug' => 'red', 'label' => 'Red' ], [ 'slug' => 'blue', 'label' => 'Blue' ], [ 'slug' => 'green', 'label' => 'Green' ] ] ] ] ],
+				'expected_normalization' => [
+					'schema' => 1,
+					'fields' => [ [ 'id' => 'colors', 'label' => 'Colors', 'description' => '', 'type' => 'swatch', 'required' => false, 'width' => 100, 'css_class' => '', 'placeholder' => '', 'choices' => [ [ 'slug' => 'red', 'label' => 'Red', 'selected' => false, 'disabled' => false, 'pricing' => [ 'type' => 'none', 'amount' => 0.0, 'formula' => '', 'formula_raw' => '', 'per_unit' => true ] ], [ 'slug' => 'blue', 'label' => 'Blue', 'selected' => false, 'disabled' => false, 'pricing' => [ 'type' => 'none', 'amount' => 0.0, 'formula' => '', 'formula_raw' => '', 'per_unit' => true ] ], [ 'slug' => 'green', 'label' => 'Green', 'selected' => false, 'disabled' => false, 'pricing' => [ 'type' => 'none', 'amount' => 0.0, 'formula' => '', 'formula_raw' => '', 'per_unit' => true ] ] ], 'pricing' => [ 'type' => 'none', 'amount' => 0.0, 'formula' => '', 'formula_raw' => '', 'per_unit' => true ], 'conditionals' => [], 'multiple' => true, 'min_selections' => 1, 'max_selections' => 2 ] ],
+					'rule_groups' => [], 'mark_required' => true, 'labels_position' => 'above',
+				],
+				'expected_result' => [ 'submitted_values' => [ 'colors' => [ 'red', 'blue' ] ], 'addon_per_unit' => 0.0 ],
+				'supported_flows' => [ 'storefront', 'submission', 'server_pricing' ],
+			],
+			'WAPF-FIELD-CONTENT-HTML' => [
+				'ledger_id' => 'WAPF-FIELD-CONTENT-HTML',
+				'title' => 'Sanitized HTML content',
+				'field_group' => [ 'schema' => 1, 'fields' => [ [ 'id' => 'notice', 'type' => 'html', 'content' => '<strong>Ships soon</strong>' ] ] ],
+				'expected_normalization' => [
+					'schema' => 1,
+					'fields' => [ [ 'id' => 'notice', 'label' => '', 'description' => '', 'type' => 'html', 'required' => false, 'width' => 100, 'css_class' => '', 'placeholder' => '', 'choices' => [], 'pricing' => [ 'type' => 'none', 'amount' => 0.0, 'formula' => '', 'formula_raw' => '', 'per_unit' => true ], 'conditionals' => [], 'content' => '<strong>Ships soon</strong>' ] ],
+					'rule_groups' => [], 'mark_required' => true, 'labels_position' => 'above',
+				],
+				'expected_result' => [ 'submitted_values' => [], 'addon_per_unit' => 0.0 ],
+				'supported_flows' => [ 'storefront' ],
+			],
+			'WAPF-FIELD-SHORTCODE' => [
+				'ledger_id' => 'WAPF-FIELD-SHORTCODE',
+				'title' => 'Registered shortcode content',
+				'field_group' => [ 'schema' => 1, 'fields' => [ [ 'id' => 'booking', 'type' => 'shortcode', 'content' => '[opf_calendar]' ] ] ],
+				'expected_normalization' => [
+					'schema' => 1,
+					'fields' => [ [ 'id' => 'booking', 'label' => '', 'description' => '', 'type' => 'shortcode', 'required' => false, 'width' => 100, 'css_class' => '', 'placeholder' => '', 'choices' => [], 'pricing' => [ 'type' => 'none', 'amount' => 0.0, 'formula' => '', 'formula_raw' => '', 'per_unit' => true ], 'conditionals' => [], 'content' => '[opf_calendar]' ] ],
+					'rule_groups' => [], 'mark_required' => true, 'labels_position' => 'above',
+				],
+				'expected_result' => [ 'submitted_values' => [], 'addon_per_unit' => 0.0 ],
+				'supported_flows' => [ 'storefront' ],
+			],
+			'WAPF-FIELD-CONTENT-IMAGE' => [
+				'ledger_id' => 'WAPF-FIELD-CONTENT-IMAGE',
+				'title' => 'Static content image',
+				'field_group' => [ 'schema' => 1, 'fields' => [ [ 'id' => 'guide', 'type' => 'content_image', 'image_url' => '/uploads/guide.jpg', 'alt' => 'Product guide' ] ] ],
+				'expected_normalization' => [
+					'schema' => 1,
+					'fields' => [ [ 'id' => 'guide', 'label' => '', 'description' => '', 'type' => 'content_image', 'required' => false, 'width' => 100, 'css_class' => '', 'placeholder' => '', 'choices' => [], 'pricing' => [ 'type' => 'none', 'amount' => 0.0, 'formula' => '', 'formula_raw' => '', 'per_unit' => true ], 'conditionals' => [], 'content' => '', 'image_url' => '/uploads/guide.jpg', 'alt' => 'Product guide' ] ],
+					'rule_groups' => [], 'mark_required' => true, 'labels_position' => 'above',
+				],
+				'expected_result' => [ 'submitted_values' => [], 'addon_per_unit' => 0.0 ],
+				'supported_flows' => [ 'storefront' ],
+			],
+			'WAPF-FIELD-SECTION' => [
+				'ledger_id' => 'WAPF-FIELD-SECTION',
+				'title' => 'Section layout field',
+				'field_group' => [ 'schema' => 1, 'fields' => [ [ 'id' => 'details', 'type' => 'section', 'heading' => 'Details', 'content' => 'Choose your options.', 'required' => true ] ] ],
+				'expected_normalization' => [
+					'schema' => 1,
+					'fields' => [ [ 'id' => 'details', 'label' => '', 'description' => '', 'type' => 'section', 'required' => false, 'width' => 100, 'css_class' => '', 'placeholder' => '', 'choices' => [], 'pricing' => [ 'type' => 'none', 'amount' => 0.0, 'formula' => '', 'formula_raw' => '', 'per_unit' => true ], 'conditionals' => [], 'content' => 'Choose your options.', 'heading' => 'Details' ] ],
+					'rule_groups' => [], 'mark_required' => true, 'labels_position' => 'above',
+				],
+				'expected_result' => [ 'submitted_values' => [], 'addon_per_unit' => 0.0 ],
+				'supported_flows' => [ 'storefront' ],
+			],
+			'WAPF-FIELD-CALCULATION' => [
+				'ledger_id' => 'WAPF-FIELD-CALCULATION',
+				'title' => 'Informational calculation field',
+				'field_group' => [ 'schema' => 1, 'fields' => [ [ 'id' => 'area', 'label' => 'Area', 'type' => 'calculation', 'formula' => '[field.width] * [field.height]', 'result_text' => '{result} sq ft' ] ] ],
+				'expected_normalization' => [
+					'schema' => 1,
+					'fields' => [ [ 'id' => 'area', 'label' => 'Area', 'description' => '', 'type' => 'calculation', 'required' => false, 'width' => 100, 'css_class' => '', 'placeholder' => '', 'choices' => [], 'pricing' => [ 'type' => 'none', 'amount' => 0.0, 'formula' => '', 'formula_raw' => '', 'per_unit' => true ], 'conditionals' => [], 'content' => '', 'formula' => '[field.width] * [field.height]', 'result_text' => '{result} sq ft', 'calculation_type' => 'informational' ] ],
+					'rule_groups' => [], 'mark_required' => true, 'labels_position' => 'above',
+				],
+				'expected_result' => [ 'submitted_values' => [], 'addon_per_unit' => 0.0 ],
+				'supported_flows' => [ 'storefront' ],
+			],
+			'WAPF-PRICE-CHARACTERS' => [
+				'ledger_id' => 'WAPF-PRICE-CHARACTERS',
+				'title' => 'Character-count pricing',
+				'field_group' => [ 'schema' => 1, 'fields' => [ [ 'id' => 'engraving', 'type' => 'text', 'pricing' => [ 'type' => 'characters', 'amount' => 2 ] ] ] ],
+				'expected_normalization' => [
+					'schema' => 1,
+					'fields' => [ [ 'id' => 'engraving', 'label' => '', 'description' => '', 'type' => 'text', 'required' => false, 'width' => 100, 'css_class' => '', 'placeholder' => '', 'choices' => [], 'pricing' => [ 'type' => 'characters', 'amount' => 2.0, 'formula' => '', 'formula_raw' => '', 'per_unit' => true ], 'conditionals' => [] ] ],
+					'rule_groups' => [], 'mark_required' => true, 'labels_position' => 'above',
+				],
+				'expected_result' => [ 'submitted_values' => [ 'engraving' => 'ABC' ], 'addon_per_unit' => 6.0 ],
+				'supported_flows' => self::FLOWS,
+			],
+			'WAPF-COMMERCE-WEIGHT' => [
+				'ledger_id' => 'WAPF-COMMERCE-WEIGHT',
+				'title' => 'Choice weight adjustment',
+				'field_group' => [ 'schema' => 1, 'fields' => [ [ 'id' => 'material', 'type' => 'select', 'choices' => [ [ 'slug' => 'steel', 'label' => 'Steel', 'weight' => 0.5 ] ] ] ] ],
+				'expected_normalization' => [
+					'schema' => 1,
+					'fields' => [ [ 'id' => 'material', 'label' => '', 'description' => '', 'type' => 'select', 'required' => false, 'width' => 100, 'css_class' => '', 'placeholder' => '', 'choices' => [ [ 'slug' => 'steel', 'label' => 'Steel', 'selected' => false, 'disabled' => false, 'pricing' => [ 'type' => 'none', 'amount' => 0.0, 'formula' => '', 'formula_raw' => '', 'per_unit' => true ], 'weight' => 0.5 ] ], 'pricing' => [ 'type' => 'none', 'amount' => 0.0, 'formula' => '', 'formula_raw' => '', 'per_unit' => true ], 'conditionals' => [] ] ],
+					'rule_groups' => [], 'mark_required' => true, 'labels_position' => 'above',
+				],
+				'expected_result' => [ 'submitted_values' => [ 'material' => 'steel' ], 'weight_delta' => 0.5 ],
+				'supported_flows' => [ 'classic_cart', 'block_cart_checkout' ],
+			],
+			'WAPF-FIELD-PARAGRAPH' => [
+				'ledger_id' => 'WAPF-FIELD-PARAGRAPH',
+				'title' => 'Static paragraph content',
+				'field_group' => [ 'schema' => 1, 'fields' => [ [ 'id' => 'delivery-message', 'type' => 'paragraph', 'content' => 'Orders ship in two days.', 'required' => true, 'pricing' => [ 'type' => 'fixed', 'amount' => 5 ] ] ] ],
+				'expected_normalization' => [
+					'schema' => 1,
+					'fields' => [ [ 'id' => 'delivery-message', 'label' => '', 'description' => '', 'type' => 'paragraph', 'required' => false, 'width' => 100, 'css_class' => '', 'placeholder' => '', 'choices' => [], 'pricing' => [ 'type' => 'none', 'amount' => 0.0, 'formula' => '', 'formula_raw' => '', 'per_unit' => true ], 'conditionals' => [], 'content' => 'Orders ship in two days.' ] ],
+					'rule_groups' => [], 'mark_required' => true, 'labels_position' => 'above',
+				],
+				'expected_result' => [ 'submitted_values' => [], 'addon_per_unit' => 0.0 ],
+				'supported_flows' => [ 'storefront' ],
 			],
 			'WAPF-FIELD-SWATCH-TEXT' => [
 				'ledger_id' => 'WAPF-FIELD-SWATCH-TEXT',
@@ -227,7 +358,8 @@ final class CapabilityFixtureRegistry {
 	}
 
 	/**
-	 * Validate one capability fixture and return it unchanged.
+	 * Validate one schema fixture and return it unchanged. Flow declarations are
+	 * intentionally not treated as runtime coverage by this validator.
 	 *
 	 * @param array<string,mixed> $fixture Fixture declaration.
 	 * @return array<string,mixed>
