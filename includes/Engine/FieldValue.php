@@ -34,147 +34,112 @@ final class FieldValue {
 		return '' === $text ? null : $text;
 	}
 
-	/** Return whether a date bound is canonical ISO or a WAPF relative period. */
+	/** Whether a date boundary is a canonical date or a supported relative offset. */
 	public static function is_date_boundary( string $boundary ): bool {
 		if ( preg_match( '/^\d{4}-\d{2}-\d{2}$/', $boundary ) ) {
-			$date   = \DateTimeImmutable::createFromFormat( '!Y-m-d', $boundary, new \DateTimeZone( 'UTC' ) );
+			$date   = \DateTimeImmutable::createFromFormat( '!Y-m-d', $boundary );
 			$errors = \DateTimeImmutable::getLastErrors();
 			return $date instanceof \DateTimeImmutable && ( ! is_array( $errors ) || ( 0 === $errors['warning_count'] && 0 === $errors['error_count'] ) ) && $date->format( 'Y-m-d' ) === $boundary;
 		}
 
-		if ( '' === trim( $boundary ) || strlen( $boundary ) > 128 ) {
+		if ( 0 === preg_match_all( '/[+-]?\d{1,5}[dwmy]/i', $boundary, $matches ) || ! preg_match( '/^(?:[+-]?\d{1,5}[dwmy])(?:\s+[+-]?\d{1,5}[dwmy])*$/i', $boundary ) ) {
 			return false;
 		}
-		$matched = preg_match_all( '/[+-]?\d{1,5}[ymd]/i', trim( $boundary ), $tokens );
-		if ( false === $matched || 0 === $matched || $matched > 12 ) {
-			return false;
-		}
-		$remainder = preg_replace( '/[+-]?\d{1,5}[ymd]/i', '', trim( $boundary ) );
-		if ( null === $remainder || '' !== trim( $remainder ) ) {
-			return false;
-		}
-		foreach ( $tokens[0] as $token ) {
-			if ( abs( (int) substr( $token, 0, -1 ) ) > 36500 ) {
+		foreach ( $matches[0] as $component ) {
+			if ( abs( (int) substr( $component, 0, -1 ) ) > 36500 ) {
 				return false;
 			}
 		}
 		return true;
 	}
 
-	/** Resolve WAPF periods such as `1y 9m 3d` in the WordPress site timezone. */
-	public static function resolve_date_boundary( string $boundary, ?\DateTimeImmutable $today = null ): ?string {
-		if ( ! self::is_date_boundary( $boundary ) ) {
-			return null;
+	/** Whether a disabled date is an exact date or recurring month/day. */
+	public static function is_disabled_date( string $date ): bool {
+		if ( preg_match( '/^\\d{2}-\\d{2}$/', $date ) ) {
+			$check = \DateTimeImmutable::createFromFormat( '!Y-m-d', '2000-' . $date, new \DateTimeZone( 'UTC' ) );
+			$errors = \DateTimeImmutable::getLastErrors();
+			return $check instanceof \DateTimeImmutable && ( ! is_array( $errors ) || ( 0 === $errors['warning_count'] && 0 === $errors['error_count'] ) ) && $check->format( 'm-d' ) === $date;
 		}
-		if ( preg_match( '/^\d{4}-\d{2}-\d{2}$/', $boundary ) ) {
-			return $boundary;
+		if ( preg_match( '/^\\d{4}-\\d{2}-\\d{2}$/', $date ) ) {
+			return self::is_date_boundary( $date );
 		}
-		if ( null === $today ) {
-			$today = function_exists( 'current_datetime' )
-				? current_datetime()
-				: new \DateTimeImmutable( 'now', new \DateTimeZone( 'UTC' ) );
-		}
-
-		$totals = [ 'y' => 0, 'm' => 0, 'd' => 0 ];
-		preg_match_all( '/([+-]?\d{1,5})([ymd])/i', trim( $boundary ), $parts, PREG_SET_ORDER );
-		foreach ( $parts as $part ) {
-			$unit = strtolower( $part[2] );
-			$totals[ $unit ] += (int) $part[1];
-		}
-
-		try {
-			$resolved = $today->setTime( 0, 0 );
-			foreach ( [ 'y' => 'Y', 'm' => 'M', 'd' => 'D' ] as $unit => $interval_unit ) {
-				$amount = $totals[ $unit ];
-				if ( 0 === $amount ) {
-					continue;
-				}
-				$interval = new \DateInterval( 'P' . abs( $amount ) . $interval_unit );
-				if ( $amount < 0 ) {
-					$interval->invert = 1;
-				}
-				$resolved = $resolved->add( $interval );
-			}
-		} catch ( \Exception $exception ) {
-			return null;
-		}
-
-		return $resolved->format( 'Y-m-d' );
-	}
-
-	/** Validate a WAPF disabled date, recurring month/day, or inclusive range. */
-	public static function is_disabled_date( string $rule ): bool {
-		$parts = preg_split( '/\s+/', trim( $rule ) );
-		if ( ! is_array( $parts ) || ! in_array( count( $parts ), [ 1, 2 ], true ) ) {
+		$parts = preg_split( '/\\s+/', $date );
+		if ( 2 !== count( $parts ) ) {
 			return false;
 		}
-		foreach ( $parts as $part ) {
-			if ( preg_match( '/^\d{2}-\d{2}$/', $part ) ) {
-				$date = \DateTimeImmutable::createFromFormat( '!Y-m-d', '2000-' . $part, new \DateTimeZone( 'UTC' ) );
-				$errors = \DateTimeImmutable::getLastErrors();
-				if ( ! $date instanceof \DateTimeImmutable || ( is_array( $errors ) && ( $errors['warning_count'] || $errors['error_count'] ) ) || $date->format( 'm-d' ) !== $part ) {
-					return false;
-				}
-			} elseif ( ! self::is_iso_date( $part ) ) {
-				return false;
-			}
+		[ $start, $end ] = $parts;
+		if ( preg_match( '/^\\d{4}-\\d{2}-\\d{2}$/', $start ) && preg_match( '/^\\d{4}-\\d{2}-\\d{2}$/', $end ) ) {
+			return self::is_disabled_date( $start ) && self::is_disabled_date( $end ) && $start <= $end;
 		}
-		if ( 2 === count( $parts ) ) {
-			$first_is_month_day = (bool) preg_match( '/^\d{2}-\d{2}$/', $parts[0] );
-			$second_is_month_day = (bool) preg_match( '/^\d{2}-\d{2}$/', $parts[1] );
-			if ( $first_is_month_day !== $second_is_month_day || ( ! $first_is_month_day && $parts[0] > $parts[1] ) ) {
-				return false;
-			}
+		if ( preg_match( '/^\\d{2}-\\d{2}$/', $start ) && preg_match( '/^\\d{2}-\\d{2}$/', $end ) ) {
+			return self::is_disabled_date( $start ) && self::is_disabled_date( $end );
 		}
-		return true;
+		return false;
 	}
 
-	/** Check a date against exact, recurring, and inclusive date-range rules. */
-	public static function matches_disabled_date( string $value, array $rules ): bool {
-		$date = \DateTimeImmutable::createFromFormat( '!Y-m-d', $value, new \DateTimeZone( 'UTC' ) );
-		if ( ! $date instanceof \DateTimeImmutable || ! self::is_iso_date( $value ) ) {
+	/** Whether a date matches an exact, recurring, or inclusive date-range blackout. */
+	public static function matches_disabled_date( string $date, array $disabled_dates ): bool {
+		if ( ! self::is_disabled_date( $date ) || ! preg_match( '/^\\d{4}-\\d{2}-\\d{2}$/', $date ) ) {
 			return false;
 		}
-		$month_day = $date->format( 'm-d' );
-		foreach ( $rules as $rule ) {
-			if ( ! is_string( $rule ) || ! self::is_disabled_date( $rule ) ) {
+		$month_day = substr( $date, 5 );
+		foreach ( $disabled_dates as $rule ) {
+			if ( ! is_string( $rule ) ) {
 				continue;
 			}
-			$parts = preg_split( '/\s+/', trim( $rule ) );
-			if ( 1 === count( $parts ) ) {
-				if ( $parts[0] === $value || $parts[0] === $month_day ) {
-					return true;
-				}
+			$rule = trim( $rule );
+			if ( $date === $rule || $month_day === $rule ) {
+				return true;
+			}
+			$parts = preg_split( '/\\s+/', $rule );
+			if ( 2 !== count( $parts ) ) {
 				continue;
 			}
-			$start = $parts[0];
-			$end = $parts[1];
-			if ( preg_match( '/^\d{2}-\d{2}$/', $start ) && preg_match( '/^\d{2}-\d{2}$/', $end ) ) {
-				if ( ( $start <= $end && $month_day >= $start && $month_day <= $end ) || ( $start > $end && ( $month_day >= $start || $month_day <= $end ) ) ) {
-					return true;
-				}
-			} else {
-				if ( preg_match( '/^\d{2}-\d{2}$/', $start ) ) {
-					$start = $date->format( 'Y' ) . '-' . $start;
-				}
-				if ( preg_match( '/^\d{2}-\d{2}$/', $end ) ) {
-					$end = $date->format( 'Y' ) . '-' . $end;
-				}
-				if ( $start <= $value && $value <= $end ) {
-					return true;
-				}
+			[ $start, $end ] = $parts;
+			if ( preg_match( '/^\\d{4}-\\d{2}-\\d{2}$/', $start ) && preg_match( '/^\\d{4}-\\d{2}-\\d{2}$/', $end ) && $date >= $start && $date <= $end ) {
+				return true;
+			}
+			if ( preg_match( '/^\\d{2}-\\d{2}$/', $start ) && preg_match( '/^\\d{2}-\\d{2}$/', $end ) && ( $start <= $end ? $month_day >= $start && $month_day <= $end : $month_day >= $start || $month_day <= $end ) ) {
+				return true;
 			}
 		}
 		return false;
 	}
 
-	private static function is_iso_date( string $value ): bool {
-		if ( ! preg_match( '/^\d{4}-\d{2}-\d{2}$/', $value ) ) {
-			return false;
+	/** Resolve a static date or relative offset such as `7d` in the site timezone. */
+	public static function resolve_date_boundary( string $boundary, ?\DateTimeImmutable $today = null ): ?string {
+		if ( ! self::is_date_boundary( $boundary ) ) {
+			return null;
 		}
-		$date = \DateTimeImmutable::createFromFormat( '!Y-m-d', $value, new \DateTimeZone( 'UTC' ) );
-		$errors = \DateTimeImmutable::getLastErrors();
-		return $date instanceof \DateTimeImmutable && ( ! is_array( $errors ) || ( 0 === $errors['warning_count'] && 0 === $errors['error_count'] ) ) && $date->format( 'Y-m-d' ) === $value;
+
+		if ( preg_match( '/^\d{4}-\d{2}-\d{2}$/', $boundary ) ) {
+			return $boundary;
+		}
+
+		if ( null === $today ) {
+			$today = function_exists( 'current_datetime' )
+				? current_datetime()
+				: new \DateTimeImmutable( 'today', new \DateTimeZone( 'UTC' ) );
+		}
+
+		$units    = [ 'd' => 'days', 'w' => 'weeks', 'm' => 'months', 'y' => 'years' ];
+		$resolved = $today->setTime( 0, 0 );
+		preg_match_all( '/([+-]?\d{1,5})([dwmy])/i', $boundary, $components, PREG_SET_ORDER );
+		foreach ( $components as $component ) {
+			$amount = (int) $component[1];
+			$unit   = strtolower( $component[2] );
+			$offset = ( $amount >= 0 ? '+' : '' ) . $amount . ' ' . $units[ $unit ];
+			try {
+				$resolved = $resolved->modify( $offset );
+			} catch ( \Exception $exception ) {
+				return null;
+			}
+			if ( ! $resolved instanceof \DateTimeImmutable ) {
+				return null;
+			}
+		}
+
+		return $resolved instanceof \DateTimeImmutable ? $resolved->format( 'Y-m-d' ) : null;
 	}
 
 	/**
@@ -204,40 +169,177 @@ final class FieldValue {
 			return [ sprintf( '"%s" must be a valid email address.', $label ) ];
 		}
 
-		if ( 'date' === $type ) {
-			$date   = \DateTimeImmutable::createFromFormat( '!Y-m-d', $value, new \DateTimeZone( 'UTC' ) );
-			$errors = \DateTimeImmutable::getLastErrors();
-			if ( ! $date instanceof \DateTimeImmutable || ( is_array( $errors ) && ( 0 !== $errors['warning_count'] || 0 !== $errors['error_count'] ) ) || $date->format( 'Y-m-d' ) !== $value ) {
-				return [ sprintf( '"%s" must be a valid date.', $label ) ];
+		if ( 'number' === $type ) {
+			if ( ! is_numeric( $value ) ) {
+				return [ sprintf( '"%s" must be a number.', $label ) ];
 			}
-			$current = $today ?? ( function_exists( 'current_datetime' ) ? current_datetime() : new \DateTimeImmutable( 'now', new \DateTimeZone( 'UTC' ) ) );
-			$site_today = $current->format( 'Y-m-d' );
-			if ( false === ( $field['allow_past'] ?? true ) && $value < $site_today ) {
-				return [ sprintf( '"%s" cannot be in the past.', $label ) ];
+			$number = (float) $value;
+			if ( 'integer' === ( $field['number_mode'] ?? null ) && abs( $number - round( $number ) ) > 0.0000001 ) {
+				return [ sprintf( '"%s" must be a whole number.', $label ) ];
 			}
-			if ( false === ( $field['allow_future'] ?? true ) && $value > $site_today ) {
-				return [ sprintf( '"%s" cannot be in the future.', $label ) ];
+			if ( isset( $field['min'] ) && $number < (float) $field['min'] ) {
+				return [ sprintf( '"%s" must be at least %s.', $label, (string) $field['min'] ) ];
 			}
-			foreach ( [ 'min_date' => 'on or after', 'max_date' => 'on or before' ] as $key => $comparison ) {
-				if ( ! isset( $field[ $key ] ) ) {
-					continue;
-				}
-				$boundary = self::resolve_date_boundary( (string) $field[ $key ], $today );
-				if ( null !== $boundary && ( 'min_date' === $key ? $value < $boundary : $value > $boundary ) ) {
-					return [ sprintf( '"%s" must be %s %s.', $label, $comparison, $boundary ) ];
-				}
+			if ( isset( $field['max'] ) && $number > (float) $field['max'] ) {
+				return [ sprintf( '"%s" must be at most %s.', $label, (string) $field['max'] ) ];
 			}
-			if ( in_array( (int) $date->format( 'w' ), $field['disabled_weekdays'] ?? [], true ) ) {
-				return [ sprintf( '"%s" is unavailable on this weekday.', $label ) ];
-			}
-			if ( self::matches_disabled_date( $value, $field['disabled_dates'] ?? [] ) ) {
-				return [ sprintf( '"%s" contains a disallowed date.', $label ) ];
-			}
-			if ( isset( $field['cutoff_time'] ) && $value === $current->format( 'Y-m-d' ) && $current->format( 'H:i:s' ) > $field['cutoff_time'] . ':00' ) {
-				return [ sprintf( '"%s" is no longer available for today.', $label ) ];
+			$step_ratio = isset( $field['step'] ) ? ( $number - (float) ( $field['min'] ?? 0 ) ) / (float) $field['step'] : 0.0;
+			if ( isset( $field['step'] ) && abs( $step_ratio - round( $step_ratio ) ) > 0.0000001 ) {
+				return [ sprintf( '"%s" must use increments of %s.', $label, (string) $field['step'] ) ];
 			}
 		}
 
+		if ( 'date' === $type ) {
+			$date = \DateTimeImmutable::createFromFormat( '!Y-m-d', $value );
+			$errors = \DateTimeImmutable::getLastErrors();
+			if ( false === $date || ( is_array( $errors ) && ( $errors['warning_count'] || $errors['error_count'] ) ) || $date->format( 'Y-m-d' ) !== $value ) {
+				return [ sprintf( '"%s" must be a valid date.', $label ) ];
+			}
+			$min_date = isset( $field['min_date'] ) ? self::resolve_date_boundary( (string) $field['min_date'], $today ) : null;
+			$max_date = isset( $field['max_date'] ) ? self::resolve_date_boundary( (string) $field['max_date'], $today ) : null;
+			$current = $today ?? ( function_exists( 'current_datetime' ) ? current_datetime() : new \DateTimeImmutable( 'now', new \DateTimeZone( 'UTC' ) ) );
+			$site_today = $current->format( 'Y-m-d' );
+			if ( array_key_exists( 'allow_past', $field ) && false === $field['allow_past'] && $value < $site_today ) {
+				return [ sprintf( '"%s" cannot be in the past.', $label ) ];
+			}
+			if ( array_key_exists( 'allow_future', $field ) && false === $field['allow_future'] && $value > $site_today ) {
+				return [ sprintf( '"%s" cannot be in the future.', $label ) ];
+			}
+			if ( null !== $min_date && $value < $min_date ) {
+				return [ sprintf( '"%s" must be on or after %s.', $label, $min_date ) ];
+			}
+			if ( null !== $max_date && $value > $max_date ) {
+				return [ sprintf( '"%s" must be on or before %s.', $label, $max_date ) ];
+			}
+			if ( isset( $field['cutoff_time'] ) ) {
+				$current = $today ?? ( function_exists( 'current_datetime' ) ? current_datetime() : new \DateTimeImmutable( 'now', new \DateTimeZone( 'UTC' ) ) );
+				if ( $value === $current->format( 'Y-m-d' ) && $current->format( 'H:i' ) >= (string) $field['cutoff_time'] ) {
+					return [ sprintf( '"%s" is no longer available for today.', $label ) ];
+				}
+			}
+			$weekday = (int) $date->format( 'w' );
+			if ( in_array( $weekday, $field['disabled_weekdays'] ?? [], true ) ) {
+				return [ sprintf( '"%s" is unavailable on this weekday.', $label ) ];
+			}
+			$month_day = $date->format( 'm-d' );
+			if ( self::matches_disabled_date( $value, $field['disabled_dates'] ?? [] ) ) {
+				return [ sprintf( '"%s" contains a disallowed date.', $label ) ];
+			}
+		}
+
+		$value_length = self::text_length( $value );
+		if ( isset( $field['minlength'] ) && $value_length < (int) $field['minlength'] ) {
+			return [ sprintf( '"%s" must be at least %d characters.', $label, (int) $field['minlength'] ) ];
+		}
+		if ( isset( $field['maxlength'] ) && $value_length > (int) $field['maxlength'] ) {
+			return [ sprintf( '"%s" must be at most %d characters.', $label, (int) $field['maxlength'] ) ];
+		}
+		if ( isset( $field['pattern'] ) && 1 !== self::matches_pattern( (string) $field['pattern'], $value ) ) {
+			return [ sprintf( '"%s" has an invalid format.', $label ) ];
+		}
+
+		return [];
+	}
+
+	/** Count Unicode characters rather than UTF-8 bytes. */
+	private static function text_length( string $value ): int {
+		if ( function_exists( 'mb_strlen' ) ) {
+			return mb_strlen( $value, 'UTF-8' );
+		}
+		if ( function_exists( 'wp_strlen' ) ) {
+			return wp_strlen( $value );
+		}
+		$count = preg_match_all( '/./us', $value, $matches );
+		return false === $count ? strlen( $value ) : $count;
+	}
+
+	/** Match a complete submitted string using the authored PCRE pattern. */
+	private static function matches_pattern( string $pattern, string $value ): int {
+		$delimiter = '~';
+		foreach ( [ '~', '#', '%', '!', '@', ';', '`', '/' ] as $candidate ) {
+			if ( false === strpos( $pattern, $candidate ) ) {
+				$delimiter = $candidate;
+				break;
+			}
+		}
+		$expression = $delimiter . '\\A(?:' . $pattern . ')\\z' . $delimiter . 'u';
+		return @preg_match( $expression, $value );
+	}
+
+	/** Validate a checkbox selection array after published-choice filtering. */
+	public static function validate_choices( array $field, $value, bool $provided ): array {
+		$label = (string) ( $field['label'] ?? '' );
+		$selected = is_array( $value ) ? array_values( array_filter( $value, 'is_scalar' ) ) : [];
+		$count = count( $selected );
+		if ( ! $provided || 0 === $count ) {
+			if ( ! empty( $field['required'] ) && ( ! isset( $field['min_selections'] ) || 0 === (int) $field['min_selections'] ) ) {
+				return [ sprintf( '"%s" is a required field.', $label ) ];
+			}
+			if ( isset( $field['min_selections'] ) && $field['min_selections'] > 0 ) {
+				return [ sprintf( '"%s" requires at least %d selection(s).', $label, (int) $field['min_selections'] ) ];
+			}
+			return [];
+		}
+		if ( isset( $field['min_selections'] ) && $count < (int) $field['min_selections'] ) {
+			return [ sprintf( '"%s" requires at least %d selection(s).', $label, (int) $field['min_selections'] ) ];
+		}
+		if ( isset( $field['max_selections'] ) && $count > (int) $field['max_selections'] ) {
+			return [ sprintf( '"%s" allows at most %d selection(s).', $label, (int) $field['max_selections'] ) ];
+		}
+		return [];
+	}
+
+	/** Validate quantity counts keyed by image-choice slug. */
+	public static function validate_image_quantities( array $field, $value, bool $provided ): array {
+		$label = (string) ( $field['label'] ?? '' );
+		$quantities = is_array( $value ) ? $value : [];
+		$valid_choices = [];
+		foreach ( $field['choices'] ?? [] as $choice ) {
+			if ( empty( $choice['disabled'] ) && isset( $choice['slug'] ) ) {
+				$valid_choices[ (string) $choice['slug'] ] = true;
+			}
+		}
+		$selected = 0;
+		$total_quantity = 0;
+		$minimum = (int) ( $field['min'] ?? 1 );
+		$maximum = isset( $field['max'] ) ? (int) $field['max'] : PHP_INT_MAX;
+		$step = isset( $field['step'] ) ? (int) $field['step'] : 1;
+		foreach ( $quantities as $slug => $raw_quantity ) {
+			$slug = is_string( $slug ) || is_int( $slug ) ? (string) $slug : '';
+			if ( ! isset( $valid_choices[ $slug ] ) || ! is_scalar( $raw_quantity ) || ! preg_match( '/^\d+$/', (string) $raw_quantity ) ) {
+				return [ sprintf( '"%s" contains an invalid image quantity.', $label ) ];
+			}
+			$quantity = (int) $raw_quantity;
+			if ( 0 === $quantity ) {
+				continue;
+			}
+			if ( $quantity < $minimum || $quantity > $maximum || 0 !== ( $quantity - $minimum ) % max( 1, $step ) ) {
+				return [ sprintf( '"%s" has an image quantity outside its allowed range.', $label ) ];
+			}
+			++$selected;
+			$total_quantity += $quantity;
+		}
+		if ( isset( $field['min_total_quantity'] ) && $total_quantity < (int) $field['min_total_quantity'] ) {
+			return [ sprintf( '"%s" requires a total quantity of at least %d.', $label, (int) $field['min_total_quantity'] ) ];
+		}
+		if ( ! $provided || 0 === $selected ) {
+			if ( ! empty( $field['required'] ) && ( ! isset( $field['min_selections'] ) || 0 === (int) $field['min_selections'] ) ) {
+				return [ sprintf( '"%s" is a required field.', $label ) ];
+			}
+			if ( isset( $field['min_selections'] ) && (int) $field['min_selections'] > 0 ) {
+				return [ sprintf( '"%s" requires at least %d selection(s).', $label, (int) $field['min_selections'] ) ];
+			}
+			return [];
+		}
+		if ( isset( $field['min_selections'] ) && $selected < (int) $field['min_selections'] ) {
+			return [ sprintf( '"%s" requires at least %d selection(s).', $label, (int) $field['min_selections'] ) ];
+		}
+		if ( isset( $field['max_selections'] ) && $selected > (int) $field['max_selections'] ) {
+			return [ sprintf( '"%s" allows at most %d selection(s).', $label, (int) $field['max_selections'] ) ];
+		}
+		if ( isset( $field['max_total_quantity'] ) && $total_quantity > (int) $field['max_total_quantity'] ) {
+			return [ sprintf( '"%s" allows a total quantity of at most %d.', $label, (int) $field['max_total_quantity'] ) ];
+		}
 		return [];
 	}
 }

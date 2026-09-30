@@ -86,6 +86,43 @@ for the complete edition scope. Paths are relative to
 | Vendor settings, licensing, and update boundary | `includes/classes/class-licensing.php`; `includes/controllers/class-admin-controller.php`; `includes/controllers/class-extended-controller.php`; `includes/classes/class-config.php` | The admin exposes global labels, upload/date behavior and date format, summary/design settings, product price display and plugin license/update UI. Extended controllers add fields/date/formula/weight/linked-product options on top of the shared Pro settings framework. Licensed distribution/update behavior is separate from OPF's source behavior and does not enter the FOSS compatibility license decision. |
 | Developer extension API | PHP `apply_filters()`, `do_action()`, and `do_action_ref_array()` calls across plugin PHP files; `includes/api/api-helpers.php` | A PHP-token scan of every installed 3.1.5 PHP file found 89 unique literal `wapf/...` filter names across 110 call sites, 8 direct `wapf/...` action names, and 1 `wapf/...` `do_action_ref_array` name. It also found one legacy `wapf_...` filter, three legacy `wapf_...` actions, and a dynamic `wapf/setting/{name}` filter family. The package has 12 global helper functions. Hook names cover field registration/rendering, validation, formula/pricing, cart/order, upload, linked products, admin screens, and integrations. Helper API is explicitly labeled beta in source and spans settings, custom formula functions, field-group display/lookups, cart/order reads, and field-group serialization. Counts do not define a stable documented API. Current-package signatures/arguments and OPF compatibility remain open. |
 
+### Installed 3.1.5 product-gallery image switching
+
+Gallery switching is configured at field-group layout level, separately from
+an individual card or image choice changing the product image. The admin view
+offers two modes: `rules` applies an image when a combination of option values
+matches, with the **last matching rule winning**; `last` selects an image
+according to the last option changed by the shopper. The same view says
+true/false, select, swatch, checkbox, and radio fields can drive rules.
+
+`raw_json_to_field_group()` defaults `swap_type` to `rules` when gallery
+switching is enabled and normalizes each image row to `source`, `url`, `id`,
+and `values` entries (`field` plus selected `value`). The product field-group
+view emits the selected `swap_type` to the frontend. The 3.1.5 frontend asset
+reverses each group's rules, then selects the first matching rule, so the last
+configured matching rule wins. In `last` mode the change handler also passes
+the changed field's ID; each non-wildcard condition must refer to that field as
+well as match its current value. A field change with no matching image restores
+the product/variation image. On initial render WAPF evaluates the first visible
+input in the group; visibility dependency refreshes reuse that group's last
+changed input. This is an interaction-history rule, distinct from the
+value-only `rules` mode.
+
+OPF now imports both 3.1.5 modes, remaps legacy field IDs, supports `*` and
+true/false `0`/`1`, and preserves the mode in its frontend registry. Its
+`last`-mode resolver matches non-wildcard rule conditions only against the
+most recently changed field and restores the base image when none match.
+Focused mapper/frontend tests pass; real-browser verification of the imported
+`last` mode remains open. These are 3.1.5 source facts only; current Extended
+3.2.1 remains unaudited.
+
+Sources: `views/admin/settings/gallery-image.php` (mode descriptions and
+supported field types), `includes/classes/class-field-groups.php:124-156`
+(normalized stored keys), `views/frontend/field-group.php:24` (frontend mode
+data attribute), and OPF's mapped behavior in `includes/Engine/WapfMapper.php`,
+`includes/Engine/FieldGroup.php`, `includes/Service/Renderer.php`, and
+`assets/js/opf-frontend.js`.
+
 This source map covers the installed package's subsystem boundaries. It does
 not assert that OPF matches each behavior: capability equivalence, migration
 semantics, runtime integrations, and current 3.2.1/3.2.2 release differences

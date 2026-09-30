@@ -3,7 +3,7 @@
  * Plugin Name: Open Product Fields for WooCommerce
  * Plugin URI: https://github.com/netwokersllc/open-product-fields-for-woocommerce
  * Description: Build custom product fields and add-ons for WooCommerce — conditional logic, server-side pricing, and first-class block checkout support. Free and open source.
- * Version: 0.1.0
+ * Version: 0.1.1
  * Author: ssthormess
  * Author URI: https://github.com/ssthormess
  * License: GPL-2.0-or-later
@@ -32,14 +32,16 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'OPF_VERSION', '0.1.0' );
+define( 'OPF_VERSION', '0.1.1' );
 define( 'OPF_FILE', __FILE__ );
 define( 'OPF_DIR', plugin_dir_path( __FILE__ ) );
 define( 'OPF_URL', plugin_dir_url( __FILE__ ) );
 
 require_once OPF_DIR . 'includes/Autoloader.php';
 
+use OPF\Engine\UploadService;
 use OPF\Service\Admin\Builder;
+use OPF\Service\Admin\FormulaVariables;
 use OPF\Service\Admin\ImportPage;
 use OPF\Service\Admin\Settings;
 use OPF\Service\Assets;
@@ -48,6 +50,10 @@ use OPF\Service\Cli;
 use OPF\Service\FieldGroups;
 use OPF\Service\Importer;
 use OPF\Service\MetaPrettifier;
+use OPF\Service\ProductPriceDisplay;
+use OPF\Service\LivePreview;
+use OPF\Service\LayeredImages;
+use OPF\Service\QuantityPrefill;
 use OPF\Service\Renderer;
 use OPF\Service\Rest;
 
@@ -59,6 +65,7 @@ use OPF\Service\Rest;
  */
 add_action( 'plugins_loaded', 'opf_boot', 20 );
 register_activation_hook( __FILE__, 'opf_activate' );
+register_deactivation_hook( __FILE__, 'opf_deactivate' );
 
 /**
  * Activation defaults.
@@ -66,10 +73,27 @@ register_activation_hook( __FILE__, 'opf_activate' );
 function opf_activate(): void {
 	add_option( 'opf_version', OPF_VERSION );
 	add_option( 'opf_theme_compat', 'yes' );
+	if ( ! wp_next_scheduled( 'opf_cleanup_uploads' ) ) {
+		wp_schedule_event( time() + HOUR_IN_SECONDS, 'daily', 'opf_cleanup_uploads' );
+	}
+}
+
+/**
+ * Remove scheduled work.
+ */
+function opf_deactivate(): void {
+	wp_clear_scheduled_hook( 'opf_cleanup_uploads' );
 }
 
 function opf_boot(): void {
 	FieldGroups::init();
+
+	add_action(
+		'opf_cleanup_uploads',
+		static function () {
+			UploadService::cleanup_orphans();
+		}
+	);
 
 	// Keep the stored version in sync (upgrade path for future migrations).
 	if ( get_option( 'opf_version' ) !== OPF_VERSION ) {
@@ -82,14 +106,19 @@ function opf_boot(): void {
 	}
 
 	Renderer::init();
+	ProductPriceDisplay::init();
+	LivePreview::init();
+	LayeredImages::init();
 	CartIntegration::init();
 	Assets::init();
 	Rest::init();
 	Importer::init();
 	Builder::init();
 	ImportPage::init();
+	FormulaVariables::init();
 	Settings::init();
 	MetaPrettifier::init();
+	QuantityPrefill::init();
 
 	if ( defined( 'WP_CLI' ) && WP_CLI ) {
 		Cli::init();

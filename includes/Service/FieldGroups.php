@@ -30,6 +30,26 @@ final class FieldGroups {
 	 */
 	public static function init(): void {
 		add_action( 'init', [ __CLASS__, 'register_cpt' ] );
+		add_action( 'set_object_terms', [ __CLASS__, 'flush_product_cache_for_term_change' ], 10, 4 );
+		add_action( 'trashed_post', [ __CLASS__, 'flush_if_group_changed' ] );
+		add_action( 'untrashed_post', [ __CLASS__, 'flush_if_group_changed' ] );
+		add_action( 'before_delete_post', [ __CLASS__, 'flush_if_group_changed' ] );
+	}
+
+	/** Flush target-product matches when a product's category, tag, or attribute changes. */
+	public static function flush_product_cache_for_term_change( int $object_id, $terms, $term_taxonomy_ids, string $taxonomy ): void {
+		if ( ! in_array( $taxonomy, [ 'product_cat', 'product_tag' ], true ) && 0 !== strpos( $taxonomy, 'pa_' ) ) {
+			return;
+		}
+
+		wp_cache_flush_group( 'opf_groups_for_product' );
+	}
+
+	/** Flush product matches when a field group is trashed, restored, or deleted. */
+	public static function flush_if_group_changed( int $post_id ): void {
+		if ( 'opf_field_group' === get_post_type( $post_id ) ) {
+			self::flush_cache();
+		}
 	}
 
 	/**
@@ -85,6 +105,7 @@ final class FieldGroups {
 				'order'                    => 'ASC',
 				'orderby'                  => 'menu_order title',
 				'suppress_filters'         => false,
+				'lang'                     => '',
 			]
 		);
 
@@ -114,31 +135,87 @@ final class FieldGroups {
 	 * @return array<int,array{id:int,title:string,lang:string,group:FieldGroup}>
 	 */
 	public static function for_product( \WC_Product $product ): array {
-		$product_id = $product->get_parent_id() ? $product->get_parent_id() : $product->get_id();
+		$product_id = $product->get_id();
 		$cached     = wp_cache_get( $product_id, 'opf_groups_for_product' );
 		if ( is_array( $cached ) ) {
 			return $cached;
 		}
 
+		$is_variation = $product->is_type( 'variation' );
+		$parent_id    = $is_variation ? (int) $product->get_parent_id() : $product_id;
+		$placement_product = $is_variation ? wc_get_product( $parent_id ) : $product;
+		if ( ! $placement_product ) {
+			return [];
+		}
+
 		$has_terms = [
-			'product_cat' => wc_get_product_term_ids( $product_id, 'product_cat' ),
-			'product_tag' => wc_get_product_term_ids( $product_id, 'product_tag' ),
+			'product_cat' => wc_get_product_term_ids( $parent_id, 'product_cat' ),
+			'product_tag' => wc_get_product_term_ids( $parent_id, 'product_tag' ),
+			'product_attribute' => self::product_attribute_term_keys( $parent_id ),
+			'product_type' => [ $placement_product->get_type() ],
+			'product_variation' => $is_variation ? [ (string) $product_id ] : [],
 		];
 
-		$current_lang = function_exists( 'pll_current_language' ) ? pll_current_language( 'slug' ) : '';
+		$current_lang = function_exists( 'pll_get_post_language' ) ? pll_get_post_language( $parent_id, 'slug' ) : '';
 
 		$matching = [];
 		foreach ( self::all() as $entry ) {
 			if ( $current_lang && ! empty( $entry['lang'] ) && $entry['lang'] !== $current_lang ) {
 				continue;
 			}
-			if ( Evaluator::group_matches( $entry['group']->data, $has_terms, $product_id ) ) {
+			if ( Evaluator::group_matches( $entry['group']->data, $has_terms, $parent_id ) ) {
 				$matching[] = $entry;
 			}
 		}
 
 		wp_cache_set( $product_id, $matching, 'opf_groups_for_product' );
 		return $matching;
+	}
+
+	/**
+	 * Build unambiguous placement keys for registered global product attributes.
+	 *
+	 * @param array<string,array<int|string>> $attributes Taxonomy => term ids.
+	 * @return array<int,string> `pa_color:12` keys.
+	 */
+	public static function attribute_term_keys( array $attributes ): array {
+		$keys = [];
+		foreach ( $attributes as $taxonomy => $term_ids ) {
+			$taxonomy = strtolower( (string) $taxonomy );
+			if ( ! preg_match( '/^pa_[a-z0-9_-]+$/', $taxonomy ) || ! is_array( $term_ids ) ) {
+				continue;
+			}
+			foreach ( $term_ids as $term_id ) {
+				if ( ! is_scalar( $term_id ) || ! preg_match( '/^[1-9][0-9]*$/', (string) $term_id ) ) {
+					continue;
+				}
+				$keys[] = $taxonomy . ':' . (string) $term_id;
+			}
+		}
+
+		return array_values( array_unique( $keys ) );
+	}
+
+	/** Return this product's global attribute term keys for placement matching. */
+	private static function product_attribute_term_keys( int $product_id ): array {
+		if ( ! function_exists( 'wc_get_attribute_taxonomies' ) || ! function_exists( 'wc_attribute_taxonomy_name' ) ) {
+			return [];
+		}
+
+		$attributes = [];
+		foreach ( (array) wc_get_attribute_taxonomies() as $attribute ) {
+			$name = is_object( $attribute ) ? (string) ( $attribute->attribute_name ?? '' ) : '';
+			if ( '' === $name ) {
+				continue;
+			}
+			$taxonomy = wc_attribute_taxonomy_name( $name );
+			if ( ! is_string( $taxonomy ) || ! taxonomy_exists( $taxonomy ) ) {
+				continue;
+			}
+			$attributes[ $taxonomy ] = wc_get_product_term_ids( $product_id, $taxonomy );
+		}
+
+		return self::attribute_term_keys( $attributes );
 	}
 
 	/**
@@ -162,7 +239,8 @@ final class FieldGroups {
 	public static function save( int $post_id, $group, array $args = [] ): int {
 		$data    = $group instanceof FieldGroup ? $group->data : FieldGroup::normalize( $group );
 		$title   = (string) ( $args['title'] ?? '' );
-		$status  = (string) ( $args['status'] ?? 'publish' );
+		$existing = $post_id > 0 ? get_post( $post_id ) : null;
+		$status   = (string) ( $args['status'] ?? ( is_object( $existing ) ? $existing->post_status : 'publish' ) );
 
 		$fields = [
 			'ID'           => $post_id > 0 ? $post_id : 0,

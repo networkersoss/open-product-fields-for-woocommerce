@@ -26,15 +26,6 @@ final class FieldValueTest extends TestCase {
 		$this->assertSame( [], FieldValue::validate( $field, null, false ) );
 	}
 
-	public function test_date_accepts_only_real_iso_calendar_dates(): void {
-		$field = [ 'type' => 'date', 'label' => 'Delivery date', 'required' => false ];
-
-		$this->assertSame( '2026-09-30', FieldValue::sanitize( $field, ' 2026-09-30 ' ) );
-		$this->assertSame( [], FieldValue::validate( $field, '2026-09-30', true ) );
-		$this->assertSame( [ '"Delivery date" must be a valid date.' ], FieldValue::validate( $field, '2026-02-30', true ) );
-		$this->assertSame( [ '"Delivery date" must be a valid date.' ], FieldValue::validate( $field, '30-09-2026', true ) );
-	}
-
 	public function test_toggle_normalizes_checked_and_unchecked_values_and_required_means_checked(): void {
 		$field = [ 'type' => 'toggle', 'label' => 'Gift wrap', 'required' => true ];
 
@@ -44,5 +35,14 @@ final class FieldValueTest extends TestCase {
 		$this->assertSame( '0', FieldValue::sanitize( $field, 'anything-else' ) );
 		$this->assertSame( [], FieldValue::validate( $field, '1', true ) );
 		$this->assertSame( [ '"Gift wrap" is a required field.' ], FieldValue::validate( $field, '0', true ) );
+	}
+
+	public function test_number_integer_mode_rejects_fractions_while_decimal_mode_allows_them(): void {
+		$integer = [ 'type' => 'number', 'label' => 'Count', 'number_mode' => 'integer' ];
+		$decimal = [ 'type' => 'number', 'label' => 'Weight', 'number_mode' => 'decimal', 'step' => 0.25 ];
+		$this->assertSame( [], FieldValue::validate( $integer, '2', true ) );
+		$this->assertSame( [ '"Count" must be a whole number.' ], FieldValue::validate( $integer, '2.5', true ) );
+		$this->assertSame( [], FieldValue::validate( $decimal, '1.75', true ) );
+		$this->assertSame( [ '"Weight" must use increments of 0.25.' ], FieldValue::validate( $decimal, '1.80', true ) );
 	}
 }

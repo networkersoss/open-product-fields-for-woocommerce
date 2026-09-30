@@ -14,7 +14,7 @@ final class DateCutoffTest extends TestCase {
 		$field = FieldGroup::normalize_field( [ 'id' => 'delivery-date', 'type' => 'date', 'label' => 'Delivery date', 'cutoff_time' => '14:30' ] );
 
 		$this->assertSame( [], FieldValue::validate( $field, '2026-06-15', true, new \DateTimeImmutable( '2026-06-15 14:29:59', new \DateTimeZone( 'UTC' ) ) ) );
-		$this->assertSame( [], FieldValue::validate( $field, '2026-06-15', true, new \DateTimeImmutable( '2026-06-15 14:30:00', new \DateTimeZone( 'UTC' ) ) ) );
+		$this->assertSame( [ '"Delivery date" is no longer available for today.' ], FieldValue::validate( $field, '2026-06-15', true, new \DateTimeImmutable( '2026-06-15 14:30:00', new \DateTimeZone( 'UTC' ) ) ) );
 		$this->assertSame( [ '"Delivery date" is no longer available for today.' ], FieldValue::validate( $field, '2026-06-15', true, new \DateTimeImmutable( '2026-06-15 14:30:01', new \DateTimeZone( 'UTC' ) ) ) );
 		$this->assertSame( [], FieldValue::validate( $field, '2026-06-16', true, new \DateTimeImmutable( '2026-06-15 18:00:00', new \DateTimeZone( 'UTC' ) ) ) );
 	}
