@@ -1,0 +1,74 @@
+import { createRequire } from 'node:module';
+import { readFileSync } from 'node:fs';
+const requireFromPlugin = createRequire(process.cwd() + '/index.js');
+const { chromium } = requireFromPlugin('playwright');
+
+const base = process.env.OPF_BASE_URL || 'http://127.0.0.1:8091';
+const groupId = process.env.OPF_SWATCH_ZOOM_GROUP_ID;
+const passwordFile = process.env.OPF_E2E_PASSWORD_FILE;
+if (!groupId || !passwordFile) throw new Error('OPF_SWATCH_ZOOM_GROUP_ID and OPF_E2E_PASSWORD_FILE are required');
+
+const browser = await chromium.launch();
+const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+const errors = [];
+page.on('pageerror', (error) => errors.push(error.message));
+let failures = 0;
+const check = (name, ok) => {
+	console.log(`${ok ? 'ok' : 'FAIL'} ${name}`);
+	if (!ok) failures++;
+};
+
+await page.goto(`${base}/product/opf-e2e-image-swatch-zoom-product/`, { waitUntil: 'domcontentloaded' });
+const swatch = page.locator('[data-opf-field="fabric"] .opf-swatch--image-zoom');
+const image = swatch.locator('img.opf-swatch-image');
+const radio = swatch.locator('input[type="radio"]');
+const quantityChoice = page.locator('[data-opf-field="prints"] .opf-image-quantity-choice.opf-image-quantity--zoom');
+const quantityImage = quantityChoice.locator('img.opf-swatch-image');
+const quantityInput = quantityChoice.locator('input[type="number"]');
+await image.waitFor({ state: 'visible' });
+check('enabled field renders a zoom-enabled image swatch', await swatch.count() === 1 && await image.getAttribute('alt') === 'Linen');
+const beforeHover = await image.evaluate((node) => getComputedStyle(node).transform);
+await swatch.hover();
+const afterHover = await image.evaluate((node) => getComputedStyle(node).transform);
+check('hover enlarges the image swatch', beforeHover === 'none' && afterHover !== 'none');
+await radio.focus();
+const afterFocus = await image.evaluate((node) => getComputedStyle(node).transform);
+check('keyboard focus also enlarges the image swatch', afterFocus !== 'none');
+await quantityImage.waitFor({ state: 'visible' });
+check('image+quantity field has its separate zoom setting', await quantityChoice.count() === 1 && await quantityImage.getAttribute('alt') === 'Small');
+const quantityBeforeHover = await quantityImage.evaluate((node) => getComputedStyle(node).transform);
+await quantityChoice.hover();
+const quantityAfterHover = await quantityImage.evaluate((node) => getComputedStyle(node).transform);
+check('hover enlarges the image+quantity choice image', quantityBeforeHover === 'none' && quantityAfterHover !== 'none');
+await quantityInput.focus();
+const quantityAfterFocus = await quantityImage.evaluate((node) => getComputedStyle(node).transform);
+check('keyboard focus enlarges the image+quantity choice image', quantityAfterFocus !== 'none');
+
+await page.goto(`${base}/wp-login.php`, { waitUntil: 'domcontentloaded' });
+await page.locator('#user_login').fill('admin');
+await page.locator('#user_pass').fill(readFileSync(passwordFile, 'utf8').trim());
+await page.locator('#wp-submit').click();
+await page.waitForURL('**/wp-admin/**');
+await page.goto(`${base}/wp-admin/post.php?post=${encodeURIComponent(groupId)}&action=edit`, { waitUntil: 'domcontentloaded' });
+const builder = page.locator('#opf-builder-app');
+await builder.waitFor({ state: 'visible' });
+const swatchZoomSetting = builder.locator('input[title="Enlarge image swatches on hover or keyboard focus"]');
+const quantityZoomSetting = builder.locator('input[title="Enlarge image+quantity choices on hover or keyboard focus"]');
+check('builder exposes separate saved zoom settings', await swatchZoomSetting.count() === 1 && await quantityZoomSetting.count() === 1 && await swatchZoomSetting.isChecked() && await quantityZoomSetting.isChecked());
+await swatchZoomSetting.uncheck();
+await quantityZoomSetting.uncheck();
+const save = builder.getByRole('button', { name: 'Save', exact: true });
+const saveResponsePromise = page.waitForResponse((response) => response.url().includes('/opf/v1/groups') && response.request().method() === 'POST');
+await save.click();
+const saveResponse = await saveResponsePromise;
+await page.waitForFunction(() => document.getElementById('opf-b-status')?.textContent === 'Saved.');
+check('builder persists turning zoom off', saveResponse.status() === 200);
+await page.reload({ waitUntil: 'domcontentloaded' });
+await builder.waitFor({ state: 'visible' });
+check('builder reload preserves both zoom-off settings', !(await swatchZoomSetting.isChecked()) && !(await quantityZoomSetting.isChecked()));
+await page.goto(`${base}/product/opf-e2e-image-swatch-zoom-product/`, { waitUntil: 'domcontentloaded' });
+check('disabled settings no longer add either storefront zoom behavior', await page.locator('[data-opf-field="fabric"] .opf-swatch--image-zoom').count() === 0 && await page.locator('[data-opf-field="prints"] .opf-image-quantity--zoom').count() === 0);
+check('image-swatch zoom flow has no uncaught JavaScript errors', errors.length === 0);
+
+await browser.close();
+if (failures) process.exit(1);
