@@ -464,7 +464,7 @@
 				option.selected = true;
 				search.appendChild( option );
 			} );
-			search.addEventListener( 'change', function () {
+			var updateProductChoices = function () {
 				var previous = {};
 				field.choices.forEach( function ( choice ) { previous[ choice.product_id ] = choice; } );
 				var next = [];
@@ -477,7 +477,14 @@
 				} );
 				field.choices = next;
 				rerender();
-			} );
+			};
+			// WooCommerce SelectWoo emits a jQuery change event. Listen through
+			// jQuery when available so selecting a real product updates the model.
+			if ( window.jQuery ) {
+				window.jQuery( search ).on( 'change', updateProductChoices );
+			} else {
+				search.addEventListener( 'change', updateProductChoices );
+			}
 			wrap.appendChild( el( 'div', { class: 'opf-b-product-picker' }, [ search ] ) );
 			var header = el( 'div', { class: 'opf-b-choices-header', html: '<strong>' + __( 'Linked products', 'open-product-fields-for-woocommerce' ) + '</strong> <em>(' + ( isProductsQtySubtype( field ) ? __( 'product · price · default · unavailable · qty bounds', 'open-product-fields-for-woocommerce' ) : __( 'product · price · default · unavailable', 'open-product-fields-for-woocommerce' ) ) + ')</em>' } );
 			var list = el( 'div', { class: 'opf-b-choices' }, field.choices.map( function ( choice, i ) {

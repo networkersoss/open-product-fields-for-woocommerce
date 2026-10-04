@@ -3,6 +3,7 @@
 Clone: `/tmp/opf-image-child-wp` @ `http://127.0.0.1:8301` (OPF symlinked to `/tmp/opf-lane-child`).
 Fixture: `bin/e2e-child-products-lifecycle.php` (env-gated, phases setup/verify/order-again/cleanup).
 Browser: `bin/e2e-child-products-browser-test.mjs` (Playwright, loopback-gated).
+Latest builder-selection fix and save/reload evidence: `CHILD-PRODUCTS-BUILDER-ROUNDTRIP-2026-10-04.md` (real SelectWoo product search, authenticated builder edit/save/reload, WAPF 3.1.5 Tools parser comparison). This bounded admin result does not promote the broad parity row.
 
 ## Scenario under test
 
