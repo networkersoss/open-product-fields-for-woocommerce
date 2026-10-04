@@ -1252,6 +1252,10 @@ msgstr ""
 msgid "Allow multiple selections"
 msgstr ""
 
+#: assets/js/opf-builder.js
+msgid "Checkbox columns"
+msgstr ""
+
 #: assets/js/opf-builder.js:920
 msgid "Minimum choices"
 msgstr ""

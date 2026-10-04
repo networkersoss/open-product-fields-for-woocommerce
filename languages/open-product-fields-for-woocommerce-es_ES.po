@@ -1181,6 +1181,10 @@ msgstr "Apariencia de la muestra"
 msgid "Allow multiple selections"
 msgstr "Permitir selección múltiple"
 
+#: assets/js/opf-builder.js
+msgid "Checkbox columns"
+msgstr "Columnas de casillas"
+
 #: assets/js/opf-builder.js:920
 msgid "Minimum choices"
 msgstr "Mínimo de opciones"

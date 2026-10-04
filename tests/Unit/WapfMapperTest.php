@@ -1186,6 +1186,27 @@ final class WapfMapperTest extends TestCase {
 		$this->assertSame( [ 2, 3 ], [ $flat['min_choices'], $flat['max_choices'] ] );
 	}
 
+	public function test_checkbox_columns_map_from_tools_and_wxr_option_shapes(): void {
+		$flat = WapfMapper::map( [ 'fields' => [ [
+			'id' => 'extras', 'label' => 'Extras', 'type' => 'checkboxes',
+			'columns' => '14', 'choices' => [ [ 'slug' => 'a', 'label' => 'A' ] ],
+		] ] ] )['group']['fields'][0];
+		$this->assertSame( 14, $flat['columns'] );
+
+		$nested = WapfMapper::map( [ 'fields' => [ [
+			'id' => 'extras', 'label' => 'Extras', 'type' => 'checkboxes',
+			'options' => [ 'columns' => 4, 'choices' => [ [ 'slug' => 'a', 'label' => 'A' ] ] ],
+		] ] ] )['group']['fields'][0];
+		$this->assertSame( 4, $nested['columns'] );
+
+		$invalid = WapfMapper::map( [ 'fields' => [ [
+			'id' => 'extras', 'label' => 'Extras', 'type' => 'checkboxes',
+			'columns' => 0, 'choices' => [ [ 'slug' => 'a', 'label' => 'A' ] ],
+		] ] ] );
+		$this->assertTrue( $invalid['needs_review'] );
+		$this->assertSame( 1, $invalid['group']['fields'][0]['columns'] ?? 1 );
+	}
+
 	public function test_inconsistent_checkbox_limits_are_dropped_with_review(): void {
 		$mapped = WapfMapper::map( [ 'fields' => [ [
 			'id' => 'extras', 'label' => 'Extras', 'type' => 'checkboxes',

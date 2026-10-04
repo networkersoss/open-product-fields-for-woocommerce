@@ -186,6 +186,7 @@ final class WapfMapper {
 			$color_swatch_settings = in_array( $wapf_type, [ 'color-swatch', 'multi-color-swatch' ], true ) ? self::map_color_swatch_settings( $wapf_field, $notes, $needs_review ) : [];
 			$selection_limits = in_array( $wapf_type, [ 'multi-text-swatch', 'multi-image-swatch', 'multi-color-swatch' ], true ) ? self::map_swatch_selection_limits( $wapf_field, $notes, $needs_review ) : [];
 			$checkbox_limits = 'checkboxes' === $wapf_type ? self::map_checkbox_limits( $wapf_field, $notes, $needs_review ) : [];
+			$checkbox_columns = 'checkboxes' === $wapf_type ? self::map_checkbox_columns( $wapf_field, $notes, $needs_review ) : [];
 			$text_validation = in_array( $wapf_type, [ 'text', 'textarea' ], true ) ? self::map_text_validation( $wapf_field, $notes, $needs_review ) : [];
 			$quantity_limits = 'image-swatch-qty' === $wapf_type ? self::map_image_quantity_limits( $wapf_field, $notes, $needs_review ) : [];
 			$content = '';
@@ -278,7 +279,7 @@ final class WapfMapper {
 					// the import verbatim; Calculator::field_weight substitutes
 					// [qty]/[x] and floatvals exactly like WAPF 3.1.5.
 					'weight' => self::map_weight( $wapf_field ),
-				], $image_swatch_settings, $color_swatch_settings, $selection_limits, $checkbox_limits, $text_validation, $quantity_limits, $date_settings, $calc_settings, $upload_settings, $products_settings, $toggle_settings, $text_settings )
+				], $image_swatch_settings, $color_swatch_settings, $selection_limits, $checkbox_limits, $checkbox_columns, $text_validation, $quantity_limits, $date_settings, $calc_settings, $upload_settings, $products_settings, $toggle_settings, $text_settings )
 			);
 			if ( 'paragraph' === $field['type'] ) {
 				if ( ! empty( $wapf_field['required'] ) ) {
@@ -1236,6 +1237,42 @@ final class WapfMapper {
 			$needs_review = true;
 		}
 		return $settings;
+	}
+
+	/**
+	 * Map WAPF Pro's `columns` checkbox presentation setting.
+	 *
+	 * WAPF Tools JSON flattens unknown per-field settings onto the field object;
+	 * serialized WXR models place them in `options`. Extended 3.1.5 does not
+	 * define this setting, so preserving it is migration support, not proof of
+	 * runtime parity against that older package.
+	 *
+	 * @param array<string,mixed> $wapf_field Source field.
+	 * @param string[]            $notes      Import notes.
+	 * @param bool                $needs_review Review flag.
+	 * @return array<string,int>
+	 */
+	private static function map_checkbox_columns( array $wapf_field, array &$notes, bool &$needs_review ): array {
+		$options = is_array( $wapf_field['options'] ?? null ) ? $wapf_field['options'] : [];
+		$raw = array_key_exists( 'columns', $options ) ? $options['columns'] : ( $wapf_field['columns'] ?? null );
+		if ( null === $raw || '' === $raw ) {
+			return [];
+		}
+		if ( is_int( $raw ) && $raw >= 1 ) {
+			return [ 'columns' => $raw ];
+		}
+		if ( is_string( $raw ) && ctype_digit( $raw ) ) {
+			$digits = ltrim( $raw, '0' );
+			$digits = '' === $digits ? '0' : $digits;
+			$max = (string) PHP_INT_MAX;
+			if ( strlen( $digits ) <= strlen( $max ) && ( strlen( $digits ) < strlen( $max ) || strcmp( $digits, $max ) <= 0 ) && (int) $digits > 0 ) {
+				return [ 'columns' => (int) $digits ];
+			}
+		}
+		$label = (string) ( $wapf_field['label'] ?? $wapf_field['id'] ?? '?' );
+		$notes[] = sprintf( 'checkbox field "%s" has an invalid columns value; display layout needs review.', $label );
+		$needs_review = true;
+		return [];
 	}
 
 	/**

@@ -421,6 +421,17 @@ final class WapfExporterTest extends TestCase {
 		$this->assertSame( '#123456', $field['choices'][0]['color'] );
 	}
 
+	public function test_checkbox_columns_export_as_wapf_tools_key(): void {
+		$group = FieldGroup::normalize( [ 'fields' => [ [
+			'id' => 'extras', 'label' => 'Extras', 'type' => 'checkbox', 'columns' => 3,
+			'choices' => [ [ 'slug' => 'gift-wrap', 'label' => 'Gift wrap' ] ],
+		] ] ] );
+
+		$field = WapfExporter::build_payload( $group )['fields'][0];
+		$this->assertSame( 'checkboxes', $field['type'] );
+		$this->assertSame( 3, $field['columns'] );
+	}
+
 	public function test_exports_formula_field_references_as_resolvable_wapf_ids(): void {
 		$group = FieldGroup::normalize( [
 			'fields' => [

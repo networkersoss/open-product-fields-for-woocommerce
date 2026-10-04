@@ -386,6 +386,14 @@
 	margin-top: 0.5rem;
 	font-size: 0.9em;
 }
+
+/* Checkbox columns preserve each native label/input pair as one grid item. */
+.opf-checkboxes--columns {
+	display: grid;
+	grid-template-columns: repeat(var(--opf-checkbox-columns, 1), minmax(0, 1fr));
+	gap: 0.25rem 0.75rem;
+}
+
 /* Linked products (WAPF `products-*` parity). Children are real WooCommerce
    products rendered inside the parent form. */
 .opf-products .opf-product-choice { margin: 0.15rem 0; }

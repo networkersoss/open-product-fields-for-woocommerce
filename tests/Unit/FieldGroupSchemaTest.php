@@ -48,6 +48,24 @@ final class FieldGroupSchemaTest extends TestCase {
 		$this->assertSame( 'date', $group['fields'][0]['type'] );
 	}
 
+	public function test_checkbox_columns_preserve_positive_integers_and_default_to_one_column(): void {
+		$default = FieldGroup::normalize_field( [ 'id' => 'extras', 'type' => 'checkbox' ] );
+		$this->assertSame( 1, $default['columns'] ?? 1 );
+		$this->assertSame( 14, FieldGroup::normalize_field( [ 'id' => 'extras', 'type' => 'checkbox', 'columns' => '014' ] )['columns'] );
+
+		$this->expectException( InvalidArgumentException::class );
+		FieldGroup::normalize_field( [ 'id' => 'extras', 'type' => 'checkbox', 'columns' => 0 ] );
+	}
+
+	public function test_checkbox_columns_survive_normalized_model_json_roundtrip(): void {
+		$model = FieldGroup::normalize( [ 'fields' => [ [
+			'id' => 'extras', 'type' => 'checkbox', 'columns' => 3,
+			'choices' => [ [ 'slug' => 'wrap', 'label' => 'Gift wrap' ] ],
+		] ] ] );
+		$reloaded = FieldGroup::normalize( json_decode( json_encode( $model ), true ) );
+		$this->assertSame( 3, $reloaded['fields'][0]['columns'] );
+	}
+
 	public function test_paragraph_is_static_text_without_submission_or_pricing(): void {
 		$group = FieldGroup::normalize( [ 'fields' => [ [
 			'id' => 'care-note',

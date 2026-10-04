@@ -1,6 +1,21 @@
 <?php
 
 namespace {
+	if ( ! function_exists( '__' ) ) {
+		function __( $text, $domain = 'default' ): string {
+			return (string) $text;
+		}
+	}
+	if ( ! function_exists( 'apply_filters' ) ) {
+		function apply_filters( $hook_name, $value, ...$args ) {
+			return $value;
+		}
+	}
+	if ( ! function_exists( 'wp_json_encode' ) ) {
+		function wp_json_encode( $value, $flags = 0 ) {
+			return json_encode( $value, $flags );
+		}
+	}
 	if ( ! function_exists( 'esc_attr' ) ) {
 		function esc_attr( $value ): string {
 			return htmlspecialchars( (string) $value, ENT_QUOTES, 'UTF-8' );
@@ -77,6 +92,20 @@ namespace OPF\Tests\Unit {
 			$this->assertMatchesRegularExpression( '/<option value="oak"[^>]*disabled/', $html );
 			$this->assertDoesNotMatchRegularExpression( '/<option value="oak"[^>]*selected/', $html );
 			$this->assertMatchesRegularExpression( '/<input[^>]*value="rush"[^>]*disabled/', $html );
+		}
+
+		public function test_checkbox_columns_render_grid_without_changing_native_label_association(): void {
+			$group = new FieldGroup( [ 'fields' => [ [
+				'id' => 'extras', 'label' => 'Extras', 'type' => 'checkbox', 'columns' => 3,
+				'choices' => [ [ 'slug' => 'wrap', 'label' => 'Gift wrap' ] ],
+			] ] ] );
+			ob_start();
+			Renderer::render_group( '17', 'Options', $group, 10.0 );
+			$html = (string) ob_get_clean();
+
+			$this->assertStringContainsString( 'opf-checkboxes--columns', $html );
+			$this->assertStringContainsString( '--opf-checkbox-columns:3', $html );
+			$this->assertMatchesRegularExpression( '/<label[^>]*>.*Gift wrap.*<input[^>]*type="checkbox"[^>]*>.*<\/label>/s', $html );
 		}
 
 		public function test_image_quantity_renders_wapf_maximum_bound(): void {

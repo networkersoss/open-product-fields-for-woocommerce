@@ -32,6 +32,7 @@ final class WapfExporter {
 		'max_size', 'accepted_types',
 		// WAPF Extended `calc` options.
 		'calc_type', 'formula', 'result_format', 'result_text',
+		'columns',
 	];
 
 	/**
@@ -436,6 +437,9 @@ final class WapfExporter {
 				}
 				$out['choices'][] = $wapf_choice;
 			}
+		}
+		if ( 'checkbox' === $type && array_key_exists( 'columns', $field ) ) {
+			$out['columns'] = (int) $field['columns'];
 		}
 		return $out;
 	}

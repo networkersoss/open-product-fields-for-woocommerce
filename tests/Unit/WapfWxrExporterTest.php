@@ -2,6 +2,7 @@
 
 namespace OPF\Tests\Unit;
 
+use OPF\Engine\WapfMapper;
 use OPF\Service\WapfWxrExporter;
 use PHPUnit\Framework\TestCase;
 
@@ -151,6 +152,28 @@ final class WapfWxrExporterTest extends TestCase {
 		$this->assertSame( 'rounded', $group['fields'][0]['options']['layout'] );
 		$this->assertSame( 36, $group['fields'][0]['options']['size'] );
 		$this->assertSame( '#123456', $group['fields'][0]['options']['choices'][0]['color'] );
+	}
+
+	public function test_wxr_serializes_checkbox_columns_as_a_wapf_field_option(): void {
+		$xml = WapfWxrExporter::build_document( [ [
+			'id' => 96,
+			'title' => 'Checkbox columns',
+			'data' => [ 'schema' => 1, 'fields' => [ [
+				'id' => 'extras', 'label' => 'Extras', 'type' => 'checkbox', 'columns' => 3,
+				'choices' => [ [ 'slug' => 'wrap', 'label' => 'Gift wrap' ] ],
+			] ], 'rule_groups' => [] ],
+		] ], [ 'site_url' => 'https://example.test', 'site_title' => 'Example Store' ] );
+		$document = new \DOMDocument();
+		$this->assertTrue( $document->loadXML( $xml ) );
+		$xpath = new \DOMXPath( $document );
+		$xpath->registerNamespace( 'content', 'http://purl.org/rss/1.0/modules/content/' );
+		$content = $xpath->query( '/rss/channel/item/content:encoded' )->item( 0 )->textContent;
+		$group = unserialize( $content, [ 'allowed_classes' => false ] );
+
+		$this->assertSame( 'checkboxes', $group['fields'][0]['type'] );
+		$this->assertSame( 3, $group['fields'][0]['options']['columns'] );
+		$reimported = WapfMapper::map( $group );
+		$this->assertSame( 3, $reimported['group']['fields'][0]['columns'] );
 	}
 
 	public function test_wxr_preserves_extended_p_content_markup_and_type(): void {

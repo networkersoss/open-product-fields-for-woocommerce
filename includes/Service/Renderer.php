@@ -806,12 +806,19 @@ final class Renderer {
 		$color_swatch = 'swatch' === $field['type'] && 'color' === ( $field['swatch_style'] ?? '' );
 
 		$wrapper_class = $image_swatch ? 'opf-swatch-wrapper opf-image-swatch-wrapper' : 'opf-swatch-wrapper';
+		$checkbox_columns = 'checkbox' === $field['type'] ? (int) ( $field['columns'] ?? 1 ) : 1;
+		if ( $checkbox_columns > 1 ) {
+			$wrapper_class .= ' opf-checkboxes--columns';
+		}
 		if ( $color_swatch ) {
 			$wrapper_class .= ' opf-color-swatch-wrapper';
 		}
 		$wrapper_attrs = '';
 		if ( 'radio' === $field['type'] ) {
 			$wrapper_attrs = ' role="radiogroup" aria-labelledby="opf-label-' . esc_attr( $gid . '-' . $fid ) . '"' . ( $field['required'] ? ' aria-required="true"' : '' );
+		}
+		if ( $checkbox_columns > 1 ) {
+			$wrapper_attrs .= ' style="--opf-checkbox-columns:' . esc_attr( (string) $checkbox_columns ) . ';"';
 		}
 		if ( $image_swatch ) {
 			$wrapper_attrs = ' data-grid-layout="' . esc_attr( $field['grid_layout'] ) . '" data-label-position="' . esc_attr( $field['label_pos'] ) . '"';

@@ -823,6 +823,11 @@ final class FieldGroup {
 		}
 
 		if ( 'checkbox' === $type ) {
+			// WAPF 3.2 changelog documents `columns` but not its upper bound or
+			// responsive breakpoints; retain any explicit positive platform integer.
+			if ( array_key_exists( 'columns', $field ) ) {
+				$normalized['columns'] = self::positive_integer( $field['columns'], 'Checkbox columns' );
+			}
 			// WAPF `checkboxes` serializes min_choices/max_choices as flat keys
 			// (class-field-groups.php:284-290) and enforces the max server-side.
 			// Mirror the multi-swatch bounds (int 1..10000, min <= max).
@@ -948,6 +953,24 @@ final class FieldGroup {
 		$value = (int) $value;
 		if ( $value < $minimum || $value > $maximum ) {
 			throw new \InvalidArgumentException( sprintf( '%s must be between %d and %d.', $label, $minimum, $maximum ) );
+		}
+		return $value;
+	}
+
+	/** Validate a positive integer setting where the upstream maximum is undocumented. */
+	private static function positive_integer( $value, string $label ): int {
+		if ( ! is_int( $value ) && ! ( is_string( $value ) && preg_match( '/^[0-9]+$/', $value ) ) ) {
+			throw new \InvalidArgumentException( $label . ' must be a positive integer.' );
+		}
+		$value = is_string( $value ) ? ltrim( $value, '0' ) : (string) $value;
+		$value = '' === $value ? '0' : $value;
+		$max = (string) PHP_INT_MAX;
+		if ( strlen( $value ) > strlen( $max ) || ( strlen( $value ) === strlen( $max ) && strcmp( $value, $max ) > 0 ) ) {
+			throw new \InvalidArgumentException( $label . ' must be a positive platform integer.' );
+		}
+		$value = (int) $value;
+		if ( $value < 1 ) {
+			throw new \InvalidArgumentException( $label . ' must be a positive integer.' );
 		}
 		return $value;
 	}

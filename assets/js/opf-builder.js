@@ -1227,6 +1227,12 @@
 		}
 		if ( 'checkbox' === field.type ) {
 			var checkboxLimits = el( 'div', { class: 'opf-b-constraints' } );
+			var columns = el( 'input', { class: 'opf-b-input', type: 'number', min: '1', step: '1', value: field.columns == null ? '1' : String( field.columns ), 'aria-label': __( 'Checkbox columns', 'open-product-fields-for-woocommerce' ) } );
+			columns.addEventListener( 'input', function () {
+				if ( columns.value ) field.columns = Math.max( 1, Math.min( Number.MAX_SAFE_INTEGER, Math.trunc( Number( columns.value ) || 1 ) ) );
+				else delete field.columns;
+			} );
+			checkboxLimits.appendChild( labeledControl( __( 'Checkbox columns', 'open-product-fields-for-woocommerce' ), columns ) );
 			[ [ 'min_choices', __( 'Minimum choices', 'open-product-fields-for-woocommerce' ) ], [ 'max_choices', __( 'Maximum choices', 'open-product-fields-for-woocommerce' ) ] ].forEach( function ( setting ) {
 				var input = el( 'input', { class: 'opf-b-input', type: 'number', min: '1', max: '10000', step: '1', value: field[ setting[ 0 ] ] == null ? '' : String( field[ setting[ 0 ] ] ), 'aria-label': setting[ 1 ] } );
 				input.addEventListener( 'input', function () {

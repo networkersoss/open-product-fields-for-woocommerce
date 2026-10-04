@@ -100,6 +100,7 @@ final class WapfWxrExporter {
 			'product_selection', 'product_query', 'qty_method', 'display',
 			'slot_1', 'slot_2', 'slot_3', 'incl_img', 'incl_desc', 'img_fit',
 			'multiple', 'accept', 'maxsize',
+			'columns',
 			// WAPF Extended `calc` options.
 			'calc_type', 'formula', 'result_format', 'result_text',
 		];
