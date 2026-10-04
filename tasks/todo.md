@@ -1,22 +1,23 @@
 # OPF 1.0 Burn-down Tasks
 
-## Current checkpoint — 2026-10-04, public integration HEAD `bab69b5`
+## Current checkpoint — 2026-10-04, public integration HEAD `4854644`
 
-- [x] Confirm public branch head and working tree: `feat/opf-archive-import` at `bab69b59c2b27792342de911fabea0ce7243ec69`; public remote matches; integration checkout clean.
+- [x] Confirm public branch head and working tree: `feat/opf-archive-import` at `4854644`; public remote matches; integration checkout clean.
 - [x] Recount the 131 edition rows from the ledger: 100 supported, 19 supported with documented difference, 11 partial, 1 baseline-supported, 0 gaps (76.3% strict supported).
-- [x] Refresh active orchestration: root owns review/integration; current isolated lanes cover category child pricing, checkbox interaction-image `last` mode, and image-quantity zoom runtime proof.
+- [x] Refresh active orchestration: root owns review/integration; category child pricing is active. Imported image-change `last` and image-quantity zoom proofs were reviewed, integrated, and pushed; neither row was promoted.
 - [ ] Verify every worktree diff and focused evidence; reject unsupported claims.
 - [ ] Integrate and push each coherent verified slice to `feat/opf-archive-import`.
 - [ ] Recompute roadmap counts after each accepted ledger row; keep all 131 edition rows (137 ledger rows including six excluded add-ons).
 - [ ] Continue until every row and G2–G4 pass.
 
 The exact public tip was verified with `git ls-remote` on 2026-10-04. The
-category child-price lane found a possible missing live total despite checkout
-passing; that row stays partial pending a real pre-submit total assertion.
-Checkbox interaction `last` mode and image-quantity zoom lifecycle proofs are
-also pending. Existing browser/source proofs do not close those gaps by
-themselves. The prior 2026-10-01 workstream table below is historical and is
-not the live agent roster.
+category child-price lane found a real mismatch (selected preview $40, checkout
+$92) and is fixing it; the row stays partial pending broad source/import and
+lifecycle proof. Image-quantity zoom testing also reproduced a WAPF 3.1.5 + OPF
+coexistence add-to-cart fatal in a disposable clone; no production state was
+touched. Its exact trace and repro are recorded in the runtime evidence. The
+prior 2026-10-01 workstream table below is historical and is not the live agent
+roster.
 
 ## Parallel workstream ledger
 
