@@ -234,7 +234,7 @@ final class WapfHooks {
 		} finally {
 			foreach ( $removed as $entry ) {
 				add_filter( $hook_name, $entry['callback'], $entry['priority'], $entry['accepted_args'] );
-				self::restore_validation_callback_order( $hook_name, $entry );
+				self::restore_hook_callback_order( $hook_name, $entry );
 			}
 		}
 	}
@@ -250,12 +250,63 @@ final class WapfHooks {
 	}
 
 	/**
+	 * Dispatch WAPF's order-again action for an OPF field without sending the
+	 * normalized OPF array to WAPF's native linked-products Field-object handler.
+	 *
+	 * @param mixed ...$args Action arguments.
+	 */
+	private static function do_order_again_action_for_opf_field( ...$args ): void {
+		$hook_name = 'wapf/order_again/before_cart_item_field';
+		$registry  = $GLOBALS['wp_filter'][ $hook_name ] ?? null;
+		$callbacks = ( is_object( $registry ) && isset( $registry->callbacks ) && is_array( $registry->callbacks ) )
+			? $registry->callbacks
+			: ( is_array( $registry ) ? $registry : [] );
+		$removed = [];
+
+		foreach ( $callbacks as $priority => $priority_callbacks ) {
+			foreach ( $priority_callbacks as $key => $entry ) {
+				$callback = $entry['function'] ?? null;
+				if ( ! self::is_native_wapf_linked_product_order_again_handler( $callback ) ) {
+					continue;
+				}
+
+				$removed[] = [
+					'callback'       => $callback,
+					'priority'       => (int) $priority,
+					'accepted_args'  => (int) ( $entry['accepted_args'] ?? 1 ),
+					'priority_order' => array_keys( $priority_callbacks ),
+				];
+				remove_action( $hook_name, $callback, (int) $priority );
+			}
+		}
+
+		try {
+			do_action( $hook_name, ...$args );
+		} finally {
+			foreach ( $removed as $entry ) {
+				add_action( $hook_name, $entry['callback'], $entry['priority'], $entry['accepted_args'] );
+				self::restore_hook_callback_order( $hook_name, $entry );
+			}
+		}
+	}
+
+	/** @param mixed $callback WAPF linked-products callback. */
+	private static function is_native_wapf_linked_product_order_again_handler( $callback ): bool {
+		return is_array( $callback )
+			&& isset( $callback[0], $callback[1] )
+			&& is_object( $callback[0] )
+			&& is_string( $callback[1] )
+			&& is_a( $callback[0], 'SW_WAPF_PRO\\Includes\\Controllers\\Linked_Products_Controller' )
+			&& 'prepare_order_again_cart_item' === strtolower( $callback[1] );
+	}
+
+	/**
 	 * Restore the callback's former order among same-priority filters.
 	 *
 	 * @param string               $hook_name Hook name.
 	 * @param array<string, mixed> $entry     Removed callback metadata.
 	 */
-	private static function restore_validation_callback_order( string $hook_name, array $entry ): void {
+	private static function restore_hook_callback_order( string $hook_name, array $entry ): void {
 		$registry = $GLOBALS['wp_filter'][ $hook_name ] ?? null;
 		if ( is_object( $registry ) && isset( $registry->callbacks[ $entry['priority'] ] ) && is_array( $registry->callbacks[ $entry['priority'] ] ) ) {
 			$current = $registry->callbacks[ $entry['priority'] ];
@@ -316,7 +367,7 @@ final class WapfHooks {
 	 */
 	public static function order_again_field( $order_item, array $field, int $clone_idx, $raw_values ): void {
 		if ( function_exists( 'do_action' ) ) {
-			do_action( 'wapf/order_again/before_cart_item_field', $order_item, $field, $clone_idx, $raw_values );
+			self::do_order_again_action_for_opf_field( $order_item, $field, $clone_idx, $raw_values );
 		}
 	}
 

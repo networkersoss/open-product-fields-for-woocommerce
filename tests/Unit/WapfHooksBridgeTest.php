@@ -42,6 +42,9 @@ namespace {
 		function add_action( $tag, $callback, $priority = 10, $accepted = 1 ) {
 			return add_filter( $tag, $callback, $priority, $accepted );
 		}
+		function remove_action( $tag, $callback, $priority = 10 ) {
+			return remove_filter( $tag, $callback, $priority );
+		}
 		function apply_filters( $tag, $value, ...$args ) {
 			foreach ( $GLOBALS['wp_hooks'][ $tag ] ?? [] as $callbacks ) {
 				foreach ( $callbacks as $hook ) {
@@ -296,16 +299,23 @@ namespace {
 }
 
 namespace SW_WAPF_PRO\Includes\Models {
-	class Field {}
+	class Field {
+		public string $type = 'products';
+	}
 }
 
 namespace SW_WAPF_PRO\Includes\Controllers {
 	class Linked_Products_Controller {
 		public int $calls = 0;
+		public int $order_again_calls = 0;
 
 		public function validate_cart( $error, $value, \SW_WAPF_PRO\Includes\Models\Field $field, $product_id, $clone_idx, $quantity, $from_cart, $cart_item_data ) {
 			++$this->calls;
 			return $error;
+		}
+
+		public function prepare_order_again_cart_item( $order_item, $field, $clone_idx, $raw_values ) {
+			++$this->order_again_calls;
 		}
 	}
 }
@@ -570,6 +580,23 @@ final class WapfHooksBridgeTest extends TestCase {
 		$this->assertSame( 0, $native_validator->calls );
 		apply_filters( 'wapf/validate', [ 'error' => false ], 'x', new \SW_WAPF_PRO\Includes\Models\Field(), 42, 0, 1, false, null );
 		$this->assertSame( 1, $native_validator->calls, 'Restored native listener remains usable after a failed OPF dispatch.' );
+	}
+
+	public function test_opf_order_again_skips_only_wapf_linked_product_field_object_handler(): void {
+		$native_controller = new \SW_WAPF_PRO\Includes\Controllers\Linked_Products_Controller();
+		add_action( 'wapf/order_again/before_cart_item_field', [ $native_controller, 'prepare_order_again_cart_item' ], 10, 4 );
+		$order_before = array_keys( $GLOBALS['wp_filter']['wapf/order_again/before_cart_item_field']->callbacks[10] );
+
+		$field = [ 'id' => 'extras', 'type' => 'products', 'choices' => [] ];
+		WapfHooks::order_again_field( new \WC_Order_Item_Product(), $field, 0, [ 'product' => 11 ] );
+
+		$this->assert_fired( 'wapf/order_again/before_cart_item_field' );
+		$this->assertSame( $field, $this->fired( 'wapf/order_again/before_cart_item_field' )[0][1], 'Third-party WAPF listeners still receive the normalized OPF field array.' );
+		$this->assertSame( 0, $native_controller->order_again_calls, 'Native WAPF linked-products handler must not receive an OPF field array.' );
+		$this->assertSame( $order_before, array_keys( $GLOBALS['wp_filter']['wapf/order_again/before_cart_item_field']->callbacks[10] ), 'Native handler is restored in its original callback order.' );
+
+		do_action( 'wapf/order_again/before_cart_item_field', new \WC_Order_Item_Product(), new \SW_WAPF_PRO\Includes\Models\Field(), 0, [] );
+		$this->assertSame( 1, $native_controller->order_again_calls, 'Native WAPF order-again dispatch still reaches its Field-object handler.' );
 	}
 
 	public function test_wapf_field_render_aliases_fire(): void {
