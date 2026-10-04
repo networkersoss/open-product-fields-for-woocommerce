@@ -92,7 +92,7 @@ At the current `feat/opf-archive-import` tip, strict progress is **101/131 suppo
 The 2026-10-04 child-products query audit and WAPF validation-hook repair add
 evidence and fix a real coactive-plugin fatal, but do not promote the broad
 child-products row; strict progress remains 101/131. The integrated branch now
-passes PHPUnit **756 tests / 3,364 assertions** and JavaScript **74/74 tests**
+passes PHPUnit **761 tests / 3,376 assertions** and JavaScript **74/74 tests**
 (one existing PHPUnit deprecation). See the [query audit](CHILD-PRODUCTS-QUERY-AUDIT-2026-10-04.md)
 and [coexistence evidence](WAPF-VALIDATION-COEXISTENCE-2026-10-04.md).
 The previous 58/131 (44.3%) snapshot predates the 2026-10-03 implementation
