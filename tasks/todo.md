@@ -1,19 +1,21 @@
 # OPF 1.0 Burn-down Tasks
 
-## Current checkpoint — 2026-10-04, public integration HEAD `4854644`
+## Current checkpoint — 2026-10-04, verified feature commit `db81097`
 
-- [x] Confirm public branch head and working tree: `feat/opf-archive-import` at `4854644`; public remote matches; integration checkout clean.
-- [x] Recount the 131 edition rows from the ledger: 100 supported, 19 supported with documented difference, 11 partial, 1 baseline-supported, 0 gaps (76.3% strict supported).
-- [x] Refresh active orchestration: root owns review/integration; category child pricing is active. Imported image-change `last` and image-quantity zoom proofs were reviewed, integrated, and pushed; neither row was promoted.
+- [x] Confirm verified feature commit `db81097` is on the public branch; root independently reran the PHP and JS suites before the docs refresh.
+- [x] Recount the 131 edition rows from the ledger: 101 supported, 19 supported with documented difference, 10 partial, 1 baseline-supported, 0 gaps (77.1% strict supported).
+- [x] Refresh active orchestration: root owns review/integration; category price type is supported; both-active WAPF validation compatibility repair is active. Imported image-change `last` and image-quantity zoom proofs were reviewed and pushed, with those rows kept partial.
 - [ ] Verify every worktree diff and focused evidence; reject unsupported claims.
 - [ ] Integrate and push each coherent verified slice to `feat/opf-archive-import`.
 - [ ] Recompute roadmap counts after each accepted ledger row; keep all 131 edition rows (137 ledger rows including six excluded add-ons).
 - [ ] Continue until every row and G2–G4 pass.
 
 The exact public tip was verified with `git ls-remote` on 2026-10-04. The
-category child-price lane found a real mismatch (selected preview $40, checkout
-$92) and is fixing it; the row stays partial pending broad source/import and
-lifecycle proof. Image-quantity zoom testing also reproduced a WAPF 3.1.5 + OPF
+category child-price lane found and fixed a real mismatch (selected preview
+$40, checkout $92; preview and checkout now agree). Category fixed/none price
+parity is accepted for the scoped row after source/import, all eight subtypes,
+classic/Store API, order, refund, stock and Order again proof. The broader child
+products row remains partial. Image-quantity zoom testing also reproduced a WAPF 3.1.5 + OPF
 coexistence add-to-cart fatal in a disposable clone; no production state was
 touched. Its exact trace and repro are recorded in the runtime evidence. The
 prior 2026-10-01 workstream table below is historical and is not the live agent

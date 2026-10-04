@@ -34,12 +34,12 @@ The 131 Free/Pro/Extended ledger rows are the 1.0 edition scope, including three
 | Status | Rows | Meaning for the gate |
 | --- | ---: | --- |
 | Baseline supported | 1 | Promising baseline only; not accepted as proof |
-| Supported | 100 | Strict supported rows; documented differences are not counted as supported |
+| Supported | 101 | Strict supported rows; documented differences are not counted as supported |
 | Supported with documented difference | 19 | Differences remain unaccepted for the strict parity measure |
-| Partial | 11 | Material parity or proof remains; see each ledger row for exact gap and evidence |
+| Partial | 10 | Material parity or proof remains; see each ledger row for exact gap and evidence |
 | Gap | 0 | — |
 | Needs audit | 0 | — |
-| **Total** | **131** | **G1 complete for available evidence; G2 in progress — strict supported: 100/131 (76.3%); 119/131 (90.8%) only if all 19 documented differences are later accepted** |
+| **Total** | **131** | **G1 complete for available evidence; G2 in progress — strict supported: 101/131 (77.1%); 120/131 (91.6%) only if all 19 documented differences are later accepted** |
 
 Fresh acceptance review downgraded nine previously `supported` rows to
 `partial`: advanced formulas, tax behavior, product-price display, price hints,
@@ -88,7 +88,7 @@ pricing-hint path remain unverified. Neither row counts as supported.
 A fresh evidence review removed 15 stale `supported` claims at that point in
 time; later implementation commits advanced rows based on additional evidence.
 See [the supported-row audit](SUPPORTED-ROW-AUDIT-2026-10-01.md).
-At the current `feat/opf-archive-import` tip, strict progress is **100/131 supported rows (76.3%)**.
+At the current `feat/opf-archive-import` tip, strict progress is **101/131 supported rows (77.1%)**.
 The previous 58/131 (44.3%) snapshot predates the 2026-10-03 implementation
 lanes. The shortcode row advanced after real WAPF 3.1.5/OPF render, import/export, and
 browser evidence confirmed imported behavior is preserved; OPF's native opt-out
@@ -235,8 +235,8 @@ Free's older platform declarations and conflicting
 WordPress floor claims also remain unresolved. The audit changes no scope or
 status counts.
 
-Extended-only rows: 28 total; 19 supported, 4 supported with a documented
-difference, 5 partial, and 0 known gaps, matching the capability ledger. All 131
+Extended-only rows: 28 total; 20 supported, 4 supported with a documented
+difference, 4 partial, and 0 known gaps, matching the capability ledger. All 131
 edition rows have a ledger status. The
 available-source audit covers installed Extended 3.1.5, public Free 1.7.1,
 current tier/marketing claims, and every published Extended 3.1.6–3.2.1 and

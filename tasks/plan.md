@@ -18,10 +18,10 @@ as defined in `docs/compatibility/OPF-1.0-ROADMAP.md`.
 
 ## Current evidence
 
-At public branch `feat/opf-archive-import` commit `bab69b5` (2026-10-04), the
-131 edition rows are 100 supported, 19 supported with a documented difference,
-11 partial, 1 baseline-supported, and 0 gaps. Strict row-count completion is
-100/131 = 76.3%; this is not a feature-weighted percentage. The capability
+At public branch `feat/opf-archive-import` commit `db81097` (2026-10-04), the
+131 edition rows are 101 supported, 19 supported with a documented difference,
+10 partial, 1 baseline-supported, and 0 gaps. Strict row-count completion is
+101/131 = 77.1%; this is not a feature-weighted percentage. The capability
 ledger is the detailed source of truth. G2–G4 remain open.
 
 ## Today’s execution
