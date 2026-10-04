@@ -313,6 +313,68 @@ final class LinkedProductsLifecycleTest extends TestCase {
 		$this->assertArrayHasKey( 'error', LinkedProducts::resolve( $field, [ '14' ], 1, 42 ) );
 	}
 
+	public static function category_pricing_cases(): array {
+		$cases = [];
+		foreach ( [ 'fixed', 'none' ] as $price ) {
+			foreach ( [ 'checkbox', 'radio', 'dropdown', 'image', 'card', 'vcard', 'card-qty', 'vcard-qty' ] as $subtype ) {
+				foreach ( [ 'classic', 'store-api' ] as $transport ) {
+					$cases[ "$price/$subtype/$transport" ] = [ $price, $subtype, $transport ];
+				}
+			}
+		}
+		return $cases;
+	}
+
+	#[DataProvider( 'category_pricing_cases' )]
+	public function test_category_price_reaches_child_cart_order_and_order_again( string $price, string $subtype, string $transport ): void {
+		$field = $this->field( [
+			'subtype' => $subtype, 'qty_method' => 'parent', 'product_selection' => 'category',
+			'product_query' => [ 'query_id' => 3, 'pricing_type' => $price ],
+		] );
+		$GLOBALS['opf_wpml_filters']['opf_groups_for_product'] = function () use ( $field ) {
+			return [ $this->group_with( $field ) ];
+		};
+		$GLOBALS['opf_woocs_products'][42] = $this->parent_product();
+		$is_qty = LinkedProducts::is_qty_subtype( $field );
+		$payload = [ '77' => [ 'addons' => $is_qty ? [ '11' => 3 ] : '11' ] ];
+		$_POST = [];
+		$data = [];
+		if ( 'classic' === $transport ) {
+			$_POST['opf'] = $payload;
+		} else {
+			$GLOBALS['opf_submitted'] = $payload;
+			$data = CartIntegration::capture_store_api( [], new \WP_REST_Request() )['cart_item_data'];
+		}
+		$this->assertTrue( CartIntegration::validate_add_to_cart( true, 42, 2, 0, [], $data ) );
+		$data = CartIntegration::attach( $data, 42 );
+		$cart = $GLOBALS['opf_repeat_test_cart'];
+		$cart->cart_contents['parentKey'] = [ 'key' => 'parentKey', 'product_id' => 42, 'quantity' => 2, 'data' => $GLOBALS['opf_woocs_products'][42] ] + $data;
+		LinkedProducts::add_children( 'parentKey', 42, 2, 0, [], $data );
+		LinkedProducts::apply_child_prices( $cart );
+		$children = array_values( array_filter( $cart->get_cart(), [ LinkedProducts::class, 'is_child' ] ) );
+		$this->assertCount( 1, $children );
+		$child = $children[0];
+		$expected_type = 'none' === $price ? 'none' : ( $is_qty ? 'nr' : 'qt' );
+		$this->assertSame( $expected_type, $child[ LinkedProducts::CHILD_KEY ]['price_type'] );
+		$this->assertSame( $is_qty ? 3 : 2, $child['quantity'] );
+		$this->assertSame( 'none' === $price ? 0.0 : 8.0, (float) $child['data']->get_price() );
+
+		$item = new LinkedTestOrderItem();
+		LinkedProducts::persist_child_meta( $item, $child['key'], $child, null );
+		$this->assertSame( $expected_type, $item->get_meta( '_opf_child_full' )['price_type'] );
+		$restored = LinkedProducts::restore_child_order_again( [], $item, null );
+		$this->assertSame( $child[ LinkedProducts::CHILD_KEY ], $restored[ LinkedProducts::CHILD_KEY ] );
+		$restored_cart = [
+			'newParent' => [ 'key' => 'newParent', 'old_cart_item_key' => 'parentKey' ],
+			'newChild' => [ 'key' => 'newChild', 'quantity' => $child['quantity'], 'data' => new \WC_Product( [ 'price' => 8.0 ] ) ] + $restored,
+		];
+		LinkedProducts::remap_ordered_again( 1, [], $restored_cart );
+		$this->assertSame( 'newParent', $restored_cart['newChild'][ LinkedProducts::CHILD_KEY ]['parent'] );
+		$cart->cart_contents = $restored_cart;
+		LinkedProducts::apply_child_prices( $cart );
+		$this->assertSame( 'none' === $price ? 0.0 : 8.0, (float) $cart->cart_contents['newChild']['data']->get_price() );
+	}
+
 	/* ---------------------------------------------------------------- validate */
 
 	public static function disabled_selection_cases(): array {

@@ -1928,6 +1928,22 @@ const choiceUnitAddon = (pricing, base, qty, addons, val, fieldValues = {}, fiel
 };
 
 const choiceOrFieldAddon = (def, value, base, qty, addons, val, fieldValues = {}, fieldPrices = {}, formulaBase = base, qtyBased = false, formulaOptions = {}) => {
+  if (def.type === 'products') {
+    const quantities = def.qty_selector && value && value._opf_type === 'products' ? value.quantities || {} : {};
+    const slugs = Array.isArray(value) ? value.map(String) : [String(value ?? '')];
+    return (def.choices || []).reduce((sum, choice) => {
+      if (choice.disabled || choice.child_price_type === 'none') return sum;
+      const slug = String(choice.slug);
+      // WAPF linked-product fixed/qt/nr: one child, parent quantity, or
+      // entered child quantity respectively. Return per parent unit so the
+      // existing line-total pipeline charges each selected child once.
+      const count = def.qty_selector
+        ? Math.max(0, parseInt(quantities[slug], 10) || 0)
+        : (slugs.includes(slug) ? (choice.child_price_type === 'qt' ? qty : 1) : 0);
+      const price = Number(choice.child_price);
+      return sum + (Number.isFinite(price) ? price * count / qty : 0);
+    }, 0);
+  }
   if (def.type === 'toggle' && String(value ?? '') !== '1') return 0;
   if (def.type === 'image_quantity') {
     const quantities = value && value._opf_type === 'image_quantity' ? value.quantities || {} : {};
@@ -2056,7 +2072,19 @@ const resolveCalcValues = (defs, values, ctx = {}) => {
   return { results, order: topo, invalid };
 };
 
+const readProductControl = (element, def) => {
+  if (def.qty_selector) {
+    const quantities = {};
+    element.querySelectorAll('input.opf-qty.is-qty').forEach((input) => { quantities[input.dataset.choiceSlug] = Math.max(0, parseInt(input.value, 10) || 0); });
+    return { _opf_type: 'products', quantities };
+  }
+  if (def.multiple) return Array.from(element.querySelectorAll('.opf-product-input:checked')).map((input) => input.value);
+  const input = element.querySelector('.opf-product-input:checked, select');
+  return input ? input.value : '';
+};
+
 const readCalcControl = (fieldEl, def) => {
+  if (def && def.type === 'products') return readProductControl(fieldEl, def);
   if (def && def.type === 'calc') {
     const raw = fieldEl.querySelector('.opf-calc-raw');
     return raw ? raw.value : '';
@@ -2188,6 +2216,7 @@ const writeTotals = () => {
   }
 
   const readRepeatControl = (element, def) => {
+    if (def.type === 'products') return readProductControl(element, def);
     if (def.type === 'image_quantity') {
       const quantities = {};
       element.querySelectorAll('.opf-image-quantity__input').forEach((input) => { quantities[input.dataset.choiceSlug] = Math.max(0, parseInt(input.value, 10) || 0); });
@@ -2237,6 +2266,7 @@ const writeTotals = () => {
     // (and integrations that only copy the attribute) still resolve [var_*].
     const formulaOptions = groupFormulaOptions(groupEl, gid);
     const readControlValue = (element, def) => {
+      if (def.type === 'products') return readProductControl(element, def);
       if (def.type === 'calc') {
         const raw = element.querySelector('.opf-calc-raw');
         return raw ? raw.value : '';
@@ -2297,6 +2327,8 @@ const writeTotals = () => {
           const rowInput = rowChecked || row.querySelector('input:not([type=hidden]), textarea, select');
           return rowInput ? rowInput.value : '';
         });
+      } else if (fieldDef.type === 'products') {
+        values[fid] = readProductControl(fieldEl, fieldDef);
       } else if (fieldDef.type === 'calc') {
         // syncCalcFields() has already written the current computed raw value.
         const raw = fieldEl.querySelector('.opf-calc-raw');

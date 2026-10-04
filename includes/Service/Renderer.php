@@ -226,7 +226,7 @@ final class Renderer {
 			return;
 		}
 
-		Assets::enqueue_frontend( self::registry( $groups ) );
+		Assets::enqueue_frontend( self::registry( $groups, $product ) );
 
 		// WAPF alias bridge: wapf/pricing/product.
 		$base_price = (float) \OPF\Compat\WapfHooks::pricing_product( (float) $product->get_price( 'edit' ), $product );
@@ -259,7 +259,7 @@ final class Renderer {
 	 *
 	 * @param array<int,array{id:int,title:string,lang:string,group:FieldGroup}> $groups Groups.
 	 */
-	private static function registry( array $groups ): array {
+	private static function registry( array $groups, ?\WC_Product $product = null ): array {
 		$registry = [];
 		foreach ( $groups as $entry ) {
 			$gid = (string) $entry['id'];
@@ -281,6 +281,9 @@ final class Renderer {
 				$registry[ $gid ]['__opf_formula_fields'] = $field_defs;
 			}
 			foreach ( $entry['group']->data['fields'] as $field ) {
+				$choices = 'products' === $field['type']
+					? LinkedProducts::product_choices( $field, $product )
+					: (array) ( $field['choices'] ?? [] );
 				$registry[ $gid ][ $field['id'] ] = [
 					'type'         => $field['type'],
 					'subtype'      => $field['subtype'] ?? null,
@@ -291,6 +294,17 @@ final class Renderer {
 					'max_choices'  => $field['max_choices'] ?? null,
 					'conditionals' => $field['conditionals'],
 					'choices'      => array_map( static function ( $c ) {
+						if ( isset( $c['product'] ) ) {
+							// Child prices belong to their own cart lines. Expose only
+							// catalog pricing for the preview, never the product object.
+							return [
+								'slug'             => (string) $c['slug'],
+								'label'            => (string) $c['label'],
+								'disabled'         => ! empty( $c['disabled'] ),
+								'child_price_type' => (string) $c['pricing_type'],
+								'child_price'      => (float) $c['pricing_amount'],
+							];
+						}
 					return [
 						'slug'     => $c['slug'],
 						'label'    => $c['label'],
@@ -304,7 +318,7 @@ final class Renderer {
 								'per_unit'   => ! empty( $c['pricing']['per_unit'] ),
 							],
 						];
-					}, (array) ( $field['choices'] ?? [] ) ),
+					}, $choices ),
 					'pricing'      => [
 						'type'    => $field['pricing']['type'],
 						'amount'  => (float) $field['pricing']['amount'],
