@@ -26,7 +26,7 @@ Extended plugin as inactive 3.1.5 with no update currently exposed in its
 update registry. The available-source audit is complete; this live-site check
 does not change the audited version boundary.
 
-## Progress now — 2026-10-04 (public branch `94992d5`)
+## Progress now — 2026-10-04 (`feat/opf-archive-import`)
 
 The 131 Free/Pro/Extended ledger rows are the 1.0 edition scope, including three
 “All versions” rows. Current recorded status:
@@ -35,11 +35,11 @@ The 131 Free/Pro/Extended ledger rows are the 1.0 edition scope, including three
 | --- | ---: | --- |
 | Baseline supported | 1 | Promising baseline only; not accepted as proof |
 | Supported | 100 | Strict supported rows; documented differences are not counted as supported |
-| Supported with documented difference | 20 | Differences remain unaccepted for the strict parity measure |
-| Partial | 10 | Material parity or proof remains; see each ledger row for exact gap and evidence |
+| Supported with documented difference | 19 | Differences remain unaccepted for the strict parity measure |
+| Partial | 11 | Material parity or proof remains; see each ledger row for exact gap and evidence |
 | Gap | 0 | — |
 | Needs audit | 0 | — |
-| **Total** | **131** | **G1 complete for available evidence; G2 in progress — strict supported: 100/131 (76.3%); 120/131 (91.6%) only if all 20 documented differences are later accepted** |
+| **Total** | **131** | **G1 complete for available evidence; G2 in progress — strict supported: 100/131 (76.3%); 119/131 (90.8%) only if all 19 documented differences are later accepted** |
 
 Fresh acceptance review downgraded nine previously `supported` rows to
 `partial`: advanced formulas, tax behavior, product-price display, price hints,
@@ -88,7 +88,7 @@ pricing-hint path remain unverified. Neither row counts as supported.
 A fresh evidence review removed 15 stale `supported` claims at that point in
 time; later implementation commits advanced rows based on additional evidence.
 See [the supported-row audit](SUPPORTED-ROW-AUDIT-2026-10-01.md).
-At public commit `94992d5`, strict progress is **100/131 supported rows (76.3%)**.
+At the current `feat/opf-archive-import` tip, strict progress is **100/131 supported rows (76.3%)**.
 The previous 58/131 (44.3%) snapshot predates the 2026-10-03 implementation
 lanes. The shortcode row advanced after real WAPF 3.1.5/OPF render, import/export, and
 browser evidence confirmed imported behavior is preserved; OPF's native opt-out

@@ -20,7 +20,7 @@ features. The separate add-ons and Extended + Addons bundle are excluded from
 this 1.0 parity gate unless the user expands scope. Official documentation
 says add-ons may be purchased separately.
 
-## Progress snapshot and release goalposts — 2026-10-04 (working branch `fix/image-quantity-zoom`, based on public `0a5d385`)
+## Progress snapshot and release goalposts — 2026-10-04 (`feat/opf-archive-import`)
 
 Scope baseline: the live site has WAPF Extended 3.1.5 installed (inactive),
 but Studio Wombat's current official changelog lists Extended 3.2.1. Extended
@@ -28,7 +28,7 @@ includes Pro; six separately sold add-ons are outside this Extended-edition
 target and remain separately tracked. The ledger has 137 rows: 131 for the
 Free + Pro + Extended edition scope (including 3 “All versions” rows), and 6
 for separately sold add-ons. Recounted from all 131 edition rows on this branch:
-100 are supported, 20 are supported with a documented difference, 10 are
+100 are supported, 19 are supported with a documented difference, 11 are
 partial, 1 is baseline-supported, and 0 are known gaps. Strict progress is
 100/131 (76.3%); documented differences and baseline support do not count as
 accepted parity. The six add-on rows remain partial and outside this denominator.
