@@ -244,6 +244,16 @@ final class WapfMapper {
 			}
 
 			$options = is_array( $wapf_field['options'] ?? null ) ? $wapf_field['options'] : [];
+			$image_quantity_settings = [];
+			if ( 'image-swatch-qty' === $wapf_type && array_key_exists( 'large_image', $options ) ) {
+				$large_image = $options['large_image'];
+				if ( in_array( $large_image, [ true, false, 0, 1, '0', '1' ], true ) ) {
+					$image_quantity_settings['image_zoom'] = in_array( $large_image, [ true, 1, '1' ], true );
+				} else {
+					$notes[] = sprintf( 'image quantity field "%s" has an invalid large_image setting; zoom setting needs review.', $label );
+					$needs_review = true;
+				}
+			}
 			$field = FieldGroup::normalize_field(
 				array_merge( [
 					'id'           => $field_id,
@@ -279,7 +289,8 @@ final class WapfMapper {
 					// the import verbatim; Calculator::field_weight substitutes
 					// [qty]/[x] and floatvals exactly like WAPF 3.1.5.
 					'weight' => self::map_weight( $wapf_field ),
-				], $image_swatch_settings, $color_swatch_settings, $selection_limits, $checkbox_limits, $checkbox_columns, $text_validation, $quantity_limits, $date_settings, $calc_settings, $upload_settings, $products_settings, $toggle_settings, $text_settings )
+<<<<<<< HEAD
+				], $image_swatch_settings, $image_quantity_settings, $color_swatch_settings, $selection_limits, $checkbox_limits, $checkbox_columns, $text_validation, $quantity_limits, $date_settings, $calc_settings, $upload_settings, $products_settings, $toggle_settings, $text_settings )
 			);
 			if ( 'paragraph' === $field['type'] ) {
 				if ( ! empty( $wapf_field['required'] ) ) {
@@ -299,10 +310,6 @@ final class WapfMapper {
 			if ( 'image-swatch-qty' === $wapf_type ) {
 				$options = is_array( $wapf_field['options'] ?? null ) ? $wapf_field['options'] : [];
 				$label = (string) ( $wapf_field['label'] ?? $wapf_field['id'] ?? '?' );
-				if ( ! empty( $options['large_image'] ) ) {
-					$notes[] = sprintf( 'image quantity field "%s" uses WAPF enlarged-image zoom; OPF does not preserve that zoom behavior.', $label );
-					$needs_review = true;
-				}
 				if ( isset( $options['label_pos'] ) && 'default' !== $options['label_pos'] ) {
 					$notes[] = sprintf( 'image quantity field "%s" uses label position "%s"; OPF renders the label with its quantity input.', $label, (string) $options['label_pos'] );
 					$needs_review = true;

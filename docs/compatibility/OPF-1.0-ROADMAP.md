@@ -36,8 +36,8 @@ The 131 Free/Pro/Extended ledger rows are the 1.0 edition scope, including three
 | Baseline supported | 1 | Promising baseline only; not accepted as proof |
 | Supported | 100 | Strict supported rows; documented differences are not counted as supported |
 | Supported with documented difference | 20 | Differences remain unaccepted for the strict parity measure |
-| Partial | 9 | Material parity or proof remains; see each ledger row for exact gap and evidence |
-| Gap | 1 | Image+quantity zoom |
+| Partial | 10 | Material parity or proof remains; see each ledger row for exact gap and evidence |
+| Gap | 0 | — |
 | Needs audit | 0 | — |
 | **Total** | **131** | **G1 complete for available evidence; G2 in progress — strict supported: 100/131 (76.3%); 120/131 (91.6%) only if all 20 documented differences are later accepted** |
 
@@ -236,7 +236,7 @@ WordPress floor claims also remain unresolved. The audit changes no scope or
 status counts.
 
 Extended-only rows: 28 total; 19 supported, 4 supported with a documented
-difference, 4 partial, and 1 known gap, matching the capability ledger. All 131
+difference, 5 partial, and 0 known gaps, matching the capability ledger. All 131
 edition rows have a ledger status. The
 available-source audit covers installed Extended 3.1.5, public Free 1.7.1,
 current tier/marketing claims, and every published Extended 3.1.6–3.2.1 and

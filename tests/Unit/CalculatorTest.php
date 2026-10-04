@@ -61,6 +61,10 @@ final class CalculatorTest extends TestCase {
 				[ 'slug' => 'ash', 'disabled' => false, 'pricing' => [ 'type' => 'fixed', 'amount' => 1.0, 'per_unit' => true ] ],
 			],
 		];
+		$field['image_zoom'] = false;
+		$without_zoom = Calculator::field_addon( $field, $values, [ 'price' => 10, 'qty' => 1 ] );
+		$field['image_zoom'] = true;
+		$this->assertSame( $without_zoom, Calculator::field_addon( $field, $values, [ 'price' => 10, 'qty' => 1 ] ), 'Zoom is presentation-only and must not change the cart addon.' );
 		$this->assertSame( 3.0, Calculator::field_addon( $field, $values, [ 'price' => 10, 'qty' => 1 ] ) );
 		$this->assertSame( 3.0, Calculator::field_addon( $field, $values, [ 'price' => 10, 'qty' => 3 ] ), 'qt-style pricing is per product unit, not per entered count' );
 

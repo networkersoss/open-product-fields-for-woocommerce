@@ -30,6 +30,31 @@ namespace {
 	if ( ! function_exists( 'esc_attr__' ) ) {
 		function esc_attr__( $text, $domain = null ): string { return (string) $text; }
 	}
+	if ( ! function_exists( 'esc_attr' ) ) {
+		function esc_attr( $text ): string { return htmlspecialchars( (string) $text, ENT_QUOTES, 'UTF-8' ); }
+	}
+	if ( ! function_exists( 'esc_html' ) ) {
+		function esc_html( $text ): string { return htmlspecialchars( (string) $text, ENT_QUOTES, 'UTF-8' ); }
+	}
+	if ( ! function_exists( 'esc_url' ) ) {
+		function esc_url( $url ): string { return (string) $url; }
+	}
+	if ( ! function_exists( '__' ) ) {
+		function __( $text, $domain = null ): string { return (string) $text; }
+	}
+	if ( ! function_exists( 'selected' ) ) {
+		function selected( $selected, $current = true, $echo = true ): string {
+			$result = (string) $selected === (string) $current ? ' selected="selected"' : '';
+			if ( $echo ) { echo $result; }
+			return $result;
+		}
+	}
+	if ( ! function_exists( 'wp_json_encode' ) ) {
+		function wp_json_encode( $data, $flags = 0, $depth = 512 ) { return json_encode( $data, $flags, $depth ); }
+	}
+	if ( ! function_exists( 'apply_filters' ) ) {
+		function apply_filters( $hook, $value, ...$args ) { return $value; }
+	}
 }
 
 namespace OPF\Tests\Unit {
@@ -59,6 +84,8 @@ final class CardsZoomMarkupTest extends TestCase {
 		$this->assertStringContainsString( 'wapf-tt-wrap', $html );
 		$this->assertStringContainsString( 'data-zoom-url="https://example.test/full-55.jpg"', $html );
 		$this->assertStringContainsString( 'class="opf-swatch-zoom-preview" src="https://example.test/full-55.jpg"', $html );
+		$this->assertStringContainsString( 'class="opf-input opf-image-quantity__input', $html );
+		$this->assertStringContainsString( 'data-choice-slug="oak"', $html );
 	}
 
 	public function test_image_quantity_without_zoom_has_no_zoom_url(): void {

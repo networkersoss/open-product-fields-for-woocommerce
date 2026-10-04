@@ -3,6 +3,7 @@
 namespace OPF\Tests\Unit;
 
 use OPF\Engine\FieldGroup;
+use OPF\Engine\WapfMapper;
 use OPF\Service\WapfExporter;
 use PHPUnit\Framework\TestCase;
 
@@ -11,6 +12,22 @@ use PHPUnit\Framework\TestCase;
  * gallery-image (`layout`) block survive a WAPF Tools round-trip.
  */
 final class CardsZoomExportTest extends TestCase {
+
+	public function test_wapf_image_quantity_zoom_survives_import_and_export(): void {
+		$mapped = WapfMapper::map( [ 'fields' => [ [
+			'id' => 'prints', 'label' => 'Prints', 'type' => 'image-swatch-qty',
+			'options' => [
+				'large_image' => true,
+				'choices' => [ [ 'slug' => 'oak', 'label' => 'Oak', 'attachment' => 12, 'options' => [ 'min' => 0, 'max' => 4, 'default' => 1 ] ] ],
+			],
+		] ] ] );
+
+		$this->assertTrue( $mapped['group']['fields'][0]['image_zoom'] );
+		$this->assertStringNotContainsString( 'does not preserve that zoom behavior', implode( ' ', $mapped['notes'] ) );
+		$payload = WapfExporter::build_payload( FieldGroup::normalize( $mapped['group'] ) );
+		$this->assertSame( 'image-swatch-qty', $payload['fields'][0]['type'] );
+		$this->assertTrue( $payload['fields'][0]['large_image'] );
+	}
 
 	public function test_image_quantity_zoom_exports_as_large_image(): void {
 		$group = FieldGroup::normalize( [

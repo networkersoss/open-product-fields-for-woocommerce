@@ -11,7 +11,7 @@ inactive reference. No commits were made; the integrator merges.
 | `WAPF-FIELD-CARDS-QUANTITY-CONDITIONALS` | **fixed+proven** — evaluator + browser treat quantity-selector subjects as positive-quantity maps; `empty`/`!empty` match WAPF 3.1.5's `products-card-qty`/`products-vcard-qty` registry (only those two operators). Builder now offers exactly "No quantity"/"Any quantity" for qty-card subjects. 3.1.6's unpublished extra options documented as a gap. |
 | `WAPF-FIELD-CARDS-MAIN-IMAGE` | **fixed+proven** — group-level `layout.enable_gallery_images`/`swap_type`/`gallery_images` normalized, rendered as `data-wapf-st`/`data-wapf-gi` (+ `data-opf-*` aliases), and driven by a WAPF-faithful frontend engine (rules reversed, `*` wildcard, hidden subject fails, `last` mode, variation/original fallback, attribute-set restore). Field-level `data-opf-swap-image` fallback retained. Browser proof: rule image, unmatched field swap, restore. |
 | `WAPF-FIELD-CARDS` | **partial → stronger partial** — card/card-qty render + zoom attributes + qty inputs + conditionals proven end-to-end (cart + real order). Residual: no builder UI for group gallery rules; WAPF import of `layout.gallery_images` still needs `WapfMapper`. |
-| `WAPF-FIELD-IMAGE-QUANTITY-ZOOM` | **fixed+proven** — schema `large_image`/`options.large_image` → `image_zoom`; builder toggle added; renderer emits `wapf-tt-wrap` + `data-zoom-url` + CSS preview; hover/focus proof; `WapfExporter` now emits `large_image` for image-quantity. WAPF-import (WapfMapper) mapping remains an integrator action. |
+| `WAPF-FIELD-IMAGE-QUANTITY-ZOOM` | **partial** — public branch includes `image_zoom`, builder toggle, renderer preview, and `large_image` export. As of 2026-10-04, `WapfMapper` also imports nested `options.large_image`; real WordPress admin reload and served cart/checkout/order lifecycle proof remain pending. See [current evidence](IMAGE-QUANTITY-ZOOM-EVIDENCE-2026-10-04.md). |
 | `WAPF-FIELD-SWATCH-IMAGE-ZOOM` | **proven** — `data-zoom-url` on the image-swatch wrapper, `wapf-tt-wrap`, hover/focus enlargement verified. |
 
 ## Commands + numbers
@@ -74,10 +74,9 @@ OPF_CARDS_BASE_URL=http://127.0.0.1:8308 node bin/e2e-cards-zoom-browser-test.mj
      block, and emitted `large_image` for `image-swatch-qty` (image-quantity
      zoom). Without the `layout` allowance, exporting a gallery-enabled group
      threw.
-   - `includes/Engine/WapfMapper.php` (do not edit — integrator action): map
-     `products`/`products-*` types and group `layout.gallery_images`; add
-     `large_image` → `image_zoom` for `image-swatch-qty`; drop the "OPF does not
-     preserve that zoom behavior" note (now false).
+   - `includes/Engine/WapfMapper.php` imports image-quantity
+     `options.large_image` as `image_zoom`; imported image attachments still
+     need destination-site remapping when IDs differ.
 5. 3.1.6 quantity-card conditional options remain unverified (keys unpublished).
 
 ## Cleanup

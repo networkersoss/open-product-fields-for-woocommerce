@@ -134,6 +134,7 @@ final class WapfMapperTest extends TestCase {
 					'label' => 'Prints',
 					'type' => 'image-swatch-qty',
 					'options' => [
+						'large_image' => true,
 						'label_pos' => 'tooltip',
 						'items_per_row' => 4,
 						'display' => 'plus_min',
@@ -156,6 +157,7 @@ final class WapfMapperTest extends TestCase {
 
 		$field = $mapped['group']['fields'][0];
 		$this->assertSame( 'image_quantity', $field['type'] );
+		$this->assertTrue( $field['image_zoom'], 'WAPF 3.1.5 large_image is nested in the image-swatch-qty options.' );
 		$this->assertFalse( $field['multiple'] );
 		$this->assertCount( 2, $field['choices'] );
 		$this->assertSame( 8, $field['max_choices'] );
@@ -169,6 +171,7 @@ final class WapfMapperTest extends TestCase {
 		$this->assertTrue( $mapped['needs_review'], 'Image media and layout features not represented by OPF need review.' );
 		$this->assertStringContainsString( 'image swatch', implode( ' ', $mapped['notes'] ) );
 		$this->assertStringContainsString( 'label position', implode( ' ', $mapped['notes'] ) );
+		$this->assertStringNotContainsString( 'does not preserve that zoom behavior', implode( ' ', $mapped['notes'] ) );
 		$this->assertStringNotContainsString( 'weight', implode( ' ', $mapped['notes'] ) );
 	}
 
