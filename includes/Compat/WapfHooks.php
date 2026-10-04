@@ -193,9 +193,9 @@ final class WapfHooks {
 	}
 
 	/**
-	 * Dispatch the shared validation hook without passing OPF arrays to WAPF's
-	 * native linked-product validator, which requires a WAPF Field object.
-	 * Other WAPF-named third-party listeners still receive the OPF field.
+	 * Dispatch the shared validation hook without passing OPF arrays to WAPF
+	 * validators that require a WAPF Field object. Other WAPF-named third-party
+	 * listeners still receive the OPF field.
 	 *
 	 * The native callback is removed only for this synchronous dispatch and
 	 * restored at its original priority and position before returning.
@@ -214,7 +214,10 @@ final class WapfHooks {
 		foreach ( $callbacks as $priority => $priority_callbacks ) {
 			foreach ( $priority_callbacks as $key => $entry ) {
 				$callback = $entry['function'] ?? null;
-				if ( ! self::is_native_wapf_linked_product_validator( $callback ) ) {
+				if (
+					! self::is_native_wapf_linked_product_validator( $callback )
+					&& ! self::is_native_wapf_extended_date_validator( $callback )
+				) {
 					continue;
 				}
 
@@ -247,6 +250,11 @@ final class WapfHooks {
 			&& is_string( $callback[1] )
 			&& is_a( $callback[0], 'SW_WAPF_PRO\\Includes\\Controllers\\Linked_Products_Controller' )
 			&& 'validate_cart' === strtolower( $callback[1] );
+	}
+
+	/** @param mixed $callback WordPress filter callback. */
+	private static function is_native_wapf_extended_date_validator( $callback ): bool {
+		return is_string( $callback ) && 'wapfe_validate_cart_data' === strtolower( ltrim( $callback, '\\' ) );
 	}
 
 	/**

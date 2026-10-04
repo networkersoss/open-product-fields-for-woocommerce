@@ -23,6 +23,15 @@ namespace {
 		return is_object( $callback ) ? spl_object_hash( $callback ) : (string) $callback;
 	}
 
+	if ( ! function_exists( 'wapfe_validate_cart_data' ) ) {
+		/** WAPF Extended 3.1.5 date validator contract; its field argument is an object. */
+		function wapfe_validate_cart_data( $error, $value, $field, $product_id, $clone_index, $qty, $is_order_again, $cart_item_data ) {
+			$GLOBALS['opf_wapfe_date_validator_calls'] = ( $GLOBALS['opf_wapfe_date_validator_calls'] ?? 0 ) + 1;
+			$field->type;
+			return $error;
+		}
+	}
+
 	if ( ! defined( 'ABSPATH' ) ) {
 		define( 'ABSPATH', __DIR__ . '/' );
 	}
@@ -550,6 +559,44 @@ final class WapfHooksBridgeTest extends TestCase {
 
 		apply_filters( 'wapf/validate', [ 'error' => false ], 'x', new \SW_WAPF_PRO\Includes\Models\Field(), 42, 0, 1, false, null );
 		$this->assertSame( 1, $native_validator->calls, 'WAPF-native validation still invokes its own typed listener.' );
+	}
+
+	public function test_opf_date_validation_skips_only_wapf_extended_object_date_listener(): void {
+		$GLOBALS['opf_wapfe_date_validator_calls'] = 0;
+		add_filter( 'wapf/validate', 'wapfe_validate_cart_data', 10, 8 );
+		$order_before = array_keys( $GLOBALS['wp_filter']['wapf/validate']->callbacks[10] );
+		$date_group = new FieldGroup( [
+			'schema' => FieldGroup::SCHEMA,
+			'fields' => [ $this->field( [ 'id' => 'delivery', 'label' => 'Delivery', 'type' => 'date', 'required' => true ] ) ],
+		] );
+		add_filter( 'opf_groups_for_product', static function ( $groups, $product ) use ( $date_group ) {
+			return [ [ 'id' => 78, 'title' => 'Date group', 'lang' => '', 'group' => $date_group ] ];
+		}, 20, 2 );
+
+		$method   = new \ReflectionMethod( CartIntegration::class, 'validate_values' );
+		$warnings = [];
+		set_error_handler( static function ( $severity, $message ) use ( &$warnings ) {
+			$warnings[] = [ $severity, $message ];
+			return true;
+		} );
+		try {
+			$valid_errors   = $method->invoke( null, $GLOBALS['opf_products'][42], [ 78 => [ 'delivery' => '2027-06-15' ] ], 1 );
+			$invalid_errors = $method->invoke( null, $GLOBALS['opf_products'][42], [ 78 => [ 'delivery' => '2027-02-30' ] ], 1 );
+		} finally {
+			restore_error_handler();
+		}
+
+		$this->assertSame( [], $valid_errors, 'OPF accepts a valid ISO date with WAPF Extended active.' );
+		$this->assertSame( [ '"Delivery" must be a valid date.' ], $invalid_errors, 'OPF rejects an invalid calendar date with WAPF Extended active.' );
+		$this->assertSame( [], $warnings, 'The WAPF date extension must not read an OPF array as an object.' );
+		$this->assertSame( 0, $GLOBALS['opf_wapfe_date_validator_calls'], 'WAPF Extended does not receive an OPF normalized field.' );
+		$this->assert_fired( 'wapf/validate' );
+		$this->assertIsArray( $this->fired( 'wapf/validate' )[0][2], 'Third-party WAPF validation callbacks still receive the normalized OPF date field.' );
+
+		$registry = $GLOBALS['wp_filter']['wapf/validate'];
+		$this->assertSame( $order_before, array_keys( $registry->callbacks[10] ), 'The WAPF date callback returns in its original same-priority position.' );
+		apply_filters( 'wapf/validate', [ 'error' => false ], '2027-06-15', (object) [ 'type' => 'date' ], 42, 0, 1, false, null );
+		$this->assertSame( 1, $GLOBALS['opf_wapfe_date_validator_calls'], 'WAPF-native date validation still invokes the extension callback for its object field.' );
 	}
 
 	public function test_native_wapf_validator_is_restored_when_another_listener_throws(): void {

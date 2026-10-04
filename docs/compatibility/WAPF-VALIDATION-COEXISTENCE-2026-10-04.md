@@ -70,5 +70,6 @@ No production files or database were touched.
 This proves coexistence with the installed 3.1.5 package only. The clone also
 logged warnings from WAPF's date extension reading an OPF array as an object
 and from its field-group deserializer; neither prevented the verified cart
-request. Those warnings are outside this fatal fix and need a separate
-source-backed compatibility review.
+request. The date-extension warning is fixed and verified separately in
+[WAPF Extended date validation coexistence](WAPF-EXTENDED-DATE-COEXISTENCE-2026-10-04.md).
+The field-group deserializer warning remains a separate follow-up.
