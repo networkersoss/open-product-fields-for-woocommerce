@@ -2,7 +2,7 @@
 
 ## Objective
 
-Match or exceed every Free, Pro, and Extended WAPF capability in the 132-row
+Match or exceed every Free, Pro, and Extended WAPF capability in the 131-row
 ledger while keeping OPF FOSS. Separately sold add-ons remain outside scope,
 as defined in `docs/compatibility/OPF-1.0-ROADMAP.md`.
 
@@ -18,10 +18,11 @@ as defined in `docs/compatibility/OPF-1.0-ROADMAP.md`.
 
 ## Current evidence
 
-As recorded in the roadmap on 2026-10-01: 18 supported, 7 supported with a
-documented difference, 8 baseline-supported, 94 partial, and 5 gaps (132 total).
-Strict row-count completion is 18/132 = 13.6%; this is not a feature-weighted
-percentage. The ledger remains the detailed source of truth.
+At public branch `feat/opf-archive-import` commit `bab69b5` (2026-10-04), the
+131 edition rows are 100 supported, 19 supported with a documented difference,
+11 partial, 1 baseline-supported, and 0 gaps. Strict row-count completion is
+100/131 = 76.3%; this is not a feature-weighted percentage. The capability
+ledger is the detailed source of truth. G2–G4 remain open.
 
 ## Today’s execution
 
@@ -44,5 +45,5 @@ state.
 
 ## Release gate
 
-100% means all 132 rows are accepted and G2, G3, and G4 are verified. Passing
+100% means all 131 rows are accepted and G2, G3, and G4 are verified. Passing
 unit tests or completing only today’s parallel wave is not release completion.

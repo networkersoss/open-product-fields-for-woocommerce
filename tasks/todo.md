@@ -1,18 +1,22 @@
 # OPF 1.0 Burn-down Tasks
 
-## Current checkpoint — 2026-10-01, integration HEAD `b4f259b`
+## Current checkpoint — 2026-10-04, public integration HEAD `bab69b5`
 
-- [x] Refresh orchestration roster: root is responsible for source review, integration, verification, ledger acceptance, and public pushes; three isolated writers are active.
+- [x] Confirm public branch head and working tree: `feat/opf-archive-import` at `bab69b59c2b27792342de911fabea0ce7243ec69`; public remote matches; integration checkout clean.
+- [x] Recount the 131 edition rows from the ledger: 100 supported, 19 supported with documented difference, 11 partial, 1 baseline-supported, 0 gaps (76.3% strict supported).
+- [x] Refresh active orchestration: root owns review/integration; current isolated lanes cover category child pricing, checkbox interaction-image `last` mode, and image-quantity zoom runtime proof.
 - [ ] Verify every worktree diff and focused evidence; reject unsupported claims.
 - [ ] Integrate and push each coherent verified slice to `feat/opf-archive-import`.
-- [ ] Recompute roadmap counts after each accepted ledger row; keep all 132 rows.
+- [ ] Recompute roadmap counts after each accepted ledger row; keep all 131 edition rows (137 ledger rows including six excluded add-ons).
 - [ ] Continue until every row and G2–G4 pass.
 
-The live GitHub branch is `b4f259b3a58b82fa8621b41fd8c9d611670e2292` as of
-this checkpoint (`git ls-remote`, 2026-10-01). The WPML and Aelia rows moved
-from gaps to partial; neither has enough live-plugin evidence to count as
-supported. Strict supported progress remains 18/132 (13.6%). Local
-`origin` ahead/behind decoration is not authoritative for the public branch.
+The exact public tip was verified with `git ls-remote` on 2026-10-04. The
+category child-price lane found a possible missing live total despite checkout
+passing; that row stays partial pending a real pre-submit total assertion.
+Checkbox interaction `last` mode and image-quantity zoom lifecycle proofs are
+also pending. Existing browser/source proofs do not close those gaps by
+themselves. The prior 2026-10-01 workstream table below is historical and is
+not the live agent roster.
 
 ## Parallel workstream ledger
 
@@ -31,12 +35,10 @@ supported. Strict supported progress remains 18/132 (13.6%). Local
 | Aelia currency integration | Close the known Aelia gap across currency bases, option/formula pricing, cart, and browser totals | `/root/finish_aelia_lane`, `gpt-5.6-sol` (high), `/tmp/opf-aelia`, 0 strikes | Commit `b4f259b` pushed; root reran full suite 198 / 735, real Woo fake-API cart/order lifecycle, and Chromium totals/variation/reset/rate-format proof; source review confirms WAPF 3.1.5 contract | No | Row stays partial: commercial plugin unavailable, linked-product and price-hint paths unverified |
 | FOX currency compatibility | Verify WAPF FOX/WOOCS API equivalence; add specific contract coverage without changing shared WOOCS runtime | `/root/fox_currency`, `gpt-6.1-sol` (high), `/tmp/opf-fox-currency`, 0 strikes | Installed WAPF registry maps FOX/WOOCS to shared adapter; implementation/test evidence in progress | No | Real FOX plugin proof may remain open |
 
-### Orchestration control
+### Historical orchestration control — 2026-10-01 snapshot
 
 The current wave uses three writers plus the root integrator (the four-agent
-concurrency limit). Currency adapters, quantity validation, and FOX source
-work have disjoint ownership. Root owns review, integration, ledger acceptance,
-and public pushes. Next slots go to independent work that can close named rows;
-the remaining 96 partial + 3 gap + 8 baseline-only + 7 difference rows still
-require evidence. Only accepted ledger rows and all G2–G4 gates count toward
-1.0.
+concurrency limit). This roster and its row counts describe the 2026-10-01
+snapshot only. The current roster and current evidence are recorded above and
+in the capability ledger. Only accepted ledger rows and all G2–G4 gates count
+toward 1.0.
