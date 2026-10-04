@@ -423,10 +423,14 @@ now skips only that native WAPF callback during OPF dispatch, preserves other
 listeners, and restores it for WAPF dispatch. A real WAPF-active add-to-cart
 and OPF-only required-field rejection both pass. Follow-up lanes prove bounded
 variation/relative quantity, representative import/export, and standard-tax
-plus fake-currency cart-edit behavior; those results do not replace real
+plus fake-currency cart-edit behavior. A WAPF-active Store API lane also proved
+checkout/order persistence, actual account Order Again, and child refund/restock;
+it fixed a second typed-callback warning on OPF order replay. WAPF's separate
+date validator still warns on OPF arrays. These results do not replace real
 currency-plugin, builder save/reload, cross-site ID, supported-version, or full
-checkout/order proof. See [query audit](CHILD-PRODUCTS-QUERY-AUDIT-2026-10-04.md),
+tax/session/Blocks/order coverage. See [query audit](CHILD-PRODUCTS-QUERY-AUDIT-2026-10-04.md),
 [coexistence evidence](WAPF-VALIDATION-COEXISTENCE-2026-10-04.md),
 [variation/relative quantity](CHILD-VARIATION-RELATIVE-EVIDENCE-2026-10-04.md),
 [import/export audit](CHILD-PRODUCTS-IMPORT-EXPORT-AUDIT-2026-10-04.md), and
-[commerce edge evidence](CHILD-PRODUCTS-COMMERCE-EDGES-2026-10-04.md).
+[commerce edge evidence](CHILD-PRODUCTS-COMMERCE-EDGES-2026-10-04.md), and
+[coactive Store API/order evidence](CHILD-STORE-API-WAPF-COACTIVE-EVIDENCE-2026-10-04.md).
