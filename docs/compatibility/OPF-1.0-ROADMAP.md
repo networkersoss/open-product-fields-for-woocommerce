@@ -92,11 +92,15 @@ At the current `feat/opf-archive-import` tip, strict progress is **101/131 suppo
 The 2026-10-04 child-products query audit and WAPF validation-hook repair add
 evidence and fix a real coactive-plugin fatal, but do not promote the broad
 child-products row; strict progress remains 101/131. The integrated branch now
-passes PHPUnit **762 tests / 3,382 assertions** and JavaScript **76/76 tests**
+passes PHPUnit **763 tests / 3,391 assertions** and JavaScript **76/76 tests**
 (one existing PHPUnit deprecation). See the [query audit](CHILD-PRODUCTS-QUERY-AUDIT-2026-10-04.md)
 and [coexistence evidence](WAPF-VALIDATION-COEXISTENCE-2026-10-04.md). The
 additional WAPF-active Store API checkout/Order Again/refund proof is recorded
 in [coactive child-order evidence](CHILD-STORE-API-WAPF-COACTIVE-EVIDENCE-2026-10-04.md).
+The date-extension warning found during this work is fixed: OPF skips only the
+object-only WAPF validator during OPF array dispatch, then restores it in place.
+Valid/invalid dates and zero warnings pass in a WAPF-active disposable clone;
+see [date coexistence evidence](WAPF-EXTENDED-DATE-COEXISTENCE-2026-10-04.md).
 The linked-products admin SelectWoo fix and save/reload proof is in
 [builder roundtrip evidence](CHILD-PRODUCTS-BUILDER-ROUNDTRIP-2026-10-04.md).
 The previous 58/131 (44.3%) snapshot predates the 2026-10-03 implementation
