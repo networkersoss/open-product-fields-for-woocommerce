@@ -410,3 +410,18 @@ clones). Formula behavior for additional functions/custom variables inside
 clones, button-section formula pricing, and the full checkout/Blocks/order
 lifecycle remain open. Evidence: `bin/e2e-repeater-section-values.php` and
 `tests/js/opf-repeater-browser-test.mjs`.
+
+## Child-products audit follow-up — 2026-10-04
+
+The broad `WAPF-FIELD-CHILD-PRODUCTS` row remains `partial`. A bounded
+comparison against installed WAPF Extended 3.1.5 matched category query limits,
+ordering, parent exclusion, and out-of-stock filtering (23 checks); disposable
+WooCommerce child cart/order and stock restoration checks also passed. That
+audit found and isolated a real coexistence fatal: WAPF's typed linked-products
+validator received OPF's normalized array on OPF field validation. The bridge
+now skips only that native WAPF callback during OPF dispatch, preserves other
+listeners, and restores it for WAPF dispatch. A real WAPF-active add-to-cart
+and OPF-only required-field rejection both pass. These bounded results do not
+close the row's remaining tax/currency/cart-edit/variation/relative-quantity,
+import/export, version, and full lifecycle questions. See the [child query audit](CHILD-PRODUCTS-QUERY-AUDIT-2026-10-04.md)
+and [coexistence evidence](WAPF-VALIDATION-COEXISTENCE-2026-10-04.md).
