@@ -26,7 +26,7 @@ Extended plugin as inactive 3.1.5 with no update currently exposed in its
 update registry. The available-source audit is complete; this live-site check
 does not change the audited version boundary.
 
-## Progress now — 2026-10-03
+## Progress now — 2026-10-04 (public branch `94992d5`)
 
 The 131 Free/Pro/Extended ledger rows are the 1.0 edition scope, including three
 “All versions” rows. Current recorded status:
@@ -34,12 +34,12 @@ The 131 Free/Pro/Extended ledger rows are the 1.0 edition scope, including three
 | Status | Rows | Meaning for the gate |
 | --- | ---: | --- |
 | Baseline supported | 1 | Promising baseline only; not accepted as proof |
-| Supported | 58 | Strict supported rows; documented differences are not counted as supported |
-| Supported with documented difference | 10 | Differences remain unaccepted for the strict parity measure |
-| Partial | 57 | Material parity or proof remains; see each ledger row for exact gap and evidence |
-| Gap | 5 | Quantity-card conditionals, card main-image changes, image+quantity zoom, variation targeting, and minimum platform |
+| Supported | 100 | Strict supported rows; documented differences are not counted as supported |
+| Supported with documented difference | 20 | Differences remain unaccepted for the strict parity measure |
+| Partial | 9 | Material parity or proof remains; see each ledger row for exact gap and evidence |
+| Gap | 1 | Image+quantity zoom |
 | Needs audit | 0 | — |
-| **Total** | **131** | **G1 complete for available evidence; G2 in progress — strict supported: 58/131 (44.3%); 68/131 (51.9%) if all 10 documented differences are later accepted** |
+| **Total** | **131** | **G1 complete for available evidence; G2 in progress — strict supported: 100/131 (76.3%); 120/131 (91.6%) only if all 20 documented differences are later accepted** |
 
 Fresh acceptance review downgraded nine previously `supported` rows to
 `partial`: advanced formulas, tax behavior, product-price display, price hints,
@@ -48,7 +48,8 @@ notes cited unresolved behavior or only fake/API-contract coverage; these do
 not satisfy the release objective's real lifecycle requirement. The earlier
 67/131 figure was therefore overstated.
 
-Progress notes — 2026-10-03 (parallel lanes): linked-products field shipped
+Progress notes — 2026-10-03 (parallel lanes, reflected in public commit
+`94992d5`): linked-products field shipped
 (`LinkedProducts` service, qty sync, Store API `opf.childItem`, order-again
 remap, image zoom); secure upload order-again token reissue (strictly stronger
 than WAPF's .htaccess re-link); custom formula variables/`lookuptable`/`files`
@@ -87,8 +88,9 @@ pricing-hint path remain unverified. Neither row counts as supported.
 A fresh evidence review removed 15 stale `supported` claims at that point in
 time; later implementation commits advanced rows based on additional evidence.
 See [the supported-row audit](SUPPORTED-ROW-AUDIT-2026-10-01.md).
-Current strict progress is **58/131 supported rows (44.3%)**. The
-shortcode row advanced after real WAPF 3.1.5/OPF render, import/export, and
+At public commit `94992d5`, strict progress is **100/131 supported rows (76.3%)**.
+The previous 58/131 (44.3%) snapshot predates the 2026-10-03 implementation
+lanes. The shortcode row advanced after real WAPF 3.1.5/OPF render, import/export, and
 browser evidence confirmed imported behavior is preserved; OPF's native opt-out
 is additive. The select
 and radio rows advanced from baseline-supported after the source-matched
@@ -233,8 +235,9 @@ Free's older platform declarations and conflicting
 WordPress floor claims also remain unresolved. The audit changes no scope or
 status counts.
 
-Extended-only rows: 28 total; 12 supported, 4 supported with a documented
-difference, 9 partial, and 3 known gaps, matching the capability ledger. All 131 edition rows have a ledger status. The
+Extended-only rows: 28 total; 19 supported, 4 supported with a documented
+difference, 4 partial, and 1 known gap, matching the capability ledger. All 131
+edition rows have a ledger status. The
 available-source audit covers installed Extended 3.1.5, public Free 1.7.1,
 current tier/marketing claims, and every published Extended 3.1.6–3.2.1 and
 Pro 3.2.2 changelog change. Exact current-package details not specified in

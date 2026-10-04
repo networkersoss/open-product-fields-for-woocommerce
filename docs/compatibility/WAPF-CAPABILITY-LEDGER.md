@@ -20,22 +20,24 @@ features. The separate add-ons and Extended + Addons bundle are excluded from
 this 1.0 parity gate unless the user expands scope. Official documentation
 says add-ons may be purchased separately.
 
-## Progress snapshot and release goalposts — 2026-10-03
+## Progress snapshot and release goalposts — 2026-10-04 (public branch `94992d5`)
 
 Scope baseline: the live site has WAPF Extended 3.1.5 installed (inactive),
 but Studio Wombat's current official changelog lists Extended 3.2.1. Extended
 includes Pro; six separately sold add-ons are outside this Extended-edition
 target and remain separately tracked. The ledger has 137 rows: 131 for the
 Free + Pro + Extended edition scope (including 3 “All versions” rows), and 6
-for separately sold add-ons. Of the 131 edition rows, 1 is baseline-supported,
-58 are supported, 10 are supported with a documented difference, 57 are partial,
-and 5 are known gaps. The six add-on rows remain partial and outside this denominator.
+for separately sold add-ons. Recounted from all 131 edition rows at public commit
+`94992d5`: 100 are supported, 20 are supported with a documented difference,
+9 are partial, 1 is baseline-supported, and 1 is a known gap. Strict progress is
+100/131 (76.3%); documented differences and baseline support do not count as
+accepted parity. The six add-on rows remain partial and outside this denominator.
 OPF-specific repeat-import safety remains in the G4 release checklist
 outside this denominator. Percentage coupon scope advanced from gap to partial in public
 commit `f03979d`; its implementation and current proof are recorded in
 [coupon scope evidence](coupon-scope-proof.md). The 28 Extended-only
-rows comprise 12 supported, 4 supported with a documented difference, 9 partial,
-and 3 known gaps. These are row counts, not weighted
+rows comprise 19 supported, 4 supported with a documented difference, 4 partial,
+and 1 known gap. These are row counts, not weighted
 feature percentages; gate completion is the progress measure. The paragraph
 HTML slice maps WAPF Extended `p` content, applies its restricted HTML
 allowlist, supports optional WordPress shortcode processing, preserves the
