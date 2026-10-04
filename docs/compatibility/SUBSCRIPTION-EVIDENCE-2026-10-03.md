@@ -1,5 +1,11 @@
 # WAPF-PRODUCT-SUBSCRIPTION — evidence
 
+Historical clone evidence. Public commit `ec935f2` added the adapter boot call
+but omitted `SubscriptionIntegration.php`; its reported clone results did not
+prove the published plugin could load. The class and fresh public-code proof
+are restored in [2026-10-04 evidence](SUBSCRIPTION-BOOT-RESTORE-EVIDENCE-2026-10-04.md).
+Licensed subscription parity remains partial.
+
 Clone `http://127.0.0.1:8323` (`/tmp/opf-image-uploadui-wp`). Real
 WooCommerce Subscriptions is commercial and **not installed**; proof runs
 against a scoped mu-plugin stub that mirrors the product-type API WAPF's own

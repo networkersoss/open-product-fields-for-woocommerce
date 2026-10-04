@@ -301,6 +301,8 @@ if ( 'assert' === $phase ) {
 	$line = WC()->cart->get_cart_item( $key );
 	$line_price = $line ? (float) $line['data']->get_price( 'edit' ) : 0.0;
 	$record( 'subscription cart price = recurring base 42.5 + addon 5', abs( $line_price - 47.5 ) < 0.000001, $line_price );
+	WC()->cart->calculate_totals();
+	$record( 'subscription repeat totals do not compound addons', 47.5 === (float) WC()->cart->get_cart_item( $key )['data']->get_price( 'edit' ) );
 
 	// Variation base resolves through the subscription API too.
 	WC()->cart->empty_cart();
@@ -315,10 +317,8 @@ if ( 'assert' === $phase ) {
 	$vline = WC()->cart->get_cart_item( $vkey );
 	$vline_price = $vline ? (float) $vline['data']->get_price( 'edit' ) : 0.0;
 	$record( 'variation cart price = subscription variation base 100 + addon 5', abs( $vline_price - 105.0 ) < 0.000001, $vline_price );
-
-	// WAPF reference parity (source-level): the same base filter and the same
-	// renewal-skip flag names the installed adapter registers.
-	$record( 'WAPF reference adapter is source-equivalent', true, 'class-woocommerce-subscriptions.php: cart_item_base_price + skip_cart_validation' );
+	WC()->cart->calculate_totals();
+	$record( 'variation repeat totals do not compound addons', 105.0 === (float) WC()->cart->get_cart_item( $vkey )['data']->get_price( 'edit' ) );
 
 	WC()->cart->empty_cart();
 	unset( $_POST['opf'], $_POST['variation_id'], $_POST['attribute_subscription_term'] );
