@@ -406,6 +406,27 @@ final class WapfExporterTest extends TestCase {
 		$this->assertSame( 481, $payload['fields'][0]['choices'][0]['attachment'] );
 	}
 
+	public function test_products_image_exports_large_image_without_gallery_swap_setting(): void {
+		$payload = WapfExporter::build_payload( FieldGroup::normalize( [
+			'fields' => [ [
+				'id' => 'linked-image', 'label' => 'Linked images', 'type' => 'products', 'subtype' => 'image',
+				'large_image' => true, 'image_zoom' => false,
+				'choices' => [ [ 'product_id' => 481 ] ],
+			] ],
+		] ) );
+
+		$this->assertTrue( $payload['fields'][0]['large_image'] );
+		$this->assertArrayNotHasKey( 'image_zoom', $payload['fields'][0] );
+	}
+
+	public function test_large_image_is_not_allowed_on_non_product_image_fields(): void {
+		$this->expectException( \InvalidArgumentException::class );
+		$this->expectExceptionMessage( 'unknown field data: large_image' );
+		WapfExporter::build_payload( [ 'fields' => [ [
+			'id' => 'note', 'label' => 'Note', 'type' => 'text', 'large_image' => true,
+		] ] ] );
+	}
+
 	public function test_exports_multi_color_swatches_and_selection_limits(): void {
 		$group = FieldGroup::normalize( [ 'fields' => [ [
 			'id' => 'palette', 'label' => 'Palette', 'type' => 'swatch', 'swatch_style' => 'color',

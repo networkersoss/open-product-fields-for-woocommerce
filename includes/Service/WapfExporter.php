@@ -45,6 +45,9 @@ final class WapfExporter {
 		if ( 'toggle' === $type ) {
 			$extra[] = 'message';
 		}
+		if ( 'products' === $type && 'image' === ( $field['subtype'] ?? '' ) ) {
+			$extra[] = 'large_image';
+		}
 		if ( in_array( $type, [ 'toggle', 'text', 'textarea', 'email', 'url', 'number' ], true ) ) {
 			$extra[] = 'default';
 		}
@@ -372,6 +375,7 @@ final class WapfExporter {
 			if ( 'image' === $out['subtype'] ) {
 				$out['label_pos'] = (string) ( $field['label_pos'] ?? 'default' );
 				$out['item_width'] = (int) ( $field['item_width'] ?? 68 );
+				$out['large_image'] = ! empty( $field['large_image'] );
 			}
 			if ( in_array( $out['subtype'], [ 'card', 'vcard', 'card-qty', 'vcard-qty' ], true ) ) {
 				foreach ( [ 'items_per_row', 'items_per_row_tablet', 'items_per_row_mobile' ] as $key ) {
@@ -387,9 +391,6 @@ final class WapfExporter {
 				if ( in_array( $out['subtype'], [ 'vcard', 'vcard-qty' ], true ) ) {
 					$out['img_fit'] = (string) ( $field['img_fit'] ?? 'cover' );
 				}
-			}
-			if ( ! empty( $field['image_zoom'] ) ) {
-				$out['large_image'] = 'true';
 			}
 		}
 		if ( in_array( $type, [ 'select', 'radio', 'checkbox', 'swatch', 'image_quantity' ], true ) ) {

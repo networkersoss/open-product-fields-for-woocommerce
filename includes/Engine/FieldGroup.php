@@ -694,6 +694,13 @@ final class FieldGroup {
 				}
 				$normalized['label_pos'] = $label_pos;
 				$normalized['item_width'] = self::bounded_integer( $field['item_width'] ?? 60, 30, 300, 'Products image width' );
+				// WAPF `large_image` is the Products-image hover zoom option. Keep
+				// it separate from OPF's `image_zoom`, which swaps the main gallery.
+				$large_image = $field['large_image'] ?? false;
+				if ( ! in_array( $large_image, [ true, false, 0, 1, '0', '1', 'true', 'false' ], true ) ) {
+					throw new \InvalidArgumentException( 'Products large image setting must be boolean.' );
+				}
+				$normalized['large_image'] = in_array( $large_image, [ true, 1, '1', 'true' ], true );
 			}
 			if ( in_array( $products_subtype, [ 'card', 'vcard', 'card-qty', 'vcard-qty' ], true ) ) {
 				$normalized['items_per_row']        = self::bounded_integer( $field['items_per_row'] ?? 2, 1, 4, 'Products desktop columns' );

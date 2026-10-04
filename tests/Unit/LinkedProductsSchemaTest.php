@@ -153,6 +153,30 @@ final class LinkedProductsSchemaTest extends TestCase {
 		] );
 	}
 
+	public function test_products_image_large_image_setting_is_separate_from_gallery_swap(): void {
+		$field = FieldGroup::normalize_field( [
+			'id' => 'addons', 'type' => 'products', 'subtype' => 'image',
+			'large_image' => 'true', 'image_zoom' => false,
+			'choices' => [ [ 'product_id' => 7 ] ],
+		] );
+		$this->assertTrue( $field['large_image'] );
+		$this->assertFalse( $field['image_zoom'] );
+
+		$field = FieldGroup::normalize_field( [
+			'id' => 'addons', 'type' => 'products', 'subtype' => 'image',
+			'choices' => [ [ 'product_id' => 7 ] ],
+		] );
+		$this->assertFalse( $field['large_image'], 'Hover zoom is off when no setting is stored.' );
+	}
+
+	public function test_products_image_large_image_rejects_invalid_values(): void {
+		$this->expectException( \InvalidArgumentException::class );
+		FieldGroup::normalize_field( [
+			'id' => 'addons', 'type' => 'products', 'subtype' => 'image', 'large_image' => 'yes',
+			'choices' => [ [ 'product_id' => 7 ] ],
+		] );
+	}
+
 	public function test_card_options_and_columns_normalize(): void {
 		$field = FieldGroup::normalize_field( [
 			'id' => 'addons', 'type' => 'products', 'subtype' => 'vcard',

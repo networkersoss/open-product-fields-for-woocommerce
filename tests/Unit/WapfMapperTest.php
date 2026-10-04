@@ -711,6 +711,27 @@ final class WapfMapperTest extends TestCase {
 		$this->assertStringContainsString( 'without a product reference', implode( ' ', $mapped['notes'] ) );
 	}
 
+	public function test_wapf_products_image_large_image_maps_separately_from_gallery_swap(): void {
+		$mapped = WapfMapper::map( [
+			'fields' => [ [
+				'id' => 'linked-image', 'label' => 'Linked images', 'type' => 'products-image',
+				'options' => [
+					'product_selection' => 'manual', 'large_image' => '1', 'image_zoom' => false,
+					'choices' => [ [ 'id' => 12, 'slug' => 'gift', 'label' => 'Gift', 'options' => [], 'pricing_type' => 'fixed' ] ],
+				],
+				'conditionals' => [], 'clone' => [ 'enabled' => false ],
+				'pricing' => [ 'enabled' => false ],
+			] ],
+			'rule_groups' => [],
+		] );
+
+		$field = $mapped['group']['fields'][0];
+		$this->assertSame( 'image', $field['subtype'] );
+		$this->assertTrue( $field['large_image'] );
+		$this->assertFalse( $field['image_zoom'] );
+		$this->assertFalse( $mapped['needs_review'] );
+	}
+
 	public function test_wapf_products_flattened_subtype_and_qty_choices(): void {
 		$wapf = [
 			'fields' => [

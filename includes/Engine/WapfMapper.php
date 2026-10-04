@@ -1192,13 +1192,21 @@ final class WapfMapper {
 			}
 		}
 
-		// Product image zoom is stored under image_zoom (OPF) or large_image
-		// (WAPF swatch vocabulary) depending on the export path.
-		foreach ( [ 'image_zoom', 'large_image' ] as $zoom_key ) {
-			if ( array_key_exists( $zoom_key, $options ) && in_array( $options[ $zoom_key ], [ true, false, 0, 1, '0', '1', 'true', 'false' ], true ) ) {
-				$settings['image_zoom'] = self::truthy( $options[ $zoom_key ] );
-				break;
+		// WAPF 3.2.1 adds `large_image` specifically to Products-image fields.
+		// OPF `image_zoom` is a separate gallery-swap behavior.
+		if ( 'image' === $subtype && array_key_exists( 'large_image', $options ) ) {
+			if ( in_array( $options['large_image'], [ true, false, 0, 1, '0', '1', 'true', 'false' ], true ) ) {
+				$settings['large_image'] = self::truthy( $options['large_image'] );
+			} else {
+				$notes[] = sprintf( 'products field "%s" has an invalid large_image setting; linked-product image zoom needs review.', $label );
+				$needs_review = true;
 			}
+		}
+		if ( array_key_exists( 'image_zoom', $options ) && in_array( $options['image_zoom'], [ true, false, 0, 1, '0', '1', 'true', 'false' ], true ) ) {
+			$settings['image_zoom'] = self::truthy( $options['image_zoom'] );
+		} elseif ( 'image' !== $subtype && array_key_exists( 'large_image', $options ) && in_array( $options['large_image'], [ true, false, 0, 1, '0', '1', 'true', 'false' ], true ) ) {
+			// Retain the historical OPF card/gallery mapping for older exports.
+			$settings['image_zoom'] = self::truthy( $options['large_image'] );
 		}
 
 		$pricing = $wapf_field['pricing'] ?? [];

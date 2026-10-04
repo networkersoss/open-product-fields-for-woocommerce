@@ -973,6 +973,7 @@ final class Renderer {
 		$is_qty   = LinkedProducts::is_qty_subtype( $field );
 		$multi    = in_array( $subtype, [ 'checkbox', 'image', 'card', 'vcard' ], true );
 		$required = ! empty( $field['required'] );
+		$large_image = 'image' === $subtype && ! empty( $field['large_image'] );
 
 		if ( null === $product ) {
 			$product = $GLOBALS['product'] ?? null;
@@ -1048,9 +1049,9 @@ final class Renderer {
 			return $base;
 		};
 
-		$wrapper_attrs = static function ( array $choice ) use ( $field ): string {
+		$wrapper_attrs = static function ( array $choice ) use ( $field, $large_image ): string {
 			$attrs = '';
-			if ( ! empty( $field['image_zoom'] ) && ! empty( $choice['zoom_url'] ) ) {
+			if ( ( $large_image || ! empty( $field['image_zoom'] ) ) && ! empty( $choice['zoom_url'] ) ) {
 				$attrs .= ' data-zoom-url="' . esc_attr( $choice['zoom_url'] ) . '"';
 			}
 			return $attrs;
@@ -1093,7 +1094,7 @@ final class Renderer {
 					}
 					$checked  = ! empty( $choice['selected'] ) && ! $disabled;
 					$classes  = $choice_classes( $choice, [ 'opf-swatch', 'opf-swatch--image', 'opf-product-choice', 'opf-image-swatch-label--' . ( $field['label_pos'] ?? 'tooltip' ) ] );
-					if ( ! empty( $field['image_zoom'] ) ) {
+					if ( $large_image || ! empty( $field['image_zoom'] ) ) {
 						$classes[] = 'opf-swatch--image-zoom wapf-tt-wrap';
 					}
 					if ( ! $multi ) {
@@ -1104,7 +1105,7 @@ final class Renderer {
 					if ( 'out' !== ( $field['label_pos'] ?? 'tooltip' ) ) {
 						echo '<span class="opf-image-swatch-frame">';
 						echo '<img class="opf-swatch-image" src="' . esc_url( $choice['image'] ) . '" alt="' . esc_attr( $choice['label'] ) . '" loading="lazy" decoding="async" />';
-						if ( ! empty( $field['image_zoom'] ) && ! empty( $choice['zoom_url'] ) ) {
+						if ( ( $large_image || ! empty( $field['image_zoom'] ) ) && ! empty( $choice['zoom_url'] ) ) {
 							echo '<img class="opf-swatch-zoom-preview" src="' . esc_url( $choice['zoom_url'] ) . '" alt="" aria-hidden="true" loading="lazy" decoding="async" />';
 						}
 						echo '</span>';

@@ -568,6 +568,10 @@
 				else delete field.item_width;
 			} );
 			wrap.appendChild( labeledControl( __( 'Image width (30–300 px)', 'open-product-fields-for-woocommerce' ), itemWidth ) );
+			var largeImage = el( 'input', { type: 'checkbox', 'data-opf-products-image-setting': 'large_image' } );
+			largeImage.checked = !! field.large_image;
+			largeImage.addEventListener( 'change', function () { field.large_image = largeImage.checked; } );
+			wrap.appendChild( labeledControl( __( 'Enlarge child image on hover and keyboard focus', 'open-product-fields-for-woocommerce' ), largeImage ) );
 		}
 
 		var imageZoom = el( 'input', { type: 'checkbox' } );

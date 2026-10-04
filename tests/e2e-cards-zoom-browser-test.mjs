@@ -23,44 +23,57 @@ try {
 	page.on( 'pageerror', ( e ) => errors.push( e.message ) );
 
 	await page.goto( base + '/product/opf-zoom-parent/', { waitUntil: 'domcontentloaded' } );
-	await page.locator( '.opf-products--card .opf-card' ).first().waitFor();
+	const group = page.locator( '[data-group="' + gid + '"]' );
+	await group.locator( '.opf-products--card .opf-card' ).first().waitFor();
 
 	/* ---------------- render ---------------- */
-	check( 'card field renders two product cards', await page.locator( '.opf-products--card .opf-card' ).count() === 2 );
-	check( 'quantity card field renders two cards', await page.locator( '.opf-products--card-qty .opf-card' ).count() === 2 );
-	check( 'group emits WAPF gallery-image attributes', await page.locator( '[data-opf-group="' + gid + '"][data-opf-gi]' ).count() === 1 );
-	check( 'gallery swap type is rules', ( await page.locator( '[data-opf-group="' + gid + '"]' ).getAttribute( 'data-opf-st' ) ) === 'rules' );
+	check( 'card field renders two product cards', await group.locator( '.opf-products--card .opf-card' ).count() === 2 );
+	check( 'quantity card field renders two cards', await group.locator( '.opf-products--card-qty .opf-card' ).count() === 2 );
+	check( 'group emits WAPF gallery-image attributes', null !== await group.getAttribute( 'data-opf-gi' ) && null !== await group.getAttribute( 'data-wapf-gi' ) );
+	check( 'gallery swap type is rules', ( await group.getAttribute( 'data-opf-st' ) ) === 'rules' );
 
 	/* ---------------- card-qty conditionals ---------------- */
-	const note = page.locator( '[data-opf-field="note"]' );
+	const note = group.locator( '[data-opf-field="note"]' );
 	check( 'dependent field starts hidden when no quantity is set', await note.evaluate( ( el ) => el.classList.contains( 'opf-hide' ) ) );
-	const alphaQty = page.locator( '.opf-products--card-qty input.opf-qty[data-choice-slug="child-alpha"]' );
+	const alphaQty = group.locator( '.opf-products--card-qty input.opf-qty[data-choice-slug="child-alpha"]' );
 	await alphaQty.fill( '2' );
-	await page.waitForFunction( () => ! document.querySelector( '[data-opf-field="note"]' ).classList.contains( 'opf-hide' ) );
+	await page.waitForFunction( ( field ) => ! document.querySelector( '[data-group="' + field + '"] [data-opf-field="note"]' ).classList.contains( 'opf-hide' ), gid );
 	check( 'dependent field shows once a card quantity is positive', true );
 	await alphaQty.fill( '0' );
-	await page.waitForFunction( () => document.querySelector( '[data-opf-field="note"]' ).classList.contains( 'opf-hide' ) );
+	await page.waitForFunction( ( field ) => document.querySelector( '[data-group="' + field + '"] [data-opf-field="note"]' ).classList.contains( 'opf-hide' ), gid );
 	check( 'dependent field hides again when quantity returns to zero', true );
 	await page.screenshot( { path: dir + '/cards-conditionals.png', fullPage: true } );
 
 	/* ---------------- zoom attributes + interaction ---------------- */
-	check( 'image+quantity choices expose data-zoom-url', await page.locator( '[data-opf-field="prints"] .opf-image-quantity__img[data-zoom-url]' ).count() === 2 );
-	check( 'image swatches expose data-zoom-url', await page.locator( '[data-opf-field="finish"] .opf-swatch--image-zoom[data-zoom-url]' ).count() === 2 );
-	const iqWrap = page.locator( '[data-opf-field="prints"] .opf-image-quantity__img[data-zoom-url]' ).first();
+	check( 'image+quantity choices expose data-zoom-url', await group.locator( '[data-opf-field="prints"] .opf-image-quantity__img[data-zoom-url]' ).count() === 2 );
+	check( 'image swatches expose data-zoom-url', await group.locator( '[data-opf-field="finish"] .opf-swatch--image-zoom[data-zoom-url]' ).count() === 2 );
+	check( 'linked-product image field exposes zoom URLs without gallery-swap attributes', await group.locator( '[data-opf-field="child-images"] .opf-product-choice[data-zoom-url]' ).count() === 2 && await group.locator( '[data-opf-field="child-images"] [data-opf-swap-image]' ).count() === 0 );
+	const iqWrap = group.locator( '[data-opf-field="prints"] .opf-image-quantity__img[data-zoom-url]' ).first();
 	check( 'image+quantity zoom preview is hidden before hover', ! ( await iqWrap.locator( '.opf-swatch-zoom-preview' ).isVisible() ) );
 	await iqWrap.hover();
 	check( 'image+quantity zoom preview enlarges on hover', await iqWrap.locator( '.opf-swatch-zoom-preview' ).isVisible() );
-	const swatchWrap = page.locator( '[data-opf-field="finish"] .opf-swatch--image-zoom[data-zoom-url]' ).first();
+	const swatchWrap = group.locator( '[data-opf-field="finish"] .opf-swatch--image-zoom[data-zoom-url]' ).first();
 	check( 'image swatch zoom preview is hidden before hover', ! ( await swatchWrap.locator( '.opf-swatch-zoom-preview' ).isVisible() ) );
 	await swatchWrap.hover();
 	check( 'image swatch zoom preview enlarges on hover', await swatchWrap.locator( '.opf-swatch-zoom-preview' ).isVisible() );
+	const childImageWrap = group.locator( '[data-opf-field="child-images"] .opf-product-choice[data-zoom-url]' ).first();
+	const childImagePreview = childImageWrap.locator( '.opf-swatch-zoom-preview' );
+	check( 'linked-product image preview starts hidden', ! await childImagePreview.isVisible() );
+	await childImageWrap.hover();
+	check( 'linked-product image enlarges on hover', await childImagePreview.isVisible() );
+	await childImageWrap.locator( 'input[type="checkbox"]' ).focus();
+	check( 'linked-product image remains enlarged on keyboard focus', await childImagePreview.isVisible() );
+	const childZoomUrl = await childImageWrap.getAttribute( 'data-zoom-url' );
+	const childThumbUrl = await childImageWrap.locator( '.opf-swatch-image' ).getAttribute( 'src' );
+	check( 'linked-product preview loads the full attachment image', childZoomUrl.endsWith( 'opf-oz-alpha.png' ) && childZoomUrl !== childThumbUrl && await childImagePreview.getAttribute( 'src' ) === childZoomUrl );
+	check( 'linked-product preview is decorative and checkbox keeps its accessible name', await childImagePreview.getAttribute( 'aria-hidden' ) === 'true' && await page.getByRole( 'checkbox', { name: 'OPF Zoom Alpha' } ).count() === 1 );
 	await page.screenshot( { path: dir + '/cards-zoom-hover.png', fullPage: true } );
 
 	/* ---------------- main image swap / restore ---------------- */
 	const mainImg = page.locator( '.woocommerce-product-gallery .wp-post-image' ).first();
 	const originalSrc = await mainImg.getAttribute( 'src' );
-	const alphaCard = page.locator( '.opf-products--card input.opf-product-input[value="child-alpha"]' );
-	const betaCard = page.locator( '.opf-products--card input.opf-product-input[value="child-beta"]' );
+	const alphaCard = group.locator( '.opf-products--card input.opf-product-input[value="child-alpha"]' );
+	const betaCard = group.locator( '.opf-products--card input.opf-product-input[value="child-beta"]' );
 	await alphaCard.check();
 	await page.waitForFunction( () => {
 		const img = document.querySelector( '.woocommerce-product-gallery .wp-post-image' );
@@ -85,7 +98,7 @@ try {
 
 	/* ---------------- cart: qty-enabled cards ---------------- */
 	await alphaCard.check();
-	await page.locator( '.opf-products--card-qty input.opf-qty[data-choice-slug="child-alpha"]' ).fill( '2' );
+	await group.locator( '.opf-products--card-qty input.opf-qty[data-choice-slug="child-alpha"]' ).fill( '2' );
 	await page.locator( 'form.cart button.single_add_to_cart_button' ).click();
 	await page.locator( '.wc-block-components-notice-banner.is-success, .woocommerce-message' ).first().waitFor( { timeout: 15000 } );
 	check( 'classic add-to-cart succeeds', true );

@@ -6,7 +6,7 @@
  *  - verify   assert the persisted order carries the expected parent/child lines
  *  - cleanup  remove every created object, restore options, assert baseline
  */
-if ( '1' !== getenv( 'OPF_CARDS_ZOOM_ALLOW' ) || 0 !== strpos( realpath( ABSPATH ), '/tmp/opf-image-cards-wp' ) ) {
+if ( '1' !== getenv( 'OPF_CARDS_ZOOM_ALLOW' ) || ( 0 !== strpos( realpath( ABSPATH ), '/tmp/opf-image-cards-wp' ) && 0 !== strpos( realpath( ABSPATH ), '/tmp/opf-child-image-zoom-wp' ) ) ) {
 	throw new RuntimeException( 'Explicit isolated cards-zoom clone authorization required.' );
 }
 function oz_assert( string $label, bool $pass ): void {
@@ -100,6 +100,14 @@ if ( 'setup' === $phase ) {
 			],
 		],
 		[
+			'id' => 'child-images', 'label' => 'Child images', 'type' => 'products', 'subtype' => 'image',
+			'product_selection' => 'manual', 'large_image' => true, 'image_zoom' => false,
+			'choices' => [
+				[ 'product_id' => $alpha, 'slug' => 'child-alpha-image', 'pricing_type' => 'fixed' ],
+				[ 'product_id' => $beta, 'slug' => 'child-beta-image', 'pricing_type' => 'none' ],
+			],
+		],
+		[
 			'id' => 'note', 'label' => 'Add a note', 'type' => 'text',
 			'conditionals' => [ [ 'action' => 'show', 'logic' => 'all', 'rules' => [ [ 'field' => 'units', 'operator' => 'not_empty', 'value' => '' ] ] ] ],
 		],
@@ -134,9 +142,10 @@ if ( 'setup' === $phase ) {
 	], [ 'title' => 'Cards + zoom lifecycle', 'status' => 'publish' ] );
 	oz_assert( 'field group persisted', $gid > 0 );
 	$group = OPF\Service\FieldGroups::group_from_post( get_post( $gid ) );
-	oz_assert( 'group round-trips five fields', 5 === count( $group->data['fields'] ) );
+	oz_assert( 'group round-trips six fields', 6 === count( $group->data['fields'] ) );
 	oz_assert( 'gallery layout round-trips', ! empty( $group->data['layout']['gallery_images'][0]['id'] ) );
-	oz_assert( 'image quantity zoom round-trips', ! empty( $group->data['fields'][3]['image_zoom'] ) );
+	oz_assert( 'image quantity zoom round-trips', ! empty( $group->data['fields'][4]['image_zoom'] ) );
+	oz_assert( 'linked-product large image zoom round-trips independently', ! empty( $group->data['fields'][2]['large_image'] ) && empty( $group->data['fields'][2]['image_zoom'] ) );
 
 	$checkout = wp_insert_post( [ 'post_type' => 'page', 'post_status' => 'publish', 'post_title' => 'Zoom proof checkout', 'post_name' => 'zoom-proof-checkout', 'post_content' => '[woocommerce_checkout]' ] );
 	$prev_checkout = get_option( 'woocommerce_checkout_page_id' );
