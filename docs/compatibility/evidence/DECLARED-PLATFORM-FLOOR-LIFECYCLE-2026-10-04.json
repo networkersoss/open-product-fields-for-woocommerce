@@ -1,0 +1,79 @@
+{
+  "tested_at_utc": "2026-10-04T09:35:57Z",
+  "opf_commit": "54d5a46cd5ad0624fe236f3b8abeb983fe4baa8c",
+  "runtime": {
+    "php": "7.4.33",
+    "wordpress": "6.5",
+    "woocommerce": "9.0.0",
+    "database": "MariaDB 10.11",
+    "browser": "Chromium 147.0.7727.15"
+  },
+  "source_archives": {
+    "wordpress_6.5.tar.gz": "342456288ae148c0ba8adc36cbf58951dd8b491b6755692654efdbda71092b9f",
+    "woocommerce_9.0.0.zip": "e36632495c76a883040881262501033d99271ed032ff8bb7027c086af174d8ac"
+  },
+  "container_images": {
+    "wordpress_php74_apache": "wordpress:php7.4-apache@sha256:7e46cf3373751b6d62b7a0fc3a7d6686f641a34a2a0eb18947da5375c55fd009",
+    "mariadb": "mariadb:10.11@sha256:7db29378d4fdab73f8123bbc2b48905c90d1a4b00cf848b028f1e81e623257f2"
+  },
+  "checks_passed": 29,
+  "checks_failed": 0,
+  "uncaught_browser_errors": [],
+  "checks": [
+    "admin group builder initializes on PHP 7.4 / WP 6.5 / WC 9.0",
+    "authenticated REST nonce available",
+    "actual REST group save succeeds",
+    "REST save returns fixture group id",
+    "actual REST preview succeeds",
+    "REST preview renders both group fields",
+    "REST group validation returns 400 for unsupported schema",
+    "REST preview returns 404 for missing product",
+    "classic product page renders OPF fields",
+    "classic product page has add-to-cart control",
+    "classic add-to-cart redirects/notice without PHP errors",
+    "classic cart contains added fixture and submitted field",
+    "classic checkout succeeds",
+    "classic order id captured",
+    "classic order reloads from Woo data store",
+    "classic checkout confirmation reachable",
+    "classic account order exposes Order again",
+    "classic Order again restores item and OPF values",
+    "store product page renders OPF fields",
+    "store product page has add-to-cart control",
+    "Store API add-item succeeds with OPF field data",
+    "Store API cart displays saved OPF input",
+    "Store API checkout succeeds",
+    "store order id captured",
+    "store order reloads from Woo data store",
+    "store checkout confirmation reachable",
+    "store account order exposes Order again",
+    "store Order again restores item and OPF values",
+    "no uncaught page errors"
+  ],
+  "order_item_meta_verified": [
+    {
+      "transport": "classic",
+      "meta_key": "_opf_fields",
+      "value": {
+        "11": {
+          "message": "Floor Classic"
+        }
+      }
+    },
+    {
+      "transport": "Store API",
+      "meta_key": "_opf_fields",
+      "value": {
+        "11": {
+          "message": "Floor Store API"
+        }
+      }
+    }
+  ],
+  "scope": "Disposable loopback-only database-backed install. No production files, databases, containers, services, or public ports were used. OPF source was mounted from this isolated worktree. Test orders, group, products, pages, database, containers, network, and temporary fixture files were removed after evidence capture.",
+  "limitations": [
+    "This accepts OPF's declared PHP 7.4 / WordPress 6.5 / WooCommerce 9.0 floor lifecycle only.",
+    "It does not prove WAPF Pro/Extended's PHP 7.1 minimum, WAPF Free's older claims, WooCommerce 7.0 compatibility, or parity on their lower floors.",
+    "No reproducible stack-provisioning script is included; the disposable install and Chromium harness were prepared under /tmp for this run."
+  ]
+}
