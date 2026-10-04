@@ -101,6 +101,11 @@ The date-extension warning found during this work is fixed: OPF skips only the
 object-only WAPF validator during OPF array dispatch, then restores it in place.
 Valid/invalid dates and zero warnings pass in a WAPF-active disposable clone;
 see [date coexistence evidence](WAPF-EXTENDED-DATE-COEXISTENCE-2026-10-04.md).
+OPF's declared platform floor also has a full lifecycle proof on PHP 7.4.33 /
+WordPress 6.5 / WooCommerce 9.0.0, including both cart transports and Order
+Again (29/29 browser checks). This does not change strict progress because
+WAPF's lower edition floors remain an unaccepted documented difference; see
+[platform-floor lifecycle evidence](DECLARED-PLATFORM-FLOOR-LIFECYCLE-2026-10-04.md).
 The linked-products admin SelectWoo fix and save/reload proof is in
 [builder roundtrip evidence](CHILD-PRODUCTS-BUILDER-ROUNDTRIP-2026-10-04.md).
 The previous 58/131 (44.3%) snapshot predates the 2026-10-03 implementation
