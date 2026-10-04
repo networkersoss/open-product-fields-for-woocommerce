@@ -7,6 +7,31 @@
 
 namespace OPF\Service;
 
+use WC_Product;
+use function add_action;
+use function admin_url;
+use function get_current_screen;
+use function get_option;
+use function get_queried_object_id;
+use function get_woocommerce_currency;
+use function get_woocommerce_currency_symbol;
+use function get_woocommerce_price_format;
+use function is_product;
+use function wp_date;
+use function wp_enqueue_media;
+use function wp_enqueue_script;
+use function wp_enqueue_script_module;
+use function wp_enqueue_style;
+use function wp_print_inline_script_tag;
+use function wp_register_script;
+use function wp_register_script_module;
+use function wp_register_style;
+use function wc_get_price_decimal_separator;
+use function wc_get_price_decimals;
+use function wc_get_price_thousand_separator;
+use function wc_get_product;
+use function wp_json_encode;
+
 defined( 'ABSPATH' ) || exit;
 
 final class Assets {
@@ -16,7 +41,25 @@ final class Assets {
 	 */
 	public static function init(): void {
 		add_action( 'wp_enqueue_scripts', [ __CLASS__, 'register_frontend' ] );
+		add_action( 'wp_enqueue_scripts', [ __CLASS__, 'enqueue_live_preview_fonts' ], 20 );
 		add_action( 'admin_enqueue_scripts', [ __CLASS__, 'register_admin' ] );
+	}
+
+	/** Enqueue preview fonts before wp_head prints stylesheets. */
+	public static function enqueue_live_preview_fonts(): void {
+		if ( ! function_exists( 'is_product' ) || ! is_product() || ! Renderer::visible_to_viewer() || ! function_exists( 'wc_get_product' ) ) {
+			return;
+		}
+		$product = wc_get_product( get_queried_object_id() );
+		if ( ! $product instanceof WC_Product || empty( LivePreview::for_product( $product ) ) || empty( LivePreviewFonts::registered() ) ) {
+			return;
+		}
+
+		// Renderer::render() runs at woocommerce_before_add_to_cart_button,
+		// which can be after wp_head. This inline-only handle also survives
+		// themes that bundle and dequeue the frontend stylesheet.
+		wp_enqueue_style( 'opf-live-preview-font-faces' );
+		LivePreviewFonts::enqueue_faces( 'opf-live-preview-font-faces' );
 	}
 
 	/**
@@ -28,20 +71,19 @@ final class Assets {
 		if ( function_exists( 'wp_register_script_module' ) ) {
 			wp_register_script_module(
 				'opf-frontend',
-				OPF_URL . 'assets/js/opf-frontend.js',
-				[
-					[
-						'id'     => '@wordpress/interactivity',
-						'import' => 'static',
-					],
-				],
+				OPF_URL . 'assets/js/opf-frontend.min.js',
+				// The frontend uses native DOM APIs and imports no modules.
+				// A static dependency here downloads the unused Interactivity
+				// runtime on every product that renders fields.
+				[],
 				$ver
 			);
 		} else {
-			wp_register_script( 'opf-frontend', OPF_URL . 'assets/js/opf-frontend.js', [], $ver, true );
+			wp_register_script( 'opf-frontend', OPF_URL . 'assets/js/opf-frontend.min.js', [], $ver, true );
 		}
 
 		wp_register_style( 'opf-frontend', OPF_URL . 'assets/css/opf-frontend.css', [], $ver );
+		wp_register_style( 'opf-live-preview-font-faces', false, [], $ver );
 	}
 
 	/**
@@ -50,6 +92,10 @@ final class Assets {
 	 * @param array<string,mixed> $registry Field metadata for the client.
 	 */
 	public static function enqueue_frontend( array $registry = [] ): void {
+		// Keep the native-DOM module external. WordPress's safe inline-script
+		// serializer encodes ampersands in raw-text script bodies, which turns
+		// JavaScript operators such as && into literal entity text and prevents
+		// the browser from parsing the module.
 		if ( function_exists( 'wp_enqueue_script_module' ) ) {
 			wp_enqueue_script_module( 'opf-frontend' );
 		} else {
@@ -59,14 +105,30 @@ final class Assets {
 		// no-op here. Classic inline scripts execute immediately — before the
 		// deferred module — which is exactly the ordering the registry needs.
 		if ( $registry ) {
-			$date_format = function_exists( 'get_option' ) ? get_option( 'wapf_date_format', 'mm-dd-yyyy' ) : 'mm-dd-yyyy';
-			$today       = function_exists( 'current_time' ) ? current_time( 'Y-m-d' ) : gmdate( 'Y-m-d' );
+			$json_flags = JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT;
 			wp_print_inline_script_tag(
-				'window.OPF_FIELDS = ' . wp_json_encode( $registry, JSON_UNESCAPED_UNICODE ) . ';'
-				. 'window.OPF_DATE_FORMAT = ' . wp_json_encode( $date_format ) . ';'
-				. 'window.OPF_TODAY = ' . wp_json_encode( $today ) . ';'
+				'window.OPF_FIELDS = ' . wp_json_encode( $registry['fields'] ?? [], $json_flags ) . ';' .
+				'window.OPF_LOOKUP_TABLES = ' . wp_json_encode( $registry['lookup_tables'] ?? [], $json_flags ) . ';' .
+				'window.OPF_IMAGE_RULES = ' . wp_json_encode( $registry['image_rules'] ?? [], $json_flags ) . ';' .
+				'window.OPF_IMAGE_RULE_MODES = ' . wp_json_encode( $registry['image_rule_modes'] ?? [], $json_flags ) . ';' .
+				'window.OPF_FORMULA_VARIABLES = ' . wp_json_encode( $registry['formula_variables'] ?? [], $json_flags ) . ';' .
+				'window.OPF_ACF_VARIABLES = ' . wp_json_encode( $registry['acf_variables'] ?? [], $json_flags ) . ';' .
+				'window.OPF_LIVE_PREVIEWS = ' . wp_json_encode( $registry['live_previews'] ?? [], $json_flags ) . ';' .
+				'window.OPF_LAYERED_IMAGES = ' . wp_json_encode( $registry['layered_images'] ?? [], $json_flags ) . ';'
 			);
 		}
+		$site_today = function_exists( 'wp_date' ) ? wp_date( 'Y-m-d' ) : gmdate( 'Y-m-d' );
+		wp_print_inline_script_tag( 'window.OPF_TODAY = ' . wp_json_encode( $site_today ) . ';' );
+		$hint_settings = [
+			'show'     => 'yes' === get_option( 'opf_show_price_hints', 'yes' ),
+			'brackets' => 'yes' === get_option( 'opf_price_hint_brackets', 'yes' ),
+			'plus'     => 'yes' === get_option( 'opf_price_hint_plus', 'yes' ),
+		];
+		$json_flags = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT;
+		wp_print_inline_script_tag(
+			'window.OPF_PRICE_DISPLAY = ' . wp_json_encode( self::price_display_options(), $json_flags ) . ';' .
+			'window.OPF_PRICE_HINTS = ' . wp_json_encode( $hint_settings, $json_flags ) . ';'
+		);
 		if ( Renderer::compat() ) {
 			// Theme integration reads this global for price formatting (opf_config; wapf_config fallback lives in the theme JS).
 			wp_print_inline_script_tag(
@@ -83,13 +145,18 @@ final class Assets {
 		return [
 			'ajax'            => admin_url( 'admin-ajax.php' ),
 			'currency'        => get_woocommerce_currency(),
-			'display_options' => [
-				'symbol'      => get_woocommerce_currency_symbol(),
-				'thousand'    => wc_get_price_thousand_separator(),
-				'decimal'     => wc_get_price_decimal_separator(),
-				'decimals'    => wc_get_price_decimals(),
-				'price_format' => str_replace( array( '%1$s', '%2$s' ), array( 'symbol', 'price' ), get_woocommerce_price_format() ),
-			],
+			'display_options' => self::price_display_options(),
+		];
+	}
+
+	/** Currency display contract shared by price hints and legacy compatibility. */
+	private static function price_display_options(): array {
+		return [
+			'symbol'       => get_woocommerce_currency_symbol(),
+			'thousand'     => wc_get_price_thousand_separator(),
+			'decimal'      => wc_get_price_decimal_separator(),
+			'decimals'     => wc_get_price_decimals(),
+			'price_format' => str_replace( [ '%1$s', '%2$s' ], [ 'symbol', 'price' ], get_woocommerce_price_format() ),
 		];
 	}
 
@@ -104,6 +171,7 @@ final class Assets {
 			return;
 		}
 		wp_enqueue_style( 'opf-builder', OPF_URL . 'assets/css/opf-builder.css', [], OPF_VERSION );
+		wp_enqueue_media();
 		wp_enqueue_script( 'opf-builder', OPF_URL . 'assets/js/opf-builder.js', [ 'wp-element', 'wp-components', 'wp-data', 'wp-api-fetch', 'wp-i18n' ], OPF_VERSION, true );
 	}
 }
