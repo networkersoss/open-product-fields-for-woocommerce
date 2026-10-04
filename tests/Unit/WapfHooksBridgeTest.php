@@ -9,6 +9,20 @@
  */
 
 namespace {
+	if ( ! class_exists( 'WP_Hook' ) ) {
+		class WP_Hook {
+			public array $callbacks = [];
+		}
+	}
+
+	function opf_test_hook_key( $callback ): string {
+		if ( is_array( $callback ) ) {
+			$owner = is_object( $callback[0] ) ? spl_object_hash( $callback[0] ) : (string) $callback[0];
+			return $owner . '::' . $callback[1];
+		}
+		return is_object( $callback ) ? spl_object_hash( $callback ) : (string) $callback;
+	}
+
 	if ( ! defined( 'ABSPATH' ) ) {
 		define( 'ABSPATH', __DIR__ . '/' );
 	}
@@ -17,8 +31,12 @@ namespace {
 
 	if ( ! function_exists( 'add_filter' ) ) {
 		function add_filter( $tag, $callback, $priority = 10, $accepted = 1 ) {
-			$GLOBALS['wp_hooks'][ $tag ][ (int) $priority ][] = [ 'cb' => $callback, 'accepted' => (int) $accepted ];
+			$priority = (int) $priority;
+			$key = opf_test_hook_key( $callback );
+			$GLOBALS['wp_hooks'][ $tag ][ $priority ][ $key ] = [ 'cb' => $callback, 'accepted' => (int) $accepted ];
 			ksort( $GLOBALS['wp_hooks'][ $tag ] );
+			$GLOBALS['wp_filter'][ $tag ] ??= new WP_Hook();
+			$GLOBALS['wp_filter'][ $tag ]->callbacks[ $priority ][ $key ] = [ 'function' => $callback, 'accepted_args' => (int) $accepted ];
 			return true;
 		}
 		function add_action( $tag, $callback, $priority = 10, $accepted = 1 ) {
@@ -43,7 +61,12 @@ namespace {
 		function has_filter( $tag ) {
 			return ! empty( $GLOBALS['wp_hooks'][ $tag ] );
 		}
-		function remove_filter() {}
+		function remove_filter( $tag, $callback, $priority = 10 ) {
+			$key = opf_test_hook_key( $callback );
+			unset( $GLOBALS['wp_hooks'][ $tag ][ (int) $priority ][ $key ] );
+			unset( $GLOBALS['wp_filter'][ $tag ]->callbacks[ (int) $priority ][ $key ] );
+			return true;
+		}
 	}
 
 	if ( ! function_exists( '__' ) ) {
@@ -272,6 +295,21 @@ namespace {
 	}
 }
 
+namespace SW_WAPF_PRO\Includes\Models {
+	class Field {}
+}
+
+namespace SW_WAPF_PRO\Includes\Controllers {
+	class Linked_Products_Controller {
+		public int $calls = 0;
+
+		public function validate_cart( $error, $value, \SW_WAPF_PRO\Includes\Models\Field $field, $product_id, $clone_idx, $quantity, $from_cart, $cart_item_data ) {
+			++$this->calls;
+			return $error;
+		}
+	}
+}
+
 namespace OPF\Tests\Unit {
 
 use OPF\Compat\WapfHooks;
@@ -466,6 +504,72 @@ final class WapfHooksBridgeTest extends TestCase {
 			CartIntegration::restore_order_again( [], $again_item, $order );
 			$this->assert_fired( 'wapf/order_again/before_cart_item_field' );
 		}
+	}
+
+	public function test_opf_validation_skips_only_wapf_typed_linked_product_listener(): void {
+		$native_validator = new \SW_WAPF_PRO\Includes\Controllers\Linked_Products_Controller();
+		add_filter( 'wapf/validate', [ $native_validator, 'validate_cart' ], 10, 8 );
+		add_filter( 'wapf/validate', static function ( $error ) {
+			$error['error']   = true;
+			$error['message'] = 'third-party validation rule';
+			return $error;
+		}, 11, 1 );
+		$order_before = array_keys( $GLOBALS['wp_filter']['wapf/validate']->callbacks[10] );
+
+		$errors = WapfHooks::validate_field(
+			[ 'id' => 'image-options', 'type' => 'image_quantity', 'label' => 'Prints' ],
+			[ 'oak' => 2 ],
+			$GLOBALS['opf_products'][42],
+			1
+		);
+
+		$this->assertSame( [ 'third-party validation rule' ], $errors, 'Third-party validation behavior is preserved for OPF-only fields.' );
+		$this->assert_fired( 'wapf/validate' );
+		$this->assertSame(
+			[ 'id' => 'image-options', 'type' => 'image_quantity', 'label' => 'Prints' ],
+			$this->fired( 'wapf/validate' )[0][2],
+			'Third-party WAPF listeners continue to receive the normalized OPF field array.'
+		);
+		$this->assertSame( 0, $native_validator->calls, 'WAPF native typed validator must not receive an OPF normalized array.' );
+
+		$registry = $GLOBALS['wp_filter']['wapf/validate'];
+		$native_key = opf_test_hook_key( [ $native_validator, 'validate_cart' ] );
+		$this->assertArrayHasKey( 10, $registry->callbacks );
+		$this->assertArrayHasKey( $native_key, $registry->callbacks[10], 'Native WAPF validator is restored after OPF dispatch.' );
+		$this->assertSame( $order_before, array_keys( $registry->callbacks[10] ), 'Same-priority callback order is preserved.' );
+
+		apply_filters( 'wapf/validate', [ 'error' => false ], 'x', new \SW_WAPF_PRO\Includes\Models\Field(), 42, 0, 1, false, null );
+		$this->assertSame( 1, $native_validator->calls, 'WAPF-native validation still invokes its own typed listener.' );
+	}
+
+	public function test_native_wapf_validator_is_restored_when_another_listener_throws(): void {
+		$native_validator = new \SW_WAPF_PRO\Includes\Controllers\Linked_Products_Controller();
+		add_filter( 'wapf/validate', [ $native_validator, 'validate_cart' ], 10, 8 );
+		$order_before = array_keys( $GLOBALS['wp_filter']['wapf/validate']->callbacks[10] );
+		$thrower = static function ( $error ) {
+			throw new \RuntimeException( 'third-party validation failure' );
+		};
+		add_filter( 'wapf/validate', $thrower, 9, 1 );
+
+		try {
+			WapfHooks::validate_field(
+				[ 'id' => 'note', 'type' => 'text', 'label' => 'Note' ],
+				'hello',
+				$GLOBALS['opf_products'][42],
+				1
+			);
+			$this->fail( 'The third-party exception should propagate.' );
+		} catch ( \RuntimeException $exception ) {
+			$this->assertSame( 'third-party validation failure', $exception->getMessage() );
+		} finally {
+			remove_filter( 'wapf/validate', $thrower, 9 );
+		}
+
+		$registry = $GLOBALS['wp_filter']['wapf/validate'];
+		$this->assertSame( $order_before, array_keys( $registry->callbacks[10] ), 'Native listener is restored in the original order after an exception.' );
+		$this->assertSame( 0, $native_validator->calls );
+		apply_filters( 'wapf/validate', [ 'error' => false ], 'x', new \SW_WAPF_PRO\Includes\Models\Field(), 42, 0, 1, false, null );
+		$this->assertSame( 1, $native_validator->calls, 'Restored native listener remains usable after a failed OPF dispatch.' );
 	}
 
 	public function test_wapf_field_render_aliases_fire(): void {

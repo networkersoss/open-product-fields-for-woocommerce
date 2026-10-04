@@ -176,8 +176,7 @@ final class WapfHooks {
 		} else {
 			$product_id = (int) $product;
 		}
-		$err = apply_filters(
-			'wapf/validate',
+		$err = self::apply_validation_filter_for_opf_field(
 			[ 'error' => false ],
 			$value,
 			$field,
@@ -191,6 +190,99 @@ final class WapfHooks {
 			return [ (string) $err['message'] ];
 		}
 		return [];
+	}
+
+	/**
+	 * Dispatch the shared validation hook without passing OPF arrays to WAPF's
+	 * native linked-product validator, which requires a WAPF Field object.
+	 * Other WAPF-named third-party listeners still receive the OPF field.
+	 *
+	 * The native callback is removed only for this synchronous dispatch and
+	 * restored at its original priority and position before returning.
+	 *
+	 * @param mixed ...$args Filter arguments, beginning with the error array.
+	 * @return mixed
+	 */
+	private static function apply_validation_filter_for_opf_field( ...$args ) {
+		$hook_name = 'wapf/validate';
+		$registry  = $GLOBALS['wp_filter'][ $hook_name ] ?? null;
+		$callbacks = ( is_object( $registry ) && isset( $registry->callbacks ) && is_array( $registry->callbacks ) )
+			? $registry->callbacks
+			: ( is_array( $registry ) ? $registry : [] );
+		$removed = [];
+
+		foreach ( $callbacks as $priority => $priority_callbacks ) {
+			foreach ( $priority_callbacks as $key => $entry ) {
+				$callback = $entry['function'] ?? null;
+				if ( ! self::is_native_wapf_linked_product_validator( $callback ) ) {
+					continue;
+				}
+
+				$removed[] = [
+					'callback'       => $callback,
+					'priority'       => (int) $priority,
+					'accepted_args'  => (int) ( $entry['accepted_args'] ?? 1 ),
+					'key'            => $key,
+					'priority_order' => array_keys( $priority_callbacks ),
+				];
+				remove_filter( $hook_name, $callback, (int) $priority );
+			}
+		}
+
+		try {
+			return apply_filters( $hook_name, ...$args );
+		} finally {
+			foreach ( $removed as $entry ) {
+				add_filter( $hook_name, $entry['callback'], $entry['priority'], $entry['accepted_args'] );
+				self::restore_validation_callback_order( $hook_name, $entry );
+			}
+		}
+	}
+
+	/** @param mixed $callback WordPress filter callback. */
+	private static function is_native_wapf_linked_product_validator( $callback ): bool {
+		return is_array( $callback )
+			&& isset( $callback[0], $callback[1] )
+			&& is_object( $callback[0] )
+			&& is_string( $callback[1] )
+			&& is_a( $callback[0], 'SW_WAPF_PRO\\Includes\\Controllers\\Linked_Products_Controller' )
+			&& 'validate_cart' === strtolower( $callback[1] );
+	}
+
+	/**
+	 * Restore the callback's former order among same-priority filters.
+	 *
+	 * @param string               $hook_name Hook name.
+	 * @param array<string, mixed> $entry     Removed callback metadata.
+	 */
+	private static function restore_validation_callback_order( string $hook_name, array $entry ): void {
+		$registry = $GLOBALS['wp_filter'][ $hook_name ] ?? null;
+		if ( is_object( $registry ) && isset( $registry->callbacks[ $entry['priority'] ] ) && is_array( $registry->callbacks[ $entry['priority'] ] ) ) {
+			$current = $registry->callbacks[ $entry['priority'] ];
+		} elseif ( is_array( $registry ) && isset( $registry[ $entry['priority'] ] ) && is_array( $registry[ $entry['priority'] ] ) ) {
+			$current = $registry[ $entry['priority'] ];
+		} else {
+			return;
+		}
+
+		$ordered = [];
+		foreach ( $entry['priority_order'] as $key ) {
+			if ( isset( $current[ $key ] ) ) {
+				$ordered[ $key ] = $current[ $key ];
+			}
+		}
+		foreach ( $current as $key => $callback ) {
+			if ( ! isset( $ordered[ $key ] ) ) {
+				$ordered[ $key ] = $callback;
+			}
+		}
+
+		if ( is_object( $registry ) ) {
+			$registry->callbacks[ $entry['priority'] ] = $ordered;
+		} else {
+			$registry[ $entry['priority'] ] = $ordered;
+			$GLOBALS['wp_filter'][ $hook_name ] = $registry;
+		}
 	}
 
 	/**
