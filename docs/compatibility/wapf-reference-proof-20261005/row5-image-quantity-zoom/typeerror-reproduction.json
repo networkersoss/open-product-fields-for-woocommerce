@@ -1,0 +1,54 @@
+{
+    "utc": "2026-10-05T22:02:16+00:00",
+    "wapf_version": "3.1.5 (header)",
+    "opf_version": "0.1.0",
+    "native_callback": {
+        "class": "SW_WAPF_PRO\\Includes\\Controllers\\Linked_Products_Controller",
+        "method": "validate_cart",
+        "priority": 10
+    },
+    "field_id": "prints",
+    "field_type": "image_quantity",
+    "dispatch": {
+        "raw_apply_filters": {
+            "threw": true,
+            "exception": "TypeError",
+            "message": "SW_WAPF_PRO\\Includes\\Controllers\\Linked_Products_Controller::validate_cart(): Argument #3 ($field) must be of type SW_WAPF_PRO\\Includes\\Models\\Field, array given, called in \/tmp\/opf-wapfref-compare-wp\/wp-includes\/class-wp-hook.php on line 353",
+            "file": "\/tmp\/opf-wapfref-compare-wp\/wp-content\/plugins\/advanced-product-fields-for-woocommerce-extended\/includes\/controllers\/class-linked-products-controller.php",
+            "line": 455,
+            "trace": "#0 \/tmp\/opf-wapfref-compare-wp\/wp-includes\/class-wp-hook.php(353): SW_WAPF_PRO\\Includes\\Controllers\\Linked_Products_Controller->validate_cart()\n#1 \/tmp\/opf-wapfref-compare-wp\/wp-includes\/plugin.php(206): WP_Hook->apply_filters()\n#2 phar:\/\/\/usr\/local\/bin\/wp\/vendor\/wp-cli\/eval-command\/src\/EvalFile_Command.php(85) : eval()'d code(161): apply_filters()\n#3 phar:\/\/\/usr\/local\/bin\/wp\/vendor\/wp-cli\/eval-command\/src\/EvalFile_Command.php(85): eval()\n#4 phar:\/\/\/usr\/local\/bin\/wp\/vendor\/wp-cli\/eval-command\/src\/EvalFile_Command.php(59): EvalFile_Command::execute_eval()\n#5 [internal function]: EvalFile_Command->__invoke()\n#6 phar:\/\/\/usr\/local\/bin\/wp\/vendor\/wp-cli\/wp-cli\/php\/WP_CLI\/Dispatcher\/CommandFactory.php(100): call_user_func()\n#7 [internal function]: WP_CLI\\Dispatcher\\CommandFactory::{closure:WP_CLI\\Dispatcher\\CommandFactory::create_subcommand():97}()\n#8 phar:\/\/\/usr\/local\/bin\/wp\/vendor\/wp-cli\/wp-cli\/php\/WP_CLI\/Dispatcher\/Subcommand.php(497): call_user_func()\n#9 phar:\/\/\/usr\/local\/bin\/wp\/vendor\/wp-cli\/wp-cli\/php\/WP_CLI\/Runner.php(441): WP_CLI\\Dispatcher\\Subcommand->invoke()\n#10 phar:\/\/\/usr\/local\/bin\/wp\/vendor\/wp-cli\/wp-cli\/php\/WP_CLI\/Runner.php(464): WP_CLI\\Runner->run_command()\n#11 phar:\/\/\/usr\/local\/bin\/wp\/vendor\/wp-cli\/wp-cli\/php\/WP_CLI\/Runner.php(136): WP_CLI\\Runner->run_command_and_exit()\n#12 phar:\/\/\/usr\/local\/bin\/wp\/vendor\/wp-cli\/wp-cli\/php\/WP_CLI\/Runner.php(1229): WP_CLI\\Runner->do_early_invoke()\n#13 phar:\/\/\/usr\/local\/bin\/wp\/vendor\/wp-cli\/wp-cli\/php\/WP_CLI\/Bootstrap\/LaunchRunner.php(28): WP_CLI\\Runner->start()\n#14 phar:\/\/\/usr\/local\/bin\/wp\/vendor\/wp-cli\/wp-cli\/php\/bootstrap.php(83): WP_CLI\\Bootstrap\\LaunchRunner->process()\n#15 phar:\/\/\/usr\/local\/bin\/wp\/vendor\/wp-cli\/wp-cli\/php\/wp-cli.php(32): WP_CLI\\bootstrap()\n#16 phar:\/\/\/usr\/local\/bin\/wp\/php\/boot-phar.php(20): include('...')\n#17 \/usr\/local\/bin\/wp(4): include('...')\n#18 {main}",
+            "payload": {
+                "filter": "wapf\/validate",
+                "arg1": {
+                    "error": false
+                },
+                "arg3_type": "array",
+                "arg3_id": "prints",
+                "arg3_keys": [
+                    "id",
+                    "label",
+                    "description",
+                    "type",
+                    "required",
+                    "width",
+                    "css_class",
+                    "placeholder",
+                    "choices",
+                    "pricing",
+                    "conditionals",
+                    "description_presentation",
+                    "hide_cart",
+                    "hide_checkout",
+                    "hide_order",
+                    "multiple",
+                    "image_zoom"
+                ]
+            }
+        },
+        "wapfhooks_bridge": {
+            "threw": false,
+            "returned": []
+        }
+    },
+    "native_callback_after_bridge": 10
+}

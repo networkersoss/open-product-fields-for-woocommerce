@@ -1,0 +1,35 @@
+{
+  "utc": "2026-10-05T22:32:33.853Z",
+  "checks": [
+    {
+      "label": "WAPF 3.1.5: page emits its own gallery rule payload",
+      "pass": true,
+      "detail": "rules=2"
+    },
+    {
+      "label": "WAPF 3.1.5: last rule targets image 15168",
+      "pass": true,
+      "detail": "last=15168"
+    },
+    {
+      "label": "WAPF 3.1.5: selecting steel activates the LAST matching rule (rule list is reversed)",
+      "pass": true,
+      "detail": "src=http://127.0.0.1:8251/wp-content/uploads/2026/10/ic-g2.png"
+    },
+    {
+      "label": "OPF: page emits its own gallery rule payload",
+      "pass": true,
+      "detail": "rules=2"
+    },
+    {
+      "label": "OPF: last rule targets image 15168",
+      "pass": true,
+      "detail": "last=15168"
+    },
+    {
+      "label": "OPF: selecting steel activates the LAST matching rule (rule list is reversed)",
+      "pass": true,
+      "detail": "src=http://127.0.0.1:8251/wp-content/uploads/2026/10/ic-g2.png"
+    }
+  ]
+}

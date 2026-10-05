@@ -1,0 +1,40 @@
+{
+  "utc": "2026-10-05T22:10:24.400Z",
+  "checks": [
+    {
+      "label": "temporary administrator login succeeds",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "label": "builder exposes a live REST nonce + endpoint",
+      "pass": true,
+      "detail": "http://127.0.0.1:8251/wp-json/opf/v1/groups"
+    },
+    {
+      "label": "fixture group starts at columns:2",
+      "pass": true,
+      "detail": "2"
+    },
+    {
+      "label": "admin REST POST /opf/v1/groups accepts the save",
+      "pass": true,
+      "detail": "HTTP 200 id=15133"
+    },
+    {
+      "label": "REST reload returns columns:4",
+      "pass": true,
+      "detail": "4"
+    },
+    {
+      "label": "fresh builder load shows columns:4",
+      "pass": true,
+      "detail": "4"
+    },
+    {
+      "label": "storefront renders the saved 4-column checkbox grid",
+      "pass": true,
+      "detail": "columns=4"
+    }
+  ]
+}

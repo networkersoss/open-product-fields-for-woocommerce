@@ -1,0 +1,80 @@
+{
+    "utc": "2026-10-05T22:32:20+00:00",
+    "wapf_version": "3.1.5",
+    "opf_version": "0.1.0",
+    "zoom_url_full": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/child-zoom.png",
+    "wapf_on": {
+        "found": true,
+        "classes": [
+            "wapf-swatch",
+            "wapf-swatch--image",
+            "apf-pick-box",
+            "wapf-tt-wrap"
+        ],
+        "data_zoom_url": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/child-zoom.png",
+        "input": {
+            "name": "wapf[field_items][]",
+            "value": "15162",
+            "data_field_id": "items",
+            "data_wapf_label": "WAPFREF zoom child"
+        },
+        "preview_images": 0,
+        "preview_markup": false
+    },
+    "wapf_off": {
+        "found": true,
+        "classes": [
+            "wapf-swatch",
+            "wapf-swatch--image",
+            "apf-pick-box",
+            "wapf-tt-wrap"
+        ],
+        "data_zoom_url": null,
+        "input": {
+            "name": "wapf[field_items][]",
+            "value": "15162",
+            "data_field_id": "items",
+            "data_wapf_label": "WAPFREF zoom child"
+        },
+        "preview_images": 0,
+        "preview_markup": false
+    },
+    "opf_on": {
+        "found": true,
+        "classes": [
+            "opf-swatch",
+            "opf-swatch--image",
+            "opf-product-choice",
+            "opf-image-swatch-label--tooltip",
+            "opf-swatch--image-zoom",
+            "wapf-tt-wrap"
+        ],
+        "data_zoom_url": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/child-zoom.png",
+        "input": {
+            "name": "opf[15165][items][]",
+            "value": "15162",
+            "data_field_id": "items",
+            "data_wapf_label": "WAPFREF zoom child"
+        },
+        "preview_images": 1,
+        "preview_markup": "<img class=\"opf-swatch-zoom-preview\" src=\"http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/child-zoom.png\" alt=\"\" aria-hidden=\"true\" loading=\"lazy\" decoding=\"async\">"
+    },
+    "opf_off": {
+        "found": true,
+        "classes": [
+            "opf-swatch",
+            "opf-swatch--image",
+            "opf-product-choice",
+            "opf-image-swatch-label--tooltip"
+        ],
+        "data_zoom_url": null,
+        "input": {
+            "name": "opf[15166][items][]",
+            "value": "15162",
+            "data_field_id": "items",
+            "data_wapf_label": "WAPFREF zoom child"
+        },
+        "preview_images": 0,
+        "preview_markup": false
+    }
+}

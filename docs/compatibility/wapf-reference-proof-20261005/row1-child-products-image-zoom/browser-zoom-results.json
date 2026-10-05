@@ -1,0 +1,60 @@
+{
+  "utc": "2026-10-05T22:32:22.953Z",
+  "base": "http://127.0.0.1:8251",
+  "checks": [
+    {
+      "label": "wide: WAPF and OPF zoom wrappers both carry data-zoom-url",
+      "pass": true,
+      "detail": "wapf=true opf=true"
+    },
+    {
+      "label": "wide: WAPF and OPF zoom URLs point at the same full-size attachment",
+      "pass": true,
+      "detail": "http://127.0.0.1:8251/wp-content/uploads/2026/10/child-zoom.png == http://127.0.0.1:8251/wp-content/uploads/2026/10/child-zoom.png"
+    },
+    {
+      "label": "wide: WAPF JS injects the zoom image on hover (>780px)",
+      "pass": true,
+      "detail": "imgs=1"
+    },
+    {
+      "label": "wide: OPF inline preview visible on hover",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "label": "wide raw",
+      "wapfZoomImg": 1,
+      "opfPreviewVisible": true,
+      "wapfDataZoom": "http://127.0.0.1:8251/wp-content/uploads/2026/10/child-zoom.png",
+      "opfDataZoom": "http://127.0.0.1:8251/wp-content/uploads/2026/10/child-zoom.png"
+    },
+    {
+      "label": "narrow: WAPF and OPF zoom wrappers both carry data-zoom-url",
+      "pass": true,
+      "detail": "wapf=true opf=true"
+    },
+    {
+      "label": "narrow: WAPF and OPF zoom URLs point at the same full-size attachment",
+      "pass": true,
+      "detail": "http://127.0.0.1:8251/wp-content/uploads/2026/10/child-zoom.png == http://127.0.0.1:8251/wp-content/uploads/2026/10/child-zoom.png"
+    },
+    {
+      "label": "narrow: WAPF suppresses the zoom image on hover (<=780px)",
+      "pass": true,
+      "detail": "imgs=0"
+    },
+    {
+      "label": "narrow: OPF inline preview STILL visible on hover (no width gate)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "label": "narrow raw",
+      "wapfZoomImg": 0,
+      "opfPreviewVisible": true,
+      "wapfDataZoom": "http://127.0.0.1:8251/wp-content/uploads/2026/10/child-zoom.png",
+      "opfDataZoom": "http://127.0.0.1:8251/wp-content/uploads/2026/10/child-zoom.png"
+    }
+  ]
+}

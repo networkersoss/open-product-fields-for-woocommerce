@@ -1,0 +1,26 @@
+{
+    "utc": "2026-10-05T22:06:00+00:00",
+    "wapf_version": "3.1.5",
+    "opf_version": "0.1.0",
+    "settings": {
+        "wapf_hint_format": "(default (+{x}))",
+        "wapf_show_pricing_hints": "(default yes)",
+        "opf_hint_format": "(default (+{x}))",
+        "opf_show_price_hints": "(default yes)"
+    },
+    "wapf": {
+        "shop_fixed": "(+&#36;2.50)",
+        "cart_fixed": "(+&#36;2.50)",
+        "option_html": "<span class=\"wapf-pricing-hint\">(+...)<\/span>"
+    },
+    "opf": {
+        "shop_fixed": "(+&#36;2.50)",
+        "cart_fixed": "(+&#36;2.50)",
+        "storefront_html": " <span class=\"opf-pricing-hint\">+ <span class=\"woocommerce-Price-amount amount\"><bdi><span class=\"woocommerce-Price-currencySymbol\" translate=\"no\">&#36;<\/span>2.50<\/bdi><\/span><\/span>"
+    },
+    "parity": {
+        "shop_fixed_equal": true,
+        "cart_fixed_equal": true,
+        "wrapper_equal_shape": true
+    }
+}

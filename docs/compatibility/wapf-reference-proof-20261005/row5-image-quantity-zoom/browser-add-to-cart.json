@@ -1,0 +1,35 @@
+{
+  "utc": "2026-10-05T21:59:15.280Z",
+  "checks": [
+    {
+      "label": "WAPF 3.1.5 is enqueued on the product page",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "label": "both-active classic add-to-cart POST is not a server error",
+      "pass": true,
+      "detail": "HTTP 200"
+    },
+    {
+      "label": "Store API cart contains the fixture product",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "label": "no 5xx responses during the both-active request",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "label": "no failed browser requests",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "label": "isolated browser cart emptied",
+      "pass": true,
+      "detail": ""
+    }
+  ]
+}

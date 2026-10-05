@@ -1,0 +1,219 @@
+{
+    "utc": "2026-10-05T22:32:24+00:00",
+    "wapf_version": "3.1.5",
+    "opf_version": "0.1.0",
+    "wapf": {
+        "wapf_st": "rules",
+        "wapf_gi": {
+            "images": [
+                {
+                    "title": "WAPFREF image change rule 1",
+                    "caption": "",
+                    "url": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g1.png",
+                    "alt": "WAPFREF image change rule 1",
+                    "src": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g1.png",
+                    "srcset": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g1.png 500w, http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g1-300x300.png 300w, http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g1-150x150.png 150w, http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g1-100x100.png 100w",
+                    "sizes": "(max-width: 500px) 100vw, 500px",
+                    "full_src": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g1.png",
+                    "full_src_w": 500,
+                    "full_src_h": 500,
+                    "gallery_thumbnail_src": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g1-100x100.png",
+                    "gallery_thumbnail_src_w": 100,
+                    "gallery_thumbnail_src_h": 100,
+                    "thumb_src": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g1-300x300.png",
+                    "thumb_src_w": 300,
+                    "thumb_src_h": 300,
+                    "src_w": 500,
+                    "src_h": 500,
+                    "image_id": "15167"
+                },
+                {
+                    "title": "WAPFREF image change rule 2",
+                    "caption": "",
+                    "url": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g2.png",
+                    "alt": "WAPFREF image change rule 2",
+                    "src": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g2.png",
+                    "srcset": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g2.png 500w, http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g2-300x300.png 300w, http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g2-150x150.png 150w, http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g2-100x100.png 100w",
+                    "sizes": "(max-width: 500px) 100vw, 500px",
+                    "full_src": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g2.png",
+                    "full_src_w": 500,
+                    "full_src_h": 500,
+                    "gallery_thumbnail_src": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g2-100x100.png",
+                    "gallery_thumbnail_src_w": 100,
+                    "gallery_thumbnail_src_h": 100,
+                    "thumb_src": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g2-300x300.png",
+                    "thumb_src_w": 300,
+                    "thumb_src_h": 300,
+                    "src_w": 500,
+                    "src_h": 500,
+                    "image_id": "15168"
+                }
+            ],
+            "rules": [
+                {
+                    "values": [
+                        {
+                            "field": "finish",
+                            "value": "steel"
+                        }
+                    ],
+                    "image": "15167"
+                },
+                {
+                    "values": [
+                        {
+                            "field": "finish",
+                            "value": "steel"
+                        }
+                    ],
+                    "image": "15168"
+                }
+            ]
+        },
+        "opf_st": null,
+        "opf_gi": null
+    },
+    "opf": {
+        "wapf_st": "rules",
+        "wapf_gi": {
+            "images": [
+                {
+                    "title": "WAPFREF image change rule 1",
+                    "caption": "",
+                    "url": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g1.png",
+                    "alt": "WAPFREF image change rule 1",
+                    "src": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g1.png",
+                    "srcset": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g1.png 500w, http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g1-300x300.png 300w, http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g1-150x150.png 150w, http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g1-100x100.png 100w",
+                    "sizes": "(max-width: 500px) 100vw, 500px",
+                    "full_src": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g1.png",
+                    "full_src_w": 500,
+                    "full_src_h": 500,
+                    "gallery_thumbnail_src": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g1-100x100.png",
+                    "gallery_thumbnail_src_w": 100,
+                    "gallery_thumbnail_src_h": 100,
+                    "thumb_src": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g1-300x300.png",
+                    "thumb_src_w": 300,
+                    "thumb_src_h": 300,
+                    "src_w": 500,
+                    "src_h": 500,
+                    "image_id": "15167"
+                },
+                {
+                    "title": "WAPFREF image change rule 2",
+                    "caption": "",
+                    "url": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g2.png",
+                    "alt": "WAPFREF image change rule 2",
+                    "src": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g2.png",
+                    "srcset": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g2.png 500w, http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g2-300x300.png 300w, http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g2-150x150.png 150w, http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g2-100x100.png 100w",
+                    "sizes": "(max-width: 500px) 100vw, 500px",
+                    "full_src": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g2.png",
+                    "full_src_w": 500,
+                    "full_src_h": 500,
+                    "gallery_thumbnail_src": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g2-100x100.png",
+                    "gallery_thumbnail_src_w": 100,
+                    "gallery_thumbnail_src_h": 100,
+                    "thumb_src": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g2-300x300.png",
+                    "thumb_src_w": 300,
+                    "thumb_src_h": 300,
+                    "src_w": 500,
+                    "src_h": 500,
+                    "image_id": "15168"
+                }
+            ],
+            "rules": [
+                {
+                    "values": [
+                        {
+                            "field": "finish",
+                            "value": "steel"
+                        }
+                    ],
+                    "image": "15167"
+                },
+                {
+                    "values": [
+                        {
+                            "field": "finish",
+                            "value": "steel"
+                        }
+                    ],
+                    "image": "15168"
+                }
+            ]
+        },
+        "opf_st": "rules",
+        "opf_gi": {
+            "images": [
+                {
+                    "title": "WAPFREF image change rule 1",
+                    "caption": "",
+                    "url": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g1.png",
+                    "alt": "WAPFREF image change rule 1",
+                    "src": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g1.png",
+                    "srcset": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g1.png 500w, http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g1-300x300.png 300w, http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g1-150x150.png 150w, http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g1-100x100.png 100w",
+                    "sizes": "(max-width: 500px) 100vw, 500px",
+                    "full_src": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g1.png",
+                    "full_src_w": 500,
+                    "full_src_h": 500,
+                    "gallery_thumbnail_src": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g1-100x100.png",
+                    "gallery_thumbnail_src_w": 100,
+                    "gallery_thumbnail_src_h": 100,
+                    "thumb_src": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g1-300x300.png",
+                    "thumb_src_w": 300,
+                    "thumb_src_h": 300,
+                    "src_w": 500,
+                    "src_h": 500,
+                    "image_id": "15167"
+                },
+                {
+                    "title": "WAPFREF image change rule 2",
+                    "caption": "",
+                    "url": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g2.png",
+                    "alt": "WAPFREF image change rule 2",
+                    "src": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g2.png",
+                    "srcset": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g2.png 500w, http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g2-300x300.png 300w, http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g2-150x150.png 150w, http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g2-100x100.png 100w",
+                    "sizes": "(max-width: 500px) 100vw, 500px",
+                    "full_src": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g2.png",
+                    "full_src_w": 500,
+                    "full_src_h": 500,
+                    "gallery_thumbnail_src": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g2-100x100.png",
+                    "gallery_thumbnail_src_w": 100,
+                    "gallery_thumbnail_src_h": 100,
+                    "thumb_src": "http:\/\/127.0.0.1:8251\/wp-content\/uploads\/2026\/10\/ic-g2-300x300.png",
+                    "thumb_src_w": 300,
+                    "thumb_src_h": 300,
+                    "src_w": 500,
+                    "src_h": 500,
+                    "image_id": "15168"
+                }
+            ],
+            "rules": [
+                {
+                    "values": [
+                        {
+                            "field": "finish",
+                            "value": "steel"
+                        }
+                    ],
+                    "image": "15167"
+                },
+                {
+                    "values": [
+                        {
+                            "field": "finish",
+                            "value": "steel"
+                        }
+                    ],
+                    "image": "15168"
+                }
+            ]
+        }
+    },
+    "parity": {
+        "swap_type_equal": true,
+        "same_rule_count": true,
+        "rule_order_equal": true,
+        "same_first_image": true,
+        "same_last_image": true
+    }
+}

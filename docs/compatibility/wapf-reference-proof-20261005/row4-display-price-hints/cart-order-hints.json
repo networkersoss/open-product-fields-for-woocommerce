@@ -1,0 +1,53 @@
+{
+    "wapf": {
+        "line_total": 22.5,
+        "cart_item_data": [],
+        "cart_display_markup": "Gold <span class=\"wapf-pricing-hint\">(+&#36;2.50)<\/span>",
+        "order_meta__wapf_meta": {
+            "version": "3.1.5",
+            "fields": {
+                "finish": {
+                    "id": "finish",
+                    "type": "select",
+                    "label": "Finish",
+                    "value": "Gold (+&#36;2.50)",
+                    "values": [
+                        {
+                            "label": "Gold",
+                            "price": "2.50",
+                            "price_type": "fx",
+                            "slug": "gold",
+                            "calc_price": 2.5,
+                            "pricing_hint": "(+&#36;2.50)"
+                        }
+                    ]
+                }
+            },
+            "settings": {
+                "Finish": [
+                    {
+                        "field": "finish",
+                        "hide": false
+                    }
+                ]
+            },
+            "cart_item_key": "c5f77a68c3b4b1df0d387d847d88074d"
+        }
+    },
+    "opf": {
+        "line_total": 22.5,
+        "cart_item_data": [
+            {
+                "name": "Finish",
+                "value": "Gold",
+                "display": "Gold <span class=\"opf-pricing-hint\">(+&#36;2.50)<\/span>"
+            }
+        ],
+        "order_meta__opf_fields": "{\"15117\":{\"finish\":\"gold\"}}"
+    },
+    "utc": "2026-10-05T22:06:01+00:00",
+    "orders": [
+        15118,
+        15119
+    ]
+}
