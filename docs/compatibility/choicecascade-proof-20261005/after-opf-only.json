@@ -1,10 +1,9 @@
 {
   "label": "after-opf-only",
   "url": "http://127.0.0.1:8090/product/opf-wapf-coexistcss-product/",
-  "generatedAt": "2026-10-05T23:12:07.798Z",
+  "generatedAt": "2026-10-05T23:18:09.334Z",
   "stylesheets": [
-    "http://127.0.0.1:8090/wp-content/plugins/open-product-fields-for-woocommerce/assets/css/opf-frontend.css?ver=0.1.0",
-    "http://127.0.0.1:8090/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791241845"
+    "http://127.0.0.1:8090/wp-content/plugins/open-product-fields-for-woocommerce/assets/css/opf-frontend.css?ver=0.1.0"
   ],
   "opfCheckbox": {
     "desktop": {
@@ -51,13 +50,6 @@
           "media": "(max-width: 420px)",
           "value": "repeat(var(--opf-checkbox-columns-mobile, 1), minmax(0, 1fr))",
           "applies": false
-        },
-        {
-          "sheet": "http://127.0.0.1:8090/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791241845",
-          "selector": ".wapf-checkboxes, .wapf-radios",
-          "media": null,
-          "value": "auto",
-          "applies": true
         }
       ]
     },
@@ -105,13 +97,6 @@
           "media": "(max-width: 420px)",
           "value": "repeat(var(--opf-checkbox-columns-mobile, 1), minmax(0, 1fr))",
           "applies": false
-        },
-        {
-          "sheet": "http://127.0.0.1:8090/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791241845",
-          "selector": ".wapf-checkboxes, .wapf-radios",
-          "media": null,
-          "value": "auto",
-          "applies": true
         }
       ]
     },
@@ -159,13 +144,6 @@
           "media": "(max-width: 420px)",
           "value": "repeat(var(--opf-checkbox-columns-mobile, 1), minmax(0, 1fr))",
           "applies": false
-        },
-        {
-          "sheet": "http://127.0.0.1:8090/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791241845",
-          "selector": ".wapf-checkboxes, .wapf-radios",
-          "media": null,
-          "value": "auto",
-          "applies": true
         }
       ]
     },
@@ -212,13 +190,6 @@
           "selector": ".opf-swatch-wrapper.opf-checkboxes--columns",
           "media": "(max-width: 420px)",
           "value": "repeat(var(--opf-checkbox-columns-mobile, 1), minmax(0, 1fr))",
-          "applies": true
-        },
-        {
-          "sheet": "http://127.0.0.1:8090/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791241845",
-          "selector": ".wapf-checkboxes, .wapf-radios",
-          "media": null,
-          "value": "auto",
           "applies": true
         }
       ]
@@ -267,56 +238,20 @@
           "media": "(max-width: 420px)",
           "value": "repeat(var(--opf-checkbox-columns-mobile, 1), minmax(0, 1fr))",
           "applies": true
-        },
-        {
-          "sheet": "http://127.0.0.1:8090/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791241845",
-          "selector": ".wapf-checkboxes, .wapf-radios",
-          "media": null,
-          "value": "auto",
-          "applies": true
         }
       ]
     }
   },
   "wapfCheckbox": {
-    "matched": true,
-    "display": "inline-grid",
-    "gridTemplateColumns": "141.141px",
-    "columnCount": 1,
-    "rowGap": "5px",
-    "columnGap": "16px",
-    "classes": "wapf-checkboxes",
-    "inlineStyle": null,
-    "cascade": [
-      {
-        "sheet": "http://127.0.0.1:8090/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791241845",
-        "selector": ".wapf-checkboxes, .wapf-radios",
-        "media": null,
-        "value": "auto",
-        "applies": true
-      }
-    ],
-    "winner": {
-      "sheet": "http://127.0.0.1:8090/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791241845",
-      "selector": ".wapf-checkboxes, .wapf-radios",
-      "media": null,
-      "value": "auto",
-      "applies": true,
-      "specificity": {
-        "score": 100,
-        "ids": 0,
-        "classes": 1,
-        "elements": 0
-      }
-    }
+    "matched": false
   },
   "opfRadio": {
     "matched": true,
-    "display": "inline-grid",
-    "gridTemplateColumns": "117.344px",
+    "display": "block",
+    "gridTemplateColumns": "none",
     "columnCount": 1,
-    "rowGap": "5px",
-    "columnGap": "16px",
+    "rowGap": "normal",
+    "columnGap": "normal",
     "classes": "opf-swatch-wrapper wapf-radios",
     "inlineStyle": null
   }

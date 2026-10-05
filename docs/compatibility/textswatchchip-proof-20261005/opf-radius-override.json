@@ -1,7 +1,7 @@
 {
   "label": "opf-radius-override",
   "url": "http://127.0.0.1:8090/product/opf-text-swatch-chip/",
-  "generatedAt": "2026-10-05T23:09:48.569Z",
+  "generatedAt": "2026-10-05T23:24:19.377Z",
   "expected": {
     "border": "2px solid rgb(204, 204, 204)",
     "background": "rgb(18, 18, 18)",
@@ -34,6 +34,18 @@
     "radius": "0px",
     "classes": "opf-swatch opf-swatch--text wapf-checkbox",
     "wrapperClasses": "opf-swatch-wrapper wapf-checkboxes"
+  },
+  "radioControl": {
+    "border": "0px none rgb(17, 17, 17)",
+    "borderTopWidth": "0px",
+    "borderTopStyle": "none",
+    "borderTopColor": "rgb(17, 17, 17)",
+    "background": "rgba(0, 0, 0, 0)",
+    "color": "rgb(17, 17, 17)",
+    "inheritedColor": "rgb(17, 17, 17)",
+    "radius": "0px",
+    "classes": "opf-swatch opf-swatch--text wapf-radio opf-single-select",
+    "wrapperClasses": "opf-swatch-wrapper wapf-radios"
   },
   "checkedChip": {
     "border": "2px solid rgb(204, 204, 204)",

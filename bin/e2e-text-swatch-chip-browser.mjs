@@ -99,15 +99,19 @@ try {
 	check( `chip border-radius is "${ expected.radius }"`, expected.radius === chip.radius, chip.radius );
 	check( 'chip wrapper is the scoped text-swatch wrapper', /opf-text-swatch-wrapper/.test( chip.wrapperClasses ), chip.wrapperClasses );
 
-	// Regression control: the plain checkbox choice shares `.opf-swatch--text`
-	// but lives in a wrapper without the scoping class, so the chip rule must
-	// not reach it. WAPF renders that element borderless/transparent too.
-	const checkbox = await chipStyle( page.locator( '[data-opf-field="extras"] .opf-swatch--text' ).first() );
-	result.checkboxControl = checkbox;
-	check( 'plain checkbox choice keeps no border', '0px' === checkbox.borderTopWidth && 'none' === checkbox.borderTopStyle, `${ checkbox.borderTopWidth } ${ checkbox.borderTopStyle } ${ checkbox.borderTopColor }` );
-	check( 'plain checkbox choice keeps a transparent background', 'rgba(0, 0, 0, 0)' === checkbox.background, checkbox.background );
-	check( 'plain checkbox choice keeps a 0px radius', '0px' === checkbox.radius, checkbox.radius );
-	check( 'plain checkbox wrapper is not the text-swatch wrapper', ! /opf-text-swatch-wrapper/.test( checkbox.wrapperClasses ), checkbox.wrapperClasses );
+	// Regression control: the plain checkbox and radio choices share
+	// `.opf-swatch--text` but live in a wrapper without the scoping class, so the
+	// chip rule must not reach them. WAPF renders those elements
+	// borderless/transparent too (`views/frontend/fields/checkboxes.php:13`,
+	// `radio.php:14`).
+	for ( const [ field, kind ] of [ [ 'extras', 'checkbox' ], [ 'size', 'radio' ] ] ) {
+		const control = await chipStyle( page.locator( `[data-opf-field="${ field }"] .opf-swatch--text` ).first() );
+		result[ `${ kind }Control` ] = control;
+		check( `plain ${ kind } choice keeps no border`, '0px' === control.borderTopWidth && 'none' === control.borderTopStyle, `${ control.borderTopWidth } ${ control.borderTopStyle } ${ control.borderTopColor }` );
+		check( `plain ${ kind } choice keeps a transparent background`, 'rgba(0, 0, 0, 0)' === control.background, control.background );
+		check( `plain ${ kind } choice keeps a 0px radius`, '0px' === control.radius, control.radius );
+		check( `plain ${ kind } wrapper is not the text-swatch wrapper`, ! /opf-text-swatch-wrapper/.test( control.wrapperClasses ), control.wrapperClasses );
+	}
 
 	// The chip is still a real choice control.
 	const firstInput = page.locator( '[data-opf-field="finish"] input[value="matte"]' );

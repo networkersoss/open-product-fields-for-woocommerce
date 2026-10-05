@@ -1,10 +1,10 @@
 {
   "label": "before-both-active",
   "url": "http://127.0.0.1:8090/product/opf-wapf-coexistcss-product/",
-  "generatedAt": "2026-10-05T23:11:27.369Z",
+  "generatedAt": "2026-10-05T23:18:52.541Z",
   "stylesheets": [
     "http://127.0.0.1:8090/wp-content/plugins/open-product-fields-for-woocommerce/assets/css/opf-frontend.css?ver=0.1.0",
-    "http://127.0.0.1:8090/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791241845"
+    "http://127.0.0.1:8090/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791242254"
   ],
   "opfCheckbox": {
     "desktop": {
@@ -60,7 +60,7 @@
           "applies": true
         },
         {
-          "sheet": "http://127.0.0.1:8090/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791241845",
+          "sheet": "http://127.0.0.1:8090/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791242254",
           "selector": ".wapf-checkboxes, .wapf-radios",
           "media": null,
           "value": "auto",
@@ -121,7 +121,7 @@
           "applies": true
         },
         {
-          "sheet": "http://127.0.0.1:8090/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791241845",
+          "sheet": "http://127.0.0.1:8090/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791242254",
           "selector": ".wapf-checkboxes, .wapf-radios",
           "media": null,
           "value": "auto",
@@ -182,7 +182,7 @@
           "applies": true
         },
         {
-          "sheet": "http://127.0.0.1:8090/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791241845",
+          "sheet": "http://127.0.0.1:8090/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791242254",
           "selector": ".wapf-checkboxes, .wapf-radios",
           "media": null,
           "value": "auto",
@@ -243,7 +243,7 @@
           "applies": true
         },
         {
-          "sheet": "http://127.0.0.1:8090/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791241845",
+          "sheet": "http://127.0.0.1:8090/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791242254",
           "selector": ".wapf-checkboxes, .wapf-radios",
           "media": null,
           "value": "auto",
@@ -304,7 +304,7 @@
           "applies": true
         },
         {
-          "sheet": "http://127.0.0.1:8090/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791241845",
+          "sheet": "http://127.0.0.1:8090/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791242254",
           "selector": ".wapf-checkboxes, .wapf-radios",
           "media": null,
           "value": "auto",
@@ -324,7 +324,7 @@
     "inlineStyle": null,
     "cascade": [
       {
-        "sheet": "http://127.0.0.1:8090/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791241845",
+        "sheet": "http://127.0.0.1:8090/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791242254",
         "selector": ".wapf-checkboxes, .wapf-radios",
         "media": null,
         "value": "auto",
@@ -332,7 +332,7 @@
       }
     ],
     "winner": {
-      "sheet": "http://127.0.0.1:8090/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791241845",
+      "sheet": "http://127.0.0.1:8090/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791242254",
       "selector": ".wapf-checkboxes, .wapf-radios",
       "media": null,
       "value": "auto",

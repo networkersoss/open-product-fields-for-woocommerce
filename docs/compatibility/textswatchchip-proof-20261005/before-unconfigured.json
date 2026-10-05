@@ -1,7 +1,7 @@
 {
-  "label": "unconfigured",
+  "label": "before-unconfigured",
   "url": "http://127.0.0.1:8090/product/opf-text-swatch-chip/",
-  "generatedAt": "2026-10-05T23:24:14.782Z",
+  "generatedAt": "2026-10-05T23:24:27.250Z",
   "expected": {
     "border": "none",
     "background": "rgba(0, 0, 0, 0)",

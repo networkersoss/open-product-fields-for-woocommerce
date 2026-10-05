@@ -1,12 +1,12 @@
 {
-  "label": "unconfigured",
+  "label": "before-migrated",
   "url": "http://127.0.0.1:8090/product/opf-text-swatch-chip/",
-  "generatedAt": "2026-10-05T23:24:14.782Z",
+  "generatedAt": "2026-10-05T23:24:28.593Z",
   "expected": {
-    "border": "none",
-    "background": "rgba(0, 0, 0, 0)",
-    "color": "inherit",
-    "radius": "4px"
+    "border": "2px solid rgb(204, 204, 204)",
+    "background": "rgb(18, 18, 18)",
+    "color": "rgb(255, 255, 255)",
+    "radius": "22px"
   },
   "stylesheets": [
     "http://127.0.0.1:8090/wp-content/plugins/open-product-fields-for-woocommerce/assets/css/opf-frontend.css?ver=0.1.0"
@@ -19,7 +19,7 @@
     "background": "rgba(0, 0, 0, 0)",
     "color": "rgb(17, 17, 17)",
     "inheritedColor": "rgb(17, 17, 17)",
-    "radius": "4px",
+    "radius": "22px",
     "classes": "opf-swatch opf-swatch--text opf-single-select",
     "wrapperClasses": "opf-swatch-wrapper opf-text-swatch-wrapper"
   },
@@ -55,7 +55,7 @@
     "background": "rgba(0, 0, 0, 0)",
     "color": "rgb(17, 17, 17)",
     "inheritedColor": "rgb(17, 17, 17)",
-    "radius": "4px",
+    "radius": "22px",
     "classes": "opf-swatch opf-swatch--text opf-single-select opf-checked",
     "wrapperClasses": "opf-swatch-wrapper opf-text-swatch-wrapper"
   }

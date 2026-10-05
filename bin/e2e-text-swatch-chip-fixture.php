@@ -73,6 +73,14 @@ if ( 'prepare' === $phase ) {
 					'type'    => 'checkbox',
 					'choices' => [ [ 'slug' => 'gift', 'label' => 'Gift wrap' ] ],
 				],
+				[
+					// Same regression control for radios (`views/frontend/fields/radio.php:14`
+					// uses `.wapf-radio`, not `.wapf-swatch--text`).
+					'id'      => 'size',
+					'label'   => 'Size',
+					'type'    => 'radio',
+					'choices' => [ [ 'slug' => 'small', 'label' => 'Small' ] ],
+				],
 			],
 			'rule_groups' => [
 				[ 'rules' => [ [ 'subject' => 'product', 'operator' => 'in', 'terms' => [ (string) $product_id ] ] ] ],

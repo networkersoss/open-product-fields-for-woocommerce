@@ -1,7 +1,7 @@
 {
   "label": "before-opf-only",
   "url": "http://127.0.0.1:8090/product/opf-wapf-coexistcss-product/",
-  "generatedAt": "2026-10-05T23:11:35.665Z",
+  "generatedAt": "2026-10-05T23:18:54.082Z",
   "stylesheets": [
     "http://127.0.0.1:8090/wp-content/plugins/open-product-fields-for-woocommerce/assets/css/opf-frontend.css?ver=0.1.0"
   ],
