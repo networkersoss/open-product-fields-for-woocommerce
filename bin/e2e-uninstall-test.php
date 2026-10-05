@@ -60,6 +60,16 @@ $order->save();
 $order_id = $order->get_id();
 check( 'seed: probe order with _opf_fields meta', $order_id > 0 );
 
+// Customer upload bytes must outlive plugin removal just like order meta.
+$e2e_webroot = realpath( ABSPATH );
+add_filter( 'opf_upload_document_root', static fn( string $root ): string => false !== $e2e_webroot ? $e2e_webroot : $root );
+$upload_dir   = OPF\Engine\UploadService::dir();
+$upload_token = bin2hex( random_bytes( 24 ) );
+$upload_path  = is_string( $upload_dir ) ? $upload_dir . '/' . $upload_token . '.txt' : '';
+$upload_bytes = 'uninstall must preserve referenced customer files';
+check( 'seed: private upload storage is outside webroot', is_string( $upload_dir ) && false !== $e2e_webroot && 0 !== strpos( $upload_dir, rtrim( $e2e_webroot, '/' ) . '/' ) );
+check( 'seed: private upload probe written', '' !== $upload_path && false !== file_put_contents( $upload_path, $upload_bytes ) );
+
 // ------------------------------------------------ deactivate / reactivate.
 deactivate_plugins( 'open-product-fields-for-woocommerce/open-product-fields-for-woocommerce.php', true );
 // Simulate a fresh request (a running request keeps registrations alive).
@@ -83,6 +93,10 @@ check( 'uninstall: field group posts removed', 0 === count( get_posts( [ 'post_t
 $probe_order = wc_get_order( $order_id );
 $probe_item  = $probe_order ? array_values( $probe_order->get_items() )[0] : null;
 check( 'uninstall: historical order meta survives', $probe_item && is_string( $probe_item->get_meta( '_opf_fields', true ) ) );
+check( 'uninstall: private customer upload survives', '' !== $upload_path && is_file( $upload_path ) && file_get_contents( $upload_path ) === $upload_bytes );
+if ( '' !== $upload_path && is_file( $upload_path ) ) {
+	unlink( $upload_path );
+}
 
 WP_CLI::log( '' );
 if ( $failures > 0 ) {

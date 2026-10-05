@@ -6,6 +6,7 @@
 namespace OPF\Tests\Unit;
 
 use OPF\Engine\Evaluator;
+use OPF\Service\FieldGroups;
 use PHPUnit\Framework\TestCase;
 
 final class EvaluatorTest extends TestCase {
@@ -92,6 +93,43 @@ final class EvaluatorTest extends TestCase {
 		] ] ] ];
 		$this->assertTrue( Evaluator::group_matches( $group, [ 'product_cat' => [ 1 ], 'product_tag' => [ 2 ] ], 42 ) );
 		$this->assertFalse( Evaluator::group_matches( $group, [ 'product_cat' => [ 1 ], 'product_tag' => [ 3 ] ], 42 ) );
+	}
+
+	public function test_placement_product_type_uses_exact_terms_and_exclusions(): void {
+		$group = [ 'rule_groups' => [ [ 'rules' => [ [ 'subject' => 'product_type', 'operator' => 'in', 'terms' => [ 'variable' ] ] ] ] ] ];
+		$this->assertTrue( Evaluator::group_matches( $group, [ 'product_type' => [ 'variable' ] ], 42 ) );
+		$this->assertFalse( Evaluator::group_matches( $group, [ 'product_type' => [ 'simple' ] ], 42 ) );
+		$excluded = [ 'rule_groups' => [ [ 'rules' => [ [ 'subject' => 'product_type', 'operator' => 'not_in', 'terms' => [ 'variable' ] ] ] ] ] ];
+		$this->assertFalse( Evaluator::group_matches( $excluded, [ 'product_type' => [ 'variable' ] ], 42 ) );
+	}
+
+	public function test_placement_variation_subject_matches_the_exact_variation_id(): void {
+		$group = [ 'rule_groups' => [ [ 'rules' => [ [ 'subject' => 'product_variation', 'operator' => 'in', 'terms' => [ '99' ] ] ] ] ] ];
+		$this->assertTrue( Evaluator::group_matches( $group, [ 'product_variation' => [ '99' ] ], 42 ) );
+		$this->assertFalse( Evaluator::group_matches( $group, [ 'product_variation' => [ '100' ] ], 42 ) );
+	}
+
+	public function test_product_attribute_term_keys_include_taxonomy_and_valid_term_ids(): void {
+		$this->assertSame(
+			[ 'pa_color:8', 'pa_material:3' ],
+			FieldGroups::attribute_term_keys(
+				[
+					'pa_color'    => [ 8, '8', 0, 'invalid' ],
+					'pa_material' => [ 3 ],
+					'custom-size' => [ 9 ],
+					'pa_bad!name' => [ 10 ],
+				]
+			)
+		);
+	}
+
+	public function test_placement_matches_product_attribute_terms_and_exclusions(): void {
+		$has_terms = [ 'product_attribute' => [ 'pa_color:8', 'pa_material:3' ] ];
+		$included  = [ 'rule_groups' => [ [ 'rules' => [ [ 'subject' => 'product_attribute', 'operator' => 'in', 'terms' => [ 'pa_color:8' ] ] ] ] ] ];
+		$excluded  = [ 'rule_groups' => [ [ 'rules' => [ [ 'subject' => 'product_attribute', 'operator' => 'not_in', 'terms' => [ 'pa_color:9' ] ] ] ] ] ];
+
+		$this->assertTrue( Evaluator::group_matches( $included, $has_terms, 42 ) );
+		$this->assertTrue( Evaluator::group_matches( $excluded, $has_terms, 42 ) );
 	}
 
 	public function test_placement_rule_groups_are_or(): void {

@@ -1,0 +1,18 @@
+import { createRequire } from 'node:module';
+const requireFromPlugin = createRequire(process.cwd() + '/index.js');
+const { chromium } = requireFromPlugin('playwright');
+const base = process.env.OPF_BASE_URL || 'http://127.0.0.1:8091';
+const browser = await chromium.launch();
+const page = await browser.newPage();
+const errors = [];
+page.on('pageerror', (error) => errors.push(error.message));
+await page.goto(`${base}/product/opf-e2e-min-size-product/`, { waitUntil: 'domcontentloaded' });
+const uploader = page.locator('[data-opf-upload]');
+const input = uploader.locator('input[type="file"]');
+await input.setInputFiles({ name: 'small.txt', mimeType: 'text/plain', buffer: Buffer.from('small file') });
+await page.locator('[data-opf-upload-status]').filter({ hasText: 'smaller than the minimum size' }).waitFor({ timeout: 10000 });
+if (await uploader.locator('[data-opf-upload-token]').count()) throw new Error('Below-minimum-size file was staged.');
+if (errors.length) throw new Error(`Browser errors: ${errors.join('; ')}`);
+console.log('Real browser upload request rejected a 10-byte file below the 0.01 MB minimum.');
+console.log('No upload token was issued and no uncaught JavaScript errors occurred.');
+await browser.close();
