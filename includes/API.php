@@ -146,13 +146,22 @@ final class API {
 	/**
 	 * Build the immutable field label/type/value snapshot stored on new orders.
 	 *
-	 * @param \WC_Product $product Product.
-	 * @param array<string,mixed> $values gid => fid => value map.
-	 * @return array<int,array{group_id:string,id:string,label:string,value:mixed,type:string}>
+	 * Each record additionally carries a `values` list — the per-value
+	 * breakdown WAPF persists on its cart fields (`label`, `slug` and the
+	 * already-formatted `pricing_hint`, plus `row` for repeated fields).
+	 * `pricing_hint` is '' when the field suppresses hints or the value is
+	 * unpriced. Pass the cart item when it is available so hints are priced
+	 * against the stored line base/quantity exactly like the order meta.
+	 *
+	 * @param \WC_Product           $product   Product.
+	 * @param array<string,mixed>   $values    gid => fid => value map.
+	 * @param array<string,mixed>|null $cart_item Cart line for hint pricing.
+	 * @return array<int,array{group_id:string,id:string,label:string,value:mixed,type:string,values:array<int,array{label:string,slug:string,pricing_hint:string,row?:int}>}>
 	 */
-	public static function field_snapshot_for_product( \WC_Product $product, array $values ): array {
-		$fields = self::field_definitions( FieldGroups::for_product( $product ) );
-		$snapshot = [];
+	public static function field_snapshot_for_product( \WC_Product $product, array $values, ?array $cart_item = null ): array {
+		$fields    = self::field_definitions( FieldGroups::for_product( $product ) );
+		$breakdown = CartIntegration::selection_value_breakdown( $product, $values, $cart_item );
+		$snapshot  = [];
 		foreach ( $values as $group_id => $group_values ) {
 			if ( ! is_array( $group_values ) ) {
 				continue;
@@ -168,6 +177,7 @@ final class API {
 					'label'    => (string) $field['label'],
 					'value'    => $value,
 					'type'     => (string) $field['type'],
+					'values'   => $breakdown[ (string) $group_id ][ (string) $field_id ] ?? [],
 				];
 			}
 		}

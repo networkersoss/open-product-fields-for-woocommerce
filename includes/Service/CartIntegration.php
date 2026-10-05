@@ -158,6 +158,9 @@ final class CartIntegration {
 		self::$store_api_raw = null; // Consumed: never leak into the next add.
 		// Non-visible (conditional) values never validate, price or persist.
 		$values = self::drop_hidden_values( $product, $values );
+		// A group that only holds a price calculation submits nothing yet
+		// still prices; keep an empty entry so validation/pricing see it.
+		$values = self::retain_price_calculation_groups( $values, FieldGroups::for_product( $product ) );
 		$errors = self::validate_values( $product, $values, $quantity );
 
 		foreach ( $errors as $error ) {
@@ -206,6 +209,7 @@ final class CartIntegration {
 		// conditional handler). Apply the same rule to forged payloads before
 		// cart/order persistence and pricing, including per-row repeats.
 		$values = self::drop_hidden_values( $product, $values );
+		$values = self::retain_price_calculation_groups( $values, FieldGroups::for_product( $product ) );
 		$upload_errors = Uploads::validate_product( $product, $values );
 		if ( $upload_errors ) {
 			if ( defined( 'REST_REQUEST' ) && REST_REQUEST && class_exists( \Automattic\WooCommerce\StoreApi\Exceptions\RouteException::class ) ) {
@@ -599,6 +603,38 @@ final class CartIntegration {
 					}
 				}
 			}
+			// WAPF prices cost calculations from server-computed results, not
+			// the client-submitted display value — and a calc needs no input to
+			// price. Resolve calculations (dependency-ordered, cycle-safe) and
+			// merge only their keys so conditional rules on calc results see
+			// computed values while repeat-row submissions stay untouched.
+			$resolved = Calculator::resolve_calculation_values(
+				$group->data['fields'],
+				$group_values,
+				[
+					'price'         => $base,
+					'qty'           => $quantity,
+					'addons'        => $per_unit,
+					'product_id'    => $product->get_id(),
+					'field_prices'  => $field_prices,
+					'field_labels'  => $field_labels,
+					'variables'     => is_array( $group->data['variables'] ?? null ) ? $group->data['variables'] : [],
+					'fields'        => $group->data['fields'],
+					'lookup_tables' => is_array( $group->data['lookup_tables'] ?? null ) ? $group->data['lookup_tables'] : [],
+				]
+			);
+			foreach ( $group->data['fields'] as $calc_field ) {
+				if ( ! in_array( (string) ( $calc_field['type'] ?? '' ), [ 'calc', 'calculation' ], true ) ) {
+					continue;
+				}
+				$calc_id = strtolower( (string) $calc_field['id'] );
+				if ( array_key_exists( $calc_id, $resolved )
+					&& self::field_visibility( $calc_field, $group->data['fields'], $group_values ) ) {
+					$group_values[ $calc_field['id'] ] = $resolved[ $calc_id ];
+				} else {
+					unset( $group_values[ $calc_field['id'] ] );
+				}
+			}
 
 			foreach ( $group->data['fields'] as $field ) {
 				if ( in_array( $field['type'], [ 'paragraph', 'section', 'section_end', 'products' ], true ) ) {
@@ -684,9 +720,13 @@ final class CartIntegration {
 	/**
 	 * Cart (classic) + block cart/checkout display.
 	 *
+	 * WAPF-DISPLAY-PRICE-HINTS parity: `value` stays the plain label join
+	 * (values_to_simple_string 'cart'), `display` carries the per-value
+	 * `<span class="opf-pricing-hint">` markup (values_to_display_string).
+	 *
 	 * @param array $other_data Display data so far.
 	 * @param array $cart_item  Cart item.
-	 * @return array<int,array{name:string,value:string}>
+	 * @return array<int,array{name:string,value:string,display:string}>
 	 */
 	public static function display_item_data( array $other_data, array $cart_item ): array {
 		if ( empty( $cart_item[ self::ITEM_KEY ] ) ) {
@@ -698,11 +738,14 @@ final class CartIntegration {
 			return $other_data;
 		}
 
-		foreach ( self::visible_selections( $product, $cart_item[ self::ITEM_KEY ], self::item_data_context() ) as $selection ) {
+		foreach ( self::visible_selections( $product, $cart_item[ self::ITEM_KEY ], self::item_data_context(), $cart_item ) as $selection ) {
 			$other_data[] = [
 				'name'    => $selection['label'],
 				'value'   => $selection['value'],
-				'display' => '',
+				// WAPF values_to_display_string parity: priced values render
+				// `label <span class="opf-pricing-hint">(+…)</span>`; `value`
+				// stays the plain label join. Empty when nothing is priced.
+				'display' => self::cart_selection_display( $selection ),
 			];
 		}
 
@@ -778,15 +821,25 @@ final class CartIntegration {
 	/**
 	 * Visible label/value pairs for a cart item's selections.
 	 *
-	 * @param \WC_Product         $product Product.
+	 * @param \WC_Product         $product   Product.
 	 * @param array<int|string, array<string, mixed>> $values Stored values.
-	 * @param string|null         $context Surface context; null detects the
-	 *                                     cart/checkout surface, 'order'
-	 *                                     applies hide_order for order meta.
-	 * @return array<int,array{label:string,value:string}>
+	 * @param string|null         $context   Surface context; null detects the
+	 *                                       cart/checkout surface, 'order'
+	 *                                       applies hide_order for order meta.
+	 * @param array<string,mixed>|null $cart_item Cart line — when given, each
+	 *                                       selection carries a `segments`
+	 *                                       list of per-value
+	 *                                       [label, slug, hint] rows whose
+	 *                                       `hint` is the WAPF `pricing_hint`
+	 *                                       parity string ('' when unpriced
+	 *                                       or suppressed).
+	 * @return array<int,array{label:string,value:string,field:array<string,mixed>,segments:array<int,array{label:string,slug:string,hint:string}>}>
 	 */
-	public static function visible_selections( \WC_Product $product, array $values, ?string $context = null ): array {
+	public static function visible_selections( \WC_Product $product, array $values, ?string $context = null, ?array $cart_item = null ): array {
 		$out = [];
+		// Per-value hint strings priced against the stored cart line; keyed
+		// gid => fid => row index (0 for non-repeated) => segment index.
+		$hints = null !== $cart_item ? self::value_pricing_hints( $product, $values, $cart_item ) : [];
 
 		foreach ( FieldGroups::for_product( $product ) as $entry ) {
 			$gid   = (string) $entry['id'];
@@ -825,7 +878,12 @@ final class CartIntegration {
 						$row_display = self::display_value( $field, $row );
 						if ( '' !== $row_display ) {
 							$label = self::repeated_selection_label( $repeat_field, $section_repeat, (int) $index );
-							$out[] = [ 'label' => $label, 'value' => $row_display, 'field' => $field ];
+							$out[] = [
+								'label'    => $label,
+								'value'    => $row_display,
+								'field'    => $field,
+								'segments' => self::selection_segments( $field, $row, $hints[ $gid ][ $fid ][ (int) $index ] ?? [] ),
+							];
 						}
 					}
 					continue;
@@ -836,9 +894,10 @@ final class CartIntegration {
 				}
 				if ( '' !== $value ) {
 					$out[] = [
-						'label' => $field['label'],
-						'value' => $value,
-						'field' => $field,
+						'label'    => $field['label'],
+						'value'    => $value,
+						'field'    => $field,
+						'segments' => self::selection_segments( $field, $raw, $hints[ $gid ][ $fid ][0] ?? [] ),
 					];
 				}
 			}
@@ -957,6 +1016,508 @@ final class CartIntegration {
 	}
 
 	/**
+	 * Per-value display breakdown for one stored field value — the parallel
+	 * of display_value() that keeps each joined segment separate so the cart
+	 * and order paths can attach a pricing hint per value
+	 * (WAPF-DISPLAY-PRICE-HINTS: WAPF cart fields carry values[] with a
+	 * label/price/hint per selected value).
+	 *
+	 * Each segment: label (the exact text display_value() would join in),
+	 * slug (choice slug or ''), val (the WAPF $v equivalent: choice label,
+	 * entered image-quantity count, or the raw scalar), pricing (the pricing
+	 * block to charge — choice pricing for choice controls, field pricing for
+	 * scalars — or null when the segment can never carry a charge), scalar
+	 * (route to field_pricing_addon vs choice_addon) and disabled.
+	 *
+	 * @param array<string,mixed> $field Normalized field.
+	 * @param string|array        $raw   Stored value.
+	 * @return array<int,array{label:string,slug:string,val:string,pricing:?array,scalar:bool,disabled:bool}>
+	 */
+	private static function display_segments( array $field, $raw ): array {
+		$type = (string) ( $field['type'] ?? '' );
+
+		if ( 'upload' === $type ) {
+			return [ self::segment( Uploads::display( is_array( $raw ) ? $raw : [] ) ) ];
+		}
+
+		if ( 'image_quantity' === $type ) {
+			$segments   = [];
+			$quantities = is_array( $raw ) ? ( $raw['quantities'] ?? [] ) : [];
+			foreach ( (array) ( $field['choices'] ?? [] ) as $choice ) {
+				$count = (int) ( $quantities[ $choice['slug'] ] ?? 0 );
+				if ( $count > 0 ) {
+					// WAPF passes the entered count as $v so nr/nrq/[x]
+					// formulas price per unit (Calculator::field_addon parity).
+					$segments[] = self::segment(
+						(string) $choice['label'] . ': ' . $count,
+						(string) $choice['slug'],
+						is_array( $choice['pricing'] ?? null ) ? $choice['pricing'] : null,
+						(string) $count,
+						false,
+						! empty( $choice['disabled'] )
+					);
+				}
+			}
+			return $segments;
+		}
+
+		if ( 'calc' === $type ) {
+			// Cost calcs never carry a value hint (WAPF force-hides them via
+			// hide_price_hint); the result text already formats the amount.
+			return [ self::segment( self::display_calc( $field, $raw ) ) ];
+		}
+
+		if ( 'date' === $type ) {
+			return [ self::segment( DateFormat::format( (string) $raw, DateFormat::configured() ), '', self::field_pricing( $field ), (string) $raw, true ) ];
+		}
+
+		if ( 'toggle' === $type ) {
+			$label = '1' === $raw
+				? __( 'Yes', 'open-product-fields-for-woocommerce' )
+				: __( 'No', 'open-product-fields-for-woocommerce' );
+			// field_addon charges a toggle only while checked ('1').
+			return [ self::segment( $label, '', '1' === $raw ? self::field_pricing( $field ) : null, (string) $raw, true ) ];
+		}
+
+		if ( in_array( $type, [ 'swatch', 'select', 'radio', 'checkbox' ], true ) ) {
+			$slugs    = is_array( $raw ) ? $raw : [ $raw ];
+			$segments = [];
+			foreach ( $slugs as $slug ) {
+				foreach ( (array) ( $field['choices'] ?? [] ) as $choice ) {
+					if ( (string) $choice['slug'] === (string) $slug ) {
+						$segments[] = self::segment(
+							(string) $choice['label'],
+							(string) $choice['slug'],
+							is_array( $choice['pricing'] ?? null ) ? $choice['pricing'] : null,
+							(string) ( $choice['label'] ?? '' ),
+							false,
+							! empty( $choice['disabled'] )
+						);
+						break;
+					}
+				}
+			}
+			return $segments;
+		}
+
+		return [ self::segment( (string) $raw, '', self::field_pricing( $field ), is_scalar( $raw ) ? (string) $raw : '', true ) ];
+	}
+
+	/**
+	 * One display segment row.
+	 *
+	 * @return array{label:string,slug:string,val:string,pricing:?array,scalar:bool,disabled:bool}
+	 */
+	private static function segment( string $label, string $slug = '', ?array $pricing = null, string $val = '', bool $scalar = true, bool $disabled = false ): array {
+		return [
+			'label'    => $label,
+			'slug'     => $slug,
+			'val'      => $val,
+			'pricing'  => $pricing,
+			'scalar'   => $scalar,
+			'disabled' => $disabled,
+		];
+	}
+
+	/** Field-level pricing block when it can actually charge. */
+	private static function field_pricing( array $field ): ?array {
+		return is_array( $field['pricing'] ?? null ) ? $field['pricing'] : null;
+	}
+
+	/**
+	 * Attach hint strings to a field value's display segments.
+	 *
+	 * @param array<string,mixed>          $field Normalized field.
+	 * @param string|array                 $raw   Stored value.
+	 * @param array<int|string,string>     $hints Segment index => hint string.
+	 * @return array<int,array{label:string,slug:string,hint:string}>
+	 */
+	private static function selection_segments( array $field, $raw, array $hints ): array {
+		$segments = [];
+		foreach ( self::display_segments( $field, $raw ) as $index => $segment ) {
+			$segments[] = [
+				'label' => $segment['label'],
+				'slug'  => $segment['slug'],
+				'hint'  => (string) ( $hints[ $index ] ?? '' ),
+			];
+		}
+		return $segments;
+	}
+
+	/**
+	 * Cart/checkout display string for a selection — WAPF
+	 * `values_to_display_string` parity: `label <span class="opf-pricing-
+	 * hint">hint</span>` per priced value, joined ', '. Returns '' when no
+	 * value carries a hint so unpriced fields keep the historical display.
+	 *
+	 * @param array<string,mixed> $selection One visible_selections() row.
+	 */
+	private static function cart_selection_display( array $selection ): string {
+		$has_hint = false;
+		$parts    = [];
+		foreach ( (array) ( $selection['segments'] ?? [] ) as $segment ) {
+			$part = $segment['label'];
+			if ( '' !== (string) ( $segment['hint'] ?? '' ) ) {
+				$has_hint = true;
+				$part    .= ' <span class="opf-pricing-hint">' . $segment['hint'] . '</span>';
+			}
+			$parts[] = $part;
+		}
+		return $has_hint ? implode( ', ', $parts ) : '';
+	}
+
+	/**
+	 * Order-meta display string for a selection — WAPF
+	 * `values_to_simple_string( ..., 'order' )` parity: plain `label hint`
+	 * per priced value (no span) so raw meta reads `Gold (+&#36;5.00)`.
+	 * Falls back to the stored display value when nothing is priced.
+	 *
+	 * @param array<string,mixed> $selection One visible_selections() row.
+	 */
+	private static function order_selection_value( array $selection ): string {
+		$has_hint = false;
+		$parts    = [];
+		foreach ( (array) ( $selection['segments'] ?? [] ) as $segment ) {
+			$part = $segment['label'];
+			if ( '' !== (string) ( $segment['hint'] ?? '' ) ) {
+				$has_hint = true;
+				$part    .= ' ' . $segment['hint'];
+			}
+			$parts[] = $part;
+		}
+		return $has_hint ? implode( ', ', $parts ) : (string) ( $selection['value'] ?? '' );
+	}
+
+	/**
+	 * Flat per-field value breakdown for a cart line — the `_wapf_meta`
+	 * fields.*.values[] parity surface consumed by the order snapshot
+	 * (pricing_hint is '' when suppressed or unpriced).
+	 *
+	 * @param \WC_Product                  $product   Product.
+	 * @param array<int|string, array<string, mixed>> $values Stored values.
+	 * @param array<string,mixed>|null     $cart_item Cart line for pricing context.
+	 * @return array<string,array<string,array<int,array{label:string,slug:string,pricing_hint:string,row:int}>>>
+	 */
+	public static function selection_value_breakdown( \WC_Product $product, array $values, ?array $cart_item = null ): array {
+		$out   = [];
+		$hints = null !== $cart_item ? self::value_pricing_hints( $product, $values, $cart_item ) : [];
+
+		foreach ( FieldGroups::for_product( $product ) as $entry ) {
+			$gid   = (string) $entry['id'];
+			$group = $entry['group'];
+			if ( ! isset( $values[ $gid ] ) ) {
+				continue;
+			}
+			$group_values    = (array) $values[ $gid ];
+			$section_repeats = self::section_repeat_context( $group->data['fields'] );
+
+			foreach ( $group->data['fields'] as $field ) {
+				if ( in_array( $field['type'], [ 'section', 'section_end', 'products' ], true ) ) {
+					continue;
+				}
+				$fid = $field['id'];
+				if ( ! array_key_exists( $fid, $group_values ) ) {
+					continue;
+				}
+				$raw           = $group_values[ $fid ];
+				$repeat_field  = $field;
+				if ( empty( $repeat_field['repeat']['enabled'] ) && isset( $section_repeats[ $fid ] ) ) {
+					$repeat_field['repeat'] = $section_repeats[ $fid ];
+				}
+				$is_repeat = ! empty( $repeat_field['repeat']['enabled'] ) && is_array( $raw );
+				$rows      = $is_repeat ? $raw : [ 0 => $raw ];
+				foreach ( $rows as $row_index => $row ) {
+					if ( null === $row || '' === $row || [] === $row ) {
+						continue;
+					}
+					foreach ( self::selection_segments( $field, $row, $hints[ $gid ][ $fid ][ $is_repeat ? (int) $row_index : 0 ] ?? [] ) as $segment ) {
+						$entry_row = [
+							'label'        => $segment['label'],
+							'slug'         => $segment['slug'],
+							'pricing_hint' => $segment['hint'],
+						];
+						if ( $is_repeat ) {
+							$entry_row['row'] = (int) $row_index;
+						}
+						$out[ $gid ][ $fid ][] = $entry_row;
+					}
+				}
+			}
+		}
+		return $out;
+	}
+
+	/**
+	 * Whether a field must never surface a per-value pricing hint — WAPF
+	 * force-flags `hide_price_hint` on cost calcs; sections never carry a
+	 * charge. Both the normalized `hide_price_hint` key and the raw WAPF
+	 * `options.hide_price_hint` spelling are honored.
+	 *
+	 * @param array<string,mixed> $field Normalized field.
+	 */
+	private static function field_hint_suppressed( array $field ): bool {
+		if ( in_array( (string) ( $field['type'] ?? '' ), [ 'calc', 'calculation', 'section', 'section_end' ], true ) ) {
+			return true;
+		}
+		return ! empty( $field['hide_price_hint'] ) || ! empty( $field['options']['hide_price_hint'] );
+	}
+
+	/**
+	 * Whether a pricing block carries a configured charge — WAPF's
+	 * `price === 0 || price_type === 'none'` skip: zero-amount fixed/percent
+	 * and empty formulas render no hint.
+	 *
+	 * @param array<string,mixed>|null $pricing Normalized pricing block.
+	 */
+	private static function pricing_has_charge( ?array $pricing ): bool {
+		if ( null === $pricing ) {
+			return false;
+		}
+		$type = (string) ( $pricing['type'] ?? 'none' );
+		if ( 'none' === $type || '' === $type ) {
+			return false;
+		}
+		if ( 'formula' === $type ) {
+			return '' !== trim( (string) ( $pricing['formula'] ?? '' ) );
+		}
+		return ! empty( $pricing['amount'] );
+	}
+
+	/**
+	 * Per-value pricing hints for a cart line, keyed gid => fid => row index
+	 * (0 for non-repeated fields) => segment index => hint string.
+	 *
+	 * Mirrors addons_per_unit()'s walk — same calc resolution, running
+	 * `addons`, field_prices accumulation and per-row clone context — so a
+	 * hint is priced against exactly the inputs apply_prices() charges.
+	 * calc_price is the PER-UNIT contribution (WAPF do_pricing space); the
+	 * hint is formatted with for_page='cart' once and shared by the cart
+	 * item_data display and the order meta, exactly like WAPF stores
+	 * `pricing_hint` on the cart field values.
+	 *
+	 * @param \WC_Product                  $product   Product.
+	 * @param array<int|string, array<string, mixed>> $values Stored values.
+	 * @param array<string,mixed>          $cart_item Cart line (base + qty).
+	 * @return array<string,array<string,array<int,array<int,string>>>>
+	 */
+	private static function value_pricing_hints( \WC_Product $product, array $values, array $cart_item ): array {
+		$map = [];
+		if ( ! PricingHints::enabled() ) {
+			return $map;
+		}
+
+		$quantity = max( 1, (int) ( $cart_item['quantity'] ?? 1 ) );
+		$base     = isset( $cart_item['opf_base_price'] )
+			? (float) $cart_item['opf_base_price']
+			: ( is_callable( [ $product, 'get_price' ] ) ? (float) $product->get_price( 'edit' ) : 0.0 );
+		// Same base apply_prices() charges: filters see the stored raw base.
+		$base = (float) apply_filters( 'opf_cart_item_base_price', $base, $product, $cart_item );
+		$base = \OPF\Compat\WapfHooks::cart_base_price( $base, $product, $quantity, $cart_item );
+
+		$per_unit     = 0.0;
+		$field_prices = [];
+
+		foreach ( FieldGroups::for_product( $product ) as $entry ) {
+			$gid   = (string) $entry['id'];
+			$group = $entry['group'];
+			$section_repeats = self::section_repeat_context( $group->data['fields'] );
+			if ( ! isset( $values[ $gid ] ) ) {
+				continue;
+			}
+
+			$group_values = (array) $values[ $gid ];
+			$field_labels = [];
+			foreach ( $group->data['fields'] as $label_field ) {
+				foreach ( (array) ( $label_field['choices'] ?? [] ) as $label_choice ) {
+					if ( isset( $label_choice['slug'], $label_choice['label'] ) ) {
+						$field_labels[ strtolower( (string) $label_field['id'] ) ][ (string) $label_choice['slug'] ] = (string) $label_choice['label'];
+					}
+				}
+			}
+			// Resolve cost calcs exactly like addons_per_unit() so [field.X]
+			// formulas see server-computed values.
+			$resolved = Calculator::resolve_calculation_values(
+				$group->data['fields'],
+				$group_values,
+				[
+					'price'         => $base,
+					'qty'           => $quantity,
+					'addons'        => $per_unit,
+					'product_id'    => $product->get_id(),
+					'field_prices'  => $field_prices,
+					'field_labels'  => $field_labels,
+					'variables'     => is_array( $group->data['variables'] ?? null ) ? $group->data['variables'] : [],
+					'fields'        => $group->data['fields'],
+					'lookup_tables' => is_array( $group->data['lookup_tables'] ?? null ) ? $group->data['lookup_tables'] : [],
+				]
+			);
+			foreach ( $group->data['fields'] as $calc_field ) {
+				if ( ! in_array( (string) ( $calc_field['type'] ?? '' ), [ 'calc', 'calculation' ], true ) ) {
+					continue;
+				}
+				$calc_id = strtolower( (string) $calc_field['id'] );
+				if ( array_key_exists( $calc_id, $resolved )
+					&& self::field_visibility( $calc_field, $group->data['fields'], $group_values ) ) {
+					$group_values[ $calc_field['id'] ] = $resolved[ $calc_id ];
+				} else {
+					unset( $group_values[ $calc_field['id'] ] );
+				}
+			}
+
+			foreach ( $group->data['fields'] as $field ) {
+				if ( in_array( $field['type'], [ 'paragraph', 'section', 'section_end', 'products' ], true ) ) {
+					continue;
+				}
+				$fid = $field['id'];
+				if ( ! array_key_exists( $fid, $group_values ) ) {
+					continue;
+				}
+				$priced_field = $field;
+				if ( empty( $priced_field['repeat']['enabled'] ) && isset( $section_repeats[ $fid ] ) ) {
+					$priced_field['repeat'] = $section_repeats[ $fid ];
+				}
+				$suppressed = self::field_hint_suppressed( $field );
+
+				if ( ! empty( $priced_field['repeat']['enabled'] ) ) {
+					$instance_field = $priced_field;
+					unset( $instance_field['repeat'] );
+					$rows = is_array( $group_values[ $fid ] ) ? $group_values[ $fid ] : [ $group_values[ $fid ] ];
+					$row_prices = [];
+					foreach ( $rows as $row_index => $row_value ) {
+						$clone_values = self::values_for_clone( $group->data['fields'], $group_values, $section_repeats, (int) $row_index );
+						if ( ! Evaluator::is_visible( $field, $clone_values ) ) {
+							continue;
+						}
+						$clone_prices = [];
+						foreach ( $field_prices as $previous_id => $previous_price ) {
+							$clone_prices[ $previous_id ] = is_array( $previous_price )
+								? (float) ( $previous_price[ $row_index ] ?? 0.0 )
+								: $previous_price;
+						}
+						$context = [
+							'price'        => $base,
+							'qty'          => $quantity,
+							'addons'       => $per_unit,
+							'field_values' => $clone_values,
+							'field_prices' => $clone_prices,
+							'field_labels' => $field_labels,
+							'product_id'   => $product->get_id(),
+							'variables'    => is_array( $group->data['variables'] ?? null ) ? $group->data['variables'] : [],
+							'fields'       => $group->data['fields'],
+							'qty_based'    => 'quantity' === (string) ( $priced_field['repeat']['mode'] ?? '' ),
+						];
+						if ( ! $suppressed ) {
+							$map[ $gid ][ $fid ][ (int) $row_index ] = self::segment_hints( $field, $row_value, $context, $product );
+						}
+						$row_addon = Calculator::field_addon( $instance_field, $row_value, $context );
+						$row_prices[ $row_index ] = $row_addon;
+						$per_unit += $row_addon;
+					}
+					if ( ! array_key_exists( $fid, $field_prices ) ) {
+						$field_prices[ $fid ] = $row_prices;
+					}
+					continue;
+				}
+
+				if ( ! Evaluator::is_visible( $field, $group_values ) ) {
+					continue;
+				}
+				$context = [
+					'price'        => $base,
+					'qty'          => $quantity,
+					'addons'       => $per_unit,
+					'field_values' => $group_values,
+					'field_prices' => $field_prices,
+					'field_labels' => $field_labels,
+					'product_id'   => $product->get_id(),
+					'variables'    => is_array( $group->data['variables'] ?? null ) ? $group->data['variables'] : [],
+					'fields'       => $group->data['fields'],
+				];
+				if ( ! $suppressed ) {
+					$map[ $gid ][ $fid ][0] = self::segment_hints( $field, $group_values[ $fid ], $context, $product );
+				}
+				$field_addon = Calculator::field_addon( $priced_field, $group_values[ $fid ], $context );
+				if ( ! array_key_exists( $fid, $field_prices ) ) {
+					$field_prices[ $fid ] = $field_addon;
+				}
+				$per_unit += $field_addon;
+			}
+		}
+
+		return $map;
+	}
+
+	/**
+	 * Hint string per display segment of one stored value — the per-value
+	 * `calc_price` of WAPF's cart loop: choice segments route to
+	 * choice_addon, scalar segments to field_pricing_addon, then the result
+	 * is formatted with for_page='cart' (WAPF computes it once at pricing
+	 * time and reuses it for cart display and order meta).
+	 *
+	 * @param array<string,mixed> $field   Normalized field.
+	 * @param string|array        $raw     Stored value.
+	 * @param array<string,mixed> $context Calculator context for this field/row.
+	 * @param \WC_Product         $product Product.
+	 * @return array<int,string> Segment index => hint ('' when unpriced).
+	 */
+	private static function segment_hints( array $field, $raw, array $context, \WC_Product $product ): array {
+		$hints     = [];
+		$qty_based = ! empty( $context['qty_based'] );
+		$options   = array_intersect_key( $context, array_flip( [ 'variables', 'fields', 'lookup_tables', 'formula_variables' ] ) );
+		// WAPF feeds each value the running options_total — a multi-select
+		// field's second [addons] formula sees its own first segment priced.
+		$addons    = (float) $context['addons'];
+
+		foreach ( self::display_segments( $field, $raw ) as $index => $segment ) {
+			$hints[ $index ] = '';
+			$pricing = $segment['pricing'];
+			if ( $segment['disabled'] || ! self::pricing_has_charge( $pricing ) ) {
+				continue;
+			}
+			if ( $segment['scalar'] ) {
+				$calc_price = Calculator::field_pricing_addon(
+					$pricing,
+					$segment['val'],
+					(float) $context['price'],
+					max( 1, (int) $context['qty'] ),
+					$addons,
+					is_array( $context['field_values'] ?? null ) ? $context['field_values'] : [],
+					(int) ( $context['product_id'] ?? 0 ),
+					is_array( $context['field_prices'] ?? null ) ? $context['field_prices'] : [],
+					$qty_based,
+					is_array( $context['field_labels'] ?? null ) ? $context['field_labels'] : [],
+					$options
+				);
+			} else {
+				$calc_price = Calculator::choice_addon(
+					$pricing,
+					(float) $context['price'],
+					max( 1, (int) $context['qty'] ),
+					$addons,
+					is_array( $context['field_values'] ?? null ) ? $context['field_values'] : [],
+					(int) ( $context['product_id'] ?? 0 ),
+					is_array( $context['field_prices'] ?? null ) ? $context['field_prices'] : [],
+					$qty_based,
+					is_array( $context['field_labels'] ?? null ) ? $context['field_labels'] : [],
+					$options,
+					$segment['val']
+				);
+			}
+			$addons           += $calc_price;
+			$hints[ $index ]   = PricingHints::format(
+				(string) $pricing['type'],
+				$calc_price,
+				$product,
+				'cart',
+				$field,
+				null
+			);
+		}
+
+		return $hints;
+	}
+
+	/**
 	 * Persist selections to the order item: one display meta per field plus a
 	 * hidden structured record for re-order and admin tooling.
 	 *
@@ -979,25 +1540,28 @@ final class CartIntegration {
 		// WAPF parity: hide_order fields stay out of the visible order-item
 		// meta on every surface but remain in _opf_fields (order-again,
 		// exports) — hidden data is suppressed from display, never lost.
-		foreach ( self::visible_selections( $product, $values, 'order' ) as $selection ) {
-			$field = is_array( $selection['field'] ?? null ) ? $selection['field'] : [];
+		// Priced values carry the plain `label (+$x)` hint WAPF writes via
+		// values_to_simple_string( ..., 'order' ) (WAPF-DISPLAY-PRICE-HINTS).
+		foreach ( self::visible_selections( $product, $values, 'order', $cart_item ) as $selection ) {
+			$field       = is_array( $selection['field'] ?? null ) ? $selection['field'] : [];
+			$meta_value  = self::order_selection_value( $selection );
 			// WAPF alias bridge: wapf/order/order_item_field + wapf/order_item/meta_display_value.
 			$meta_field = \OPF\Compat\WapfHooks::order_item_field(
 				[
 					'id'    => (string) ( $field['id'] ?? '' ),
 					'type'  => (string) ( $field['type'] ?? '' ),
 					'label' => (string) $selection['label'],
-					'value' => $selection['value'],
+					'value' => $meta_value,
 				],
 				$cart_item,
 				$field
 			);
-			$display = \OPF\Compat\WapfHooks::meta_display_value( $meta_field['value'] ?? $selection['value'], $meta_field );
+			$display = \OPF\Compat\WapfHooks::meta_display_value( $meta_field['value'] ?? $meta_value, $meta_field );
 			$item->add_meta_data( $selection['label'], $display );
 		}
 		$item->add_meta_data( '_opf_fields', wp_json_encode( $values, JSON_UNESCAPED_UNICODE ), true );
 		$item->add_meta_data( '_opf_cart_item_key', $cart_item_key, true );
-		$snapshot = \OPF\API::field_snapshot_for_product( $product, $values );
+		$snapshot = \OPF\API::field_snapshot_for_product( $product, $values, $cart_item );
 		$item->add_meta_data( '_opf_fields_snapshot', wp_json_encode( $snapshot, JSON_UNESCAPED_UNICODE ), true );
 	}
 
@@ -1076,7 +1640,7 @@ final class CartIntegration {
 					}
 				}
 				$cart_item_data[ self::ITEM_KEY ] = $product instanceof \WC_Product
-					? self::sanitize_submitted( $product, $decoded, true )
+					? self::retain_price_calculation_groups( self::sanitize_submitted( $product, $decoded, true ), FieldGroups::for_product( $product ) )
 					: $decoded;
 			}
 		}
@@ -1259,18 +1823,31 @@ final class CartIntegration {
 		}
 		if ( in_array( $field['type'], [ 'swatch', 'select', 'radio', 'checkbox' ], true ) ) {
 			$valid_slugs = wp_list_pluck( $field['choices'], 'slug' );
+			$multi_swatch = 'swatch' === $field['type'] && ! empty( $field['multiple'] );
+			$multi_value = 'checkbox' === $field['type'] || $multi_swatch;
+			// Multi-value inputs carry each slug independently, so a forged
+			// disabled selection is dropped during sanitize (image_quantity
+			// zeroes disabled choices the same way). Single-value inputs keep
+			// the slug so validate_choices() can report it as unavailable.
+			$disabled_slugs = [];
+			if ( $multi_value ) {
+				foreach ( $field['choices'] as $choice ) {
+					if ( ! empty( $choice['disabled'] ) ) {
+						$disabled_slugs[] = (string) $choice['slug'];
+					}
+				}
+			}
 			$slugs       = (array) $value;
 			$clean       = [];
 			foreach ( $slugs as $slug ) {
 				$slug = sanitize_text_field( (string) $slug );
-				if ( in_array( $slug, $valid_slugs, true ) ) {
+				if ( in_array( $slug, $valid_slugs, true ) && ! in_array( $slug, $disabled_slugs, true ) ) {
 					$clean[] = $slug;
 				}
 			}
 			if ( empty( $clean ) ) {
 				return null;
 			}
-			$multi_swatch = 'swatch' === $field['type'] && ! empty( $field['multiple'] );
 			return in_array( $field['type'], [ 'select', 'radio' ], true ) || ( 'swatch' === $field['type'] && ! $multi_swatch ) ? $clean[0] : array_values( array_unique( $clean ) );
 		}
 
@@ -1353,21 +1930,11 @@ final class CartIntegration {
 					continue;
 				}
 				if ( in_array( $field['type'], [ 'select', 'radio', 'checkbox', 'swatch' ], true ) && $provided ) {
+					// Disabled choices plus WAPF min_choices/max_choices bounds;
+					// the min binds only once a value exists (empty optional is
+					// accepted, empty required is covered by the required check).
+					// See validate_multiple_choice_field() in WAPF class-cart.php.
 					$errors = array_merge( $errors, FieldValue::validate_choices( $field, $given[ $field['id'] ] ) );
-				}
-				if ( 'checkbox' === $field['type'] && $provided ) {
-					$submitted_value = $given[ $field['id'] ];
-					$count = is_array( $submitted_value ) ? count( $submitted_value ) : 1;
-					// WAPF enforces the max on any submitted value; the min binds
-					// only once a value exists (empty optional is accepted, empty
-					// required is covered by the required check). See
-					// validate_multiple_choice_field() in WAPF class-cart.php.
-					if ( isset( $field['max_choices'] ) && $count > $field['max_choices'] ) {
-						$errors[] = sprintf( '"%s" requires a maximum of %d choices.', $field['label'], $field['max_choices'] );
-					}
-					if ( isset( $field['min_choices'] ) && $count < $field['min_choices'] ) {
-						$errors[] = sprintf( '"%s" requires a minimum of %d choices.', $field['label'], $field['min_choices'] );
-					}
 				}
 				if ( 'image_quantity' === $field['type'] ) {
 					$submitted = $provided && is_array( $given[ $field['id'] ] ) ? $given[ $field['id'] ] : [];
@@ -1384,20 +1951,10 @@ final class CartIntegration {
 					continue;
 				}
 				$value    = $provided && ! is_array( $given[ $field['id'] ] ) ? (string) $given[ $field['id'] ] : null;
-				if ( in_array( $field['type'], [ 'email', 'url', 'date', 'toggle' ], true ) ) {
+				if ( in_array( $field['type'], [ 'email', 'url', 'date', 'toggle', 'number', 'text', 'textarea' ], true ) ) {
 					$errors = array_merge( $errors, FieldValue::validate( $field, $value, $provided ) );
-				} elseif ( $field['required'] && ! $provided && !( 'swatch' === $field['type'] && ! empty( $field['multiple'] ) && isset( $field['min_choices'] ) ) ) {
+				} elseif ( $field['required'] && ! $provided ) {
 					$errors[] = sprintf( '"%s" is a required field.', $field['label'] );
-				}
-				if ( 'swatch' === $field['type'] && ! empty( $field['multiple'] ) ) {
-					$submitted_value = $provided ? $given[ $field['id'] ] : null;
-					$count = is_array( $submitted_value ) ? count( $submitted_value ) : ( $provided ? 1 : 0 );
-					if ( isset( $field['min_choices'] ) && $count < $field['min_choices'] ) {
-						$errors[] = sprintf( '"%s" requires at least %d choices.', $field['label'], $field['min_choices'] );
-					}
-					if ( isset( $field['max_choices'] ) && $count > $field['max_choices'] ) {
-						$errors[] = sprintf( '"%s" allows at most %d choices.', $field['label'], $field['max_choices'] );
-					}
 				}
 			}
 		}
@@ -1451,6 +2008,44 @@ final class CartIntegration {
 			}
 			$rows = $given[ $field['id'] ] ?? [];
 			$values[ $field['id'] ] = is_array( $rows ) && array_key_exists( $row_index, $rows ) ? $rows[ $row_index ] : null;
+		}
+		return $values;
+	}
+
+	/**
+	 * Keep an entry for groups whose only submittable content is a price
+	 * calculation.
+	 *
+	 * Calculation fields carry no user input: a group containing nothing but
+	 * a cost calc (OPF `calc` + `calc_type=cost`, or the legacy
+	 * `calculation` + `calculation_type=price` spelling) would otherwise
+	 * collect to an empty array, vanish from the cart payload, and lose its
+	 * price contribution. WAPF prices those groups regardless of submission,
+	 * so the group id is retained with an empty value map.
+	 *
+	 * @param array<int|string,array<string,mixed>> $values gid => fid => value(s).
+	 * @param array<int,array{id:int|string,group:FieldGroup}> $groups FieldGroups::for_product() rows.
+	 * @return array<int|string,array<string,mixed>>
+	 */
+	private static function retain_price_calculation_groups( array $values, array $groups ): array {
+		foreach ( $groups as $entry ) {
+			$gid   = (string) $entry['id'];
+			$group = $entry['group'];
+			if ( isset( $values[ $gid ] ) ) {
+				continue;
+			}
+			$has_price_calculation = false;
+			foreach ( $group->data['fields'] as $field ) {
+				$type = (string) ( $field['type'] ?? '' );
+				if ( ( 'calculation' === $type && 'price' === (string) ( $field['calculation_type'] ?? 'informational' ) )
+					|| ( 'calc' === $type && 'cost' === (string) ( $field['calc_type'] ?? 'default' ) ) ) {
+					$has_price_calculation = true;
+					break;
+				}
+			}
+			if ( $has_price_calculation ) {
+				$values[ $gid ] = [];
+			}
 		}
 		return $values;
 	}
