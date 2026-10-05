@@ -1,0 +1,89 @@
+{
+  "url": "http://127.0.0.1:8261/product/opf-wapf-coexistcss-product/",
+  "generatedAt": "2026-10-05T22:48:18.605Z",
+  "stylesheets": [
+    "http://127.0.0.1:8261/wp-content/plugins/open-product-fields-for-woocommerce/assets/css/opf-frontend.css?ver=0.1.0",
+    "http://127.0.0.1:8261/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791237340"
+  ],
+  "opfCheckbox": {
+    "desktop": {
+      "matched": true,
+      "display": "inline-grid",
+      "gridTemplateColumns": "162.812px",
+      "columnCount": 1,
+      "classes": "opf-swatch-wrapper opf-checkboxes--columns wapf-checkboxes"
+    },
+    "tablet": {
+      "matched": true,
+      "display": "inline-grid",
+      "gridTemplateColumns": "144.812px",
+      "columnCount": 1,
+      "classes": "opf-swatch-wrapper opf-checkboxes--columns wapf-checkboxes"
+    },
+    "mobile": {
+      "matched": true,
+      "display": "inline-grid",
+      "gridTemplateColumns": "142.812px",
+      "columnCount": 1,
+      "classes": "opf-swatch-wrapper opf-checkboxes--columns wapf-checkboxes"
+    }
+  },
+  "opfRadio": {
+    "matched": true,
+    "display": "inline-grid",
+    "gridTemplateColumns": "110.406px",
+    "columnCount": 1,
+    "classes": "opf-swatch-wrapper wapf-radios"
+  },
+  "wapfCheckbox": {
+    "matched": true,
+    "display": "inline-grid",
+    "gridTemplateColumns": "133.203px",
+    "columnCount": 1,
+    "classes": "wapf-checkboxes"
+  },
+  "wapfRadio": {
+    "matched": true,
+    "display": "inline-grid",
+    "gridTemplateColumns": "134.203px",
+    "columnCount": 1,
+    "classes": "wapf-radios"
+  },
+  "winningRules": [
+    {
+      "sheet": "opf-frontend.css?ver=0.1.0",
+      "media": "",
+      "selector": ".opf-checkboxes--columns",
+      "display": "grid",
+      "gridTemplateColumns": "repeat(var(--opf-checkbox-columns, 1), minmax(0, 1fr))"
+    },
+    {
+      "sheet": "opf-frontend.css?ver=0.1.0",
+      "media": "(max-width: 720px)",
+      "selector": ".opf-checkboxes--columns",
+      "display": "",
+      "gridTemplateColumns": "repeat(var(--opf-checkbox-columns-tablet, 1), minmax(0, 1fr))"
+    },
+    {
+      "sheet": "opf-frontend.css?ver=0.1.0",
+      "media": "(max-width: 420px)",
+      "selector": ".opf-checkboxes--columns",
+      "display": "",
+      "gridTemplateColumns": "repeat(var(--opf-checkbox-columns-mobile, 1), minmax(0, 1fr))"
+    },
+    {
+      "sheet": "opf-frontend.css?ver=0.1.0",
+      "media": "",
+      "selector": ".opf-checkboxes--columns",
+      "display": "grid",
+      "gridTemplateColumns": "repeat(var(--opf-checkbox-columns, 1), minmax(0, 1fr))"
+    },
+    {
+      "sheet": "frontend.min.css?ver=3.1.5-1791237340",
+      "media": "",
+      "selector": ".wapf-checkboxes, .wapf-radios",
+      "display": "inline-grid",
+      "gridTemplateColumns": "auto"
+    }
+  ]
+}

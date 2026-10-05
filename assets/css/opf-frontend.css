@@ -209,7 +209,14 @@
 	gap: .4em;
 }
 
-.opf-checkboxes--columns {
+/* WAPF Extended 3.1.5 ships `.wapf-checkboxes,.wapf-radios{display:inline-grid;
+ * grid-template-columns:auto}` on the wrapper class OPF reuses. Both selectors
+ * are one class, so WAPF's later stylesheet won and collapsed OPF's configured
+ * grid. Scoping to OPF's own wrapper class (.opf-swatch-wrapper, always emitted
+ * on the choice wrapper) raises specificity to (0,2,0) without !important, so
+ * OPF's rule wins for OPF-rendered fields. WAPF's own markup never carries
+ * `opf-*` classes, so its `.wapf-checkboxes`/`.wapf-radios` rules are untouched. */
+.opf-swatch-wrapper.opf-checkboxes--columns {
 	display: grid;
 	grid-template-columns: repeat(var(--opf-checkbox-columns, 1), minmax(0, 1fr));
 	gap: .5em 1em;
@@ -258,13 +265,13 @@
 }
 
 @media (max-width: 720px) {
-	.opf-checkboxes--columns {
+	.opf-swatch-wrapper.opf-checkboxes--columns {
 		grid-template-columns: repeat(var(--opf-checkbox-columns-tablet, 1), minmax(0, 1fr));
 	}
 }
 
 @media (max-width: 420px) {
-	.opf-checkboxes--columns {
+	.opf-swatch-wrapper.opf-checkboxes--columns {
 		grid-template-columns: repeat(var(--opf-checkbox-columns-mobile, 1), minmax(0, 1fr));
 	}
 }
@@ -983,8 +990,11 @@
 	.opf-field, .opf-col-25, .opf-col-50, .opf-col-75 { grid-column: span 1; }
 }
 
-/* Checkbox columns preserve each native label/input pair as one grid item. */
-.opf-checkboxes--columns {
+/* Checkbox columns preserve each native label/input pair as one grid item.
+ * Scoped with `.opf-swatch-wrapper` (specificity 0,2,0) so it outranks WAPF's
+ * one-class `.wapf-checkboxes`/`.wapf-radios` rule regardless of stylesheet
+ * order; see the note on the earlier occurrence. */
+.opf-swatch-wrapper.opf-checkboxes--columns {
 	display: grid;
 	grid-template-columns: repeat(var(--opf-checkbox-columns, 1), minmax(0, 1fr));
 	gap: 0.25rem 0.75rem;

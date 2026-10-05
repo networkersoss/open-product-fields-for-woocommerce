@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8261/product/opf-wapf-coexistcss-product/",
+  "generatedAt": "2026-10-05T22:53:42.170Z",
+  "stylesheets": [
+    "http://127.0.0.1:8261/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791237340"
+  ],
+  "opfCheckbox": {
+    "desktop": {
+      "matched": false
+    },
+    "tablet": {
+      "matched": false
+    },
+    "mobile": {
+      "matched": false
+    }
+  },
+  "opfRadio": {
+    "matched": false
+  },
+  "wapfCheckbox": {
+    "matched": true,
+    "display": "inline-grid",
+    "gridTemplateColumns": "133.203px",
+    "columnCount": 1,
+    "classes": "wapf-checkboxes"
+  },
+  "wapfRadio": {
+    "matched": true,
+    "display": "inline-grid",
+    "gridTemplateColumns": "134.203px",
+    "columnCount": 1,
+    "classes": "wapf-radios"
+  },
+  "winningRules": []
+}
