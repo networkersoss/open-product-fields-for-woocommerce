@@ -34,6 +34,87 @@ const imageQuantityLimitMessage = ( def, quantities ) => {
 	return '';
 };
 
+
+const isVisible = ( field, values, subjectIsHidden ) => {
+	if ( ! field.conditionals || ! field.conditionals.length ) {
+		return true;
+	}
+	let hasShow = false;
+	let showPass = false;
+	let hidePass = false;
+	let varGatePass = true;
+	let varCtx = null;
+
+	const rulePasses = ( rule ) => {
+		// WAPF isValidRule: a rule whose subject field is currently hidden
+		// always fails (hidden subjects can't vouch for a visible dependent).
+		if ( 'function' === typeof subjectIsHidden && subjectIsHidden( rule.field ) ) {
+			return false;
+		}
+		if ( 'product_var' === rule.subject || 'var_att' === rule.subject ) {
+			if ( null === varCtx ) {
+				varCtx = variationContext();
+			}
+			return variationRulePasses( rule, varCtx );
+		}
+		const value = values[ rule.field ];
+		const qtyMap = qtyMapOf( value );
+		if ( qtyMap ) {
+			return qtyRulePasses( rule, qtyMap );
+		}
+		const actual = Array.isArray( value )
+			? value.flat( Infinity ).map( String ).filter( ( item ) => item.trim() !== '' ).join( ', ' )
+			: String( value ?? '' );
+		const expect = String( rule.value ?? '' );
+		switch ( rule.operator ) {
+			case 'is':
+				return Array.isArray( value )
+					? value.flat( Infinity ).includes( expect )
+					: actual === expect;
+			case 'is_not':
+				return ! rulePasses( { ...rule, operator: 'is' } );
+			case 'contains':
+				return actual.toLowerCase().includes( expect.toLowerCase() );
+			case 'not_contains':
+				return ! actual.toLowerCase().includes( expect.toLowerCase() );
+			case 'greater':
+				return actual !== '' && Number( actual ) > Number( expect );
+			case 'less':
+				return actual !== '' && Number( actual ) < Number( expect );
+			case 'empty':
+				return actual.trim() === '';
+			case 'not_empty':
+				return actual.trim() !== '';
+			default:
+				return false;
+		}
+	};
+
+	field.conditionals.forEach( ( conditional ) => {
+		const results = conditional.rules.map( rulePasses );
+		const passed =
+			'any' === conditional.logic
+				? results.includes( true )
+				: ! results.includes( false );
+		if ( 'var' === conditional.action ) {
+			// Generated variation gate (WAPF merge_frontend_conditions parity).
+			varGatePass = varGatePass && passed;
+			return;
+		}
+		if ( 'hide' === conditional.action ) {
+			hidePass = hidePass || passed;
+		} else {
+			hasShow = true;
+			showPass = showPass || passed;
+		}
+	} );
+
+	if ( ! varGatePass || hidePass ) {
+		return false;
+	}
+	return hasShow ? showPass : true;
+};
+
 // WAPF qty-selector conditional semantics (installed Extended 3.1.5,
 // Fields::is_valid_rule + frontend isValidRule): a qty-selector field value
 // is the map of submitted quantities; rules see only positive entries.
@@ -162,86 +243,6 @@ const variationRulePasses = ( rule, ctx ) => {
 	return 'not_in' === rule.operator ? ! matched : matched;
 };
 
-const isVisible = ( field, values, subjectIsHidden ) => {
-	if ( ! field.conditionals || ! field.conditionals.length ) {
-		return true;
-	}
-	let hasShow = false;
-	let showPass = false;
-	let hidePass = false;
-	let varGatePass = true;
-	let varCtx = null;
-
-	const rulePasses = ( rule ) => {
-		// WAPF isValidRule: a rule whose subject field is currently hidden
-		// always fails (hidden subjects can't vouch for a visible dependent).
-		if ( 'function' === typeof subjectIsHidden && subjectIsHidden( rule.field ) ) {
-			return false;
-		}
-		if ( 'product_var' === rule.subject || 'var_att' === rule.subject ) {
-			if ( null === varCtx ) {
-				varCtx = variationContext();
-			}
-			return variationRulePasses( rule, varCtx );
-		}
-		const value = values[ rule.field ];
-		const qtyMap = qtyMapOf( value );
-		if ( qtyMap ) {
-			return qtyRulePasses( rule, qtyMap );
-		}
-		const actual = Array.isArray( value )
-			? value.flat( Infinity ).map( String ).filter( ( item ) => item.trim() !== '' ).join( ', ' )
-			: String( value ?? '' );
-		const expect = String( rule.value ?? '' );
-		switch ( rule.operator ) {
-			case 'is':
-				return Array.isArray( value )
-					? value.flat( Infinity ).includes( expect )
-					: actual === expect;
-			case 'is_not':
-				return ! rulePasses( { ...rule, operator: 'is' } );
-			case 'contains':
-				return actual.toLowerCase().includes( expect.toLowerCase() );
-			case 'not_contains':
-				return ! actual.toLowerCase().includes( expect.toLowerCase() );
-			case 'greater':
-				return actual !== '' && Number( actual ) > Number( expect );
-			case 'less':
-				return actual !== '' && Number( actual ) < Number( expect );
-			case 'empty':
-				return actual.trim() === '';
-			case 'not_empty':
-				return actual.trim() !== '';
-			default:
-				return false;
-		}
-	};
-
-	field.conditionals.forEach( ( conditional ) => {
-		const results = conditional.rules.map( rulePasses );
-		const passed =
-			'any' === conditional.logic
-				? results.includes( true )
-				: ! results.includes( false );
-		if ( 'var' === conditional.action ) {
-			// Generated variation gate (WAPF merge_frontend_conditions parity).
-			varGatePass = varGatePass && passed;
-			return;
-		}
-		if ( 'hide' === conditional.action ) {
-			hidePass = hidePass || passed;
-		} else {
-			hasShow = true;
-			showPass = showPass || passed;
-		}
-	} );
-
-	if ( ! varGatePass || hidePass ) {
-		return false;
-	}
-	return hasShow ? showPass : true;
-};
-
 const dateSiteClock = ( input ) => {
 	const serverEpoch = Number( input.dataset.opfDateSiteEpoch );
 	if ( ! Number.isFinite( serverEpoch ) ) return null;
@@ -261,176 +262,192 @@ const dateSiteClock = ( input ) => {
 	}
 };
 
-const dateIsBlocked = ( input, isoDate ) => {
-	if ( ( input.min && isoDate < input.min ) || ( input.max && isoDate > input.max ) ) return true;
-	const date = new Date( isoDate + 'T00:00:00Z' );
-	if ( Number.isNaN( date.getTime() ) ) return true;
-	const weekdays = JSON.parse( input.dataset.opfDisabledWeekdays || '[]' );
-	if ( weekdays.includes( date.getUTCDay() ) ) return true;
+const formatIsoDate = ( isoDate, format ) => {
+	const match = String( isoDate || '' ).match( /^(\d{4})-(\d{2})-(\d{2})$/ );
+	if ( ! match ) return '';
+	const values = { yyyy: match[1], yy: match[1].slice( -2 ), mm: match[2], m: String( Number( match[2] ) ), dd: match[3], d: String( Number( match[3] ) ) };
+	const normalized = String( format || 'mm-dd-yyyy' ).toLowerCase();
+	return normalized.replace( /yyyy|yy|mm|m|dd|d/g, ( token ) => values[ token ] );
+};
+
+const dateMatchesBlackout = ( isoDate, disabledDates ) => {
 	const monthDay = isoDate.slice( 5 );
-	const dateRuleBlocks = JSON.parse( input.dataset.opfDisabledDates || '[]' ).some( ( rule ) => {
-		const parts = String( rule ).trim().split( /\s+/ );
-		if ( 1 === parts.length ) return parts[0] === isoDate || parts[0] === monthDay;
-		let [ start, end ] = parts;
+	return disabledDates.some( ( rawRule ) => {
+		const rule = String( rawRule || '' ).trim();
+		if ( rule === isoDate || rule === monthDay ) return true;
+		const range = rule.split( /\s+/ );
+		if ( 2 !== range.length ) return false;
+		const [ start, end ] = range;
+		if ( /^\d{4}-\d{2}-\d{2}$/.test( start ) && /^\d{4}-\d{2}-\d{2}$/.test( end ) ) {
+			return isoDate >= start && isoDate <= end;
+		}
 		if ( /^\d{2}-\d{2}$/.test( start ) && /^\d{2}-\d{2}$/.test( end ) ) {
 			return start <= end ? monthDay >= start && monthDay <= end : monthDay >= start || monthDay <= end;
 		}
-		if ( /^\d{2}-\d{2}$/.test( start ) ) start = isoDate.slice( 0, 4 ) + '-' + start;
-		if ( /^\d{2}-\d{2}$/.test( end ) ) end = isoDate.slice( 0, 4 ) + '-' + end;
-		return start <= isoDate && isoDate <= end;
+		const year = isoDate.slice( 0, 4 );
+		const fixedStart = /^\d{2}-\d{2}$/.test( start ) ? year + '-' + start : start;
+		const fixedEnd = /^\d{2}-\d{2}$/.test( end ) ? year + '-' + end : end;
+		return /^\d{4}-\d{2}-\d{2}$/.test( fixedStart ) && /^\d{4}-\d{2}-\d{2}$/.test( fixedEnd ) && fixedStart <= isoDate && isoDate <= fixedEnd;
 	} );
-	if ( dateRuleBlocks ) return true;
+};
+
+const dateSelectionAllowed = ( input, isoDate ) => {
+	if ( input.min && isoDate < input.min ) return false;
+	if ( input.max && isoDate > input.max ) return false;
+	const date = new Date( isoDate + 'T00:00:00Z' );
+	if ( Number.isNaN( date.getTime() ) ) return false;
+	const weekdays = JSON.parse( input.dataset.opfDisabledWeekdays || '[]' );
+	const disabledDates = JSON.parse( input.dataset.opfDisabledDates || '[]' );
+	if ( weekdays.includes( date.getUTCDay() ) || dateMatchesBlackout( isoDate, disabledDates ) ) return false;
+	const allowPast = input.dataset.opfAllowPast !== '0';
+	const allowFuture = input.dataset.opfAllowFuture !== '0';
 	const cutoff = input.dataset.opfDateCutoff;
-	if ( cutoff ) {
-		const clock = dateSiteClock( input );
-		if ( ! clock ) return true;
-		if ( isoDate === clock.date && clock.time > cutoff + ':00' ) return true;
-	}
-	return false;
+	const clock = cutoff || ! allowPast || ! allowFuture ? dateSiteClock( input ) : null;
+	if ( ( cutoff || ! allowPast || ! allowFuture ) && ! clock ) return false;
+	if ( clock && ! allowPast && isoDate < clock.date ) return false;
+	if ( clock && ! allowFuture && isoDate > clock.date ) return false;
+	if ( cutoff && clock && isoDate === clock.date && clock.time >= cutoff ) return false;
+	return true;
 };
 
 const initDatePicker = ( fieldEl, input ) => {
-	if ( fieldEl.querySelector( '.opf-date-picker' ) ) return;
+	if ( ! document.createElement || fieldEl.querySelector( '.opf-date-picker' ) ) return;
+	// OPF_I18N may be absent when the helper is evaluated standalone — fall
+	// back to the bundled English strings (WAPF parity).
+	const tr = ( key, fallback ) => ( 'undefined' !== typeof i18n ? i18n( key, fallback ) : ( window.OPF_I18N || {} )[ key ] || fallback );
+	const siteLocale = 'undefined' !== typeof I18N && I18N.site_locale ? I18N.site_locale : ( window.OPF_I18N || {} ).site_locale;
+	const weekdayNames = 'undefined' !== typeof I18N && Array.isArray( I18N.weekday_abbreviations ) && 7 === I18N.weekday_abbreviations.length ? I18N.weekday_abbreviations : ( ( window.OPF_I18N || {} ).weekday_abbreviations || [ 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa' ] );
 	const wrapper = document.createElement( 'div' );
 	wrapper.className = 'opf-date-picker';
 	const toggle = document.createElement( 'button' );
 	toggle.type = 'button';
 	toggle.className = 'opf-date-picker__toggle';
-	toggle.textContent = i18n( 'choose_date', 'Choose date' );
+	toggle.textContent = tr( 'choose_date', 'Choose date' );
 	toggle.setAttribute( 'aria-haspopup', 'dialog' );
 	toggle.setAttribute( 'aria-expanded', 'false' );
+	toggle.setAttribute( 'aria-controls', input.id + '-calendar' );
 	const panel = document.createElement( 'div' );
 	panel.className = 'opf-date-picker__panel';
 	panel.id = input.id + '-calendar';
 	panel.setAttribute( 'role', 'dialog' );
-	panel.setAttribute( 'aria-label', i18n( 'choose_a_date', 'Choose a date' ) );
+	panel.setAttribute( 'aria-label', tr( 'choose_a_date', 'Choose a date' ) );
 	panel.hidden = true;
-	toggle.setAttribute( 'aria-controls', panel.id );
 	const header = document.createElement( 'div' );
 	header.className = 'opf-date-picker__header';
 	const previous = document.createElement( 'button' );
 	previous.type = 'button';
 	previous.textContent = '‹';
-	previous.setAttribute( 'aria-label', i18n( 'previous_month', 'Previous month' ) );
+	previous.setAttribute( 'aria-label', tr( 'previous_month', 'Previous month' ) );
 	const monthLabel = document.createElement( 'strong' );
-	monthLabel.id = input.id + '-calendar-month';
-	monthLabel.setAttribute( 'aria-live', 'polite' );
-	monthLabel.setAttribute( 'aria-atomic', 'true' );
 	const next = document.createElement( 'button' );
 	next.type = 'button';
 	next.textContent = '›';
-	next.setAttribute( 'aria-label', i18n( 'next_month', 'Next month' ) );
-	header.append( previous, monthLabel, next );
+	next.setAttribute( 'aria-label', tr( 'next_month', 'Next month' ) );
+	header.appendChild( previous );
+	header.appendChild( monthLabel );
+	header.appendChild( next );
 	const grid = document.createElement( 'div' );
 	grid.className = 'opf-date-picker__grid';
 	grid.setAttribute( 'role', 'grid' );
-	grid.setAttribute( 'aria-label', i18n( 'calendar_dates', 'Calendar dates' ) );
-	const status = document.createElement( 'div' );
-	status.className = 'opf-date-picker__status';
-	status.setAttribute( 'role', 'status' );
-	status.setAttribute( 'aria-live', 'polite' );
-	panel.append( header, grid, status );
-	wrapper.append( toggle, panel );
+	grid.setAttribute( 'aria-label', tr( 'calendar_dates', 'Calendar dates' ) );
+	const configuredWeekStart = Number.parseInt( input.dataset.opfWeekStart || '0', 10 );
+	const weekStart = Number.isInteger( configuredWeekStart ) && configuredWeekStart >= 0 && configuredWeekStart <= 6 ? configuredWeekStart : 0;
+	panel.appendChild( header );
+	panel.appendChild( grid );
+	wrapper.appendChild( toggle );
+	wrapper.appendChild( panel );
 	fieldEl.appendChild( wrapper );
-	let visibleMonth = ( input.value || new Date().toISOString().slice( 0, 10 ) ).slice( 0, 7 ) + '-01';
-	const displayDate = ( isoDate ) => {
-		const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec( isoDate );
-		if ( ! match ) return i18n( 'choose_date', 'Choose date' );
-		const values = { yyyy: match[1], yy: match[1].slice( -2 ), mm: match[2], m: String( Number( match[2] ) ), dd: match[3], d: String( Number( match[3] ) ) };
-		const format = input.dataset.opfDateFormat || 'mm-dd-yyyy';
-		return format.replace( /yyyy|yy|mm|m|dd|d/gi, ( token ) => values[token.toLowerCase()] || token );
-	};
-	const weekStart = Math.min( 6, Math.max( 0, Number( input.dataset.opfWeekStart || 0 ) ) );
+
+	let visibleMonth = ( input.value && /^\d{4}-\d{2}-\d{2}$/.test( input.value ) ? input.value : ( dateSiteClock( input ) || {} ).date || new Date().toISOString().slice( 0, 10 ) ).slice( 0, 7 ) + '-01';
+	let activeDate = input.value;
 	const render = () => {
-		grid.textContent = '';
+		const formattedValue = formatIsoDate( input.value, input.dataset.opfDateFormat );
+		toggle.textContent = formattedValue || tr( 'choose_date', 'Choose date' );
+		toggle.setAttribute( 'aria-label', formattedValue ? tr( 'change_date', 'Change date, %s' ).replace( '%s', formattedValue ) : tr( 'choose_date', 'Choose date' ) );
 		const month = new Date( visibleMonth + 'T00:00:00Z' );
-		monthLabel.textContent = new Intl.DateTimeFormat( I18N.site_locale || undefined, { month: 'long', year: 'numeric', timeZone: 'UTC' } ).format( month );
-		const labels = Array.isArray( I18N.weekday_abbreviations ) && 7 === I18N.weekday_abbreviations.length ? I18N.weekday_abbreviations : [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ];
-		const headingRow = document.createElement( 'div' );
-		headingRow.setAttribute( 'role', 'row' );
-		labels.slice( weekStart ).concat( labels.slice( 0, weekStart ) ).forEach( ( label ) => {
+		monthLabel.textContent = new Intl.DateTimeFormat( siteLocale || undefined, { month: 'long', year: 'numeric', timeZone: 'UTC' } ).format( month );
+		monthLabel.setAttribute( 'aria-live', 'polite' );
+		grid.textContent = '';
+		const weekdayRow = document.createElement( 'div' );
+		weekdayRow.setAttribute( 'role', 'row' );
+		weekdayNames.slice( weekStart ).concat( weekdayNames.slice( 0, weekStart ) ).forEach( ( day ) => {
 			const heading = document.createElement( 'span' );
-			heading.textContent = label;
+			heading.textContent = day;
 			heading.setAttribute( 'role', 'columnheader' );
-			headingRow.appendChild( heading );
+			weekdayRow.appendChild( heading );
 		} );
-		grid.appendChild( headingRow );
-		const firstWeekday = new Date( month ).getUTCDay();
-		const blanks = ( firstWeekday - weekStart + 7 ) % 7;
-		const dayCount = new Date( Date.UTC( month.getUTCFullYear(), month.getUTCMonth() + 1, 0 ) ).getUTCDate();
+		grid.appendChild( weekdayRow );
+		const firstDay = new Date( month.getTime() ).getUTCDay();
+		const firstDayOffset = ( firstDay - weekStart + 7 ) % 7;
+		const days = new Date( Date.UTC( month.getUTCFullYear(), month.getUTCMonth() + 1, 0 ) ).getUTCDate();
 		let row = document.createElement( 'div' );
 		row.setAttribute( 'role', 'row' );
-		for ( let blank = 0; blank < blanks; blank++ ) {
-			const emptyCell = document.createElement( 'span' );
-			emptyCell.setAttribute( 'role', 'gridcell' );
-			emptyCell.setAttribute( 'aria-hidden', 'true' );
-			row.appendChild( emptyCell );
-		}
-		let tabStopSet = false;
-		for ( let day = 1; day <= dayCount; day++ ) {
+		for ( let blank = 0; blank < firstDayOffset; blank++ ) row.appendChild( document.createElement( 'span' ) );
+		const clock = dateSiteClock( input );
+		const preferred = [ activeDate, input.value, clock && clock.date ].find( ( candidate ) => candidate && candidate.slice( 0, 7 ) === visibleMonth.slice( 0, 7 ) && dateSelectionAllowed( input, candidate ) ) || '';
+		let rovingAssigned = false;
+		for ( let day = 1; day <= days; day++ ) {
 			const isoDate = visibleMonth.slice( 0, 7 ) + '-' + String( day ).padStart( 2, '0' );
 			const choice = document.createElement( 'button' );
-			const cell = document.createElement( 'span' );
 			choice.type = 'button';
 			choice.textContent = String( day );
 			choice.dataset.opfDate = isoDate;
-			choice.setAttribute( 'aria-label', new Intl.DateTimeFormat( I18N.site_locale || undefined, { dateStyle: 'full', timeZone: 'UTC' } ).format( new Date( isoDate + 'T00:00:00Z' ) ) );
-			choice.disabled = dateIsBlocked( input, isoDate );
-			choice.tabIndex = ! choice.disabled && ! tabStopSet && ( isoDate === input.value || ! input.value ) ? 0 : -1;
-			if ( choice.tabIndex === 0 ) tabStopSet = true;
-			cell.setAttribute( 'role', 'gridcell' );
-			if ( isoDate === input.value ) cell.setAttribute( 'aria-selected', 'true' );
+			choice.setAttribute( 'aria-label', new Intl.DateTimeFormat( siteLocale || undefined, { dateStyle: 'full', timeZone: 'UTC' } ).format( new Date( isoDate + 'T00:00:00Z' ) ) );
+			choice.disabled = ! dateSelectionAllowed( input, isoDate );
+			choice.tabIndex = -1;
+			if ( isoDate === input.value ) choice.setAttribute( 'aria-pressed', 'true' );
+			if ( isoDate === clock?.date ) choice.setAttribute( 'aria-current', 'date' );
+			if ( ! choice.disabled && ( isoDate === preferred || ( ! preferred && ! rovingAssigned ) ) ) {
+				choice.tabIndex = 0;
+				activeDate = isoDate;
+				rovingAssigned = true;
+			}
 			choice.addEventListener( 'click', () => {
 				input.value = isoDate;
-				input.dispatchEvent( new Event( 'input', { bubbles: true } ) );
-				input.dispatchEvent( new Event( 'change', { bubbles: true } ) );
+				const EventType = window.Event || Event;
+				input.dispatchEvent( new EventType( 'input', { bubbles: true } ) );
+				input.dispatchEvent( new EventType( 'change', { bubbles: true } ) );
 				panel.hidden = true;
 				toggle.setAttribute( 'aria-expanded', 'false' );
-				toggle.textContent = displayDate( isoDate );
 				toggle.focus();
 			} );
-			cell.appendChild( choice );
-			row.appendChild( cell );
-			if ( ( blanks + day ) % 7 === 0 ) {
+			row.appendChild( choice );
+			if ( ( firstDayOffset + day ) % 7 === 0 ) {
 				grid.appendChild( row );
 				row = document.createElement( 'div' );
 				row.setAttribute( 'role', 'row' );
 			}
 		}
 		if ( row.children.length ) grid.appendChild( row );
-		status.textContent = grid.querySelector( 'button:not(:disabled)' ) ? '' : i18n( 'no_selectable_dates', 'No selectable dates this month.' );
-		toggle.textContent = input.value ? displayDate( input.value ) : i18n( 'choose_date', 'Choose date' );
+		status.textContent = rovingAssigned ? '' : tr( 'no_selectable_dates', 'No selectable dates this month.' );
 	};
+	const status = document.createElement( 'div' );
+	status.className = 'opf-date-picker__status';
+	status.setAttribute( 'role', 'status' );
+	status.setAttribute( 'aria-live', 'polite' );
+	panel.appendChild( status );
 	input.opfRenderDateCalendar = render;
-	const changeMonth = ( amount ) => {
+	const changeMonth = ( delta ) => {
 		const month = new Date( visibleMonth + 'T00:00:00Z' );
-		month.setUTCMonth( month.getUTCMonth() + amount );
+		month.setUTCMonth( month.getUTCMonth() + delta );
 		visibleMonth = month.toISOString().slice( 0, 7 ) + '-01';
+		activeDate = '';
 		render();
 	};
-	const focusDateInMonth = ( year, monthIndex, day ) => {
-		const lastDay = new Date( Date.UTC( year, monthIndex + 1, 0 ) ).getUTCDate();
-		const target = Math.min( day, lastDay );
-		for ( let distance = 0; distance < lastDay; distance++ ) {
-			for ( const direction of distance ? [ -1, 1 ] : [ 1 ] ) {
-				const candidateDay = target + distance * direction;
-				if ( candidateDay < 1 || candidateDay > lastDay ) continue;
-				const isoDate = year + '-' + String( monthIndex + 1 ).padStart( 2, '0' ) + '-' + String( candidateDay ).padStart( 2, '0' );
-				const button = grid.querySelector( 'button[data-opf-date="' + isoDate + '"]:not(:disabled)' );
-				if ( ! button ) continue;
-				grid.querySelectorAll( 'button[data-opf-date]' ).forEach( ( dayButton ) => { dayButton.tabIndex = dayButton === button ? 0 : -1; } );
-				button.focus();
-				return;
-			}
-		}
-	};
-	previous.addEventListener( 'click', () => changeMonth( -1 ) );
-	next.addEventListener( 'click', () => changeMonth( 1 ) );
+	previous.addEventListener( 'click', () => {
+		changeMonth( -1 );
+	} );
+	next.addEventListener( 'click', () => {
+		changeMonth( 1 );
+	} );
 	toggle.addEventListener( 'click', () => {
 		panel.hidden = ! panel.hidden;
 		toggle.setAttribute( 'aria-expanded', String( ! panel.hidden ) );
 		render();
-		if ( ! panel.hidden ) ( grid.querySelector( '[aria-selected="true"] button:not(:disabled)' ) || grid.querySelector( '[tabindex="0"]' ) || next ).focus();
+		if ( ! panel.hidden ) {
+			const selected = grid.querySelector( 'button[aria-pressed="true"]:not(:disabled)' ) || grid.querySelector( 'button[tabindex="0"]' ) || next;
+			if ( selected ) selected.focus();
+		}
 	} );
 	panel.addEventListener( 'keydown', ( event ) => {
 		if ( 'Escape' === event.key ) {
@@ -443,57 +460,84 @@ const initDatePicker = ( fieldEl, input ) => {
 	grid.addEventListener( 'keydown', ( event ) => {
 		const current = event.target.closest( 'button[data-opf-date]' );
 		if ( ! current ) return;
-		let amount = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 }[ event.key ];
+		const selected = new Date( current.dataset.opfDate + 'T00:00:00Z' );
+		let target = null;
+		if ( 'ArrowLeft' === event.key ) target = -1;
+		if ( 'ArrowRight' === event.key ) target = 1;
+		if ( 'ArrowUp' === event.key ) target = -7;
+		if ( 'ArrowDown' === event.key ) target = 7;
+		const weekdayOffset = ( selected.getUTCDay() - weekStart + 7 ) % 7;
+		if ( 'Home' === event.key ) target = -weekdayOffset;
+		if ( 'End' === event.key ) target = 6 - weekdayOffset;
 		if ( 'PageUp' === event.key || 'PageDown' === event.key ) {
-			const monthDelta = ( 'PageUp' === event.key ? -1 : 1 ) * ( event.shiftKey ? 12 : 1 );
-			const currentDate = new Date( current.dataset.opfDate + 'T00:00:00Z' );
-			const targetMonth = new Date( Date.UTC( currentDate.getUTCFullYear(), currentDate.getUTCMonth() + monthDelta, 1 ) );
-			changeMonth( monthDelta );
-			focusDateInMonth( targetMonth.getUTCFullYear(), targetMonth.getUTCMonth(), currentDate.getUTCDate() );
+			const month = new Date( selected.getTime() );
+			month.setUTCMonth( month.getUTCMonth() + ( 'PageUp' === event.key ? -1 : 1 ) );
+			visibleMonth = month.toISOString().slice( 0, 7 ) + '-01';
+			activeDate = '';
+			render();
+			const sameDay = String( Math.min( selected.getUTCDate(), new Date( Date.UTC( month.getUTCFullYear(), month.getUTCMonth() + 1, 0 ) ).getUTCDate() ) ).padStart( 2, '0' );
+			const wanted = grid.querySelector( 'button[data-opf-date="' + visibleMonth.slice( 0, 7 ) + '-' + sameDay + '"]:not(:disabled)' ) || grid.querySelector( 'button[tabindex="0"]' );
+			if ( wanted ) {
+				activeDate = wanted.dataset.opfDate;
+				grid.querySelectorAll( 'button[data-opf-date]' ).forEach( ( button ) => { button.tabIndex = button === wanted ? 0 : -1; } );
+				wanted.focus();
+			}
 			event.preventDefault();
 			return;
 		}
-		if ( 'Home' === event.key ) amount = -(( new Date( current.dataset.opfDate + 'T00:00:00Z' ).getUTCDay() - weekStart + 7 ) % 7 );
-		if ( 'End' === event.key ) amount = 6 - (( new Date( current.dataset.opfDate + 'T00:00:00Z' ).getUTCDay() - weekStart + 7 ) % 7 );
-		if ( null === amount || undefined === amount ) return;
-		const date = new Date( current.dataset.opfDate + 'T00:00:00Z' );
-		const direction = amount < 0 ? -1 : 1;
-		for ( let attempt = 0; attempt < 42; attempt++ ) {
-			const candidate = new Date( date.getTime() );
-			candidate.setUTCDate( candidate.getUTCDate() + amount + ( direction * attempt ) );
+		if ( null === target ) return;
+		let delta = target;
+		for ( let tries = 0; tries < 42; tries++ ) {
+			const candidate = new Date( selected.getTime() );
+			candidate.setUTCDate( candidate.getUTCDate() + delta );
 			const isoDate = candidate.toISOString().slice( 0, 10 );
-			if ( dateIsBlocked( input, isoDate ) ) {
-				continue;
+			if ( dateSelectionAllowed( input, isoDate ) ) {
+				activeDate = isoDate;
+				if ( visibleMonth.slice( 0, 7 ) !== isoDate.slice( 0, 7 ) ) {
+					visibleMonth = isoDate.slice( 0, 7 ) + '-01';
+					render();
+				}
+				const wanted = grid.querySelector( 'button[data-opf-date="' + isoDate + '"]' );
+				if ( wanted ) {
+					grid.querySelectorAll( 'button[data-opf-date]' ).forEach( ( button ) => { button.tabIndex = button === wanted ? 0 : -1; } );
+					wanted.focus();
+				}
+				break;
 			}
-			if ( isoDate.slice( 0, 7 ) !== visibleMonth.slice( 0, 7 ) ) {
-				visibleMonth = isoDate.slice( 0, 7 ) + '-01';
-				render();
-			}
-			const nextDate = grid.querySelector( 'button[data-opf-date="' + isoDate + '"]' );
-			if ( nextDate ) {
-				grid.querySelectorAll( 'button[data-opf-date]' ).forEach( ( button ) => { button.tabIndex = button === nextDate ? 0 : -1; } );
-				nextDate.focus();
-			}
-			break;
+			delta += [ 'ArrowUp', 'ArrowDown' ].includes( event.key ) ? target : ( 'End' === event.key ? -1 : 1 );
 		}
 		event.preventDefault();
 	} );
 	input.addEventListener( 'input', () => {
-		const invalid = !! input.value && dateIsBlocked( input, input.value );
-		input.setCustomValidity( invalid ? i18n( 'date_unavailable', 'This date is unavailable.' ) : '' );
+		if ( /^\d{4}-\d{2}-\d{2}$/.test( input.value ) ) {
+			activeDate = input.value;
+			visibleMonth = input.value.slice( 0, 7 ) + '-01';
+		}
 		render();
 	} );
 	render();
-	if ( input.dataset.opfDateCutoff && window.setInterval && ! input.opfDateCutoffTimer ) {
-		input.opfDateCutoffTimer = window.setInterval( () => {
-			if ( ! panel.hidden ) render();
-			if ( input.value ) input.setCustomValidity( dateIsBlocked( input, input.value ) ? i18n( 'date_unavailable', 'This date is unavailable.' ) : '' );
-		}, 15000 );
-		window.addEventListener( 'pagehide', () => window.clearInterval( input.opfDateCutoffTimer ), { once: true } );
-	}
 };
 
-const init = () => {
+const updateNumberStepperButtons = ( fieldEl ) => {
+	if ( ! fieldEl?.querySelector ) return;
+	const wrapper = fieldEl.querySelector( '[data-opf-number-stepper]' );
+	const input = wrapper?.querySelector( 'input[type="number"]' );
+	if ( ! input ) return;
+	const down = wrapper.querySelector( '[data-opf-number-step="down"]' );
+	const up = wrapper.querySelector( '[data-opf-number-step="up"]' );
+	const blocked = input.disabled || input.readOnly;
+	const min = '' !== input.min && Number.isFinite( Number( input.min ) ) ? Number( input.min ) : null;
+	const max = '' !== input.max && Number.isFinite( Number( input.max ) ) ? Number( input.max ) : null;
+	const value = '' === input.value ? ( null !== min ? min : 0 ) : Number( input.value );
+	if ( down ) down.disabled = blocked || ( null !== min && value <= min );
+	if ( up ) up.disabled = blocked || ( null !== max && value >= max );
+};
+
+// Inverse of dateSelectionAllowed kept for callers that think in
+// 'blocked' terms (master's earlier helper name).
+const dateIsBlocked = ( input, isoDate ) => ! dateSelectionAllowed( input, isoDate );
+
+const init = ( root = document ) => {
 	// Woo variation lifecycle → notify every group so variation-scoped rules
 	// (product_var/var_att subjects, generated `var` gates) re-evaluate.
 	// Notifications are deferred to the next tick: WooCommerce writes
@@ -516,7 +560,14 @@ const init = () => {
 			} );
 	}
 
-	document.querySelectorAll( '[data-opf-group]' ).forEach( ( groupEl ) => {
+	// WAPF attaches per group (and re-initializes AJAX-injected group roots);
+	// a dataset flag keeps re-runs idempotent.
+	const groups = root && typeof root.matches === 'function' && root.matches( '[data-opf-group]' )
+		? [ root, ...root.querySelectorAll( '[data-opf-group]' ) ]
+		: Array.from( ( root && typeof root.querySelectorAll === 'function' ? root : document ).querySelectorAll( '[data-opf-group]' ) );
+	groups.forEach( ( groupEl ) => {
+		if ( groupEl.dataset && groupEl.dataset.opfInitialized ) return;
+		if ( groupEl.dataset ) groupEl.dataset.opfInitialized = '1';
 		const gid = groupEl.getAttribute( 'data-opf-group' );
 		const registry = REGISTRY[ gid ] || {};
 		const readInstanceValue = ( instance, def ) => {
@@ -551,17 +602,20 @@ const init = () => {
 			const input = checked || instance.querySelector( 'input:not([type="hidden"]), textarea, select' );
 			return input ? input.value : '';
 		};
-		const readFieldValue = ( fieldEl, def ) => fieldEl.hasAttribute( 'data-opf-section-repeat' )
+		const readFieldValue = ( fieldEl, def ) => ( typeof fieldEl.hasAttribute === 'function' && fieldEl.hasAttribute( 'data-opf-section-repeat' ) )
 			? []
-			: fieldEl.matches( '[data-opf-repeat="button"], [data-opf-repeat="quantity"]' )
+			: ( typeof fieldEl.matches === 'function' && fieldEl.matches( '[data-opf-repeat="button"], [data-opf-repeat="quantity"]' ) )
 				? Array.from( fieldEl.querySelectorAll( '.opf-field-repeat__rows > [data-opf-repeat-instance]' ) ).map( ( instance ) => readInstanceValue( instance, def ) )
 			: readInstanceValue( fieldEl, def );
+		// refresh() stores the last conditionally-resolved value map here so
+		// section-instance overlays evaluate rules against resolved values.
+		let latestResolved = null;
 		const valuesForField = ( fieldEl ) => {
-			const instance = fieldEl.closest( '[data-opf-section-repeat] [data-opf-repeat-instance]' );
-			if ( ! instance ) return values;
-			const scoped = { ...values };
+			const instance = typeof fieldEl.closest === 'function' ? fieldEl.closest( '[data-opf-section-repeat] [data-opf-repeat-instance]' ) : null;
+			if ( ! instance ) return latestResolved || values;
+			const scoped = { ...( latestResolved || values ) };
 			instance.querySelectorAll( '[data-opf-field]' ).forEach( ( scopedField ) => {
-				if ( scopedField.hasAttribute( 'data-opf-section-repeat' ) ) return;
+				if ( typeof scopedField.hasAttribute === 'function' && scopedField.hasAttribute( 'data-opf-section-repeat' ) ) return;
 				const scopedId = scopedField.getAttribute( 'data-opf-field' );
 				const scopedDef = fieldDefs[ scopedId ] || registry[ scopedId ] || { type: 'text', conditionals: [] };
 				scoped[ scopedId ] = readFieldValue( scopedField, scopedDef );
@@ -689,7 +743,7 @@ const init = () => {
 			const sectionRepeat = repeater.hasAttribute( 'data-opf-section-repeat' );
 			const baseRowLabel = template.querySelector( sectionRepeat ? '.opf-section-repeat__label span' : '.opf-field-label span' );
 			const baseLabelText = baseRowLabel ? baseRowLabel.textContent : '';
-			const quantityInput = document.querySelector( 'form.cart input[name="quantity"], form.cart .qty' );
+			const quantityInput = typeof document.querySelector === 'function' ? document.querySelector( 'form.cart input[name="quantity"], form.cart .qty' ) : null;
 			const resetClone = ( clone ) => {
 				clone.querySelectorAll( '.opf-date-picker' ).forEach( ( picker ) => picker.remove() );
 				clone.querySelectorAll( 'input' ).forEach( ( input ) => {
@@ -752,18 +806,35 @@ const init = () => {
 
 			values[ fid ] = readFieldValue( fieldEl, fieldDefs[ fid ] );
 		} );
+		// [field.X] resolves to choice labels (WAPF parity): carry each field's
+		// slug→label map on the value map so the formula evaluator sees it.
+		const choiceLabels = {};
+		fields.forEach( ( fieldEl ) => {
+			const fid = fieldEl.getAttribute( 'data-opf-field' );
+			const def = fieldDefs[ fid ];
+			if ( ! def || ! Array.isArray( def.choices ) ) return;
+			const map = {};
+			def.choices.forEach( ( choice ) => {
+				if ( choice && choice.slug != null && choice.label != null ) map[ String( choice.slug ) ] = String( choice.label );
+			} );
+			if ( Object.keys( map ).length ) choiceLabels[ String( fid ).toLowerCase() ] = map;
+		} );
+		if ( Object.keys( choiceLabels ).length ) values.__opf_labels = choiceLabels;
+		latestResolved = values;
 		syncCalcFields();
 		updateRequiredRepeaters();
 		fields.forEach( ( fieldEl ) => {
-			if ( fieldEl.matches( '[data-opf-repeat="button"], [data-opf-repeat="quantity"]' ) ) {
+			if ( typeof fieldEl.matches === 'function' && fieldEl.matches( '[data-opf-repeat="button"], [data-opf-repeat="quantity"]' ) ) {
 				fieldEl.querySelectorAll( '[data-opf-repeat-instance]' ).forEach( ( instance ) => {
 					const input = instance.querySelector( 'input[type="date"]' );
 					if ( input ) initDatePicker( instance, input );
+					updateNumberStepperButtons( instance );
 				} );
 			} else {
 				const input = fieldEl.querySelector( 'input[type="date"]' );
 				if ( input ) initDatePicker( fieldEl, input );
 			}
+			updateNumberStepperButtons( fieldEl );
 		} );
 
 		// WAPF isValidRule resolves a hidden conditional subject to false. The
@@ -771,7 +842,7 @@ const init = () => {
 		// same way WAPF's sequential .each() pass does.
 		const subjectIsHidden = ( fid ) => {
 			const el = groupEl.querySelector( '[data-opf-field="' + fid + '"]' );
-			return !! el && ( el.classList.contains( 'opf-hide' ) || el.classList.contains( 'opf-field--hidden' ) || el.hasAttribute( 'hidden' ) );
+			return !! el && ( el.classList.contains( 'opf-hide' ) || el.classList.contains( 'opf-field--hidden' ) || ( typeof el.hasAttribute === 'function' && el.hasAttribute( 'hidden' ) ) );
 		};
 
 		// ------------------------------------------------------------------
@@ -927,16 +998,51 @@ const init = () => {
 		};
 
 		const refresh = () => {
+			// Resolve 'calculation' fields and drop conditionally-hidden values
+			// in dependency order, so rules chained on calc outputs settle in a
+			// single pass — the WAPF sequential .each() equivalent.
+			const groupPrice = parseFloat( groupEl.getAttribute( 'data-opf-product-price' ) || '0' ) || 0;
+			const rawValues = { ...values };
+			const fileCounts = {};
+			fields.forEach( ( fieldEl ) => {
+				const fid = fieldEl.getAttribute( 'data-opf-field' );
+				if ( fieldDefs[ fid ]?.type !== 'upload' ) return;
+				const uploadInput = fieldEl.querySelector ? fieldEl.querySelector( 'input[type="file"]' ) : null;
+				fileCounts[ String( fid ).toLowerCase() ] = ( uploadInput && uploadInput.files ? uploadInput.files.length : 0 ) + fieldEl.querySelectorAll( '[data-opf-upload-token]' ).length;
+			} );
+			const lookupTables = ( window.OPF_LOOKUP_TABLES || {} )[ gid ] || {};
+			const formulaVariables = resolveGroupFormulaVariables( gid, rawValues );
+			const candidatePrices = resolveFieldPrices( fieldDefs, rawValues, groupPrice, 1, 0, lookupTables, formulaVariables );
+			let resolvedValues = resolveCalculatedValues( fieldDefs, rawValues, groupPrice, 1, 0, lookupTables, formulaVariables, fileCounts, candidatePrices );
+			// Hidden upload fields contribute no files — re-resolve so
+			// files(hidden_field) formulas drop to 0.
+			fields.forEach( ( fieldEl ) => {
+				const fid = fieldEl.getAttribute( 'data-opf-field' );
+				if ( fieldDefs[ fid ]?.type === 'upload' && ! isVisible( fieldDefs[ fid ], resolvedValues ) ) fileCounts[ String( fid ).toLowerCase() ] = 0;
+			} );
+			resolvedValues = resolveCalculatedValues( fieldDefs, rawValues, groupPrice, 1, 0, lookupTables, formulaVariables, fileCounts, candidatePrices );
+			latestResolved = resolvedValues;
 			groupEl.querySelectorAll( '[data-opf-field]' ).forEach( ( fieldEl ) => {
 				const fid = fieldEl.getAttribute( 'data-opf-field' );
 				const def = fieldDefs[ fid ] || {};
 				// A field inside a hidden section is hidden too. Ancestors are
 				// processed first (document order), so their [hidden] is current.
-				const ancestorHidden = !! ( fieldEl.parentElement && fieldEl.parentElement.closest( '[data-opf-field][hidden]' ) );
-				const visible = ! ancestorHidden && isVisible( def, valuesForField( fieldEl ), subjectIsHidden );
+				const ancestorHidden = !! ( fieldEl.parentElement && fieldEl.parentElement.closest && fieldEl.parentElement.closest( '[data-opf-field][hidden]' ) );
+				// Calculation fields absent from the resolved map (hidden
+				// subject, cyclic formula, non-finite result) stay hidden.
+				const isCalcField = 'calculation' === def.type;
+				const visible = ! ancestorHidden && ( isCalcField && ! Object.prototype.hasOwnProperty.call( resolvedValues, fid )
+					? false
+					: isVisible( def, valuesForField( fieldEl ), subjectIsHidden ) );
 				fieldEl.classList.toggle( 'opf-field--hidden', ! visible );
 				fieldEl.classList.toggle( 'opf-hide', ! visible );
 				fieldEl.toggleAttribute( 'hidden', ! visible );
+				// WAPF calculation display: write the resolved value through the
+				// field's result_text template.
+				const calculationOutput = fieldEl.querySelector ? fieldEl.querySelector( '[data-opf-calculation]' ) : null;
+				if ( calculationOutput && Object.prototype.hasOwnProperty.call( resolvedValues, fid ) ) {
+					calculationOutput.textContent = String( def.result_text || '{result}' ).replace( /\{result\}/g, String( resolvedValues[ fid ] ) );
+				}
 				// Hidden controls must not block native form validation or submit
 				// stale values, matching WAPF's conditional handler. Author-disabled
 				// choices stay disabled once the field is shown again.
@@ -968,12 +1074,12 @@ const init = () => {
 				// Accordion header: mostrar la elección actual
 				const accValue = fieldEl.querySelector( '.acc-value' );
 				if ( accValue ) {
-					const v = values[ fid ];
+					const v = resolvedValues[ fid ];
 					const choices = def.choices || [];
 					if ( choices.length ) {
 						const slugs = Array.isArray( v ) ? v : [ v ];
-						const chosen = choices.find( ( c ) => slugs.includes( c.slug ) );
-						if ( chosen ) accValue.textContent = chosen.label;
+						const chosen = choices.filter( ( c ) => slugs.includes( c.slug ) );
+						if ( chosen.length ) accValue.textContent = chosen.map( ( c ) => c.label ).join( ', ' );
 					} else if ( typeof v === 'string' && v.trim() ) {
 						accValue.textContent = v;
 					}
@@ -997,6 +1103,104 @@ const init = () => {
 			} );
 		};
 
+		// WAPF min/max selection validation: repeated rows validate per row,
+		// image-quantity swatches count both selected options and total qty,
+		// and plain checkbox groups check the checked count.
+		const validateChoiceLimits = () => {
+			fields.forEach( ( fieldEl ) => {
+				const min = parseInt( fieldEl.dataset.opfMinSelections || '0', 10 );
+				const max = parseInt( fieldEl.dataset.opfMaxSelections || '0', 10 );
+				const repeatedRows = fieldEl.querySelectorAll( '[data-opf-repeat-row]' );
+				if ( repeatedRows.length ) {
+					repeatedRows.forEach( ( row ) => {
+						const inputs = row.querySelectorAll( 'input[type="checkbox"]' );
+						if ( ! inputs.length ) return;
+						const count = row.querySelectorAll( 'input[type="checkbox"]:checked' ).length;
+						const message = min && count < min ? 'Select at least ' + min + ' option(s).' : ( max && count > max ? 'Select at most ' + max + ' option(s).' : '' );
+						inputs.forEach( ( input ) => input.setCustomValidity( message ) );
+					} );
+					return;
+				}
+				const quantityInputs = fieldEl.querySelectorAll( 'input[data-opf-quantity-choice]' );
+				if ( quantityInputs.length ) {
+					const quantities = Array.from( quantityInputs ).map( ( input ) => Math.max( 0, parseInt( input.value || '0', 10 ) || 0 ) );
+					const selected = quantities.filter( ( quantity ) => quantity > 0 ).length;
+					const total = quantities.reduce( ( sum, quantity ) => sum + quantity, 0 );
+					const minTotal = parseInt( fieldEl.dataset.opfMinTotalQuantity || '0', 10 );
+					const maxTotal = parseInt( fieldEl.dataset.opfMaxTotalQuantity || '0', 10 );
+					let message = min && selected < min
+						? 'Select at least ' + min + ' option(s).'
+						: ( max && selected > max ? 'Select at most ' + max + ' option(s).' : '' );
+					if ( ! message && minTotal && total < minTotal ) message = 'Enter a total quantity of at least ' + minTotal + '.';
+					if ( ! message && maxTotal && total > maxTotal ) message = 'Enter a total quantity of at most ' + maxTotal + '.';
+					quantityInputs.forEach( ( input ) => {
+						const quantity = Math.max( 0, parseInt( input.value || '0', 10 ) || 0 );
+						const minQuantity = parseInt( input.dataset.opfMinQuantity || '1', 10 );
+						if ( ! message && quantity > 0 && quantity < minQuantity ) message = 'Enter at least ' + minQuantity + ' for each selected image.';
+					} );
+					quantityInputs.forEach( ( input ) => input.setCustomValidity( message ) );
+					return;
+				}
+				if ( ! min && ! max ) {
+					return;
+				}
+				const inputs = fieldEl.querySelectorAll( 'input[type="checkbox"]' );
+				const count = fieldEl.querySelectorAll( 'input[type="checkbox"]:checked' ).length;
+				const message = min && count < min
+					? 'Select at least ' + min + ' option(s).'
+					: ( max && count > max ? 'Select at most ' + max + ' option(s).' : '' );
+				inputs.forEach( ( input ) => input.setCustomValidity( message ) );
+			} );
+		};
+
+		// WAPF date policies as validation messages — mirrors
+		// dateSelectionAllowed but reports the specific violated rule.
+		const validateDateRestrictions = () => {
+			fields.forEach( ( fieldEl ) => {
+				const input = fieldEl.querySelector ? fieldEl.querySelector( 'input[type="date"]' ) : null;
+				if ( ! input ) return;
+				const value = input.value;
+				let message = '';
+				if ( value ) {
+					const date = new Date( value + 'T00:00:00Z' );
+					const weekdays = JSON.parse( input.dataset.opfDisabledWeekdays || '[]' );
+					const disabledDates = JSON.parse( input.dataset.opfDisabledDates || '[]' );
+					if ( weekdays.includes( date.getUTCDay() ) ) message = 'This weekday is unavailable.';
+					if ( ! message && dateMatchesBlackout( value, disabledDates ) ) message = 'This date is unavailable.';
+					const cutoff = input.dataset.opfDateCutoff;
+					const allowPast = input.dataset.opfAllowPast !== '0';
+					const allowFuture = input.dataset.opfAllowFuture !== '0';
+					const clock = cutoff || ! allowPast || ! allowFuture ? dateSiteClock( input ) : null;
+					if ( ! message && ( cutoff || ! allowPast || ! allowFuture ) && ! clock ) message = 'Date availability cannot be confirmed.';
+					if ( ! message && clock && ! allowPast && value < clock.date ) message = 'Past dates are unavailable.';
+					if ( ! message && clock && ! allowFuture && value > clock.date ) message = 'Future dates are unavailable.';
+					if ( ! message && cutoff && clock && value === clock.date && clock.time >= cutoff ) message = 'Today is no longer available.';
+				}
+				input.setCustomValidity( message );
+			} );
+		};
+
+		// WAPF keeps re-validating date restrictions while the page is open —
+		// a cutoff reached mid-session must invalidate the entered date. The
+		// ticker also re-renders open calendars so cells newly in the past
+		// become disabled.
+		if ( window.setInterval && ! groupEl.opfDateCutoffTimer && Array.from( fields ).some( ( fieldEl ) => {
+			const input = fieldEl.querySelector ? fieldEl.querySelector( 'input[type="date"]' ) : null;
+			return input && ( input.dataset.opfDateCutoff || input.dataset.opfAllowPast === '0' || input.dataset.opfAllowFuture === '0' );
+		} ) ) {
+			groupEl.opfDateCutoffTimer = window.setInterval( () => {
+				validateDateRestrictions();
+				fields.forEach( ( fieldEl ) => {
+					const input = fieldEl.querySelector ? fieldEl.querySelector( 'input[type="date"]' ) : null;
+					const panel = fieldEl.querySelector ? fieldEl.querySelector( '.opf-date-picker__panel' ) : null;
+					if ( input && panel && ! panel.hidden && input.opfRenderDateCalendar ) input.opfRenderDateCalendar();
+				} );
+			}, 30000 );
+			if ( window.addEventListener && window.clearInterval ) {
+				window.addEventListener( 'pagehide', () => window.clearInterval( groupEl.opfDateCutoffTimer ), { once: true } );
+			}
+		}
+
 		groupEl.addEventListener( 'input', ( event ) => {
 			const fieldEl = event.target.closest( '[data-opf-field]' );
 			if ( ! fieldEl ) {
@@ -1004,11 +1208,6 @@ const init = () => {
 			}
 			const fid = fieldEl.getAttribute( 'data-opf-field' );
 			const input = event.target;
-			if ( 'date' === input.type && input.value && dateIsBlocked( input, input.value ) ) {
-				input.setCustomValidity( i18n( 'date_unavailable', 'This date is unavailable.' ) );
-			} else if ( 'date' === input.type ) {
-				input.setCustomValidity( '' );
-			}
 			if ( input.type === 'checkbox' && input.name.endsWith( '[]' ) && fieldDefs[ fid ] && [ 'swatch', 'checkbox' ].includes( fieldDefs[ fid ].type ) ) {
 				const maxChoices = Number( fieldDefs[ fid ].max_choices || 0 );
 				const choiceScope = input.closest( '[data-opf-repeat-instance]' ) || fieldEl;
@@ -1020,7 +1219,7 @@ const init = () => {
 					groupEl.querySelectorAll( '[data-opf-field="' + fid + '"] input[type="checkbox"]' ).forEach( ( choiceInput ) => choiceInput.setCustomValidity( '' ) );
 				}
 			}
-			if ( fieldDefs[ fid ] && fieldDefs[ fid ].type === 'toggle' && ! fieldEl.matches( '[data-opf-repeat="button"], [data-opf-repeat="quantity"]' ) ) {
+			if ( fieldDefs[ fid ] && fieldDefs[ fid ].type === 'toggle' && ! ( typeof fieldEl.matches === 'function' && fieldEl.matches( '[data-opf-repeat="button"], [data-opf-repeat="quantity"]' ) ) ) {
 				values[ fid ] = input.checked ? '1' : '0';
 			} else {
 				values[ fid ] = readFieldValue( fieldEl, fieldDefs[ fid ] );
@@ -1038,15 +1237,43 @@ const init = () => {
 				}
 			} );
 			updateRequiredRepeaters();
+			validateChoiceLimits();
+			validateDateRestrictions();
+			updateNumberStepperButtons( fieldEl );
 			refresh();
 			// WAPF evaluates gallery rules on every field change (and again on
 			// wapf/dependencies); OPF mirrors both triggers here.
 			applyGroupGallery( input );
 		} );
 
-		// Linked-products +/− steppers (qty_selector 'plus_min' display mode).
 		groupEl.addEventListener( 'click', ( event ) => {
-			const button = event.target.closest( '.opf-qty-minus, .opf-qty-plus' );
+			// WAPF number steppers (data-opf-number-stepper wrapper with
+			// data-opf-number-step=up/down buttons): clamp to min/max, keep
+			// decimal steps precise, then re-sync disabled state.
+			const stepButton = event.target.closest && event.target.closest( '[data-opf-number-step]' );
+			if ( stepButton && ( ! groupEl.contains || groupEl.contains( stepButton ) ) ) {
+				event.preventDefault();
+				const stepField = stepButton.closest( '[data-opf-field]' );
+				const stepInput = stepField && stepField.querySelector ? stepField.querySelector( '[data-opf-number-stepper] input[type="number"]' ) : null;
+				if ( ! stepInput || stepInput.disabled || stepInput.readOnly ) return;
+				const step = 'any' === stepInput.step ? 1 : Number( stepInput.step || '1' );
+				if ( ! Number.isFinite( step ) || step <= 0 ) return;
+				const min = '' !== stepInput.min && Number.isFinite( Number( stepInput.min ) ) ? Number( stepInput.min ) : null;
+				const max = '' !== stepInput.max && Number.isFinite( Number( stepInput.max ) ) ? Number( stepInput.max ) : null;
+				const current = '' === stepInput.value ? ( null !== min ? min : 0 ) : Number( stepInput.value );
+				const direction = 'up' === stepButton.dataset.opfNumberStep ? 1 : -1;
+				const decimals = Math.min( 10, Math.max( String( step ).split( '.' )[1]?.length || 0, String( current ).split( '.' )[1]?.length || 0 ) );
+				let next = Math.round( ( current + direction * step ) * ( 10 ** decimals ) ) / ( 10 ** decimals );
+				if ( null !== min ) next = Math.max( min, next );
+				if ( null !== max ) next = Math.min( max, next );
+				stepInput.value = String( next );
+				stepInput.dispatchEvent( new Event( 'input', { bubbles: true } ) );
+				stepInput.dispatchEvent( new Event( 'change', { bubbles: true } ) );
+				updateNumberStepperButtons( stepField );
+				return;
+			}
+			// Linked-products +/− steppers (qty_selector 'plus_min' display mode).
+			const button = event.target.closest && event.target.closest( '.opf-qty-minus, .opf-qty-plus' );
 			if ( ! button ) {
 				return;
 			}
@@ -1065,14 +1292,18 @@ const init = () => {
 
 		// WAPF re-evaluates all gallery rules on variation_id change (the
 		// variation lives outside the field group, so it needs its own hook).
-		const variationInput = document.querySelector( 'input[name="variation_id"]' );
-		if ( variationInput ) {
+		const variationInput = typeof document.querySelector === 'function' ? document.querySelector( 'input[name="variation_id"]' ) : null;
+		if ( variationInput && typeof variationInput.addEventListener === 'function' ) {
 			variationInput.addEventListener( 'change', () => applyGroupGallery( variationInput ) );
 		}
-		document.addEventListener( 'opf:variation-changed', refresh );
+		if ( typeof document.addEventListener === 'function' ) {
+			document.addEventListener( 'opf:variation-changed', refresh );
+		}
 
 		refresh();
 		syncChecked();
+		validateChoiceLimits();
+		validateDateRestrictions();
 		quantitySyncers.forEach( ( sync ) => sync() );
 
 		// ---------------------------------------------------------------
@@ -1173,29 +1404,14 @@ const init = () => {
 			} );
 		} );
 		updateRequiredRepeaters();
+		validateChoiceLimits();
+		validateDateRestrictions();
 		refresh();
 		// Initial gallery eval mirrors WAPF: first visible input seeds 'last'
 		// mode and default selections can match a rule on page load.
 		applyGroupGallery( null );
 	} );
 };
-
-// Cart-edit upload prefill: server-rendered `.opf-upload__file` rows keep
-// the line's session-owned tokens in hidden inputs. Removing a row is a
-// purely client-side drop (cart-bound records reject the REST DELETE), so
-// the token simply isn't resubmitted and the orphaned private upload is
-// reaped by the hourly cleanup.
-document.addEventListener( 'click', ( event ) => {
-	const button = event.target.closest( '[data-opf-upload-remove]' );
-	if ( ! button ) {
-		return;
-	}
-	const row = button.closest( '.opf-upload__file' );
-	if ( row ) {
-		row.remove();
-		button.closest( '.opf-upload' ).dispatchEvent( new Event( 'input', { bubbles: true } ) );
-	}
-} );
 
 // ---------------------------------------------------------------------------
 // Main WooCommerce gallery image swap.
@@ -1341,15 +1557,6 @@ const fieldSwapUrl = ( groupEl ) => {
 	return '';
 };
 
-if ( document.readyState === 'loading' ) {
-	document.addEventListener( 'DOMContentLoaded', init );
-} else {
-	// ES modules evaluate while readyState is already interactive; defer so
-	// every later top-level const (evaluator/pricing helpers consumed by the
-	// calc sync pass) is initialized before init() runs.
-	setTimeout( init, 0 );
-}
-
 // ---------------------------------------------------------------------------
 // Totals block writer (replaces the legacy plugin's own totals JS).
 // Reads the server-rendered data-product-price + the per-choice/field
@@ -1371,41 +1578,46 @@ const fmtMoney = (amount) => {
   return neg + format.replace('%1$s', symbol).replace('%2$s', price);
 };
 
-// WAPF resolves [field.X] to the first submitted value's label; submitted
-// choice values are slugs, so they are translated through the def-provided
-// slug→label map carried on fieldValues.__opf_labels. WAPF's field.X_slug
-// suffix picks one submitted value when a field has several; OPF field ids
-// may contain underscores, so the full token is tried as a field id first.
-const formulaFieldLabel = (token, fieldValues) => {
-  const labels = fieldValues && typeof fieldValues === 'object' ? fieldValues.__opf_labels || {} : {};
-  const parts = token.split('_');
-  let fid = parts[0].toLowerCase();
-  let option = parts.length > 1 ? parts[1] : null;
-  let value = fieldValues ? fieldValues[fid] : undefined;
-  if (value === undefined) {
-    const whole = token.toLowerCase();
-    if (fieldValues && Object.prototype.hasOwnProperty.call(fieldValues, whole)) {
-      fid = whole;
-      option = null;
-      value = fieldValues[fid];
+// WAPF row-shape lookup tables: each row is [dim1, …, dimN, result]; an
+// exact tuple match wins, otherwise numeric dimensions round up to the
+// nearest axis value (fail closed when a dimension cannot resolve).
+
+const lookupTableValue = (rawArgs, fieldValues, lookupTables) => {
+  const args = String(rawArgs || '').split(';').map((arg) => arg.trim());
+  const name = args.shift();
+  if (!/^[a-z0-9_]+$/i.test(name) || args.length < 1 || args.length > 64) return 0;
+  const rows = lookupTables && Array.isArray(lookupTables[name]) ? lookupTables[name].filter((row) =>
+    Array.isArray(row) && row.length === args.length + 1 && Number.isFinite(Number(row[row.length - 1]))
+  ) : [];
+  const input = args.map((id) => fieldValues[String(id).toLowerCase()]);
+  if (!rows.length || input.some((value) => value == null || Array.isArray(value) || typeof value === 'object' || String(value).trim() === '')) return 0;
+  const equal = (left, right) => Number.isFinite(Number(left)) && String(left).trim() !== '' && Number.isFinite(Number(right)) && String(right).trim() !== ''
+    ? Number(left) === Number(right)
+    : String(left) === String(right);
+  const tupleEqual = (left, right) => left.length === right.length && left.every((value, index) => equal(value, right[index]));
+  for (const row of rows) {
+    if (tupleEqual(input, row.slice(0, -1))) return Number(row[row.length - 1]);
+  }
+  if (args.length > 2) return 0;
+  const target = [];
+  for (let dimension = 0; dimension < args.length; dimension++) {
+    const coordinates = rows.map((row) => row[dimension]);
+    const allNumeric = Number.isFinite(Number(input[dimension])) && String(input[dimension]).trim() !== '' && coordinates.every((coordinate) => Number.isFinite(Number(coordinate)) && String(coordinate).trim() !== '');
+    if (allNumeric) {
+      const candidates = coordinates.map(Number).filter((coordinate) => coordinate >= Number(input[dimension])).sort((a, b) => a - b);
+      if (!candidates.length) return 0;
+      target.push(candidates[0]);
     } else {
-      return '';
+      const exact = coordinates.find((coordinate) => equal(input[dimension], coordinate));
+      if (exact === undefined) return 0;
+      target.push(exact);
     }
   }
-  const vals = Array.isArray(value) ? value : [value];
-  if (option !== null && vals.length > 1) {
-    const hit = vals.find((v) => String(v) === option);
-    if (hit === undefined) return '0';
-    const hitLabel = labels[fid] ? labels[fid][String(hit)] : undefined;
-    return hitLabel !== undefined ? String(hitLabel) : '0';
-  }
-  const first = vals[0];
-  const scalar = first == null ? '' : String(first);
-  const resolved = labels[fid] ? labels[fid][scalar] : undefined;
-  return resolved !== undefined ? String(resolved) : scalar;
+  const match = rows.find((row) => tupleEqual(target, row.slice(0, -1)));
+  return match ? Number(match[match.length - 1]) : 0;
 };
 
-const evalFormula = (formula, price, qty, addons, val, fieldValues = {}, todayOverride = null, fieldPrices = {}, formulaOptions = {}) => {
+const evalFormula = (formula, price, qty, addons, val, fieldValues = {}, todayOverride = null, arg8 = {}, arg9 = {}, arg10 = undefined, arg11 = undefined, arg12 = undefined) => {
   // Safe mirror of the server-side evaluator (per-unit formulas; the qty
   // factor was stripped at import and is re-applied by the caller).
   // WAPF Extended 3.1.5 parity: [x] aliases [val]; [var_name] variables
@@ -1416,14 +1628,42 @@ const evalFormula = (formula, price, qty, addons, val, fieldValues = {}, todayOv
   // unregistered name(...) call (e.g. WAPF's map()/reduce() spellings) is
   // evaluated through the same char-clean residual path as WAPF's
   // evaluate_math_string.
-  const opts = formulaOptions && typeof formulaOptions === 'object' ? formulaOptions : {};
+  //
+  // Dual trailing signature:
+  //   OPF: (…, todayOverride, fieldPrices, formulaOptions)
+  //   WAPF helper: (…, siteToday, fileCounts, lookupTables, formulaVariables, fieldPrices, options?)
+  const FORMULA_OPTION_KEYS = [ 'variables', 'fields', 'lookupTables', 'fileCounts', 'productId', 'productAttributes', 'resolvedVariables' ];
+  let fieldPrices = {};
+  let fileCounts = {};
+  let resolvedVariables = {};
+  let opts = {};
+  if ( undefined !== arg10 || undefined !== arg11 || undefined !== arg12 ) {
+    fileCounts = arg8 && typeof arg8 === 'object' ? arg8 : {};
+    opts = Object.assign( {}, arg12 && typeof arg12 === 'object' ? arg12 : {}, { lookupTables: arg9 && typeof arg9 === 'object' ? arg9 : {} } );
+    resolvedVariables = arg10 && typeof arg10 === 'object' ? arg10 : {};
+    fieldPrices = arg11 && typeof arg11 === 'object' ? arg11 : {};
+  } else if ( arg9 && typeof arg9 === 'object' && Object.keys( arg9 ).length > 0 && ! FORMULA_OPTION_KEYS.some( ( key ) => key in arg9 ) ) {
+    fileCounts = arg8 && typeof arg8 === 'object' ? arg8 : {};
+    opts = { lookupTables: arg9 };
+  } else {
+    fieldPrices = arg8 && typeof arg8 === 'object' ? arg8 : {};
+    opts = arg9 && typeof arg9 === 'object' ? arg9 : {};
+    fileCounts = opts.fileCounts || fieldPrices;
+    resolvedVariables = opts.resolvedVariables || {};
+  }
   const variables = Array.isArray(opts.variables) ? opts.variables : (Array.isArray(window.OPF_FORMULA_VARIABLES) ? window.OPF_FORMULA_VARIABLES : []);
   const ruleFields = Array.isArray(opts.fields) ? opts.fields : (Array.isArray(window.OPF_FORMULA_FIELDS) ? window.OPF_FORMULA_FIELDS : []);
   const lookupTables = Object.assign({}, window.wapf_lookup_tables || {}, window.OPF_LOOKUP_TABLES || {}, opts.lookupTables || {});
   if (String(formula).trim().toLowerCase() === 'true') return 1;
   if (String(formula).trim().toLowerCase() === 'false') return 0;
-  const today = String(todayOverride || window.OPF_TODAY || new Date().toISOString().slice(0, 10));
-  const dateFormat = String(window.OPF_DATE_FORMAT || (window.wapf_config || {}).date_format || 'mm-dd-yyyy');
+  const today = String(todayOverride || window.OPF_TODAY || globalThis.OPF_TODAY || new Date().toISOString().slice(0, 10));
+  const dateFormat = String(
+    window.OPF_DATE_FORMAT
+      || (window.wapf_config || {}).date_format
+      || (globalThis.opf_config && globalThis.opf_config.date_format)
+      || (typeof document !== 'undefined' && document.querySelector ? (document.querySelector('[data-opf-date-format]') || {}).dataset?.opfDateFormat || '' : '')
+      || 'mm-dd-yyyy'
+  ).toLowerCase();
   const resolveFormulaDate = (rawValue) => {
     let value = String(rawValue || '').trim();
     if (value.length >= 2 && ((value[0] === "'" && value[value.length - 1] === "'") || (value[0] === '"' && value[value.length - 1] === '"'))) value = value.slice(1, -1);
@@ -1493,7 +1733,7 @@ const evalFormula = (formula, price, qty, addons, val, fieldValues = {}, todayOv
       return date ? String(fn.toLowerCase() === 'dow' ? date.weekday : date.month) : '0';
     })
     .replace(/\[val\]|\[x\]/gi, ' V ');
-  const functionNames = new Set(['min', 'max', 'len', 'checked', 'sumqty', 'round', 'abs', 'floor', 'ceil', 'sqrt', 'pow', 'sin', 'cos', 'tan', 'if', 'or', 'and', 'files', 'lookuptable']);
+  const functionNames = new Set(['min', 'max', 'len', 'checked', 'sumqty', 'round', 'abs', 'floor', 'ceil', 'sqrt', 'pow', 'sin', 'cos', 'tan', 'if', 'or', 'and', 'files', 'lookuptable', 'acf', 'acf_option']);
   // WAPF split_formula_variables parity: top-level ';' separates arguments
   // with bracket-depth awareness only (quote-blind — ';' inside quotes
   // still splits) and a trailing separator yields no empty final argument.
@@ -1587,7 +1827,13 @@ const evalFormula = (formula, price, qty, addons, val, fieldValues = {}, todayOv
     if (input.indexOf('[var_') === -1) return input;
     if (depth > 16) return null;
     const expanded = String(input).replace(/\[var_.+?]/g, (match) => {
-      const name = match.replace(/\[var_|]/g, '');
+      const name = match.replace(/\[var_|]/g, '').toLowerCase();
+      // Pre-resolved variable maps (WAPF helper signature / group resolver)
+      // win over rule-definition expansion.
+      if (Object.prototype.hasOwnProperty.call(resolvedVariables, name)) {
+        const resolvedValue = Number(resolvedVariables[name]);
+        return Number.isFinite(resolvedValue) ? String(resolvedValue) : '0';
+      }
       const variable = variables.find((candidate) => candidate && String(candidate.name) === name);
       if (!variable) return '0';
       let text = variable.default != null ? String(variable.default) : '';
@@ -1763,10 +2009,26 @@ const evalFormula = (formula, price, qty, addons, val, fieldValues = {}, todayOv
           result = Array.isArray(selected) ? selected.length : 0;
           break;
         }
+        // WAPF acf(selector)/acf_option(selector): resolved numeric values
+        // arrive pre-computed in the variable map as opf_acf_field_*/opf_acf_option_*.
+        case 'acf':
+        case 'acf_option': {
+          const selector = String(args[0] || '').replace(/^['"]|['"]$/g, '').trim().toLowerCase();
+          if (!/^[a-z][a-z0-9_-]{0,63}$/.test(selector)) { result = 0; break; }
+          const key = 'opf_acf_' + (name === 'acf_option' ? 'option' : 'field') + '_' + selector;
+          const acfValue = resolvedVariables[key];
+          result = Number.isFinite(Number(acfValue)) ? Number(acfValue) : 0;
+          break;
+        }
         case 'sumqty': {
           const fieldId = (args[0] || '').replace(/^['"]|['"]$/g, '').trim().toLowerCase();
           const value = fieldValues[fieldId];
-          const quantities = value && value._opf_type === 'image_quantity' ? value.quantities : null;
+          // Tagged quantity payloads sum their entered per-choice counts;
+          // WAPF's untagged object form sums enumerable counts directly.
+          // Arrays and non-objects contribute nothing.
+          const quantities = value && typeof value === 'object' && !Array.isArray(value)
+            ? (value._opf_type ? (value.quantities || {}) : value)
+            : null;
           result = quantities && typeof quantities === 'object'
             ? Object.values(quantities).reduce((sum, quantity) => {
               const isQuantity = typeof quantity === 'number' || typeof quantity === 'string';
@@ -1798,8 +2060,13 @@ const evalFormula = (formula, price, qty, addons, val, fieldValues = {}, todayOv
         case 'files': {
           const fieldId = (args[0] || '').replace(/^['"]|['"]$/g, '').trim().toLowerCase();
           const submitted = fieldValues ? fieldValues[fieldId] : undefined;
-          if (Array.isArray(submitted)) result = submitted.filter((item) => String(item == null ? '' : item).trim() !== '').length;
-          else result = String(submitted == null ? '' : submitted).trim() === '' ? 0 : String(submitted).split(',').length;
+          // WAPF call sites may carry an explicit per-field upload-count map;
+          // it is authoritative (it also covers pending, not-yet-tokenized
+          // file selections the submitted value cannot see).
+          if (fileCounts && Object.prototype.hasOwnProperty.call(fileCounts, fieldId)) result = Math.max(0, parseInt(fileCounts[fieldId], 10) || 0);
+          else if (Array.isArray(submitted)) result = submitted.filter((item) => String(item == null ? '' : item).trim() !== '').length;
+          else if (submitted !== undefined && submitted !== null && String(submitted).trim() !== '') result = String(submitted).split(',').length;
+          else result = 0;
           break;
         }
         // WAPF lookuptable(table;dim;…): <6-char args are literals, longer
@@ -1811,6 +2078,11 @@ const evalFormula = (formula, price, qty, addons, val, fieldValues = {}, todayOv
             const tableName = String(args[0] == null ? '' : args[0]).trim();
             const table = lookupTables[tableName];
             if (!table || typeof table !== 'object') break;
+            if (Array.isArray(table)) {
+              // WAPF row-table shape: each row is [dim1, …, dimN, result].
+              result = lookupTableValue(args.join(';'), fieldValues, lookupTables);
+              break;
+            }
             const tableValues = [];
             let prev = table;
             let failed = false;
@@ -1899,6 +2171,40 @@ const evalFormula = (formula, price, qty, addons, val, fieldValues = {}, todayOv
   return i === s.length && Number.isFinite(out) ? out : 0;
 };
 
+// WAPF resolves [field.X] to the first submitted value's label; submitted
+// choice values are slugs, so they are translated through the def-provided
+// slug→label map carried on fieldValues.__opf_labels. WAPF's field.X_slug
+// suffix picks one submitted value when a field has several; OPF field ids
+// may contain underscores, so the full token is tried as a field id first.
+const formulaFieldLabel = (token, fieldValues) => {
+  const labels = fieldValues && typeof fieldValues === 'object' ? fieldValues.__opf_labels || {} : {};
+  const parts = token.split('_');
+  let fid = parts[0].toLowerCase();
+  let option = parts.length > 1 ? parts[1] : null;
+  let value = fieldValues ? fieldValues[fid] : undefined;
+  if (value === undefined) {
+    const whole = token.toLowerCase();
+    if (fieldValues && Object.prototype.hasOwnProperty.call(fieldValues, whole)) {
+      fid = whole;
+      option = null;
+      value = fieldValues[fid];
+    } else {
+      return '';
+    }
+  }
+  const vals = Array.isArray(value) ? value : [value];
+  if (option !== null && vals.length > 1) {
+    const hit = vals.find((v) => String(v) === option);
+    if (hit === undefined) return '0';
+    const hitLabel = labels[fid] ? labels[fid][String(hit)] : undefined;
+    return hitLabel !== undefined ? String(hitLabel) : '0';
+  }
+  const first = vals[0];
+  const scalar = first == null ? '' : String(first);
+  const resolved = labels[fid] ? labels[fid][scalar] : undefined;
+  return resolved !== undefined ? String(resolved) : scalar;
+};
+
 // Per-unit contribution of one pricing block (WAPF do_pricing parity):
 // normal fields → per_unit ? result : result/qty; quantity-repeat (WAPF
 // clone_type=qty) fields → per_unit ? result*qty : result. A formula that
@@ -1918,6 +2224,16 @@ const choiceUnitAddon = (pricing, base, qty, addons, val, fieldValues = {}, fiel
   let result = 0;
   if (t === 'fixed') result = parseFloat(pricing.amount) || 0;
   else if (t === 'percent') result = base * ((parseFloat(pricing.amount) || 0) / 100);
+  // WAPF 'quantity' pricing charges the amount once per unit — the per-unit
+  // contribution is the amount itself (no qty scaling applied below).
+  else if (t === 'quantity') return parseFloat(pricing.amount) || 0;
+  // 'characters' multiplies the amount by the entered text length; 'value'
+  // multiplies it by the entered numeric value.
+  else if (t === 'characters') result = (parseFloat(pricing.amount) || 0) * Array.from(String(val || '')).length;
+  else if (t === 'value') {
+    const numeric = Number(val);
+    result = Number.isFinite(numeric) ? (parseFloat(pricing.amount) || 0) * numeric : 0;
+  }
   else if (t === 'formula') result = evalFormula(pricing.formula || pricing.formula_raw, formulaBase, qty, addons, val, fieldValues, null, fieldPrices, formulaOptions);
   else return 0;
   if (verbatimWapfFx(pricing)) return qtyBased ? result : result / qty;
@@ -1927,7 +2243,32 @@ const choiceUnitAddon = (pricing, base, qty, addons, val, fieldValues = {}, fiel
   return qtyBased ? (perUnit ? result * qty : result) : (perUnit ? result : result / qty);
 };
 
-const choiceOrFieldAddon = (def, value, base, qty, addons, val, fieldValues = {}, fieldPrices = {}, formulaBase = base, qtyBased = false, formulaOptions = {}) => {
+const choiceOrFieldAddon = (def, value, base, qty, addons, val, fieldValues = {}, arg8 = {}, arg9 = undefined, arg10 = undefined, arg11 = undefined) => {
+  // Dual trailing signature:
+  //   OPF: (…, fieldValues, fieldPrices, formulaBase, qtyBased, formulaOptions)
+  //   WAPF helper: (…, fieldValues, lookupTables, formulaVariables, fieldPrices)
+  let fieldPrices = {};
+  let formulaBase = base;
+  let qtyBased = false;
+  let formulaOptions = {};
+  // arg8 is shared: WAPF passes the lookup-table map ({name: [[row], …]})
+  // while OPF passes field prices ({id: number | number[]}) — tell them
+  // apart by whether every value is an array of row arrays.
+  const arg8IsTables = arg8 && typeof arg8 === 'object' && !Array.isArray(arg8)
+    && Object.keys(arg8).length > 0
+    && Object.values(arg8).every((v) => Array.isArray(v) && v.length > 0 && v.every((row) => Array.isArray(row)));
+  if ((arg9 && typeof arg9 === 'object') || (arg10 && typeof arg10 === 'object') || arg8IsTables) {
+    formulaOptions = {
+      lookupTables: arg8 && typeof arg8 === 'object' ? arg8 : {},
+      resolvedVariables: arg9 && typeof arg9 === 'object' ? arg9 : {},
+    };
+    fieldPrices = arg10 && typeof arg10 === 'object' ? arg10 : {};
+  } else {
+    fieldPrices = arg8 && typeof arg8 === 'object' ? arg8 : {};
+    if (typeof arg9 === 'number') formulaBase = arg9;
+    qtyBased = !!arg10;
+    formulaOptions = arg11 && typeof arg11 === 'object' ? arg11 : {};
+  }
   if (def.type === 'products') {
     const quantities = def.qty_selector && value && value._opf_type === 'products' ? value.quantities || {} : {};
     const slugs = Array.isArray(value) ? value.map(String) : [String(value ?? '')];
@@ -1957,18 +2298,265 @@ const choiceOrFieldAddon = (def, value, base, qty, addons, val, fieldValues = {}
     }, 0);
   }
   if (def.type === 'swatch' || def.type === 'select' || def.type === 'radio' || def.type === 'checkbox') {
-    const slugs = Array.isArray(value) ? value : [value];
+    // WAPF image-swatch-qty compatibility shape: swatch + image_quantities
+    // carries {slug: count} and each choice addon scales by its count.
+    const imageQuantities = def.type === 'swatch' && !!def.image_quantities && value && typeof value === 'object' && !Array.isArray(value) && value._opf_type !== 'image_quantity';
+    const slugs = imageQuantities ? Object.keys(value) : (Array.isArray(value) ? value : [value]);
     let sum = 0;
     (def.choices || []).forEach((c) => {
       if (!slugs.includes(c.slug) || c.disabled) return;
-      // WAPF passes the selected choice's label as the pricing value.
-      sum += choiceUnitAddon(c.pricing || {}, base, qty, addons, String(c.label ?? ''), fieldValues, fieldPrices, formulaBase, qtyBased, formulaOptions);
+      const choiceQuantity = imageQuantities ? Math.max(0, parseInt(value[c.slug], 10) || 0) : 1;
+      // WAPF passes the selected choice's label as the pricing value; for
+      // image-quantity swatches the entered count is the pricing value and
+      // also multiplies the charge.
+      sum += choiceUnitAddon(c.pricing || {}, base, qty, addons, imageQuantities ? String(choiceQuantity) : String(c.label ?? ''), fieldValues, fieldPrices, formulaBase, qtyBased, formulaOptions) * choiceQuantity;
     });
     return sum;
   }
   if (!String(value || '').trim()) return 0;
   return choiceUnitAddon(def.pricing || {}, base, qty, addons, val, fieldValues, fieldPrices, formulaBase, qtyBased, formulaOptions);
 };
+
+// WAPF price-hint formatter: honour the configured currency presentation,
+// strip zero padding, and let settings control the '+' and brackets.
+const formatPriceHint = ( amount, pricingType ) => {
+	if ( ! Number.isFinite( amount ) || amount === 0 ) return '';
+	const configured = window.OPF_PRICE_DISPLAY || ( window.opf_config || {} ).display_options || {};
+	const decimals = Math.max( 0, Math.min( 8, Number.isInteger( configured.decimals ) ? configured.decimals : 2 ) );
+	const [ rawInteger, rawFraction = '' ] = Math.abs( amount ).toFixed( decimals ).split( '.' );
+	const integer = rawInteger.replace( /\B(?=(\d{3})+(?!\d))/g, configured.thousand || ',' );
+	const fraction = rawFraction.replace( /0+$/, '' );
+	const number = integer + ( fraction ? ( configured.decimal || '.' ) + fraction : '' );
+	const symbol = configured.symbol || '$';
+	const priceFormat = String( configured.price_format || 'symbolprice' );
+	let money = priceFormat.replace( 'symbol', symbol ).replace( 'price', number );
+	money = money.replace( /&nbsp;/gi, ' ' );
+	if ( amount < 0 ) money = '- ' + money;
+	const settings = window.OPF_PRICE_HINTS || {};
+	const keepPlus = pricingType === 'formula' || settings.plus !== false;
+	const shown = amount > 0 && keepPlus ? '+ ' + money : money;
+	return settings.brackets === false ? shown : '(' + shown + ')';
+};
+
+// Per-choice live price hints (+ field-level hint) — the legacy
+// wapf_field's "show pricing next to options" behaviour.
+const updateChoicePriceHints = ( fieldEl, definitions, fid, def, values, base, qty, addons, lookupTables, formulaVariables, fieldPrices, visible = true ) => {
+	const nodes = Array.from( fieldEl.querySelectorAll( '[data-opf-choice-hint]' ) );
+	const settings = window.OPF_PRICE_HINTS || {};
+	const enabled = settings.show !== false && visible;
+	nodes.forEach( ( node ) => {
+		const slug = node.dataset.opfChoiceHint || node.getAttribute( 'data-opf-choice-hint' ) || '';
+		const choice = ( def.choices || [] ).find( ( item ) => item.slug === slug );
+		let hint = '';
+		if ( enabled && choice && ! choice.disabled ) {
+			const candidateValue = def.image_quantities ? { [ slug ]: '1' } : slug;
+			const candidateValues = { ...values, [ fid ]: candidateValue };
+			const candidatePrices = resolveFieldPrices( definitions, candidateValues, base, qty, addons, lookupTables, formulaVariables );
+			const candidateDef = { ...def, choices: [ choice ] };
+			const amountPerUnit = choiceOrFieldAddon(
+				candidateDef,
+				candidateValue,
+				base,
+				qty,
+				addons,
+				slug,
+				candidateValues,
+				lookupTables,
+				formulaVariables,
+				candidatePrices
+			);
+			hint = formatPriceHint( amountPerUnit * qty, ( choice.pricing || {} ).type );
+		}
+		if ( String( node.tagName || '' ).toLowerCase() === 'option' ) {
+			const baseLabel = node.dataset.opfBaseLabel || node.getAttribute( 'data-opf-base-label' ) || node.textContent;
+			node.textContent = baseLabel + ( hint ? ' ' + hint : '' );
+		} else {
+			node.textContent = hint;
+		}
+	} );
+	const fieldHint = fieldEl.querySelector ? fieldEl.querySelector( '[data-opf-field-hint]' ) : null;
+	if ( fieldHint ) {
+		let hint = '';
+		if ( enabled ) {
+			if ( def.type === 'calculation' && def.calculation_type === 'price' ) {
+				const lineAmount = evalFormula( def.formula || '', base, qty, addons, '', values, '', {}, lookupTables, formulaVariables, fieldPrices );
+				hint = formatPriceHint( lineAmount, 'formula' );
+			} else if ( def.pricing && def.pricing.type !== 'none' ) {
+				const currentValue = values[ fid ];
+				const candidateValue = currentValue == null || currentValue === '' ? ( def.default || '1' ) : currentValue;
+				const candidateValues = { ...values, [ fid ]: candidateValue };
+				const candidatePrices = resolveFieldPrices( definitions, candidateValues, base, qty, addons, lookupTables, formulaVariables );
+				const amountPerUnit = choiceOrFieldAddon( def, candidateValue, base, qty, addons, String( candidateValue ), candidateValues, lookupTables, formulaVariables, candidatePrices );
+				hint = formatPriceHint( amountPerUnit * qty, def.pricing.type );
+			}
+		}
+		fieldHint.textContent = hint;
+	}
+};
+
+// Resolve each field's current per-unit addon (declaration-order addons
+// context, [price.x] forward references resolved recursively, cycles → 0).
+const resolveFieldPrices = (definitions, values, base, qty, startingAddons = 0, lookupTables = {}, formulaVariables = {}) => {
+  const ids = Object.keys(definitions || {});
+  const prices = {};
+  const states = {};
+  const stack = [];
+  const cycles = new Set();
+  const resolve = (rawId) => {
+    const id = String(rawId).toLowerCase();
+    if (Object.prototype.hasOwnProperty.call(prices, id)) return prices[id];
+    const def = definitions && definitions[id];
+    if (!def || !Object.prototype.hasOwnProperty.call(values || {}, id)) {
+      prices[id] = 0;
+      return 0;
+    }
+    if (states[id] === 'resolving') {
+      const cycleStart = stack.indexOf(id);
+      if (cycleStart >= 0) stack.slice(cycleStart).forEach((cycleId) => cycles.add(cycleId));
+      return 0;
+    }
+    states[id] = 'resolving';
+    stack.push(id);
+    const value = values[id];
+    const selected = value && typeof value === 'object' && !Array.isArray(value)
+      ? Object.keys(value)
+      : (Array.isArray(value) ? value.map(String) : [String(value ?? '')]);
+    const formulas = [];
+    if (['swatch', 'select', 'radio', 'checkbox'].includes(def.type)) {
+      (def.choices || []).forEach((choice) => {
+        if (selected.includes(String(choice.slug)) && !choice.disabled && choice.pricing?.type === 'formula') formulas.push(choice.pricing.formula || '');
+      });
+    } else if (def.pricing?.type === 'formula') {
+      formulas.push(def.pricing.formula || '');
+    }
+    formulas.forEach((formula) => {
+      for (const match of String(formula).matchAll(/\[price\.([a-z0-9_-]+)\]/gi)) resolve(match[1]);
+    });
+    const index = ids.indexOf(id);
+    let addons = Number(startingAddons) || 0;
+    for (let previous = 0; previous < index; previous++) {
+      const previousId = String(ids[previous]).toLowerCase();
+      if (states[previousId] !== 'resolving') addons += resolve(previousId);
+    }
+    const rawValue = values[id];
+    const computed = choiceOrFieldAddon(def, rawValue, base, qty, addons, typeof rawValue === 'string' || typeof rawValue === 'number' ? String(rawValue) : '', values, lookupTables, formulaVariables, prices);
+    stack.pop();
+    prices[id] = cycles.has(id) ? 0 : computed;
+    states[id] = 'resolved';
+    return prices[id];
+  };
+  ids.forEach(resolve);
+  return prices;
+};
+
+// Resolve calculation/calc fields against submitted values: dependencies are
+// visited depth-first, cyclic or hidden-subject chains fail closed, and
+// invisible fields are dropped from the resolved map entirely.
+const resolveCalculatedValues = (definitions, rawValues, base = 0, qty = 1, addons = 0, lookupTables = {}, formulaVariables = {}, fileCounts = {}, fieldPrices = {}) => {
+  const defs = definitions || {};
+  const raw = {};
+  Object.keys(rawValues || {}).forEach((id) => { raw[String(id).toLowerCase()] = rawValues[id]; });
+  const values = {};
+  // [field.X] resolves to choice labels: carry the caller-provided slug→label
+  // map through so evalFormula sees it while resolving calculation fields.
+  if (rawValues && rawValues.__opf_labels) values.__opf_labels = rawValues.__opf_labels;
+  const states = {};
+  const stack = [];
+  const cycles = new Set();
+  const isCalcType = (type) => type === 'calculation' || type === 'calc';
+  const resolve = (rawId) => {
+    const id = String(rawId).toLowerCase();
+    const def = defs[id];
+    if (!def) return false;
+    if (states[id] === 'resolved') return Object.prototype.hasOwnProperty.call(values, id);
+    if (states[id] === 'resolving') {
+      const cycleStart = stack.indexOf(id);
+      if (cycleStart >= 0) stack.slice(cycleStart).forEach((cycleId) => cycles.add(cycleId));
+      return false;
+    }
+    states[id] = 'resolving';
+    stack.push(id);
+    const dependencies = [];
+    (def.conditionals || []).forEach((conditional) => (conditional.rules || []).forEach((rule) => {
+      if (rule.field) dependencies.push(String(rule.field).toLowerCase());
+    }));
+    if (isCalcType(def.type)) {
+      String(def.formula || '').replace(/\[field\.([a-z0-9_-]+)\]|(?:checked|files|sumQty)\s*\(\s*([a-z0-9_-]+)\s*\)/gi, (_, fieldId, functionId) => {
+        dependencies.push(String(fieldId || functionId).toLowerCase());
+        return _;
+      });
+      String(def.formula || '').replace(/lookuptable\s*\(([^()]*)\)/gi, (_, rawArgs) => {
+        rawArgs.split(';').slice(1).forEach((argument) => {
+          const match = /^\s*(?:\[field\.([a-z0-9_-]+)\]|([a-z0-9_-]+))\s*$/i.exec(argument);
+          if (match) dependencies.push(String(match[1] || match[2]).toLowerCase());
+        });
+        return _;
+      });
+    }
+    let dependenciesAvailable = true;
+    [...new Set(dependencies)].forEach((dependency) => {
+      const available = resolve(dependency);
+      if (!available && (cycles.has(dependency) || isCalcType(defs[dependency]?.type))) dependenciesAvailable = false;
+    });
+    stack.pop();
+    if (cycles.has(id) || !dependenciesAvailable || !isVisible(def, values)) {
+      states[id] = 'resolved';
+      delete values[id];
+      return false;
+    }
+    if (isCalcType(def.type)) {
+      const result = evalFormula(def.formula || '', base, qty, addons, '', values, window.OPF_TODAY || '', fileCounts, lookupTables, formulaVariables, fieldPrices);
+      if (!Number.isFinite(result)) {
+        states[id] = 'resolved';
+        return false;
+      }
+      values[id] = result;
+    } else if (Object.prototype.hasOwnProperty.call(raw, id)) {
+      values[id] = raw[id];
+    }
+    states[id] = 'resolved';
+    return Object.prototype.hasOwnProperty.call(values, id);
+  };
+  Object.keys(defs).forEach(resolve);
+  return values;
+};
+
+// Evaluate the declared formula variables for one set of submitted values:
+// `default` wins unless a `changes` entry's rules match (first match wins).
+const resolveFormulaVariables = (definitions, values) => {
+  const resolved = {};
+  const rulePasses = (rule) => {
+    const value = values[rule.field];
+    const actual = Array.isArray(value) ? value.map(String).join(', ') : (value == null ? '' : String(value));
+    const expected = String(rule.value ?? '');
+    switch (rule.operator) {
+      case 'is': return Array.isArray(value) ? value.map(String).includes(expected) : actual === expected;
+      case 'is_not': return Array.isArray(value) ? !value.map(String).includes(expected) : actual !== expected;
+      case 'contains': return actual.toLowerCase().includes(expected.toLowerCase());
+      case 'greater': return actual.trim() !== '' && expected.trim() !== '' && Number.isFinite(Number(actual)) && Number.isFinite(Number(expected)) && Number(actual) > Number(expected);
+      case 'less': return actual.trim() !== '' && expected.trim() !== '' && Number.isFinite(Number(actual)) && Number.isFinite(Number(expected)) && Number(actual) < Number(expected);
+      case 'empty': return actual.trim() === '';
+      case 'not_empty': return actual.trim() !== '';
+      default: return false;
+    }
+  };
+  Object.keys(definitions || {}).forEach((name) => {
+    const definition = definitions[name] || {};
+    let value = Number.isFinite(Number(definition.default)) ? Number(definition.default) : 0;
+    for (const change of (Array.isArray(definition.changes) ? definition.changes : [])) {
+      const results = (Array.isArray(change.rules) ? change.rules : []).map(rulePasses);
+      const matched = results.length > 0 && (change.logic === 'any' ? results.includes(true) : results.every(Boolean));
+      if (matched && Number.isFinite(Number(change.value))) { value = Number(change.value); break; }
+    }
+    resolved[String(name).toLowerCase()] = value;
+  });
+  return resolved;
+};
+
+const resolveGroupFormulaVariables = (gid, values) => ({
+  ...resolveFormulaVariables((window.OPF_FORMULA_VARIABLES || {})[gid] || {}, values),
+  ...((window.OPF_ACF_VARIABLES || {})[gid] || {}),
+});
 
 // ---------------------------------------------------------------------------
 // WAPF Extended `calc` fields. Informational (`default`) calcs render a live
@@ -2099,7 +2687,7 @@ const readCalcControl = (fieldEl, def) => {
 const syncCalcFields = () => {
   document.querySelectorAll('[data-opf-group]').forEach((groupEl) => {
     const gid = groupEl.getAttribute('data-opf-group');
-    const registry = REGISTRY[gid] || {};
+    const registry = (window.OPF_FIELDS || {})[gid] || {};
     const fieldEls = Array.from(groupEl.querySelectorAll('[data-opf-field]'));
     const defs = {};
     const values = {};
@@ -2108,7 +2696,7 @@ const syncCalcFields = () => {
       const id = fieldEl.getAttribute('data-opf-field');
       const def = registry[id] || {};
       defs[id] = def;
-      values[id] = fieldEl.hasAttribute('hidden') ? '' : readCalcControl(fieldEl, def);
+      values[id] = typeof fieldEl.hasAttribute === 'function' && fieldEl.hasAttribute('hidden') ? '' : readCalcControl(fieldEl, def);
       if (Array.isArray(def.choices)) {
         const map = {};
         def.choices.forEach((c) => { if (c && c.slug != null && c.label != null) map[String(c.slug)] = String(c.label); });
@@ -2118,7 +2706,7 @@ const syncCalcFields = () => {
     if (!Object.keys(defs).some((id) => defs[id] && defs[id].type === 'calc')) return;
     values.__opf_labels = labels;
 
-    const qtyInput = document.querySelector('form.cart input[name="quantity"], form.cart .qty');
+    const qtyInput = typeof document.querySelector === 'function' ? document.querySelector('form.cart input[name="quantity"], form.cart .qty') : null;
     const qty = Math.max(1, parseInt(qtyInput && qtyInput.value, 10) || 1);
     const config = window.opf_config || {};
     const base = Number.isFinite(Number(config.product_base_price))
@@ -2133,7 +2721,7 @@ const syncCalcFields = () => {
     fieldEls.forEach((fieldEl) => {
       const id = fieldEl.getAttribute('data-opf-field');
       const def = defs[id];
-      if (!def || def.type === 'calc' || fieldEl.hasAttribute('hidden')) return;
+      if (!def || def.type === 'calc' || (typeof fieldEl.hasAttribute === 'function' && fieldEl.hasAttribute('hidden'))) return;
       const v = readCalcControl(fieldEl, def);
       const pu = choiceOrFieldAddon(def, v, base, qty, addons, typeof v === 'string' ? v : '', values, fieldPrices, formulaBase, false);
       fieldPrices[id] = pu;
@@ -2150,7 +2738,7 @@ const syncCalcFields = () => {
       const def = defs[id];
       if (!def || def.type !== 'calc') return;
       const entry = resolved.results[id] || { raw: '', display: '', invalid: true };
-      const hidden = fieldEl.hasAttribute('hidden');
+      const hidden = typeof fieldEl.hasAttribute === 'function' && fieldEl.hasAttribute('hidden');
       const raw = hidden || entry.invalid ? '' : entry.raw;
       const rawInput = fieldEl.querySelector('.opf-calc-raw');
       const textEl = fieldEl.querySelector('.opf-calc-text');
@@ -2177,16 +2765,165 @@ const groupFormulaOptions = (groupEl, gid) => {
   };
 };
 
-const writeTotals = () => {
+const productImageAttributeNames = [ 'src', 'srcset', 'sizes', 'alt', 'data-large_image', 'data-large_image_width', 'data-large_image_height' ];
+const productImageSnapshots = new WeakMap();
+
+const resolveProductImageRule = ( rules, values, mode = 'rules', lastChangedField = null ) => {
+	for ( let index = ( rules || [] ).length - 1; index >= 0; index-- ) {
+		const rule = rules[ index ];
+		if ( Array.isArray( rule.conditions ) && rule.conditions.length > 0 && rule.conditions.every( ( condition ) => {
+			if ( condition.value === '*' ) return true;
+			if ( 'last' === mode && condition.field !== lastChangedField ) return false;
+			const current = values ? values[ condition.field ] : undefined;
+			return Array.isArray( current )
+				? current.map( String ).includes( String( condition.value ) )
+				: current !== undefined && current !== null && String( current ) === String( condition.value );
+		} ) ) return rule;
+	}
+	return null;
+};
+
+const lastImageFieldByGroup = new Map();
+
+const initialImageField = ( groupEl, rules ) => {
+	const fields = new Set();
+	( rules || [] ).forEach( ( rule ) => ( rule.conditions || [] ).forEach( ( condition ) => {
+		if ( condition.value !== '*' ) fields.add( String( condition.field ) );
+	} ) );
+	for ( const fieldEl of groupEl.querySelectorAll( '[data-opf-field]' ) ) {
+		const fieldId = fieldEl.getAttribute( 'data-opf-field' );
+		if ( fields.has( String( fieldId ) ) && ! fieldEl.closest( '.opf-hide, .opf-field--hidden' ) ) return String( fieldId );
+	}
+	return null;
+};
+
+const imageUrlMatches = ( image, target, baseUrl ) => {
+	if ( ! image || ! target ) return false;
+	const values = [ image.currentSrc, image.getAttribute( 'src' ), image.getAttribute( 'data-large_image' ) ];
+	const link = typeof image.closest === 'function' ? image.closest( 'a' ) : null;
+	if ( link ) values.push( link.getAttribute( 'href' ) );
+	const normalize = ( value ) => {
+		if ( ! value ) return '';
+		try {
+			const url = new URL( value, baseUrl || 'https://opf.invalid/' );
+			return url.origin + url.pathname;
+		} catch ( error ) { return String( value ); }
+	};
+	const expected = normalize( target );
+	return !! expected && values.some( ( value ) => normalize( value ) === expected );
+};
+
+const updateProductImage = ( doc, evaluations, legacyValues = null ) => {
+	if ( ! doc || typeof doc.querySelector !== 'function' ) return;
+	// Keep the helper's earlier field-map signature for migrations and focused callers.
+	if ( ! Array.isArray( evaluations ) ) evaluations = [ { definitions: evaluations || {}, values: legacyValues || {}, rules: [] } ];
+	const gallery = doc.querySelector( '.woocommerce-product-gallery' );
+	const slides = gallery && typeof gallery.querySelectorAll === 'function'
+		? Array.from( gallery.querySelectorAll( '.woocommerce-product-gallery__image' ) ) : [];
+	const baseUrl = doc.location && doc.location.href;
+	let target = null;
+	const hasRules = evaluations.some( ( item ) => ( item.rules || [] ).length );
+	for ( const item of evaluations ) {
+		const rule = resolveProductImageRule( item.rules, item.values, item.imageRuleMode, item.lastChangedField );
+		if ( rule ) { target = { url: rule.target_url, alt: '' }; break; }
+	}
+	if ( ! hasRules && ! target ) {
+		for ( const item of evaluations ) {
+			Object.keys( item.definitions || {} ).some( ( fieldId ) => {
+				const def = item.definitions[ fieldId ];
+				if ( ! def || ! def.change_product_image ) return false;
+				const raw = item.values ? item.values[ fieldId ] : '';
+				const selected = Array.isArray( raw ) ? raw.map( String ) : ( raw === undefined || raw === null || raw === '' ? [] : [ String( raw ) ] );
+				const choice = ( def.choices || [] ).find( ( candidate ) => selected.includes( String( candidate.slug ) ) && candidate.image );
+				if ( choice ) target = { url: choice.image, alt: choice.label || '' };
+				return !! choice;
+			} );
+			if ( target ) break;
+		}
+	}
+	const activeSlide = gallery && typeof gallery.querySelector === 'function' ? gallery.querySelector( '.flex-active-slide' ) : null;
+	const activeIndex = activeSlide ? slides.indexOf( activeSlide ) : 0;
+	const currentImage = slides[ activeIndex ] && slides[ activeIndex ].querySelector( 'img' );
+	const image = currentImage || doc.querySelector( '.woocommerce-product-gallery img.wp-post-image' ) || doc.querySelector( '.woocommerce-product-gallery img' );
+	if ( ! image ) return;
+	const stateKey = gallery || image;
+	if ( ! productImageSnapshots.has( stateKey ) ) {
+		const capture = ( img ) => {
+			const link = typeof img.closest === 'function' ? img.closest( 'a' ) : null;
+			const attrs = {};
+			productImageAttributeNames.forEach( ( name ) => { attrs[ name ] = img.getAttribute( name ); } );
+			return { image: img, attrs, href: link ? link.getAttribute( 'href' ) : null, link };
+		};
+		const originalImages = slides.map( ( slide ) => slide.querySelector( 'img' ) ).filter( Boolean );
+		if ( ! originalImages.length ) originalImages.push( image );
+		productImageSnapshots.set( stateKey, { gallery, slideIndex: activeIndex, images: originalImages.map( capture ) } );
+	}
+	const snapshot = productImageSnapshots.get( stateKey );
+	const restoreImages = () => {
+		snapshot.images.forEach( ( saved ) => {
+			productImageAttributeNames.forEach( ( name ) => {
+				if ( saved.attrs[ name ] === null ) saved.image.removeAttribute( name );
+				else saved.image.setAttribute( name, saved.attrs[ name ] );
+			} );
+			if ( saved.link && saved.href !== null ) saved.link.setAttribute( 'href', saved.href );
+			else if ( saved.link ) saved.link.removeAttribute( 'href' );
+		} );
+	};
+	const navigate = ( index ) => {
+		if ( ! gallery || index < 0 || typeof gallery.querySelectorAll !== 'function' ) return false;
+		const view = doc.defaultView || ( typeof window !== 'undefined' ? window : null );
+		const jq = view && view.jQuery;
+		if ( jq ) {
+			try {
+				const control = jq( gallery );
+				if ( control.data( 'flexslider' ) && typeof control.flexslider === 'function' ) { control.flexslider( index ); return true; }
+			} catch ( error ) { /* theme supplied jQuery data may not be FlexSlider */ }
+		}
+		const thumbs = gallery.querySelectorAll( '.flex-control-nav a' );
+		if ( thumbs[ index ] && typeof thumbs[ index ].click === 'function' ) { thumbs[ index ].click(); return true; }
+		return false;
+	};
+	if ( ! target ) {
+		restoreImages();
+		navigate( snapshot.slideIndex );
+		return;
+	}
+	const targetIndex = slides.findIndex( ( slide ) => imageUrlMatches( slide.querySelector( 'img' ), target.url, baseUrl ) );
+	if ( targetIndex >= 0 ) {
+		restoreImages();
+		navigate( targetIndex );
+		return;
+	}
+	restoreImages();
+	const selectedIndex = activeSlide ? activeIndex : snapshot.slideIndex;
+	const selectedImageState = snapshot.images[ selectedIndex ] || snapshot.images[ 0 ];
+	const targetImage = selectedImageState.image;
+	targetImage.setAttribute( 'src', target.url );
+	targetImage.removeAttribute( 'srcset' );
+	targetImage.removeAttribute( 'sizes' );
+	targetImage.setAttribute( 'data-large_image', target.url );
+	targetImage.removeAttribute( 'data-large_image_width' );
+	targetImage.removeAttribute( 'data-large_image_height' );
+	targetImage.setAttribute( 'alt', target.alt || '' );
+	if ( selectedImageState.link ) selectedImageState.link.setAttribute( 'href', target.url );
+};
+
+let pricePreviewRequestId = 0;
+
+const writeTotals = async () => {
   syncCalcFields();
-  const totalsEl = document.querySelector('.opf-product-totals, .wapf-product-totals');
-  if (!totalsEl) return;
+  const totalsEl = typeof document.querySelector === 'function' ? document.querySelector('.opf-product-totals, .wapf-product-totals') : null;
+  const groupEls = Array.from(document.querySelectorAll('[data-opf-group]'));
+  // WAPF fallback: with no totals node rendered, the first priced field group
+  // still drives the opf:pricing event, hints, images and calc displays.
+  const baseNode = totalsEl || groupEls.find((groupEl) => typeof groupEl.hasAttribute === 'function' && groupEl.hasAttribute('data-opf-product-price'));
+  if (!baseNode) return;
   const config = window.opf_config || {};
-  const base = parseFloat(config.product_base_price ?? totalsEl.getAttribute('data-product-price'));
+  const base = parseFloat(config.product_base_price ?? baseNode.getAttribute(totalsEl ? 'data-product-price' : 'data-opf-product-price'));
   if (!isFinite(base)) return;
   const formulaBase = Number.isFinite(Number(config.formula_base_price)) ? Number(config.formula_base_price) : base;
   const rate = Number.isFinite(Number(config.currency_rate)) && Number(config.currency_rate) > 0 ? Number(config.currency_rate) : 1;
-  const qtyInput = document.querySelector('form.cart input[name="quantity"], form.cart .qty');
+  const qtyInput = typeof document.querySelector === 'function' ? document.querySelector('form.cart input[name="quantity"], form.cart .qty') : null;
   const qty = Math.max(1, parseInt(qtyInput && qtyInput.value, 10) || 1);
 
   // The server validates every quantity repeater against product quantity
@@ -2194,11 +2931,12 @@ const writeTotals = () => {
   // gapped rows while the customer edits the form.
   const quantityRepeaters = [];
   let invalidQuantityRows = false;
-  document.querySelectorAll('[data-opf-group]').forEach((groupEl) => {
+  groupEls.forEach((groupEl) => {
     const gid = groupEl.getAttribute('data-opf-group');
     groupEl.querySelectorAll('[data-opf-repeat="quantity"][data-opf-field]').forEach((repeater) => {
-      const rows = repeater.querySelector(':scope > .opf-field-repeat__rows');
-      const instances = rows ? Array.from(rows.querySelectorAll(':scope > [data-opf-repeat-instance]')) : [];
+      if (typeof repeater.getAttribute !== 'function' || repeater.getAttribute('data-opf-repeat') !== 'quantity') return;
+      const rows = typeof repeater.querySelector === 'function' ? repeater.querySelector(':scope > .opf-field-repeat__rows') : null;
+      const instances = rows && typeof rows.querySelectorAll === 'function' ? Array.from(rows.querySelectorAll(':scope > [data-opf-repeat-instance]')) : [];
       if (instances.length !== qty) invalidQuantityRows = true;
       instances.forEach((instance, index) => {
         const namedInputs = Array.from(instance.querySelectorAll('[name]'));
@@ -2211,7 +2949,7 @@ const writeTotals = () => {
     });
   });
   if (invalidQuantityRows) {
-    totalsEl.querySelectorAll('.opf-product-total, .wapf-product-total, .opf-options-total, .wapf-options-total, .opf-grand-total, .wapf-grand-total').forEach((el) => { el.textContent = ''; });
+    if (totalsEl) totalsEl.querySelectorAll('.opf-product-total, .wapf-product-total, .opf-options-total, .wapf-options-total, .opf-grand-total, .wapf-grand-total').forEach((el) => { el.textContent = ''; });
     return;
   }
 
@@ -2257,9 +2995,14 @@ const writeTotals = () => {
   let optionsTotal = 0; // line-space display total
   let addonsPU = 0; // running per-unit addon sum — the [addons] context space
   const fieldPrices = {};
-  document.querySelectorAll('[data-opf-group]').forEach((groupEl) => {
+  const calculationDisplays = [];
+  const productImageEvaluations = [];
+  groupEls.forEach((groupEl) => {
     const gid = groupEl.getAttribute('data-opf-group');
+    const definitions = (window.OPF_FIELDS || {})[gid] || {};
     const values = {};
+    const fileCounts = {};
+    const lookupTables = (window.OPF_LOOKUP_TABLES || {})[gid] || {};
     const fields = groupEl.querySelectorAll('[data-opf-field]');
     // WAPF custom variables for this group. Prefer the client registry; fall
     // back to the group's data-variables attribute so WAPF-rendered groups
@@ -2287,15 +3030,15 @@ const writeTotals = () => {
       const input = checked || element.querySelector('input:not([type="hidden"]), textarea, select');
       return input ? input.value : '';
     };
-    const readFieldControl = (fieldEl, def) => fieldEl.matches('[data-opf-repeat]')
+    const readFieldControl = (fieldEl, def) => typeof fieldEl.matches === 'function' && fieldEl.matches('[data-opf-repeat]')
       ? Array.from(fieldEl.querySelectorAll('.opf-field-repeat__rows > [data-opf-repeat-instance]')).map((instance) => readControlValue(instance, def))
       : readControlValue(fieldEl, def);
     const valuesForFormula = (fieldEl, rowIndex = null) => {
-      const scoped = { ...values };
-      const sectionInstance = fieldEl.closest('[data-opf-section-repeat] [data-opf-repeat-instance]');
+      const scoped = { ...(resolvedValues || values) };
+      const sectionInstance = typeof fieldEl.closest === 'function' ? fieldEl.closest('[data-opf-section-repeat] [data-opf-repeat-instance]') : null;
       if (sectionInstance) {
         sectionInstance.querySelectorAll('[data-opf-field]').forEach((scopedField) => {
-          if (scopedField.hasAttribute('data-opf-section-repeat')) return;
+          if (typeof scopedField.hasAttribute === 'function' && scopedField.hasAttribute('data-opf-section-repeat')) return;
           const scopedId = scopedField.getAttribute('data-opf-field');
           const scopedDef = (window.OPF_FIELDS || {})[gid]?.[scopedId] || {};
           scoped[scopedId] = readFieldControl(scopedField, scopedDef);
@@ -2303,7 +3046,7 @@ const writeTotals = () => {
       }
       if (rowIndex !== null) {
         fields.forEach((scopedField) => {
-          if (!scopedField.matches('[data-opf-repeat]') || scopedField.hasAttribute('data-opf-section-repeat')) return;
+          if (typeof scopedField.matches !== 'function' || !scopedField.matches('[data-opf-repeat]') || (typeof scopedField.hasAttribute === 'function' && scopedField.hasAttribute('data-opf-section-repeat'))) return;
           const instances = scopedField.querySelectorAll('.opf-field-repeat__rows > [data-opf-repeat-instance]');
           if (!instances[rowIndex]) return;
           const scopedId = scopedField.getAttribute('data-opf-field');
@@ -2316,8 +3059,21 @@ const writeTotals = () => {
     };
       fields.forEach((fieldEl) => {
       const fid = fieldEl.getAttribute('data-opf-field');
-      const fieldDef = (window.OPF_FIELDS || {})[gid]?.[fid] || {};
-      const repeatRows = fieldEl.matches('[data-opf-repeat]') ? Array.from(fieldEl.querySelectorAll('[data-opf-repeat-instance]')) : null;
+      const fieldDef = definitions[fid] || {};
+      if (fieldDef.type === 'upload') {
+        const uploadInput = typeof fieldEl.querySelector === 'function' ? fieldEl.querySelector('input[type="file"]') : null;
+        fileCounts[String(fid).toLowerCase()] = (uploadInput && uploadInput.files ? uploadInput.files.length : 0) + fieldEl.querySelectorAll('[data-opf-upload-token]').length;
+      }
+      // WAPF swatch + image_quantities submits {slug: quantity} per choice.
+      if (fieldDef.type === 'swatch' && fieldDef.image_quantities) {
+        const quantities = {};
+        fieldEl.querySelectorAll('input[data-opf-quantity-choice]').forEach((input) => {
+          quantities[input.getAttribute('data-opf-quantity-choice')] = input.value;
+        });
+        values[fid] = quantities;
+        return;
+      }
+      const repeatRows = typeof fieldEl.matches === 'function' && fieldEl.matches('[data-opf-repeat]') ? Array.from(fieldEl.querySelectorAll('[data-opf-repeat-instance]')) : null;
       const checked = groupEl.querySelector(`[data-opf-field="${fid}"] input:checked`);
       const anyInput = fieldEl.querySelector('input:not([type=checkbox]):not([type=radio]):not([type=hidden]), textarea, select');
       if (repeatRows) {
@@ -2332,7 +3088,7 @@ const writeTotals = () => {
       } else if (fieldDef.type === 'calc') {
         // syncCalcFields() has already written the current computed raw value.
         const raw = fieldEl.querySelector('.opf-calc-raw');
-        values[fid] = fieldEl.hasAttribute('hidden') ? '' : (raw ? raw.value : '');
+        values[fid] = (typeof fieldEl.hasAttribute === 'function' && fieldEl.hasAttribute('hidden')) ? '' : (raw ? raw.value : '');
       } else if (fieldDef.type === 'image_quantity') {
         const quantities = {};
         fieldEl.querySelectorAll('.opf-image-quantity__input').forEach((input) => { quantities[input.dataset.choiceSlug] = Math.max(0, parseInt(input.value, 10) || 0); });
@@ -2354,7 +3110,7 @@ const writeTotals = () => {
     const choiceLabels = {};
     fields.forEach((fieldEl) => {
       const fid = fieldEl.getAttribute('data-opf-field');
-      const def = (window.OPF_FIELDS || {})[gid]?.[fid];
+      const def = definitions[fid];
       if (!def || !Array.isArray(def.choices)) return;
       const map = {};
       def.choices.forEach((choice) => {
@@ -2363,6 +3119,44 @@ const writeTotals = () => {
       if (Object.keys(map).length) choiceLabels[String(fid).toLowerCase()] = map;
     });
     values.__opf_labels = choiceLabels;
+    // WAPF parity: resolve calculation fields + drop conditionally-hidden
+    // values before pricing — [field.x]/files()/sumQty() and hidden subjects
+    // evaluate against the resolved map, never the raw DOM read.
+    let formulaVariables = resolveGroupFormulaVariables(gid, values);
+    const candidatePrices = resolveFieldPrices(definitions, values, base, qty, addonsPU, lookupTables, formulaVariables);
+    let resolvedValues = resolveCalculatedValues(definitions, values, base, qty, addonsPU, lookupTables, formulaVariables, fileCounts, candidatePrices);
+    fields.forEach((fieldEl) => {
+      const fid = fieldEl.getAttribute('data-opf-field');
+      const def = definitions[fid];
+      if (def && !isVisible(def, resolvedValues)) {
+        delete resolvedValues[fid];
+        delete fileCounts[String(fid).toLowerCase()];
+      }
+    });
+    formulaVariables = resolveGroupFormulaVariables(gid, resolvedValues);
+    const candidatePricesResolved = resolveFieldPrices(definitions, resolvedValues, base, qty, addonsPU, lookupTables, formulaVariables);
+    resolvedValues = resolveCalculatedValues(definitions, values, base, qty, addonsPU, lookupTables, formulaVariables, fileCounts, candidatePricesResolved);
+    // Fold the resolved map back over the raw read so section/row overlays
+    // (valuesForFormula) and the pricing pass see one consistent map.
+    Object.keys(resolvedValues).forEach((id) => { values[id] = resolvedValues[id]; });
+    Object.keys(values).forEach((id) => {
+      if (id !== '__opf_labels' && !Object.prototype.hasOwnProperty.call(resolvedValues, id)) delete values[id];
+    });
+    // WAPF product-image rules: evaluated once per group against the same
+    // resolved values; 'last' mode uses the last-changed field recorded by
+    // initTotals' change listener.
+    const imageRules = (window.OPF_IMAGE_RULES || {})[gid] || [];
+    const imageRuleMode = (window.OPF_IMAGE_RULE_MODES || {})[gid] || 'rules';
+    let lastChangedField = lastImageFieldByGroup.get(gid);
+    if (undefined === lastChangedField) lastChangedField = initialImageField(groupEl, imageRules);
+    productImageEvaluations.push({
+      groupId: gid,
+      definitions,
+      values,
+      rules: imageRules,
+      imageRuleMode,
+      lastChangedField,
+    });
     // WAPF clone_type=qty parity: quantity-repeat units merge into cart lines
     // whose quantity is the count of identical units. The clone signature is
     // the WHOLE unit — every quantity-scope field's value at that index —
@@ -2378,23 +3172,37 @@ const writeTotals = () => {
     });
     fields.forEach((fieldEl) => {
       const fid = fieldEl.getAttribute('data-opf-field');
-      const def = (window.OPF_FIELDS || {})[gid]?.[fid];
+      const def = definitions[fid];
       if (!def) return;
-      // conditional visibility: hidden fields contribute nothing
+      // conditional visibility: hidden fields contribute nothing (the hidden
+      // attribute/class the conditional pass set, plus a live isVisible check
+      // for environments where refresh() has not run yet — WAPF parity).
       const container = fieldEl;
-      if (container.hasAttribute('hidden')) {
+      const hasHideClass = !!(container.classList && typeof container.classList.contains === 'function' && container.classList.contains('opf-hide'));
+      const attrHidden = typeof container.hasAttribute === 'function' && container.hasAttribute('hidden');
+      const isFieldVisible = !attrHidden && !hasHideClass && isVisible(def, values);
+      updateChoicePriceHints(container, definitions, fid, def, values, base, qty, addonsPU, lookupTables, formulaVariables, fieldPrices, isFieldVisible);
+      if (!isFieldVisible) {
         // WAPF resolves [price.ID] from the first matching source, even when
         // that source is hidden. Do not promote a later duplicate's price.
         if (!Object.prototype.hasOwnProperty.call(fieldPrices, fid)) fieldPrices[fid] = 0;
         return;
       }
-      const sectionInstance = fieldEl.closest('[data-opf-section-repeat] [data-opf-repeat-instance]');
-      const sectionRepeater = sectionInstance && sectionInstance.closest('[data-opf-section-repeat]');
+      // WAPF `calculation` display fields: the output node re-evaluates after
+      // the pricing pass (it consumes the running addons context), and 'price'
+      // calculations also add their line result to the option totals.
+      if (def.type === 'calculation') {
+        const output = typeof container.querySelector === 'function' ? container.querySelector('[data-opf-calculation]') : null;
+        if (output) calculationDisplays.push({ output, def, values, fileCounts, lookupTables, formulaVariables, fieldPrices });
+        return;
+      }
+      const sectionInstance = typeof fieldEl.closest === 'function' ? fieldEl.closest('[data-opf-section-repeat] [data-opf-repeat-instance]') : null;
+      const sectionRepeater = sectionInstance && typeof sectionInstance.closest === 'function' ? sectionInstance.closest('[data-opf-section-repeat]') : null;
       const sectionRows = sectionRepeater ? Array.from(sectionRepeater.querySelectorAll('.opf-field-repeat__rows > [data-opf-repeat-instance]')) : [];
       const sectionIndex = sectionInstance ? sectionRows.indexOf(sectionInstance) : null;
       const value = sectionInstance ? readFieldControl(fieldEl, def) : values[fid];
       const sectionQtyRepeat = sectionRepeater && sectionRepeater.getAttribute('data-opf-repeat') === 'quantity';
-      if (fieldEl.matches('[data-opf-repeat]') && Array.isArray(value)) {
+      if (typeof fieldEl.matches === 'function' && fieldEl.matches('[data-opf-repeat]') && Array.isArray(value)) {
         const isQtyRepeat = fieldEl.getAttribute('data-opf-repeat') === 'quantity' && unitGroups.length;
         // 'quantity' rows collapse to one merged unit per signature; 'button'
         // rows stay separate units on the same cart line.
@@ -2448,6 +3256,19 @@ const writeTotals = () => {
     });
   });
 
+  updateProductImage(document, productImageEvaluations);
+
+  // WAPF calculation displays run after the pricing pass (they consume the
+  // running addons context); 'price' calculations add their line-space
+  // result once to the option totals.
+  let calcAddonsPU = 0;
+  calculationDisplays.forEach(({ output, def, values, fileCounts, lookupTables, formulaVariables, fieldPrices: calcFieldPrices }) => {
+    const result = evalFormula(def.formula || '', base, qty, addonsPU + calcAddonsPU, '', values, '', fileCounts, lookupTables, formulaVariables, calcFieldPrices);
+    output.textContent = String(def.result_text || '{result}').replace(/\{result\}/g, String(result));
+    if (def.calculation_type === 'price') calcAddonsPU += result / qty;
+  });
+  if (calcAddonsPU) optionsTotal += calcAddonsPU * qty;
+
   const productTotal = base * qty;
   const grand = Math.max(0, productTotal + optionsTotal);
 
@@ -2455,19 +3276,69 @@ const writeTotals = () => {
   // the raw totals by it makes the on-page preview match
   // wc_get_price_to_display() — tax-inclusive catalogs, customer tax location
   // and VAT exemption included — without touching cart/order math.
-  const rawTaxFactor = parseFloat(totalsEl.getAttribute('data-opf-tax-factor'));
+  const rawTaxFactor = totalsEl && typeof totalsEl.getAttribute === 'function' ? parseFloat(totalsEl.getAttribute('data-opf-tax-factor')) : NaN;
   const taxFactor = Number.isFinite(rawTaxFactor) && rawTaxFactor > 0 ? rawTaxFactor : 1;
   const productDisplay = productTotal * taxFactor;
   const optionsDisplay = optionsTotal * taxFactor;
   const grandDisplay = grand * taxFactor;
+  let displayed = { product_total: productDisplay, options_total: optionsDisplay, grand_total: grandDisplay };
+  let displayedIsServerPriced = false;
 
-  const fmtEl = (el, amount) => {
-    if (!el) return;
-    el.innerHTML = fmtMoney(amount * rate);
-  };
-  fmtEl(totalsEl.querySelector('.opf-product-total, .wapf-product-total'), productDisplay);
-  fmtEl(totalsEl.querySelector('.opf-options-total, .wapf-options-total'), optionsDisplay);
-  fmtEl(totalsEl.querySelector('.opf-grand-total, .wapf-grand-total'), grandDisplay);
+  // WAPF price-preview: when the totals node carries a preview endpoint the
+  // server recomputes the displayed totals (tax/customer context included).
+  // pricePreviewRequestId drops stale responses when inputs change quickly.
+  const previewUrl = totalsEl && typeof totalsEl.getAttribute === 'function' ? totalsEl.getAttribute('data-opf-price-preview-url') : null;
+  if (totalsEl && previewUrl) {
+    const requestId = ++pricePreviewRequestId;
+    const productId = Number(totalsEl.getAttribute('data-opf-tax-product-id') || totalsEl.getAttribute('data-product-id'));
+    const status = typeof totalsEl.querySelector === 'function' ? totalsEl.querySelector('.opf-price-preview-status') : null;
+    if (typeof totalsEl.setAttribute === 'function') totalsEl.setAttribute('aria-busy', 'true');
+    if (typeof totalsEl.querySelectorAll === 'function') {
+      totalsEl.querySelectorAll('.opf-product-total, .opf-options-total, .opf-grand-total, .wapf-product-total, .wapf-options-total, .wapf-grand-total').forEach((node) => { node.textContent = ''; });
+    }
+    if (status) {
+      status.hidden = false;
+      status.textContent = 'Updating price…';
+    }
+    try {
+      const response = await fetch(previewUrl, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ product_id: productId, options: addonsPU + calcAddonsPU, quantity: qty }),
+      });
+      if (!response.ok) throw new Error(`Price preview failed (${response.status}).`);
+      const preview = await response.json();
+      if (requestId !== pricePreviewRequestId) return;
+      if (![preview.product_total, preview.options_total, preview.grand_total].every((value) => Number.isFinite(Number(value)))) {
+        throw new Error('Price preview returned invalid totals.');
+      }
+      displayed = preview;
+      displayedIsServerPriced = true;
+    } catch (error) {
+      if (requestId !== pricePreviewRequestId) return;
+      totalsEl.setAttribute('data-opf-price-preview-error', '1');
+      totalsEl.removeAttribute('aria-busy');
+      if (status) status.textContent = 'The price preview could not be updated. The final price will be calculated by WooCommerce.';
+      return;
+    }
+    totalsEl.removeAttribute('data-opf-price-preview-error');
+    totalsEl.removeAttribute('aria-busy');
+    if (status) status.hidden = true;
+  }
+
+  if (totalsEl) {
+    const fmtEl = (el, amount) => {
+      if (!el) return;
+      el.innerHTML = fmtMoney(amount);
+    };
+    // Server preview payloads are already display-priced; local fallbacks go
+    // through the configured currency rate like before.
+    const displayedRate = displayedIsServerPriced ? 1 : rate;
+    fmtEl(totalsEl.querySelector('.opf-product-total, .wapf-product-total'), displayed.product_total * displayedRate);
+    fmtEl(totalsEl.querySelector('.opf-options-total, .wapf-options-total'), displayed.options_total * displayedRate);
+    fmtEl(totalsEl.querySelector('.opf-grand-total, .wapf-grand-total'), displayed.grand_total * displayedRate);
+  }
 
   // Native DOM event the production theme consumes: quantity.js reads
   // `detail.displayed.final` (falling back to `detail.final`); field-accordion.js
@@ -2482,9 +3353,9 @@ const writeTotals = () => {
           final: grand,
           quantity: qty,
           displayed: {
-            base: productDisplay,
-            options: optionsDisplay,
-            final: grandDisplay,
+            base: displayed.product_total,
+            options: displayed.options_total,
+            final: displayed.grand_total,
           },
         },
       }));
@@ -2515,31 +3386,56 @@ const initTotals = () => {
     });
   }
   let timer = null;
-  container.addEventListener('input', () => {
+  const schedule = (event) => {
+    // WAPF 'last' image-rule mode needs the last-changed field per group.
+    if (event && 'change' === event.type && event.target && typeof event.target.closest === 'function') {
+      const field = event.target.closest('[data-opf-field]');
+      const group = field && field.closest && field.closest('[data-opf-group]');
+      if (field && group) lastImageFieldByGroup.set(group.getAttribute('data-opf-group'), field.getAttribute('data-opf-field'));
+    }
     clearTimeout(timer);
     timer = setTimeout(writeTotals, 50);
-  });
-  container.addEventListener('change', () => {
-    clearTimeout(timer);
-    timer = setTimeout(writeTotals, 50);
-  });
+  };
+  container.addEventListener('input', schedule);
+  container.addEventListener('change', schedule);
   document.querySelectorAll('form.cart input[name="quantity"], form.cart .qty').forEach((input) => {
-    input.addEventListener('input', () => {
-      clearTimeout(timer);
-      timer = setTimeout(writeTotals, 50);
-    });
-    input.addEventListener('change', () => {
-      clearTimeout(timer);
-      timer = setTimeout(writeTotals, 50);
-    });
+    input.addEventListener('input', schedule);
+    input.addEventListener('change', schedule);
   });
   writeTotals();
 };
 
+const initAll = () => {
+  init();
+  initTotals();
+};
+
+// Top-level side effects live AFTER `const initAll` so test source slices that
+// end at that marker evaluate without touching the document.
+
+// Cart-edit upload prefill: server-rendered `.opf-upload__file` rows keep
+// the line's session-owned tokens in hidden inputs. Removing a row is a
+// purely client-side drop (cart-bound records reject the REST DELETE), so
+// the token simply isn't resubmitted and the orphaned private upload is
+// reaped by the hourly cleanup.
+document.addEventListener( 'click', ( event ) => {
+	const button = event.target.closest( '[data-opf-upload-remove]' );
+	if ( ! button ) {
+		return;
+	}
+	const row = button.closest( '.opf-upload__file' );
+	if ( row ) {
+		row.remove();
+		button.closest( '.opf-upload' ).dispatchEvent( new Event( 'input', { bubbles: true } ) );
+	}
+} );
+
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initTotals);
+  document.addEventListener('DOMContentLoaded', initAll);
 } else {
-  setTimeout(initTotals, 0);
+  // ES modules evaluate while readyState is already interactive; defer so the
+  // DOM listeners and totals pass run after the full module body initialized.
+  setTimeout(initAll, 0);
 }
 
 // Tooltip-triggered descriptions (description_presentation=tooltip).

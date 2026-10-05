@@ -502,6 +502,20 @@ final class Evaluator {
 			return 'not_in' === $rule['operator'] ? ! $in : $in;
 		}
 
+		if ( 'product_attribute' === $subject ) {
+			// WAPF/legacy builder dialect: composite `pa_x:term_id` terms map
+			// onto the per-taxonomy `pa_x` has_terms buckets.
+			$in = false;
+			foreach ( array_map( 'strval', (array) ( $rule['terms'] ?? [] ) ) as $composite ) {
+				$parts = explode( ':', $composite, 2 );
+				if ( 2 === count( $parts ) && in_array( $parts[1], array_map( 'strval', (array) ( $has_terms[ $parts[0] ] ?? [] ) ), true ) ) {
+					$in = true;
+					break;
+				}
+			}
+			return 'not_in' === $rule['operator'] ? ! $in : $in;
+		}
+
 		if ( ! in_array( $subject, [ 'product_cat', 'product_tag', 'product_type' ], true ) && 0 !== strpos( $subject, 'pa_' ) ) {
 			return false;
 		}

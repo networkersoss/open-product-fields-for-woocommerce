@@ -145,6 +145,11 @@ final class Builder {
 						foreach ( $rule['terms'] as $term_id ) {
 							$selected[ $key ][] = $rule['subject'] . ':' . $term_id;
 						}
+					} elseif ( 'product_attribute' === $rule['subject'] && in_array( $rule['operator'], [ 'in', 'not_in' ], true ) ) {
+						// WAPF composite `pa_x:term` terms are already in the
+						// option-value format used by the attribute selects.
+						$key = 'not_in' === $rule['operator'] ? 'attributes_not' : 'attributes';
+						$selected[ $key ] = array_merge( $selected[ $key ], array_map( 'strval', (array) ( $rule['terms'] ?? [] ) ) );
 					} elseif ( 'user_auth' === $rule['subject'] && in_array( $rule['operator'], [ 'in', 'not_in', 'logged_in', 'logged_out' ], true ) ) {
 						$logged_out = in_array( $rule['operator'], [ 'not_in', 'logged_out' ], true );
 						$selected['user_auth'] = $logged_out ? 'logged_out' : 'logged_in';

@@ -339,7 +339,8 @@ test('browser calculation formulas read numeric values from sibling fields', () 
 	assert.ok(Math.abs(sandbox.evaluateFormula('tan(0.5)', 10, 1, 0, '', {}) - Math.tan(0.5)) < 0.000001);
 	assert.equal(sandbox.evaluateFormula('datediff([field.start]; [field.end])', 10, 1, 0, '', { start: '2026-06-01', end: '2026-06-10' }, '2026-06-15'), 9);
 	assert.equal(sandbox.evaluateFormula('datediff([field.start]; [field.end]) * 40', 10, 1, 0, '', { start: '2026-06-01', end: '2026-06-10' }, '2026-06-15'), 360);
-	assert.equal(sandbox.evaluateFormula('datediff([field.end]; [field.start])', 10, 1, 0, '', { start: '2026-06-01', end: '2026-06-10' }, '2026-06-15'), -9);
+	// PHP parity: Calculator uses DateTime::diff()->days — always absolute.
+	assert.equal(sandbox.evaluateFormula('datediff([field.end]; [field.start])', 10, 1, 0, '', { start: '2026-06-01', end: '2026-06-10' }, '2026-06-15'), 9);
 	assert.equal(sandbox.evaluateFormula('datediff([field.start]; today())', 10, 1, 0, '', { start: '2026-06-01' }, '2026-06-15'), 14);
 	assert.equal(sandbox.evaluateFormula('datediff(today(); [field.end])', 10, 1, 0, '', { end: '2026-06-29' }, '2026-06-15'), 14);
 	sandbox.opf_config = { date_format: 'mm-dd-yyyy' };

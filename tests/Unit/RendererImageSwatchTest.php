@@ -48,7 +48,11 @@ namespace {
 	if ( ! function_exists( 'do_shortcode' ) ) {
 		function do_shortcode( string $content ): string {
 			$GLOBALS['opf_test_shortcode_calls'] = ( $GLOBALS['opf_test_shortcode_calls'] ?? 0 ) + 1;
-			return str_replace( '[site_name]', '<em>followersya</em>', $content );
+			return str_replace(
+				[ '[site_name]', '[opf_calendar]' ],
+				[ '<em>followersya</em>', '<iframe title="Booking calendar"></iframe>' ],
+				$content
+			);
 		}
 	}
 }

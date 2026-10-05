@@ -53,12 +53,16 @@ final class FieldGroupSchemaTest extends TestCase {
 	}
 
 	public function test_checkbox_columns_are_bounded_and_ignored_for_other_field_types(): void {
+		// Master semantics: WAPF documents `columns` without an upper bound, so
+		// any explicit positive platform integer is retained verbatim; `0` is
+		// rejected (see test_checkbox_columns_preserve_positive_integers...).
 		$checkbox = FieldGroup::normalize_field( [ 'id' => 'extras', 'type' => 'checkbox', 'columns' => 99 ] );
 		$radio = FieldGroup::normalize_field( [ 'id' => 'finish', 'type' => 'radio', 'columns' => 3 ] );
 
-		$this->assertSame( 12, $checkbox['columns'] );
+		$this->assertSame( 99, $checkbox['columns'] );
 		$this->assertArrayNotHasKey( 'columns', $radio );
-		$this->assertSame( 1, FieldGroup::normalize_field( [ 'id' => 'extras', 'type' => 'checkbox', 'columns' => 0 ] )['columns'] );
+		$this->expectException( InvalidArgumentException::class );
+		FieldGroup::normalize_field( [ 'id' => 'extras', 'type' => 'checkbox', 'columns' => 0 ] );
 	}
 
 	public function test_card_radio_layout_and_choice_content_are_normalized_safely(): void {
@@ -83,7 +87,8 @@ final class FieldGroupSchemaTest extends TestCase {
 
 	public function test_instruction_presentation_accepts_tooltip_and_defaults_invalid_values_to_inline(): void {
 		$this->assertSame( 'tooltip', FieldGroup::normalize_field( [ 'id' => 'note', 'type' => 'text', 'description_presentation' => 'tooltip' ] )['description_presentation'] );
-		$this->assertArrayNotHasKey( 'description_presentation', FieldGroup::normalize_field( [ 'id' => 'note', 'type' => 'text', 'description_presentation' => 'popup' ] ) );
+		// Master semantics: unknown presentations normalise to inline (always-set key).
+		$this->assertSame( 'inline', FieldGroup::normalize_field( [ 'id' => 'note', 'type' => 'text', 'description_presentation' => 'popup' ] )['description_presentation'] );
 	}
 
 	public function test_customer_surface_visibility_flags_are_normalized_independently(): void {
@@ -97,8 +102,9 @@ final class FieldGroupSchemaTest extends TestCase {
 
 		$this->assertTrue( $field['hide_cart'] );
 		$this->assertTrue( $field['hide_checkout'] );
-		$this->assertArrayNotHasKey( 'hide_order', $field );
-		$this->assertArrayNotHasKey( 'hide_cart', FieldGroup::normalize_field( [ 'id' => 'legacy', 'type' => 'text' ] ) );
+		// Master semantics: the flags are always present as booleans.
+		$this->assertFalse( $field['hide_order'] );
+		$this->assertFalse( FieldGroup::normalize_field( [ 'id' => 'legacy', 'type' => 'text' ] )['hide_cart'] );
 	}
 
 	public function test_child_products_keep_bounded_source_selection_and_zoom_settings(): void {
