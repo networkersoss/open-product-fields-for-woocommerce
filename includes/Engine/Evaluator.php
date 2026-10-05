@@ -266,6 +266,31 @@ final class Evaluator {
 	}
 
 	/**
+	 * Own id of the current product when it is a variation of `$product_id`.
+	 *
+	 * Reads the ambient context product recorded by
+	 * FieldGroups::for_product() — the same source as the variation context —
+	 * and only trusts it when it is a variation of the product being resolved,
+	 * so a stale context from an earlier pass cannot leak into the match.
+	 *
+	 * @param int $product_id Parent-resolved id of the product being resolved.
+	 * @return string|null Variation id, or null when the current product is not a variation.
+	 */
+	private static function current_variation_id( int $product_id ): ?string {
+		$product = self::$context_product;
+		if ( ! is_object( $product ) || ! method_exists( $product, 'is_type' ) || ! $product->is_type( 'variation' ) ) {
+			return null;
+		}
+		if ( ! method_exists( $product, 'get_parent_id' ) || ! method_exists( $product, 'get_id' ) ) {
+			return null;
+		}
+		if ( (int) $product->get_parent_id() !== $product_id ) {
+			return null;
+		}
+		return (string) $product->get_id();
+	}
+
+	/**
 	 * Evaluate a variation-scoped rule against a resolved variation context.
 	 *
 	 * WAPF 3.1.5 frontend parity (assets/js/frontend.min.js isValidRule):
@@ -398,9 +423,12 @@ final class Evaluator {
 	 * Empty rule_groups means "everywhere" (explicit OPF semantics — WAPF's
 	 * empty-condition fall-through-to-false footgun is deliberately not replicated).
 	 *
+	 * `product` rules match the parent-resolved `$product_id` plus, when the
+	 * product being resolved is one of its variations, that variation's own id.
+	 *
 	 * @param array<string,mixed> $group           Normalized group data.
 	 * @param array<string, array<int|string>> $has_terms subject => term ids the product belongs to, e.g. ['product_cat' => [1,2]]. Subjects besides 'product'/'user_*' may be 'product_cat', 'product_tag', 'product_type' (type slugs), any 'pa_*' attribute taxonomy (term ids), 'product_var' (variation ids in scope) or 'var_att' (`attr|value` pairs the product defines).
-	 * @param int                 $product_id      Current product id.
+	 * @param int                 $product_id      Current product id (parent-resolved for a variation).
 	 * @param array<string,mixed> $user_context    Viewer context (logged_in/roles/language).
 	 * @param array<int,array<string,mixed>>|null $variation_rules Out: variation rules of the matching rule group (WAPF `valid_rule_group` frontend merge).
 	 */
@@ -458,7 +486,15 @@ final class Evaluator {
 		$subject = $rule['subject'];
 
 		if ( 'product' === $subject ) {
-			$in = in_array( (string) $product_id, $rule['terms'], true );
+			// WAPF 3.1.5 parity (`class-conditions.php:278-287`
+			// `is_current_product`): a variation is matched through its parent
+			// product id, every other type through its own id. OPF also honours
+			// an explicit variation id in the terms, which is what WAPF Free's
+			// direct object comparison does and what makes an imported rule that
+			// selects one variation match exactly that variation.
+			$variation_id = self::current_variation_id( $product_id );
+			$in           = in_array( (string) $product_id, $rule['terms'], true )
+				|| ( null !== $variation_id && in_array( $variation_id, $rule['terms'], true ) );
 			return 'not_in' === $rule['operator'] ? ! $in : $in;
 		}
 

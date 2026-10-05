@@ -29,12 +29,35 @@ Extended includes/classes/class-conditions.php
 166b358451c270bf7b0c8ca218c3e575b5c843791ec11a66045b1c6187578754
 ```
 
-Free's predicate compares the supplied object's ID; Extended normalizes a
-variation to its parent ID. OPF follows Extended's parent-product contract for
-`product` placement in rendering, validation, capture, and order metadata.
-Selecting a variation ID through `product` is therefore not exact variation
-targeting; `WAPF-RULE-VARIATION` owns that separate capability. The Free direct
-variation-object difference is documented rather than counted as exact parity.
+WAPF 3.1.5 is the parity baseline, and its `product` placement predicate is
+parent-normalised: `is_current_product()` (`class-conditions.php:278-287`)
+compares `get_parent_id()` for a variation and `get_id()` for a variable parent
+or a simple product, and never expands a parent's child variations. The
+separate `product_var` predicate (`is_product_variation()`,
+`class-conditions.php:255-274`, reached from the same `check()` switch at
+line 152) compares a variation's own id and matches a variable parent when any
+child id is listed; OPF's `product_var` subject mirrors that unchanged. WAPF
+Free's `product` predicate compares the supplied object's own id instead.
+
+OPF therefore keeps the 3.1.5 parent-product contract for `product` placement in
+rendering, validation, capture, and order metadata, and additionally matches a
+variation's own id. That union is deliberate, not an approximation:
+
+* a `product` rule that names a variation renders on exactly that variation
+  (`Evaluator::current_variation_id`, `includes/Engine/Evaluator.php:279`, used
+  by the `product` branch at `includes/Engine/Evaluator.php:488-497`);
+* the parent id keeps 3.1.5 membership, so a parent-targeted group still applies
+  to every variation of that parent.
+
+A variation id can only reach a `product` rule through import/REST: OPF's native
+builder routes variations to `product_var` (`Builder.php:181`, 
+`opf-builder.js:1921`), and WAPF's own group-placement product search excludes
+variations (`class-admin-controller.php:988` calling
+`find_products_by_name( $term, false, true )`, `class-woocommerce-service.php:90-115`).
+This must not be "fixed" back to parent-only: parent-only silently drops such an
+imported rule, while strict own-id-only (Free verbatim) breaks the baseline
+contract above — with own-id-only, `bin/e2e-product-targeting.php` fails at
+`variation only matches positive group`.
 
 ## Native authoring and commerce
 
@@ -152,7 +175,53 @@ and browser phases, run its browser proof using the clone-only login helper's
 `or_group` branch, then `OPF_PRODUCT_E2E_PHASE=or_cleanup` before commerce.
 
 This closes the `WAPF-RULE-PRODUCT` baseline for native searchable
-positive/negative product targeting, with the documented Free direct
-variation-object difference. Exact variation targeting, import/export ownership,
-Extended licensed admin behavior, and other themes/platform versions are not
-accepted by these lifecycle checks.
+positive/negative product targeting, including exact `product` variation
+targeting for imported rules.
+
+## Variation targeting inside `product` rules
+
+Follow-up on the same baseline, executed 2026-10-05 in an isolated clone
+`/tmp/opf-variation-e2e-wp` (copy of a disposable SQLite WordPress, WooCommerce
+11.1.0, PHP 8.5.11) with plugin directory pointed at this lane's copy, plus the
+lane's own clone-only login helper. No repo proof script was modified.
+
+`product` placement now matches the parent-resolved id **or** the resolved
+variation's own id, per the source contract transcribed above. Focused tests
+pinning that behaviour live in `tests/Unit/EvaluatorTest.php`
+(`test_placement_product_targets_a_variation_through_its_parent`,
+`test_placement_product_matches_an_explicit_variation_id`,
+`test_placement_product_lists_parent_and_variation_ids`,
+`test_placement_product_on_simple_and_variable_products`,
+`test_placement_product_ignored_explicit_variation_ids_before_the_fix`) and in
+`tests/Unit/ProductVariationTargetingTest.php` (WAPF import/export round trip
+preserving parent + variation targets, the negated variant, and an unchanged
+`product_var` pin). Reverting the evaluator to the pre-fix predicate fails
+exactly the three variation-targeting tests and nothing else.
+
+Executed evidence on the clone's real WooCommerce data: the unchanged
+`bin/e2e-product-targeting.php` passed 50 checks (`variation only matches
+positive group`, `othervariation only matches negative group`, the variation
+classic/Store API validation and capture checks, and the variation order
+metadata checks included) and `bin/e2e-product-targeting-browser.mjs` passed 37
+checks with zero page errors. Running the same proof against a strict own-id
+predicate fails at `variation only matches positive group`, which is why the
+union is the shipped contract.
+
+Only `Evaluator::current_variation_id()` and the `product` branch of
+`placement_rule_passes()` changed; every other placement subject, the
+`product_var` subject, and the import/export mapping are untouched.
+
+Import/export ownership is **closed** at the rule-data level. `WapfMapper::map`
+keeps every id in a `products` rule verbatim (`WapfMapper.php:2027-2028` and the
+term collection above it) and `WapfExporter::map_placement_rule` writes them
+back as `subject: product` with `condition: products`/`!products`
+(`WapfExporter.php:890-896`); both directions are pinned by
+`ProductVariationTargetingTest`. A real admin round trip on the clone (builder
+opened on a group whose rule lists parent `15101` + variation `15103`, then
+unchanged native REST Save) returned those two ids unchanged, so a variation id
+survives authoring, save, and re-export instead of being dropped. What remains
+open is authoring, not ownership: the native picker still routes variation
+selection to `product_var`, so a variation inside `product` is only ever
+created by import, REST, or a direct ID entry. Extended licensed admin
+behaviour, other themes, and other platform versions are still not accepted by
+these lifecycle checks.

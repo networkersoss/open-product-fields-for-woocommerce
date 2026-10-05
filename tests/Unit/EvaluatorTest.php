@@ -10,6 +10,10 @@ use PHPUnit\Framework\TestCase;
 
 final class EvaluatorTest extends TestCase {
 
+	protected function tearDown(): void {
+		Evaluator::set_context_product( null );
+	}
+
 	private function field( array $conditionals ): array {
 		return [ 'id' => 'f', 'type' => 'text', 'conditionals' => $conditionals ];
 	}
@@ -77,6 +81,122 @@ final class EvaluatorTest extends TestCase {
 		$group = [ 'rule_groups' => [ [ 'rules' => [ [ 'subject' => 'product', 'operator' => 'in', 'terms' => [ '42' ] ] ] ] ] ];
 		$this->assertTrue( Evaluator::group_matches( $group, [], 42 ) );
 		$this->assertFalse( Evaluator::group_matches( $group, [], 43 ) );
+	}
+
+	/**
+	 * `product` placement on a variation: 3.1.5 parent membership
+	 * (class-conditions.php:278-287 `is_current_product` resolves a variation to
+	 * its parent id) plus the variation's own id, which is what WAPF Free
+	 * compares and what an imported rule selecting one variation needs.
+	 */
+	public function test_placement_product_targets_a_variation_through_its_parent(): void {
+		Evaluator::set_context_product( $this->variation( 7002, 7001 ) );
+		$this->assertTrue( Evaluator::group_matches( $this->product_rule( 'in', [ '7001' ] ), [], 7001 ) );
+		$this->assertFalse( Evaluator::group_matches( $this->product_rule( 'not_in', [ '7001' ] ), [], 7001 ) );
+	}
+
+	public function test_placement_product_matches_an_explicit_variation_id(): void {
+		Evaluator::set_context_product( $this->variation( 7002, 7001 ) );
+		$this->assertTrue( Evaluator::group_matches( $this->product_rule( 'in', [ '7002' ] ), [], 7001 ) );
+		$this->assertFalse( Evaluator::group_matches( $this->product_rule( 'not_in', [ '7002' ] ), [], 7001 ) );
+		// A sibling variation of the same parent is a different target.
+		$this->assertFalse( Evaluator::group_matches( $this->product_rule( 'in', [ '7003' ] ), [], 7001 ) );
+	}
+
+	public function test_placement_product_lists_parent_and_variation_ids(): void {
+		$group = $this->product_rule( 'in', [ '7001', '7002' ] );
+
+		Evaluator::set_context_product( $this->variation( 7002, 7001 ) );
+		$this->assertTrue( Evaluator::group_matches( $group, [], 7001 ) );
+		// The parent id keeps 3.1.5 parent membership, so unlisted sibling
+		// variations of a listed parent still match.
+		Evaluator::set_context_product( $this->variation( 7003, 7001 ) );
+		$this->assertTrue( Evaluator::group_matches( $group, [], 7001 ) );
+		// A variation from an unlisted parent still does not.
+		Evaluator::set_context_product( $this->variation( 7102, 7100 ) );
+		$this->assertFalse( Evaluator::group_matches( $group, [], 7100 ) );
+	}
+
+	public function test_placement_product_on_simple_and_variable_products(): void {
+		// Simple product: its own id only.
+		$this->assertTrue( Evaluator::group_matches( $this->product_rule( 'in', [ '7200' ] ), [], 7200 ) );
+		$this->assertFalse( Evaluator::group_matches( $this->product_rule( 'in', [ '7002' ] ), [], 7200 ) );
+		// Variable parent: its own id, never a child variation id — per-variation
+		// matching stays with the `product_var` subject (class-conditions.php:255-274).
+		Evaluator::set_context_product( $this->variable( 7001, [ 7002, 7003 ] ) );
+		$this->assertTrue( Evaluator::group_matches( $this->product_rule( 'in', [ '7001' ] ), [], 7001 ) );
+		$this->assertFalse( Evaluator::group_matches( $this->product_rule( 'in', [ '7002' ] ), [], 7001 ) );
+	}
+
+	public function test_placement_product_ignored_explicit_variation_ids_before_the_fix(): void {
+		// Pre-fix predicate, kept verbatim as the comparison the fix replaced:
+		// every `product` rule resolved the variation to its parent id.
+		$pre_fix_match = in_array( (string) 7001, [ '7002' ], true );
+		$this->assertFalse( $pre_fix_match, 'the pre-fix parent-only predicate never matched the selected variation' );
+
+		Evaluator::set_context_product( $this->variation( 7002, 7001 ) );
+		$this->assertTrue( Evaluator::group_matches( $this->product_rule( 'in', [ '7002' ] ), [], 7001 ) );
+	}
+
+	private function product_rule( string $operator, array $terms ): array {
+		return [ 'rule_groups' => [ [ 'rules' => [ [ 'subject' => 'product', 'operator' => $operator, 'terms' => $terms ] ] ] ] ];
+	}
+
+	private function variation( int $id, int $parent_id ): object {
+		return new class( $id, $parent_id ) {
+			/** @var int */
+			private $id;
+
+			/** @var int */
+			private $parent_id;
+
+			public function __construct( int $id, int $parent_id ) {
+				$this->id        = $id;
+				$this->parent_id = $parent_id;
+			}
+			public function get_type(): string {
+				return 'variation';
+			}
+			public function is_type( string $type ): bool {
+				return 'variation' === $type;
+			}
+			public function get_id(): int {
+				return $this->id;
+			}
+			public function get_parent_id(): int {
+				return $this->parent_id;
+			}
+		};
+	}
+
+	private function variable( int $id, array $children ): object {
+		return new class( $id, $children ) {
+			/** @var int */
+			private $id;
+
+			/** @var int[] */
+			private $children;
+
+			public function __construct( int $id, array $children ) {
+				$this->id       = $id;
+				$this->children = $children;
+			}
+			public function get_type(): string {
+				return 'variable';
+			}
+			public function is_type( string $type ): bool {
+				return 'variable' === $type;
+			}
+			public function get_id(): int {
+				return $this->id;
+			}
+			public function get_parent_id(): int {
+				return 0;
+			}
+			public function get_children(): array {
+				return $this->children;
+			}
+		};
 	}
 
 	public function test_placement_tag_not_in(): void {
