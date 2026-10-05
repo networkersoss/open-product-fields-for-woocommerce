@@ -99,8 +99,11 @@ $group = new OPF\Engine\FieldGroup( [
 	],
 	'rule_groups' => [ [ 'rules' => [ [ 'subject' => 'product', 'operator' => 'in', 'terms' => [ (string) $product_id ] ] ] ] ],
 	'image_rules' => [
-		[ 'target_url' => wp_get_attachment_url( $ids['back'] ), 'conditions' => [ [ 'field' => 'color', 'value' => 'red' ], [ 'field' => 'size', 'value' => 'large' ] ] ],
+		// Rules resolve last-match-wins (WAPF 3.1.5 reverses the rule list), so
+		// the broader `red + Any` rule precedes `red + large`: the AND rule takes
+		// over once size matches, which is what the browser harness asserts.
 		[ 'target_url' => trailingslashit( $upload['baseurl'] ) . $image_files['external']['name'], 'conditions' => [ [ 'field' => 'color', 'value' => 'red' ], [ 'field' => 'size', 'value' => '*' ] ] ],
+		[ 'target_url' => wp_get_attachment_url( $ids['back'] ), 'conditions' => [ [ 'field' => 'color', 'value' => 'red' ], [ 'field' => 'size', 'value' => 'large' ] ] ],
 		[ 'target_url' => wp_get_attachment_url( $ids['side'] ), 'conditions' => [ [ 'field' => 'color', 'value' => 'blue' ], [ 'field' => 'size', 'value' => '*' ] ] ],
 	],
 ] );

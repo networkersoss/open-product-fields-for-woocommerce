@@ -73,6 +73,13 @@ final class Assets {
 				. 'window.OPF_TODAY = ' . wp_json_encode( $today ) . ';'
 				. 'window.OPF_I18N = ' . wp_json_encode( self::frontend_i18n(), JSON_UNESCAPED_UNICODE ) . ';'
 			);
+			$image_rules = self::frontend_image_rules( $registry );
+			if ( $image_rules ) {
+				wp_print_inline_script_tag(
+					'window.OPF_IMAGE_RULES = ' . wp_json_encode( $image_rules['rules'], JSON_UNESCAPED_UNICODE ) . ';'
+					. 'window.OPF_IMAGE_RULE_MODES = ' . wp_json_encode( $image_rules['modes'], JSON_UNESCAPED_UNICODE ) . ';'
+				);
+			}
 		}
 		// WAPF lookup-table parity: WAPF injects `var wapf_lookup_tables` from
 		// its `wapf/lookup_tables` filter so lookuptable() previews resolve
@@ -95,6 +102,37 @@ final class Assets {
 			);
 		}
 		wp_enqueue_style( 'opf-frontend' );
+	}
+
+	/**
+	 * Product-image rules authored on the rendered groups, keyed by the client
+	 * group id the frontend reads from `data-opf-group` (the registry key) —
+	 * the OPF-native `image_rules` model, not the WAPF-shaped
+	 * `layout.gallery_images` payload the renderer already ships as
+	 * `data-opf-gi`. Groups without rules are omitted so rule-less pages emit
+	 * nothing. Shape per group: {target_url,conditions:[{field,value}]} plus
+	 * the group's swap mode ('rules' | 'last').
+	 *
+	 * @param array<string,mixed> $registry Client registry (gid => fields).
+	 * @return array{rules:array<string,mixed>,modes:array<string,string>}|array{}
+	 */
+	private static function frontend_image_rules( array $registry ): array {
+		$rules = [];
+		$modes = [];
+		foreach ( FieldGroups::all() as $entry ) {
+			$gid = (string) $entry['id'];
+			if ( ! isset( $registry[ $gid ] ) ) {
+				continue;
+			}
+			$group_rules = $entry['group']->data['image_rules'] ?? [];
+			if ( ! is_array( $group_rules ) || ! $group_rules ) {
+				continue;
+			}
+			// JSON must see a list; a sparse stored map would serialize as an object.
+			$rules[ $gid ] = array_values( $group_rules );
+			$modes[ $gid ] = 'last' === ( $entry['group']->data['image_rule_mode'] ?? '' ) ? 'last' : 'rules';
+		}
+		return $rules ? [ 'rules' => $rules, 'modes' => $modes ] : [];
 	}
 
 	/**
