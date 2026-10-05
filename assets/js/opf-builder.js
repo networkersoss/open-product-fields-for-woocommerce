@@ -1768,12 +1768,13 @@
 	}
 
 	// WAPF conditional product-image rules: each rule matches ALL of its
-	// conditions; a value of "Any" ignores that field; the first matching
-	// rule wins; the target may be a gallery URL or an external image.
+	// conditions; a value of "Any" ignores that field; the last matching rule
+	// wins (the frontend scans the list in reverse, WAPF 3.1.5 parity); the
+	// target may be a gallery URL or an external image.
 	function imageRulesEditor() {
 		var section = el( 'section', { class: 'opf-b-image-rules' }, [
 			el( 'h3', { text: __( 'Conditional product images', 'open-product-fields-for-woocommerce' ) } ),
-			el( 'p', { text: __( 'Each rule matches all its conditions. Use “Any” to ignore a field. First matching rule wins. Paste a product-gallery image URL to switch to that slide, or another image URL to show an external image.', 'open-product-fields-for-woocommerce' ) } ),
+			el( 'p', { text: __( 'Each rule matches all its conditions. Use “Any” to ignore a field. When several rules match, the last one in the list wins. Paste a product-gallery image URL to switch to that slide, or another image URL to show an external image.', 'open-product-fields-for-woocommerce' ) } ),
 		] );
 		var choiceFields = model.fields.filter( function ( field ) {
 			return [ 'select', 'radio', 'checkbox', 'swatch' ].indexOf( field.type ) !== -1 && ( field.choices || [] ).length;

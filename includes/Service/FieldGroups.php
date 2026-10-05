@@ -26,6 +26,19 @@ final class FieldGroups {
 	private static $all = null;
 
 	/**
+	 * Entries a placement pass resolved during this request, keyed by group id.
+	 *
+	 * `for_product()` is the only place that sees hook-injected entries
+	 * (`opf_groups_for_product` / `wapf/product_field_groups`), which by
+	 * definition are not in `self::$all`. Callers that hold nothing but a
+	 * client group id — the frontend asset emitter — read the rendered
+	 * group's own data back through `entries_by_id()`.
+	 *
+	 * @var array<string,array{id:int,title:string,lang:string,group:FieldGroup}>
+	 */
+	private static $resolved = [];
+
+	/**
 	 * Register hooks.
 	 */
 	public static function init(): void {
@@ -257,7 +270,7 @@ final class FieldGroups {
 		$cache_results = self::can_flush_group_cache() && ( ! is_string( $wpml_language ) || '' === $wpml_language );
 		$cached       = $cache_results ? wp_cache_get( $cache_key, 'opf_groups_for_product' ) : false;
 		if ( is_array( $cached ) ) {
-			return $cached;
+			return self::remember( $cached );
 		}
 
 		$type_product = $product->get_parent_id() && function_exists( 'wc_get_product' ) ? wc_get_product( $product->get_parent_id() ) : $product;
@@ -316,7 +329,52 @@ final class FieldGroups {
 		if ( $cache_results ) {
 			wp_cache_set( $cache_key, $matching, 'opf_groups_for_product' );
 		}
-		return $matching;
+		return self::remember( $matching );
+	}
+
+	/**
+	 * Group entries for the given client group ids, hook-injected groups included.
+	 *
+	 * `all()` deliberately holds stored groups only — it is the value the
+	 * `opf_groups_for_product` filter receives — so a group injected through
+	 * that filter reaches the renderer and the client registry without ever
+	 * being in `all()`. An entry a placement pass already resolved wins over
+	 * the stored entry with the same id, because that is the entry the page
+	 * rendered.
+	 *
+	 * @param array<int,int|string> $ids Client group ids (`data-opf-group`).
+	 * @return array<string,array{id:int,title:string,lang:string,group:FieldGroup}>
+	 */
+	public static function entries_by_id( array $ids ): array {
+		$wanted  = array_fill_keys( array_map( 'strval', $ids ), true );
+		$entries = [];
+		foreach ( self::all() as $entry ) {
+			$gid = (string) $entry['id'];
+			if ( isset( $wanted[ $gid ] ) ) {
+				$entries[ $gid ] = $entry;
+			}
+		}
+		foreach ( self::$resolved as $gid => $entry ) {
+			if ( isset( $wanted[ $gid ] ) ) {
+				$entries[ $gid ] = $entry;
+			}
+		}
+		return $entries;
+	}
+
+	/**
+	 * Index entries a placement pass resolved, for `entries_by_id()`.
+	 *
+	 * @param array<int,array{id:int,title:string,lang:string,group:FieldGroup}> $entries Resolved entries.
+	 * @return array<int,array{id:int,title:string,lang:string,group:FieldGroup}> The same entries, so callers can return them.
+	 */
+	private static function remember( array $entries ): array {
+		foreach ( $entries as $entry ) {
+			if ( isset( $entry['id'], $entry['group'] ) ) {
+				self::$resolved[ (string) $entry['id'] ] = $entry;
+			}
+		}
+		return $entries;
 	}
 
 	/**
@@ -413,7 +471,8 @@ final class FieldGroups {
 	 * Flush request + object caches.
 	 */
 	public static function flush_cache(): void {
-		self::$all = null;
+		self::$all      = null;
+		self::$resolved = [];
 		if ( self::can_flush_group_cache() ) {
 			wp_cache_flush_group( 'opf_groups_for_product' );
 		}

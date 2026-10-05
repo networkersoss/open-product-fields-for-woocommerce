@@ -109,9 +109,13 @@ final class Assets {
 	 * group id the frontend reads from `data-opf-group` (the registry key) —
 	 * the OPF-native `image_rules` model, not the WAPF-shaped
 	 * `layout.gallery_images` payload the renderer already ships as
-	 * `data-opf-gi`. Groups without rules are omitted so rule-less pages emit
-	 * nothing. Shape per group: {target_url,conditions:[{field,value}]} plus
-	 * the group's swap mode ('rules' | 'last').
+	 * `data-opf-gi`. Entries come from the repository's client ids rather than
+	 * `FieldGroups::all()` alone, so a group injected through
+	 * `opf_groups_for_product` / `wapf/product_field_groups` (which is rendered
+	 * with its own `image_rules`) publishes them too. Groups without rules are
+	 * omitted so rule-less pages emit nothing. Shape per group:
+	 * {target_url,conditions:[{field,value}]} plus the group's swap mode
+	 * ('rules' | 'last').
 	 *
 	 * @param array<string,mixed> $registry Client registry (gid => fields).
 	 * @return array{rules:array<string,mixed>,modes:array<string,string>}|array{}
@@ -119,11 +123,7 @@ final class Assets {
 	private static function frontend_image_rules( array $registry ): array {
 		$rules = [];
 		$modes = [];
-		foreach ( FieldGroups::all() as $entry ) {
-			$gid = (string) $entry['id'];
-			if ( ! isset( $registry[ $gid ] ) ) {
-				continue;
-			}
+		foreach ( FieldGroups::entries_by_id( array_keys( $registry ) ) as $gid => $entry ) {
 			$group_rules = $entry['group']->data['image_rules'] ?? [];
 			if ( ! is_array( $group_rules ) || ! $group_rules ) {
 				continue;
