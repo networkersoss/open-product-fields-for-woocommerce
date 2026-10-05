@@ -10,7 +10,13 @@ namespace {
 
 namespace OPF\Service {
 	function wc_get_product( int $id ) { return $GLOBALS['opf_woocs_products'][ $id ] ?? false; }
-	function get_post_meta( int $id, string $key, bool $single ) { return $GLOBALS['opf_woocs_meta'][ $id ][ $key ] ?? ''; }
+	function get_post_meta( int $id, string $key, bool $single ) {
+		// ImporterTest fixtures expose their source rows through the
+		// opf_importer_test registry; everything else uses woocs_meta.
+		return $GLOBALS['opf_importer_test']['source_meta'][ $id ][ $key ]
+			?? $GLOBALS['opf_woocs_meta'][ $id ][ $key ]
+			?? '';
+	}
 	function wc_get_price_including_tax( $product, array $args ): float { return $args['price'] * 1.2; }
 	function wc_get_price_excluding_tax( $product, array $args ): float { return $args['price']; }
 	function add_filter( $name, $callback, $priority = 10, $accepted = 1 ): void { $GLOBALS['opf_woocs_hooks'][ $name ] = [ $callback, $priority, $accepted ]; }
@@ -57,6 +63,8 @@ namespace OPF\Tests\Unit {
 			WoocsIntegration::init();
 			$this->assertSame( [ 20, 3 ], array_slice( $GLOBALS['opf_woocs_hooks']['opf_cart_item_base_price'], 1 ) );
 			$this->assertSame( [ 10, 2 ], array_slice( $GLOBALS['opf_woocs_hooks']['opf_formula_base_price'], 1 ) );
+			$this->assertSame( [ 10, 4 ], array_slice( $GLOBALS['opf_woocs_hooks']['opf_pricing_hint_amount'], 1 ) );
+			$this->assertSame( [ 10, 3 ], array_slice( $GLOBALS['opf_woocs_hooks']['opf/linked_products/choice'], 1 ) );
 			$this->assertSame( [ 10, 3 ], array_slice( $GLOBALS['opf_woocs_hooks']['woocommerce_available_variation'], 1 ) );
 			$this->assertArrayHasKey( 'opf_frontend_config', $GLOBALS['opf_woocs_hooks'] );
 		}
@@ -163,6 +171,31 @@ namespace OPF\Tests\Unit {
 			$this->assertSame( 6.0, WoocsIntegration::pricing_hint( 3, $product, 'formula', 'cart' ) );
 			$GLOBALS['opf_woocs_meta'][42]['_woocs_regular_price_EUR'] = 50;
 			$this->assertSame( 3.0, WoocsIntegration::pricing_hint( 3, $product, 'fixed' ) );
+		}
+
+		public function test_pricing_hint_accepts_id_and_null_contexts(): void {
+			// `opf_pricing_hint_amount` passes whatever the renderer has: a
+			// WC_Product, an id or null. Non-product contexts cannot run the
+			// fixed-price meta check, so they convert at the current rate.
+			$this->assertSame( 6.0, WoocsIntegration::pricing_hint( 3, 42, 'fixed' ) );
+			$this->assertSame( 6.0, WoocsIntegration::pricing_hint( 3, null, 'fixed' ) );
+			$this->assertSame( 3.0, WoocsIntegration::pricing_hint( 3, null, 'formula' ) );
+		}
+
+		public function test_linked_product_choice_restores_shop_price_under_conversion(): void {
+			$child  = $GLOBALS['opf_woocs_products'][42]; // edit 10, view 20 (converted).
+			$choice = [ 'slug' => 'p42', 'pricing_type' => 'fixed', 'pricing_amount' => 20.0 ];
+			$out    = WoocsIntegration::linked_product_choice( $choice, [ 'id' => 'f' ], $child );
+			$this->assertSame( 10.0, $out['pricing_amount'], 'WAPF change_product_choice_price parity: shop price, not the converted view.' );
+
+			// 'none' children are free but still carry the original figure like WAPF.
+			$free = WoocsIntegration::linked_product_choice( [ 'pricing_type' => 'none', 'pricing_amount' => 0.0 ], [], $child );
+			$this->assertSame( 10.0, $free['pricing_amount'] );
+
+			// Non-product context and absent WOOCS leave the choice untouched.
+			$this->assertSame( $choice, WoocsIntegration::linked_product_choice( $choice, [], null ) );
+			unset( $GLOBALS['WOOCS'] );
+			$this->assertSame( $choice, WoocsIntegration::linked_product_choice( $choice, [], $child ) );
 		}
 
 		public function test_absent_woocs_preserves_cart_formula_variation_and_config(): void {

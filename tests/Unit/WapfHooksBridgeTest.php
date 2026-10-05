@@ -391,6 +391,9 @@ final class WapfHooksBridgeTest extends TestCase {
 			'wapf/html/option_wrapper_classes', 'wapf/html/image_swatch_size',
 			'wapf/html/section_container_classes', 'wapf/linked_products/cart_choice',
 			'wapf_before_wrapper', 'wapf_before_product_totals', 'wapf_after_product_totals',
+			'wapf/html/pricing_hint/format', 'wapf/html/pricing_hint/amount',
+			'wapf/html/pricing_hint', 'wapf/pricing/addon', 'wapf/pricing/price_with_tax',
+			'wapf/pricing/cart_item_base_for_formulas',
 		];
 	}
 
@@ -502,9 +505,25 @@ final class WapfHooksBridgeTest extends TestCase {
 		$this->assertCount( 4, $options_args, 'wapf/pricing/cart_item_options WAPF shape is ($total,$product,$quantity,$cart_item).' );
 		$this->assertArrayHasKey( 'key', $options_args[3] );
 
+		// The 'fx' field's formula evaluation fires the formula-base alias.
+		$this->assert_fired( 'wapf/pricing/cart_item_base_for_formulas' );
+		$formula_base_args = $this->fired( 'wapf/pricing/cart_item_base_for_formulas' )[0];
+		$this->assertCount( 4, $formula_base_args, 'WAPF shape is ($price,$product,$quantity,$cart_item).' );
+		$this->assertInstanceOf( \WC_Product::class, $formula_base_args[1] );
+
 		// --- Cart display -----------------------------------------------------
 		CartIntegration::display_item_data( [], $cart->cart_contents['parent'] );
 		$this->assert_fired( 'wapf/cart/item_data' );
+
+		// Per-value cart hints run the full WAPF hint filter chain.
+		$this->assert_fired( 'wapf/html/pricing_hint/format' );
+		$this->assert_fired( 'wapf/html/pricing_hint/amount' );
+		$this->assert_fired( 'wapf/pricing/price_with_tax' );
+		$this->assert_fired( 'wapf/pricing/addon' );
+		$this->assert_fired( 'wapf/html/pricing_hint' );
+		$hint_amount_args = $this->fired( 'wapf/html/pricing_hint/amount' )[0];
+		$this->assertCount( 4, $hint_amount_args, 'WAPF shape is ($amount,$product,$type,$for_page).' );
+		$this->assertSame( 'cart', $hint_amount_args[3] );
 
 		// --- Order meta -------------------------------------------------------
 		$order      = new \WC_Order();

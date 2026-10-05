@@ -26,6 +26,8 @@ final class AeliaIntegrationTest extends TestCase {
 		$this->assertArrayHasKey( 5, $GLOBALS['aelia_hooks']['wp_footer'] );
 		$this->assertSame( 3, $GLOBALS['aelia_hooks']['opf_cart_item_base_price'][30][0][1] );
 		$this->assertSame( 2, $GLOBALS['aelia_hooks']['opf_formula_base_price'][20][0][1] );
+		$this->assertSame( 4, $GLOBALS['aelia_hooks']['opf_pricing_hint_amount'][10][0][1] );
+		$this->assertSame( 3, $GLOBALS['aelia_hooks']['opf/linked_products/choice'][10][0][1] );
 		$this->assertSame( 3, $GLOBALS['aelia_hooks']['woocommerce_available_variation'][20][0][1] );
 	}
 
@@ -95,10 +97,24 @@ final class AeliaIntegrationTest extends TestCase {
 		$this->assertSame( 99.0, AeliaIntegration::cart_base_price( 99, $GLOBALS['aelia_products'][42] ) );
 	}
 
+	public function test_linked_product_choice_restores_shop_price_for_browser_rate(): void {
+		$child  = $GLOBALS['aelia_products'][42]; // edit 10, view 20 (converted).
+		$choice = [ 'slug' => 'p42', 'pricing_type' => 'fixed', 'pricing_amount' => 20.0 ];
+		$out    = AeliaIntegration::linked_product_choice( $choice, [ 'id' => 'f' ], $child );
+		$this->assertSame( 10.0, $out['pricing_amount'], 'WAPF change_product_choice_price parity: shop price, not the converted view.' );
+
+		// Non-product context and absent Aelia leave the choice untouched.
+		$this->assertSame( $choice, AeliaIntegration::linked_product_choice( $choice, [], null ) );
+		unset( $GLOBALS['woocommerce-aelia-currencyswitcher'] );
+		$this->assertSame( $choice, AeliaIntegration::linked_product_choice( $choice, [], $child ) );
+	}
+
 	public function test_hints_and_absent_plugin_preserve_contract(): void {
-		$this->assertSame( 6.0, AeliaIntegration::pricing_hint( 3, 'fixed' ) );
-		$this->assertSame( 3.0, AeliaIntegration::pricing_hint( 3, 'formula' ) );
-		$this->assertSame( 6.0, AeliaIntegration::pricing_hint( 3, 'formula', 'cart' ) );
+		// pricing_hint follows the opf_pricing_hint_amount WAPF shape
+		// ($amount, $product, $type, $page); Aelia ignores the product arg.
+		$this->assertSame( 6.0, AeliaIntegration::pricing_hint( 3, null, 'fixed' ) );
+		$this->assertSame( 3.0, AeliaIntegration::pricing_hint( 3, null, 'formula' ) );
+		$this->assertSame( 6.0, AeliaIntegration::pricing_hint( 3, null, 'formula', 'cart' ) );
 		unset( $GLOBALS['woocommerce-aelia-currencyswitcher'] );
 		$this->assertNull( AeliaIntegration::frontend_config() );
 		$this->assertSame( 3.0, AeliaIntegration::convert_amount( 3 ) );

@@ -18,6 +18,8 @@ final class WoocsIntegration {
 		add_filter( 'opf_frontend_config', [ __CLASS__, 'merge_frontend_config' ] );
 		add_filter( 'opf_cart_item_base_price', [ __CLASS__, 'cart_base_price' ], 20, 3 );
 		add_filter( 'opf_formula_base_price', [ __CLASS__, 'formula_base_price' ], 10, 2 );
+		add_filter( 'opf_pricing_hint_amount', [ __CLASS__, 'pricing_hint' ], 10, 4 );
+		add_filter( 'opf/linked_products/choice', [ __CLASS__, 'linked_product_choice' ], 10, 3 );
 		add_filter( 'woocommerce_available_variation', [ __CLASS__, 'variation_data' ], 10, 3 );
 		add_action( 'wp_footer', [ __CLASS__, 'print_frontend_config' ], 100 );
 	}
@@ -88,6 +90,26 @@ final class WoocsIntegration {
 			: (float) wc_get_price_excluding_tax( $product, $args );
 	}
 
+	/**
+	 * `wapf/linked_products/choice` parity — WAPF's `change_product_choice_price`
+	 * restores the shop-currency child price because the storefront applies
+	 * `currency_rate` itself and the child's own cart line converts exactly once.
+	 * `expand_choice()` stores the WOOCS-converted view price, which would
+	 * double-convert in the browser; a fresh `edit`-context read is the original
+	 * price. OPF keeps the raw figure — the frontend tax factor, not shop-tax
+	 * display, adds tax. Runs whenever the adapter is active, like WAPF.
+	 */
+	public static function linked_product_choice( array $choice, $field, $product ): array {
+		if ( ! $product instanceof \WC_Product || null === self::api() ) {
+			return $choice;
+		}
+		$fresh = wc_get_product( $product->get_id() );
+		if ( $fresh instanceof \WC_Product ) {
+			$choice['pricing_amount'] = (float) $fresh->get_price( 'edit' );
+		}
+		return $choice;
+	}
+
 	/** Provide both percentage and formula bases to the variation browser lifecycle. */
 	public static function variation_data( array $data, \WC_Product $parent, \WC_Product $variation ): array {
 		if ( null !== self::frontend_config() ) {
@@ -117,10 +139,23 @@ final class WoocsIntegration {
 		return $config;
 	}
 
-	/** Pricing-hint bridge for extensions: frontend formulas convert in the browser. */
-	public static function pricing_hint( float $amount, \WC_Product $product, string $type, string $page = 'product' ): float {
+	/**
+	 * `wapf/html/pricing_hint/amount` parity — hint amounts are stored in shop
+	 * currency, so convert them for display at the current rate. Formula hints
+	 * on the product page are dynamic ("…") and are left alone; in the cart the
+	 * evaluated formula amount is already shop currency and must convert. WAPF's
+	 * `Woocs::product_has_fixed_price()` guard is preserved through `instanceof`
+	 * because the hook also passes product ids or null.
+	 *
+	 * @param float                $amount  Hint amount in shop currency.
+	 * @param \WC_Product|int|null $product Product context (object, id or null).
+	 * @param string               $type    Pricing type.
+	 * @param string               $page    'product'/'shop' or 'cart'.
+	 */
+	public static function pricing_hint( float $amount, $product, string $type, string $page = 'product' ): float {
 		$config = self::frontend_config();
-		if ( null === $config || ( 'formula' === $type && 'cart' !== $page ) || self::has_fixed_price( $product ) ) {
+		if ( null === $config || ( 'formula' === $type && 'cart' !== $page )
+			|| ( $product instanceof \WC_Product && self::has_fixed_price( $product ) ) ) {
 			return $amount;
 		}
 		return $amount * $config['currency_rate'];

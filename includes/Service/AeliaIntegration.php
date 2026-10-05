@@ -15,6 +15,8 @@ final class AeliaIntegration {
 		add_filter( 'opf_frontend_config', [ __CLASS__, 'merge_frontend_config' ], 20 );
 		add_filter( 'opf_cart_item_base_price', [ __CLASS__, 'cart_base_price' ], 30, 3 );
 		add_filter( 'opf_formula_base_price', [ __CLASS__, 'formula_base_price' ], 20, 2 );
+		add_filter( 'opf_pricing_hint_amount', [ __CLASS__, 'pricing_hint' ], 10, 4 );
+		add_filter( 'opf/linked_products/choice', [ __CLASS__, 'linked_product_choice' ], 10, 3 );
 		add_filter( 'woocommerce_available_variation', [ __CLASS__, 'variation_data' ], 20, 3 );
 		add_action( 'woocommerce_before_calculate_totals', [ __CLASS__, 'convert_cart_prices' ], 21 );
 		// Also supplies config when theme compatibility mode is disabled.
@@ -100,6 +102,27 @@ final class AeliaIntegration {
 	}
 
 	/**
+	 * `wapf/linked_products/choice` parity — WAPF's `Aelia::change_product_choice_price`
+	 * restores the shop-currency child price: the storefront applies
+	 * `currency_rate` itself and the child's own cart line converts exactly once.
+	 * `expand_choice()` stores the Aelia-converted view price, which would
+	 * double-convert in the browser; a fresh `edit`-context read is the original
+	 * price (also preserves Aelia's manually entered currency prices, which live
+	 * outside `get_price('edit')` either way). OPF keeps the raw figure — the
+	 * frontend tax factor, not shop-tax display, adds tax.
+	 */
+	public static function linked_product_choice( array $choice, $field, $product ): array {
+		if ( ! $product instanceof \WC_Product || null === self::currency_info() ) {
+			return $choice;
+		}
+		$fresh = wc_get_product( $product->get_id() );
+		if ( $fresh instanceof \WC_Product ) {
+			$choice['pricing_amount'] = (float) $fresh->get_price( 'edit' );
+		}
+		return $choice;
+	}
+
+	/**
 	 * Only OPF lines are converted; OPF resets their shop target on each totals pass.
 	 *
 	 * WAPF 3.1.5 shape (verified against the real licensed plugin): the cart base
@@ -165,8 +188,17 @@ final class AeliaIntegration {
 		return $data;
 	}
 
-	/** Pricing hints convert fixed amounts; formula previews convert at runtime. */
-	public static function pricing_hint( float $amount, string $type, string $page = 'product' ): float {
+	/**
+	 * `wapf/html/pricing_hint/amount` parity — hint amounts are stored in shop
+	 * currency and convert for display; formula previews convert at runtime in
+	 * the browser, so only the cart's evaluated formula amount converts here.
+	 *
+	 * @param float                $amount  Hint amount in shop currency.
+	 * @param \WC_Product|int|null $product Product context (unused by Aelia).
+	 * @param string               $type    Pricing type.
+	 * @param string               $page    'product'/'shop' or 'cart'.
+	 */
+	public static function pricing_hint( float $amount, $product, string $type, string $page = 'product' ): float {
 		return 'formula' === $type && 'cart' !== $page ? $amount : self::convert_amount( $amount );
 	}
 

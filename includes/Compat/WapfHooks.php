@@ -48,6 +48,12 @@ final class WapfHooks {
 		add_filter( 'opf_lookup_tables', [ __CLASS__, 'shim_lookup_tables' ], 10, 2 );
 		add_filter( 'opf_skip_validation', [ __CLASS__, 'shim_skip_validation' ], 10, 1 );
 		add_filter( 'opf_show_totals', [ __CLASS__, 'shim_show_totals' ], 10, 1 );
+		add_filter( 'opf_pricing_hint_format', [ __CLASS__, 'shim_pricing_hint_format' ], 10, 4 );
+		add_filter( 'opf_pricing_hint_amount', [ __CLASS__, 'shim_pricing_hint_amount' ], 10, 4 );
+		add_filter( 'opf_pricing_hint', [ __CLASS__, 'shim_pricing_hint' ], 10, 6 );
+		add_filter( 'opf_pricing_addon', [ __CLASS__, 'shim_pricing_addon' ], 10, 4 );
+		add_filter( 'opf_pricing_price_with_tax', [ __CLASS__, 'shim_pricing_price_with_tax' ], 10, 4 );
+		add_filter( 'opf_formula_base_price', [ __CLASS__, 'shim_formula_base_price' ], 10, 2 );
 	}
 
 	/* ------------------------------------------------------------------
@@ -104,6 +110,60 @@ final class WapfHooks {
 		$result = apply_filters( 'wapf/pricing_summary', $show, null );
 		// WAPF returns a mode string ('lines'/'hide'); OPF expects a boolean gate.
 		return ( 'hide' === $result ) ? false : (bool) $result;
+	}
+
+	/**
+	 * `wapf/html/pricing_hint/format` — WAPF shape
+	 * ($format, $product, $amount, $type).
+	 */
+	public static function shim_pricing_hint_format( $format, $product = null, $amount = 0, $type = '' ) {
+		return apply_filters( 'wapf/html/pricing_hint/format', $format, $product, $amount, $type );
+	}
+
+	/**
+	 * `wapf/html/pricing_hint/amount` — WAPF shape
+	 * ($amount, $product, $type, $for_page). This is the hook WAPF's own WOOCS
+	 * and Aelia adapters hang their hint conversion off, so migrated currency
+	 * integrations keep working.
+	 */
+	public static function shim_pricing_hint_amount( $amount, $product = null, $type = '', $for_page = 'product' ) {
+		return apply_filters( 'wapf/html/pricing_hint/amount', $amount, $product, $type, $for_page );
+	}
+
+	/**
+	 * `wapf/html/pricing_hint` — WAPF shape
+	 * ($hint, $product, $amount, $type, $field, $option).
+	 */
+	public static function shim_pricing_hint( $hint, $product = null, $amount = 0, $type = '', $field = null, $option = null ) {
+		return apply_filters( 'wapf/html/pricing_hint', $hint, $product, $amount, $type, $field, $option );
+	}
+
+	/**
+	 * `wapf/pricing/addon` — WAPF shape ($amount, $product, $type, $for),
+	 * fired inside Helper::adjust_addon_price for non-percent amounts.
+	 */
+	public static function shim_pricing_addon( $amount, $product = null, $type = '', $for = 'shop' ) {
+		return apply_filters( 'wapf/pricing/addon', $amount, $product, $type, $for );
+	}
+
+	/**
+	 * `wapf/pricing/price_with_tax` — WAPF shape
+	 * ($price_with_tax, $price, $product, $for_page).
+	 */
+	public static function shim_pricing_price_with_tax( $price_with_tax, $price = 0, $product = null, $for_page = 'shop' ) {
+		return apply_filters( 'wapf/pricing/price_with_tax', $price_with_tax, $price, $product, $for_page );
+	}
+
+	/**
+	 * `wapf/pricing/cart_item_base_for_formulas` — WAPF passes
+	 * ($price, $product, $quantity, $cart_item). OPF's `opf_formula_base_price`
+	 * carries the product id only (formula evaluation is context-free, it runs
+	 * for previews as well as carts), so the product is resolved when
+	 * WooCommerce is loaded and quantity/cart context default to a single unit.
+	 */
+	public static function shim_formula_base_price( float $price, int $product_id ): float {
+		$product = $product_id > 0 && function_exists( 'wc_get_product' ) ? wc_get_product( $product_id ) : null;
+		return (float) apply_filters( 'wapf/pricing/cart_item_base_for_formulas', $price, $product, 1, [] );
 	}
 
 	/* ------------------------------------------------------------------
@@ -386,6 +446,9 @@ final class WapfHooks {
 	 * @param array    $field   Field definition.
 	 */
 	public static function field_container_classes( array $classes, array $field ): array {
+		if ( ! function_exists( 'apply_filters' ) ) {
+			return $classes;
+		}
 		return (array) apply_filters( 'wapf/html/field_container_classes', $classes, $field );
 	}
 
@@ -397,6 +460,9 @@ final class WapfHooks {
 	 * @param mixed  $product       Product.
 	 */
 	public static function field_label( string $label_content, array $field, $product = null ): string {
+		if ( ! function_exists( 'apply_filters' ) ) {
+			return $label_content;
+		}
 		return (string) apply_filters( 'wapf/html/field_label', $label_content, $field, $product );
 	}
 
@@ -407,6 +473,9 @@ final class WapfHooks {
 	 * @param array  $field Field definition.
 	 */
 	public static function field_description( string $html, array $field ): string {
+		if ( ! function_exists( 'apply_filters' ) ) {
+			return $html;
+		}
 		return (string) apply_filters( 'wapf/html/field_description', $html, $field );
 	}
 
@@ -419,6 +488,9 @@ final class WapfHooks {
 	 * @param mixed    $option  Choice/option.
 	 */
 	public static function option_wrapper_classes( array $classes, array $field, $product, $option ): array {
+		if ( ! function_exists( 'apply_filters' ) ) {
+			return $classes;
+		}
 		return (array) apply_filters( 'wapf/html/option_wrapper_classes', $classes, $field, $product, $option );
 	}
 
@@ -431,6 +503,9 @@ final class WapfHooks {
 	 * @param mixed $choice  Choice.
 	 */
 	public static function image_swatch_size( $size, array $field, $product, $choice ) {
+		if ( ! function_exists( 'apply_filters' ) ) {
+			return $size;
+		}
 		return apply_filters( 'wapf/html/image_swatch_size', $size, $field, $product, $choice );
 	}
 
@@ -441,6 +516,9 @@ final class WapfHooks {
 	 * @param array    $field   Section field.
 	 */
 	public static function section_container_classes( array $classes, array $field ): array {
+		if ( ! function_exists( 'apply_filters' ) ) {
+			return $classes;
+		}
 		return (array) apply_filters( 'wapf/html/section_container_classes', $classes, $field );
 	}
 
