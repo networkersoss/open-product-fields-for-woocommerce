@@ -1,5 +1,13 @@
 # sumQty browser + commerce lifecycle proof — 2026-10-02
 
+> **Artifact status (2026-10-05):** both JSON result files are tracked and
+> survive (`docs/compatibility/sumqty-browser-results.json`,
+> `docs/compatibility/sumqty-commerce-results.json`); the two screenshots
+> `vendor/sumqty-artifacts/sumqty-{desktop,mobile}.png` are no longer
+> retrievable and were never tracked. The visual claim rests on the surviving
+> JSON files and `bin/e2e-sumqty-browser.cjs`; the quoted totals are the values
+> recorded at the time.
+
 ## Scope
 
 This lane covers `sumQty(field)` formula pricing on the `image_quantity` field

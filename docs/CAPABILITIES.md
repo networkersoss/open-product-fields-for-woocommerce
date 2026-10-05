@@ -11,7 +11,7 @@ validation paths.
 | Area | Implemented behavior |
 | --- | --- |
 | Field types | `text`, `textarea`, `email`, `url`, `number`, `date`, `toggle`, `select`, `radio`, `checkbox`, text/image/color `swatch` (single or multiple selection), `image_quantity` (image choices with bounded quantity inputs, choice pricing, and sum-of-quantities formula support), `upload` (private single/multiple upload foundation; limitations below), static `paragraph` (plain text or restricted HTML with optional shortcodes), sanitized `html` content, registered `shortcode` output, informative `content_image`, `section` / `section_end` layout markers, linked child `child_products` / `products` (WAPF-style purchasable child line items: checkbox/radio/dropdown/image/card/vcard/card-qty/vcard-qty subtypes, manual or category-driven selection, child quantity methods, and per-choice child pricing), and `calc` / `calculation` (WAPF Extended informational/cost calculations: formula-driven results with result_format/result_text templating, live recalculation, condition-subject support, and signed cost pricing) |
-| Upload foundation | Native multipart and modern Ajax selection, drag/drop, progress, removal, type/size validation, session-owned opaque tokens, classic/Store API cart and checkout, order references and authorized downloads, temporary cleanup, and nonce-protected admin deletion. Upload definitions currently require REST/JSON configuration. Upload pricing, WAPF upload import/export, upload builder controls, repeaters, and order-again parity remain open. |
+| Upload foundation | Native multipart and modern Ajax selection, drag/drop, progress, removal, type/size validation, session-owned opaque tokens, classic/Store API cart and checkout, order references and authorized downloads, temporary cleanup, and nonce-protected admin deletion. Upload definitions currently require REST/JSON configuration. Upload pricing and upload-specific repeaters remain open. WAPF upload import/export and the upload builder controls are implemented, and secure order-again reissue is implemented and proven; see `IMPEXP-LANE-EVIDENCE-2026-10-03.md` and `UPLOAD-REISSUE-EVIDENCE-2026-10-03.md`. |
 | Email | Browser email input plus server-side rejection of malformed non-empty values |
 | Toggle | Boolean input stored as `1` when checked and `0` when unchecked; a required toggle must be checked |
 | Choice behavior | Defaults, disabled choices, single-select controls, and multiple checkbox selections |
@@ -30,8 +30,10 @@ validation paths.
 ## Not implemented in 0.1.0
 
 OPF does not currently provide complete WAPF upload parity, time fields, repeatable fields,
-child/linked products, visual previews, lookup tables, or third-party
-integration adapters. These remain roadmap work.
+child/linked products, visual previews, or third-party
+integration adapters. These remain roadmap work. Lookup-table storage, CSV
+import and `lookuptable()` evaluation are implemented (see
+`WAPF-CAPABILITY-LEDGER.md` `WAPF-PRICE-MATRIX`).
 
 There is no general compatibility guarantee for a theme, page builder,
 currency plugin, translation plugin, subscription plugin, or another product

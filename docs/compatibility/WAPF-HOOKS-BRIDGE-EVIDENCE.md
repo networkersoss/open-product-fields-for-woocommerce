@@ -222,4 +222,3 @@ filter; the OPF call site that consumes the value is named in the *producer* col
 | 103 | `wapf_before_product_totals` | do_action | `includes/classes/class-html.php:256` | yes | `Compat/WapfHooks.php:697` | WapfHooks::before_product_totals @ Service/Renderer.php:1795 | render | — |
 | 104 | `wapf_before_wrapper` | do_action | `includes/classes/class-html.php:235` | yes | `Compat/WapfHooks.php:690` | WapfHooks::before_wrapper @ Service/Renderer.php:276 | render | — |
 | 105 | `wapf_upload_ajax` | apply_filters | `includes/classes/class-file-upload.php:335` | no | — | — | render | **exists, no filter point** — OPF reads the migrated `opf_upload_ajax`/`wapf_upload_ajax` option in Service/Uploads::modern; no filter. |
-

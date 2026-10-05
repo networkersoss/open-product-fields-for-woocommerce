@@ -3,7 +3,7 @@
 At OPF `54d5a46cd5ad0624fe236f3b8abeb983fe4baa8c`, a disposable install ran
 on PHP 7.4.33, WordPress 6.5, and WooCommerce 9.0.0. The packages match the
 SHA-256 values already recorded in
-[`WAPF-MINIMUM-PLATFORM-EVIDENCE.md`](../WAPF-MINIMUM-PLATFORM-EVIDENCE.md).
+[`WAPF-MINIMUM-PLATFORM-EVIDENCE.md`](WAPF-MINIMUM-PLATFORM-EVIDENCE.md).
 The PHP image was the official `wordpress:php7.4-apache` image pinned by digest;
 WordPress core was replaced with the exact downloaded 6.5 archive, and the
 database ran in a separately named MariaDB 10.11 container.
@@ -27,9 +27,11 @@ errors. The full assertion list and package/image digests are in
 [`DECLARED-PLATFORM-FLOOR-LIFECYCLE-2026-10-04.json`](evidence/DECLARED-PLATFORM-FLOOR-LIFECYCLE-2026-10-04.json).
 
 This closes the unproved lifecycle portion of OPF's declared platform floor.
-It does not close the full edition compatibility row: WAPF Pro/Extended's PHP
-7.1 floor, WooCommerce 7.0 integration, and Free's older published claims are
-separate unproved targets. No platform declaration changed. The stack and
+WAPF Pro/Extended's PHP 7.1 floor, WooCommerce 7.0 integration, and Free's
+older published claims stay version-bounded evidence rather than queued work:
+owner decision D2 (2026-10-05) accepted OPF's higher floor, so
+`WAPF-COMPAT-MINIMUM-PLATFORM` is a documented difference and no platform
+declaration changed. The stack and
 browser harness were disposable `/tmp` artifacts rather than a checked-in
 provisioning script.
 

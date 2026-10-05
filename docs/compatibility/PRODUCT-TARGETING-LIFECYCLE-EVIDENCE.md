@@ -50,7 +50,7 @@ variation's own id. That union is deliberate, not an approximation:
   to every variation of that parent.
 
 A variation id can only reach a `product` rule through import/REST: OPF's native
-builder routes variations to `product_var` (`Builder.php:181`, 
+builder routes variations to `product_var` (`Builder.php:181`,
 `opf-builder.js:1921`), and WAPF's own group-placement product search excludes
 variations (`class-admin-controller.php:988` calling
 `find_products_by_name( $term, false, true )`, `class-woocommerce-service.php:90-115`).

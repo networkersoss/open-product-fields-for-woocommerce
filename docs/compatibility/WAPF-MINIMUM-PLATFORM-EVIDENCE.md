@@ -4,7 +4,11 @@ Original audit: 2026-10-01 UTC against OPF commit
 `9171b5c9ea271602d06c5e00c02b42742fc40627` in an isolated worktree.
 Runtime files and version headers were not changed by that audit. The cache
 implementation follow-up below records later changes from base `363fd67`.
-`WAPF-COMPAT-MINIMUM-PLATFORM` remains **gap**.
+`WAPF-COMPAT-MINIMUM-PLATFORM` is an owner-accepted documented difference
+(owner decision D2, 2026-10-05): the accepted floor is **WordPress 6.5 /
+PHP 7.4 / WooCommerce 9.0**, and the older “gap” reading recorded in the
+sections below is withdrawn. Nothing below about WAPF's lower paid floor is a
+queued target — it is version-bounded evidence kept for the record.
 
 ## OPF's declared floor: PHP 7.4 / WordPress 6.5 / WooCommerce 9.0
 
@@ -265,8 +269,9 @@ The official PHP image digests remain those recorded above.
 The probe deliberately uses empty groups, so it does not load `FieldGroup`'s
 incompatible typed property. This proves the archive JSON API correction on
 PHP 7.1, not populated-group import, plugin boot, or a WP/Woo lifecycle. The
-six-file syntax backport and all exact-stack commerce proof remain open;
-`WAPF-COMPAT-MINIMUM-PLATFORM` remains **gap**.
+six-file syntax backport and all exact-stack commerce proof remain open.
+Those gaps are version-bounded and unqueued: see the accepted-floor note at the
+top of this document.
 
 Published requirements were rechecked against the official pages on
 2026-10-01 UTC. The shared
@@ -370,6 +375,7 @@ before/after and PHP 7.1 after. The complete PHP 8.5 PHPUnit suite passes
 This closes the parser gate only. PHP 7.1 has not booted the whole plugin in a
 supported WordPress/WooCommerce stack, populated archive import has not been
 proved there, and WooCommerce 7.0 itself requires PHP 7.2. The platform parity
-ledger row remains a gap until the declared and marketed floor combinations
-have executable activation, REST, browser, cart/checkout, order, and
-order-again evidence.
+ledger row is an owner-accepted documented difference (D2, 2026-10-05), not a
+gap: the declared floor has executable activation, REST, browser,
+cart/checkout, order, and order-again evidence, while the marketed lower floors
+stay version-bounded and unqueued.

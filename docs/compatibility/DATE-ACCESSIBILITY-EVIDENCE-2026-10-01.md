@@ -29,9 +29,13 @@ reaches rendered markup. Main-branch verification also passed `composer test`
 (241 tests/954 assertions before the formula-import lane), PHP/JS syntax checks,
 and `git diff --check`.
 
-## Remaining gap
+## Grading against the installed 3.1.5 baseline (2026-10-05)
 
-Without the exact Extended 3.2.1 package or a detailed official acceptance
-contract, this proves OPF's accessible interaction and improves on the
-installed 3.1.5 baseline, but cannot establish exact 3.2.1 parity. The ledger
-row therefore remains `partial`.
+Owner decision D1 makes the installed Extended 3.1.5 the parity baseline, so
+the missing 3.2.1 package is a version bound, not a residual. Against 3.1.5 the
+reference datepicker has non-focusable day cells, no calendar roles,
+`tabindex=-1` month/year controls and no keyboard day navigation; OPF provides
+the ARIA dialog/grid, focusable day buttons, live month/year announcements,
+PageUp/Down (with Shift for years), Home/End by configured week and Escape
+focus return verified above. OPF is therefore a strict accessibility superset
+of the reference, and the ledger row is `supported`.

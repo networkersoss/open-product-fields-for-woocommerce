@@ -1,15 +1,20 @@
 # OPF 1.0 parity roadmap
 
-**Target:** match or exceed the current WAPF Extended edition, which includes
-WAPF Pro core plus Extended features. The official Extended changelog currently
-lists 3.2.1; the separate Pro changelog lists 3.2.2. The available-source audit
-and published changelog crosswalk are complete. The licensed current archive
-is unavailable on this server, so behavior not disclosed by public sources is
-identified on its affected ledger row and is not a project-wide implementation
-hold.
+**Target:** match or exceed **WAPF Extended 3.1.5**, the installed reference
+package at
+`bedrock/web/app/plugins/advanced-product-fields-for-woocommerce-extended`,
+which includes WAPF Pro core plus Extended features. Owner decision D1
+(2026-10-05): 3.1.5 is the parity baseline for every contract claim. A row is
+not parked as `partial` because a newer licensed package is unavailable; it is
+re-graded against 3.1.5 and either promoted on that evidence or kept `partial`
+with a residual that is real against 3.1.5. The official Extended changelog
+currently lists 3.2.1 and the separate Pro changelog 3.2.2; those are used as
+published forward-contract context only, and behaviour they add that 3.1.5 does
+not implement is recorded on the affected row. The available-source audit and
+published changelog crosswalk are complete.
 Separately sold add-ons are outside this 1.0 target. Production has WAPF
-Extended 3.1.5 installed but inactive; that installed source is evidence for
-the production baseline, not the current parity target.
+Extended 3.1.5 installed but inactive; that installed source is both the
+production baseline and the parity reference.
 
 **Source of truth:**
 [capability ledger](WAPF-CAPABILITY-LEDGER.md) has one stable row per
@@ -26,27 +31,71 @@ Extended plugin as inactive 3.1.5 with no update currently exposed in its
 update registry. The available-source audit is complete; this live-site check
 does not change the audited version boundary.
 
-## Progress now — 2026-10-04 (`feat/opf-archive-import`)
+## Progress now — 2026-10-05 (`master` @ `0f47368`)
 
 The 131 Free/Pro/Extended ledger rows are the 1.0 edition scope, including three
-“All versions” rows. Current recorded status:
+“All versions” rows. Current recorded status, recounted from the ledger rows on
+this commit:
 
 | Status | Rows | Meaning for the gate |
 | --- | ---: | --- |
-| Baseline supported | 1 | Promising baseline only; not accepted as proof |
-| Supported | 101 | Strict supported rows; documented differences are not counted as supported |
-| Supported with documented difference | 19 | Differences remain unaccepted for the strict parity measure |
-| Partial | 10 | Material parity or proof remains; see each ledger row for exact gap and evidence |
+| Baseline supported | 0 | — |
+| Supported | 113 | Strict supported rows; documented differences are not counted as supported |
+| Supported with documented difference — owner-accepted | 7 | Each carries an explicit owner decision (D1/D2/D3/D4, 2026-10-05) |
+| Partial | 11 | Material parity or proof remains; see each ledger row for its exact gap and evidence |
 | Gap | 0 | — |
 | Needs audit | 0 | — |
-| **Total** | **131** | **G1 complete for available evidence; G2 in progress — strict supported: 101/131 (77.1%); 120/131 (91.6%) only if all 19 documented differences are later accepted** |
+| **Total** | **131** | **G1 complete for available evidence; G2 not met — strict supported: 113/131 (86.3%); accepted parity: 120/131 (91.6%)** |
+
+The six `WAPF-ADDON-*` rows are **outside** this 131-row denominator (all six
+`partial`) and are excluded from every count and gate verdict on this page.
+
+### Current per-row state — 2026-10-05
+
+Owner decisions D1–D5 (2026-10-05, recorded in
+`ops/scratchpad/20261005-opf-pickup/OWNER-DECISIONS.md`) closed the first-pass
+accounting:
+
+- **Closed with reasoning (D5):** `WAPF-PRICE-MATRIX`,
+  `WAPF-DATE-DISABLED-DATES`, `WAPF-PRICE-QUANTITY-FLAT`,
+  `WAPF-PRICE-QUANTITY` and `WAPF-FIELD-SWATCH-IMAGE-ZOOM` are `supported` —
+  no customer-visible divergence exists (representation-only, or OPF is the
+  stricter/superior side). Each row records that reasoning.
+- **Promoted on landed implementation:** `WAPF-FIELD-NUMBER`,
+  `WAPF-FIELD-NUMBER-STEP-VALIDATION`, `WAPF-DATE-DYNAMIC-BOUNDS`,
+  `WAPF-FIELD-DATE` (`disable_today`), `WAPF-FIELD-NUMBER-STEPPER`,
+  `WAPF-FIELD-STYLED-CHECKBOX-RADIO`, and `WAPF-DATE-ACCESSIBILITY` (re-graded
+  against 3.1.5, whose calendar has no ARIA grid, roles or keyboard day
+  navigation).
+- **Explicitly owner-accepted differences (7):** `WAPF-FIELD-TOGGLE`,
+  `WAPF-DATE-FORMAT`, `WAPF-FIELD-SECTION` and
+  `WAPF-PRICE-OPTIONS-TOTAL-NEGATIVE-FORMAT` (D1); `WAPF-RULE-PRODUCT` (D4, the
+  deliberate parent-id-or-explicit-variation-id union);
+  `WAPF-COMPAT-MINIMUM-PLATFORM` (D2, the accepted higher platform floor);
+  `WAPF-DEVELOPER-HOOKS` (D3, 40/105 bridged for real, with the five absent
+  public registries named in the row).
+- **Demoted:** `WAPF-FIELD-SWATCH-TEXT` from `baseline supported` to `partial` —
+  no corner-radius control and no lifecycle proof exist in this tree.
+- **Still `partial` (11):** `WAPF-FIELD-CHILD-PRODUCTS`,
+  `WAPF-FIELD-IMAGE-QUANTITY-ZOOM`, `WAPF-FIELD-CHILD-PRODUCTS-IMAGE-ZOOM`,
+  `WAPF-FIELD-CHECKBOX-COLUMNS`, `WAPF-FIELD-TRUE-FALSE-SWITCH`,
+  `WAPF-INTERACTION-IMAGE-CHANGE`, `WAPF-PRICE-FORMULA-ADVANCED`,
+  `WAPF-DISPLAY-PRICE-HINTS`, `WAPF-PRODUCT-SUBSCRIPTION`,
+  `WAPF-LOCALE-WPML`, `WAPF-FIELD-SWATCH-TEXT`. Each ledger row names its own
+  residual.
+
+The narrative below is the 2026-10-03/04 record of how the rows reached this
+point. Where a sentence in it states an older status, the table above and the
+ledger rows are authoritative.
 
 Fresh acceptance review downgraded nine previously `supported` rows to
 `partial`: advanced formulas, tax behavior, product-price display, price hints,
 hide-values/PDF behavior, WPML, and WOOCS/Aelia/FOX integrations. Their row
 notes cited unresolved behavior or only fake/API-contract coverage; these do
 not satisfy the release objective's real lifecycle requirement. The earlier
-67/131 figure was therefore overstated.
+67/131 figure was therefore overstated. Tax behaviour, product-price display,
+hide-values/PDF, Aelia, FOX and WOOCS were re-promoted later on licensed or
+real-runtime proof; the current table above is authoritative.
 
 Progress notes — 2026-10-03 (parallel lanes, reflected in public commit
 `94992d5`): linked-products field shipped
@@ -83,15 +132,17 @@ editor, and multilingual cart/order proof remain open. WPML stays `partial`.
 Aelia base/formula/cart/browser
 conversion is implemented and passed a disposable Woo test against a fake API
 contract, but the commercial plugin, linked-product conversion, and a wired
-pricing-hint path remain unverified. Neither row counts as supported.
+pricing-hint path remain unverified. WPML stays `partial` because real WPML/WCML
+records are not available on this host; Aelia is now `supported` on the
+real-plugin proof recorded in its row.
 
 A fresh evidence review removed 15 stale `supported` claims at that point in
 time; later implementation commits advanced rows based on additional evidence.
 See [the supported-row audit](SUPPORTED-ROW-AUDIT-2026-10-01.md).
-At the current `feat/opf-archive-import` tip, strict progress is **101/131 supported rows (77.1%)**.
+At the current `master` tip (`0f47368`), strict progress is **113/131 supported rows (86.3%)**.
 The 2026-10-04 child-products query audit and WAPF validation-hook repair add
 evidence and fix a real coactive-plugin fatal, but do not promote the broad
-child-products row; strict progress remains 101/131. The integrated branch now
+child-products row; strict progress was unchanged by that audit. The integrated branch now
 passes PHPUnit **763 tests / 3,391 assertions** and JavaScript **76/76 tests**
 (one existing PHPUnit deprecation). See the [query audit](CHILD-PRODUCTS-QUERY-AUDIT-2026-10-04.md)
 and [coexistence evidence](WAPF-VALIDATION-COEXISTENCE-2026-10-04.md). The
@@ -103,8 +154,10 @@ Valid/invalid dates and zero warnings pass in a WAPF-active disposable clone;
 see [date coexistence evidence](WAPF-EXTENDED-DATE-COEXISTENCE-2026-10-04.md).
 OPF's declared platform floor also has a full lifecycle proof on PHP 7.4.33 /
 WordPress 6.5 / WooCommerce 9.0.0, including both cart transports and Order
-Again (29/29 browser checks). This does not change strict progress because
-WAPF's lower edition floors remain an unaccepted documented difference; see
+Again (29/29 browser checks). The row is now an owner-accepted documented
+difference (D2, 2026-10-05): the higher floor is deliberate and no PHP 7.1
+backports, WooCommerce 7.0 Store API adapter or WordPress 6.0 cache shims are
+queued; see
 [platform-floor lifecycle evidence](DECLARED-PLATFORM-FLOOR-LIFECYCLE-2026-10-04.md).
 The linked-products admin SelectWoo fix and save/reload proof is in
 [builder roundtrip evidence](CHILD-PRODUCTS-BUILDER-ROUNDTRIP-2026-10-04.md).
@@ -128,9 +181,9 @@ and disposable browser/WooCommerce evidence covers the shared valid
 OPF → valid WAPF → default precedence, cart/checkout labels, formula prices,
 and saved order metadata with canonical ISO values. See
 [date-format fallback evidence](WAPF-DATE-FORMAT-FALLBACK-EVIDENCE-2026-10-02.md).
-`WAPF-DATE-FORMAT` stays `partial` for native-input locale display, browser
-checkout/payment, block checkout, customer order-page rendering, and remaining
-migration proof. Status counts and accepted progress remain unchanged.
+`WAPF-DATE-FORMAT` carries an owner-accepted documented difference (D1) for
+native-input locale display, browser checkout/payment, block checkout, customer
+order-page rendering, and remaining migration proof. Status counts and accepted progress remain unchanged.
 
 `WAPF-FIELD-EMAIL` advanced from `partial` to `supported` on 2026-10-02.
 Chromium and disposable WooCommerce/WAPF Free evidence covers admin
@@ -139,7 +192,8 @@ classic and Store API checkouts, exact order/email persistence, and order-again.
 See [email lifecycle evidence](EMAIL-FIELD-LIFECYCLE-EVIDENCE.md).
 
 The upload field and Ajax UI advanced from `gap` to `partial` on the public
-branch after a reviewed private-storage foundation landed. Disposable
+branch after a reviewed private-storage foundation landed; both rows are now
+`supported` on the evidence cited in them. Disposable
 Chromium/WooCommerce evidence covers upload and removal UX, ownership and file
 validation, classic and Store API carts, checkout/order persistence, protected
 downloads, and cleanup. A 2026-10-03 authenticated real Order again run passed
@@ -176,7 +230,7 @@ WAPF Free 1.7.1 source confirms the same textarea sanitation and cart item-data
 contract. Defaults/placeholders and import/export remain open in their separate
 scopes. See [textarea lifecycle evidence](TEXTAREA-NEWLINE-EVIDENCE.md).
 
-`WAPF-FIELD-URL` remains `partial` after its native parser and lifecycle update.
+`WAPF-FIELD-URL` is `supported` after its native parser and lifecycle update.
 Real WAPF Free/Extended templates and Chromium/WooCommerce tests passed 185/185
 commerce checks and 35/35 actual Order again checks across 19 URL values,
 including admin REST save/reload, browser validity, classic and Store API,
@@ -192,7 +246,7 @@ supported-version coverage remains open. See [native URL proof](URL-FIELD-NATIVE
 [URL cart visual proof](URL-CART-VISUAL-EVIDENCE-2026-10-03.md),
 and the earlier [compatibility audit](URL-FIELD-COMPATIBILITY-EVIDENCE.md).
 
-`WAPF-FIELD-CONTENT-IMAGE` remains `partial`. The 2026-10-03 real Chromium
+`WAPF-FIELD-CONTENT-IMAGE` is `supported`. The 2026-10-03 real Chromium
 storefront comparison passed 39/39 desktop/mobile checks for direct URLs,
 Media Library attachments, responsive source selection, loaded bytes,
 accessibility names and no submitted controls. OPF uses the field label as an
@@ -204,7 +258,7 @@ admin exception was attributed and recorded. Broader version coverage is not
 yet proved. See [image storefront proof](CONTENT-IMAGE-STOREFRONT-PROOF.md)
 and [image admin proof](CONTENT-IMAGE-ADMIN-EVIDENCE-2026-10-03.md).
 
-`WAPF-PRICE-FORMULA-LEN` remains `partial` with much stronger evidence. The
+`WAPF-PRICE-FORMULA-LEN` is `supported` with much stronger evidence. The
 2026-10-03 lifecycle run fixed five real `len()`/`[field.X]` divergences and
 proved bit-identical behavior against installed Extended 3.1.5: 30/30 PHP
 probes match `Helper::parse_math_string`, and 24/24 real Chromium cases match
@@ -223,38 +277,35 @@ again action restores the q=3 choice, line total, and tax for both WAPF and OPF.
 The evidence compares native WAPF Extended 3.1.5 with WooCommerce 11.1.0 and
 does not claim other versions. See [quantity-flat lifecycle evidence](WAPF-PRICE-QUANTITY-FLAT-EVIDENCE-2026-10-02.md),
 [browser results](qfl-order-again-browser-results.json), and proof commits
-`ccd63b7` + `6d39b24`. This moves one row from partial to documented difference;
-documented differences do not increase strict supported progress until accepted.
+`ccd63b7` + `6d39b24`. D5 (2026-10-05) then closed the row outright: the
+representation-only difference has no customer-visible divergence.
 
-FOX is now `partial` because the existing WOOCS adapter passes an official
-FOX API contract test. WAPF's registry and FOX's own compatibility instructions
-identify that shared adapter. Real FOX package, browser, cart, and checkout
-proof remains open, including percentage double-conversion and fixed-price/formula
-behavior; see [FOX contract evidence](FOX-CURRENCY-CONTRACT.md).
+FOX is `supported`: the existing WOOCS adapter passes an official
+FOX API contract test and real FOX 1.5.4 (the renamed WOOCS package, same
+adapter contract) matched OPF on real `WC_Cart`/orders. WAPF's registry and
+FOX's own compatibility instructions identify that shared adapter. See
+[FOX contract evidence](FOX-CURRENCY-CONTRACT.md).
 
-WOOCS is also `partial`: its existing adapter and cart/formula/variation/frontend
-hooks have focused and disposable runtime proof. The disabled-multiple-currency
-simple/subscription preview mismatch is fixed while retaining the cart gate;
-linked-product and pricing-hint helpers are not connected, and real plugin/checkout
-proof remains open. See
+WOOCS is `supported`: its adapter, cart/formula/variation/frontend hooks and the
+real FOX runtime match WAPF on real cart/order lifecycles. See
 [WOOCS audit and executed evidence](WOOCS-CURRENCY-EVIDENCE.md).
 
-`WAPF-COMPAT-MINIMUM-PLATFORM` remains `gap`. The
-[platform-floor audit](WAPF-MINIMUM-PLATFORM-EVIDENCE.md), against commit
-`9171b5c`, found `Rest.php` is the sole PHP 7.4 parse failure among 31 shipped
-PHP files, because two return signatures require PHP 8.0. OPF's declared
-WordPress 6.5/PHP 7.4/WooCommerce 9.0 floor still needs actual activation,
-REST, browser, cart/checkout, order-storage, and order-again proof after repair.
-WAPF paid-floor parity additionally needs the complete PHP 7.1 runtime/API
-matrix (all 36 shipped PHP files now parse on PHP 7.1.33; archive JSON and
-calculator callbacks have standalone probes), WordPress 6.0 cache invalidation,
-and WooCommerce 7.0 Store API capture work. WooCommerce 7.0 itself requires PHP
-7.2, so the advertised PHP 7.1 floor needs separate language/API/runtime checks.
-Free's older platform declarations and conflicting
-WordPress floor claims also remain unresolved. The audit changes no scope or
-status counts.
+`WAPF-COMPAT-MINIMUM-PLATFORM` is an owner-accepted scope decision (D2,
+2026-10-05): the accepted floor is **WordPress 6.5 / PHP 7.4 / WooCommerce
+9.0**, against WAPF's WordPress 6.0 / PHP 7.1 / WooCommerce 7.0. No PHP 7.1
+backports, no WooCommerce 7.0 Store API capture adapter and no WordPress 6.0
+cache shims are queued; dropping those legacy platforms is deliberate, so the
+earlier “gap” reading of this row is withdrawn. Proved: the declared floor
+passes a full lifecycle on PHP 7.4.33 / WordPress 6.5 / WooCommerce 9.0.0
+(29/29 browser checks), all 36 shipped PHP files parse on PHP 7.1.33, the
+archive JSON decoder passes 12/12 cases on PHP 7.1/7.4/8.5, and the WordPress
+6.0/6.5 cache-contract probes pass. Not proved and not queued: populated
+archive import on PHP 7.1, whole-plugin boot on the WAPF paid minima,
+WordPress 6.0 cache invalidation, and WooCommerce 7.0 Store API capture — all
+version-bounded in
+[platform-floor audit](WAPF-MINIMUM-PLATFORM-EVIDENCE.md).
 
-Extended-only rows: 28 total; 20 supported, 4 supported with a documented
+Extended-only rows: 28 total; 24 supported, 0 supported with a documented
 difference, 4 partial, and 0 known gaps, matching the capability ledger. All 131
 edition rows have a ledger status. The
 available-source audit covers installed Extended 3.1.5, public Free 1.7.1,
@@ -264,9 +315,10 @@ public sources stay on the affected partial rows and do not block unrelated
 implementation. These are row counts, not a feature-weighted percent.
 
 The changelog crosswalk found two missing capability rows: conditional settings
-for card quantity inputs and date-picker accessibility. Both are now explicit
-partial rows with the known behavior and undisclosed exact release details
-recorded. See the release-by-release crosswalk in
+for card quantity inputs (`WAPF-FIELD-CARDS-QUANTITY-CONDITIONALS`) and
+date-picker accessibility (`WAPF-DATE-ACCESSIBILITY`). Both are explicit ledger
+rows with the known behavior recorded, and both are now `supported` on the
+evidence cited in their rows. See the release-by-release crosswalk in
 `WAPF-EXTENDED-3.1.5-SOURCE-AUDIT.md`.
 
 ## G1 audit tracker
@@ -276,7 +328,7 @@ defines scope; it does not count as implementation or commerce proof.
 
 | Step | Audit task | State | Acceptance evidence |
 | --- | --- | --- | --- |
-| A | Freeze edition boundary and versions: Extended 3.2.1 target, Pro 3.2.2 delta, six separate add-ons excluded | Done | Official tier comparison and current changelog versions recorded |
+| A | Freeze edition boundary and versions: installed Extended 3.1.5 parity baseline, published 3.2.1/Pro 3.2.2 changelog delta as forward-contract context, six separate add-ons excluded | Done | Official tier comparison and current changelog versions recorded; baseline fixed by owner decision D1 (2026-10-05) |
 | B | Audit production-installed Extended 3.1.5 package as historical baseline | Done | Version and file inventory plus source behavior map in `WAPF-EXTENDED-3.1.5-SOURCE-AUDIT.md` |
 | C | Audit public Free 1.7.1 source and its edition boundary | Done | Archive hash, source file inventory, Free/Pro field and pricing boundary recorded |
 | D | Map official changes from Extended 3.1.6–3.2.1 and Pro 3.2.2 to ledger rows | Done | Every published change is mapped in the dated crosswalk; changelog claims remain separate from runtime proof |
@@ -357,12 +409,20 @@ decomposed into sized implementation and verification tasks.
    G1 is complete for the available evidence and does not block implementation.
 2. **G2 capability parity:** every edition row supported or has a reviewed,
    explicitly accepted difference; zero baseline-only, partial, gap, or
-   needs-audit rows.
+   needs-audit rows. Current: **not met** — 113/131 supported, 7 owner-accepted
+   differences, 11 partial, 0 baseline-only/gap/needs-audit. The 6 add-on rows
+   are outside the denominator.
 3. **G3 commerce proof:** relevant browser, server, cart/Store API,
-   checkout/order, stock, restore, tax, and pricing lifecycles verified.
+   checkout/order, stock, restore, tax, and pricing lifecycles verified. Current:
+   **partial** — each of the 11 partial rows names its own open lifecycle path;
+   no aggregate pass claim.
 4. **G4 release readiness:** security, accessibility, compatibility,
    migration/rollback, FOSS source/dependency/asset provenance, aligned version
    metadata, inspected package contents, docs, and publication gates passed.
+   Current: **not met** — provenance/licence review, aligned version metadata
+   (header vs `readme.txt`) and an inspected 1.0 archive remain open, and
+   evidence docs whose artifacts were staged under `/tmp` are unreproducible by
+   construction.
 
 No single goalpost can be waived by a passing aggregate test or a marketing
 feature list. A change in WAPF target version or inclusion of separate add-ons

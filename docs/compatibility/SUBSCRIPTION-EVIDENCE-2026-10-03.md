@@ -1,5 +1,13 @@
 # WAPF-PRODUCT-SUBSCRIPTION — evidence
 
+> **Artifact status (2026-10-05):** `server-results.json` and `cleanup.json`
+> were staged under `/tmp` and are no longer retrievable; they were never
+> tracked. The claims rest on the surviving stub harness
+> `bin/e2e-subscription-stub.php` and the later
+> [2026-10-04 boot-restore evidence](SUBSCRIPTION-BOOT-RESTORE-EVIDENCE-2026-10-04.md),
+> which is the current proof for this row. The check counts quoted below are
+> the values recorded at the time, not freshly verified.
+
 Historical clone evidence. Public commit `ec935f2` added the adapter boot call
 but omitted `SubscriptionIntegration.php`; its reported clone results did not
 prove the published plugin could load. The class and fresh public-code proof

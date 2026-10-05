@@ -1,5 +1,14 @@
 # Native WAPF URL compatibility audit — acceptance withheld
 
+> **Artifact status (2026-10-05):** of the three artifacts this document cites,
+> the two JSON files are tracked and survive
+> ([browser/HTTP](url-field-compatibility-browser-results.json),
+> [installed-source](url-field-compatibility-source-results.json)); the
+> screenshot `/tmp/opf-url-compatibility-artifacts/served-wapf-opf-inputs.png`
+> (and its SHA-256) is no longer retrievable and was never tracked. Its visual
+> claim rests on the two surviving JSON files and the guarded scripts named
+> below.
+
 **Follow-up, 2026-10-03:** the implementation and measured cases in
 [native URL parity follow-up](URL-FIELD-NATIVE-PARITY.md) supersede the
 recommendation below for the eight valid URL mismatches and invalid IPv4 case.

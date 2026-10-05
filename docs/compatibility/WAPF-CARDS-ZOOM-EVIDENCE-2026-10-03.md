@@ -1,5 +1,18 @@
 # Cards + image-zoom cluster — evidence (draft)
 
+> **Artifact status (2026-10-05):** every artifact listed below was staged in
+> `/tmp/opf-lane-cards-evidence` and is no longer retrievable — the directory is
+> gone and the files were never tracked. The eleven files were
+> `cards-browser-results.json`, `cards-cart.json`, `cards-order-verify.json`,
+> `cards-baseline-check.json`, `cards-wapf-markup-comparison.json`,
+> `cards-opf-markup.json`, `cards-zoom-state.json`, `page.html` and the four
+> screenshots. The claims in this document therefore rest on the surviving
+> scripts and tests: `bin/e2e-cards-zoom-fixture.php`,
+> `bin/e2e-cards-zoom-browser-test.mjs`, and the unit tests named below
+> (`CardsConditionalsSchemaTest`, `CardsZoomMarkupTest`, `CardsZoomExportTest`).
+> The cited check counts and order totals are the values recorded at the time
+> and are not re-verifiable here; do not read them as freshly verified.
+
 Lane `lane/cards`, worktree `/tmp/opf-lane-cards`, disposable clone
 `/tmp/opf-image-cards-wp` (`http://127.0.0.1:8308`). WAPF Extended 3.1.5 is the
 inactive reference. No commits were made; the integrator merges.

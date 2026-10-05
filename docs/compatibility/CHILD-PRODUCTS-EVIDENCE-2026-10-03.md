@@ -1,5 +1,17 @@
 # WAPF-FIELD-CHILD-PRODUCTS lane — evidence index
 
+> **Artifact status (2026-10-05):** the JSON/HTML/PNG artifacts named below
+> (`browser-results.json`, `wapf-reference.json`/`-markup.html`/`.png`,
+> `render.png`, `swap.png`, `cart.png`, `wapf-reference.png`,
+> `cart-after-add.json`, `cart-after-sync.json`, `cart-rows.json`,
+> `order-again-cart.json`, `wapf-page.html`, `wapf-reference-markup.html`,
+> `state.json`, `page.html`) were staged under `/tmp` and are no longer
+> retrievable; they were never tracked in this repository. The claims rest on
+> the surviving scripts and tests: `bin/e2e-child-products-lifecycle.php`,
+> `bin/e2e-child-products-browser-test.mjs`, and the PHPUnit products tests
+> cited below. The recorded counts and totals are the values observed at the
+> time, not freshly verified.
+
 Clone: `/tmp/opf-image-child-wp` @ `http://127.0.0.1:8301` (OPF symlinked to `/tmp/opf-lane-child`).
 Fixture: `bin/e2e-child-products-lifecycle.php` (env-gated, phases setup/verify/order-again/cleanup).
 Browser: `bin/e2e-child-products-browser-test.mjs` (Playwright, loopback-gated).

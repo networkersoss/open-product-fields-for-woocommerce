@@ -104,4 +104,3 @@ list is the honest boundary of OPF's `wapf/…` compatibility.
 | `wapf/message/upload_err_uploads_exceeded` | absent | OPF uses its own localized upload error strings; no message filters. |
 | `wapf/message/upload_error_code` | absent | OPF uses its own localized upload error strings; no message filters. |
 | `wapf/shorten_text_limit` | absent | OPF has no shortened-text admin helper. |
-
