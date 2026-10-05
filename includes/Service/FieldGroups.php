@@ -373,7 +373,13 @@ final class FieldGroups {
 	public static function save( int $post_id, $group, array $args = [] ): int {
 		$data    = $group instanceof FieldGroup ? $group->data : FieldGroup::normalize( $group );
 		$title   = (string) ( $args['title'] ?? '' );
-		$status  = (string) ( $args['status'] ?? 'publish' );
+		// Re-saving an existing post keeps its current status unless the
+		// caller asks for one — a review draft stays a draft on re-import.
+		$status = isset( $args['status'] ) ? (string) $args['status'] : '';
+		if ( '' === $status ) {
+			$existing = $post_id > 0 ? (string) get_post_field( 'post_status', $post_id ) : '';
+			$status   = '' !== $existing ? $existing : 'publish';
+		}
 
 		$fields = [
 			'ID'           => $post_id > 0 ? $post_id : 0,

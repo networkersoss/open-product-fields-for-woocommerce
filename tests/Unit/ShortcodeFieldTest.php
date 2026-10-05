@@ -3,7 +3,12 @@
 namespace {
 if ( ! function_exists( 'do_shortcode' ) ) {
 	function do_shortcode( $content ): string {
-		return str_replace( '[opf_calendar]', '<iframe title="Booking calendar"></iframe>', (string) $content );
+		$GLOBALS['opf_test_shortcode_calls'] = ( $GLOBALS['opf_test_shortcode_calls'] ?? 0 ) + 1;
+		return str_replace(
+			[ '[opf_calendar]', '[site_name]' ],
+			[ '<iframe title="Booking calendar"></iframe>', '<em>followersya</em>' ],
+			(string) $content
+		);
 	}
 }
 }

@@ -33,8 +33,11 @@ final class AcfFormulaTest extends TestCase {
 		$this->assertSame( 3.25, $values['opf_acf_option_gold_price'] );
 		$this->assertSame( 0.0, $values['opf_acf_field_bad_value'] );
 		$this->assertSame( 0.0, $values['opf_acf_field_missing'] );
-		$this->assertSame( 15.75, Calculator::evaluate_formula( 'acf(unit_cost) + acf_option(gold_price)', 0, 1, 0, '', [], null, [], [], $values ) );
-		$this->assertSame( 0.0, Calculator::evaluate_formula( 'acf(bad_value) + acf(missing)', 0, 1, 0, '', [], null, [], [], $values ) );
+		// Master signature: ($formula, $price, $qty, $addons, $val, $today,
+		// $field_values, $product_id, $field_prices, $field_labels, $options).
+		$options = [ 'formula_variables' => $values ];
+		$this->assertSame( 15.75, Calculator::evaluate_formula( 'acf(unit_cost) + acf_option(gold_price)', 0, 1, 0, '', null, [], 0, [], [], $options ) );
+		$this->assertSame( 0.0, Calculator::evaluate_formula( 'acf(bad_value) + acf(missing)', 0, 1, 0, '', null, [], 0, [], [], $options ) );
 		$this->assertSame( 12.5, Calculator::field_addon(
 			[ 'type' => 'text', 'pricing' => [ 'type' => 'formula', 'formula' => 'acf(unit_cost) * [qty]' ] ],
 			'custom',
@@ -49,15 +52,17 @@ final class AcfFormulaTest extends TestCase {
 
 		$this->assertSame( 0.0, $values['opf_acf_field_valid'] );
 		$this->assertArrayNotHasKey( 'opf_acf_option_1', $values );
-		$this->assertSame( 0.0, Calculator::evaluate_formula( 'acf(valid) + acf_option(1 + system)', 0, 1, 0, '', [], null, [], [], $values ) );
+		$this->assertSame( 0.0, Calculator::evaluate_formula( 'acf(valid) + acf_option(1 + system)', 0, 1, 0, '', null, [], 0, [], [], [ 'formula_variables' => $values ] ) );
 	}
 
 	public function test_product_group_variables_feed_calculation_field_values(): void {
 		$GLOBALS['opf_test_acf_fields'] = [ 'option::gold_price' => 3.25 ];
 		$group = FieldGroup::normalize( [
-			'fields' => [ [ 'id' => 'total', 'type' => 'calculation', 'formula' => 'acf_option(gold_price) * 2' ] ],
+			'fields' => [ [ 'id' => 'total', 'type' => 'calc', 'formula' => 'acf_option(gold_price) * 2' ] ],
 		] );
-		$variables = FieldGroup::resolve_product_formula_variables( $group, [], 42 );
+		// Canonical live path: AcfFormula::variable_values_for_group resolves
+		// the group's acf()/acf_option() selectors into formula_variables.
+		$variables = AcfFormula::variable_values_for_group( $group, 42 );
 		$values = Calculator::resolve_calculation_values(
 			$group['fields'],
 			[],

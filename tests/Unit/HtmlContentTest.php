@@ -8,7 +8,9 @@ use PHPUnit\Framework\TestCase;
 
 final class HtmlContentTest extends TestCase {
 	public function test_html_content_is_sanitized_and_non_submittable(): void {
-		$group = new FieldGroup( [ 'fields' => [ [ 'id' => 'notice', 'type' => 'html', 'content' => '<strong>Ships soon</strong><script>alert(1)</script>' ] ] ] );
+		// Master models WAPF's html content field as a paragraph with
+		// content_format=html; the renderer sanitizes through wp_kses.
+		$group = new FieldGroup( [ 'fields' => [ [ 'id' => 'notice', 'type' => 'paragraph', 'content_format' => 'html', 'content' => '<strong>Ships soon</strong><script>alert(1)</script>' ] ] ] );
 		ob_start();
 		Renderer::render_group( '17', 'Notice', $group, 10.0 );
 		$html = (string) ob_get_clean();

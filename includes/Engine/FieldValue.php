@@ -42,18 +42,53 @@ final class FieldValue {
 		return '' === $text ? null : $text;
 	}
 
-	/** Reject submitted values that select choices disabled by the editor. */
-	public static function validate_choices( array $field, $value ): array {
-		if ( ! in_array( $field['type'] ?? '', [ 'select', 'radio', 'checkbox', 'swatch' ], true ) ) {
+	/**
+	 * Reject submitted values that select choices disabled by the editor or
+	 * break the field's configured choice-count limits.
+	 *
+	 * WAPF enforces `min_choices`/`max_choices` only once a value exists —
+	 * an absent input is the caller's required-check concern, so an
+	 * unprovided field returns no errors here.
+	 *
+	 * @param array<string,mixed> $field    Field definition.
+	 * @param mixed               $value    Submitted value(s).
+	 * @param bool                $provided Whether this input appeared in the payload.
+	 * @return string[]
+	 */
+	public static function validate_choices( array $field, $value, bool $provided = true ): array {
+		if ( ! in_array( $field['type'] ?? '', [ 'select', 'radio', 'checkbox', 'swatch' ], true ) || ! $provided ) {
 			return [];
 		}
+		$label    = (string) ( $field['label'] ?? '' );
 		$selected = array_map( 'strval', is_array( $value ) ? $value : ( null === $value ? [] : [ $value ] ) );
-		$errors = [];
+		$errors   = [];
+		$count    = count( $selected );
+		if ( 0 === $count ) {
+			// A provided-but-empty selection binds the configured minimum
+			// (WAPF validate_multiple_choice_field); an explicit minimum also
+			// stands in for the required check on multi-choice fields.
+			if ( isset( $field['min_choices'] ) && (int) $field['min_choices'] > 0 ) {
+				/* translators: 1: field label, 2: minimum selection count. */
+				$errors[] = sprintf( __( '"%1$s" requires at least %2$d selection(s).', 'open-product-fields-for-woocommerce' ), $label, (int) $field['min_choices'] );
+			} elseif ( ! empty( $field['required'] ) ) {
+				/* translators: %s: field label. */
+				$errors[] = sprintf( __( '"%s" is a required field.', 'open-product-fields-for-woocommerce' ), $label );
+			}
+			return $errors;
+		}
 		foreach ( (array) ( $field['choices'] ?? [] ) as $choice ) {
 			if ( ! empty( $choice['disabled'] ) && in_array( (string) ( $choice['slug'] ?? '' ), $selected, true ) ) {
 				/* translators: 1: field label, 2: unavailable choice label. */
-				$errors[] = sprintf( __( '"%1$s" includes unavailable choice "%2$s".', 'open-product-fields-for-woocommerce' ), (string) ( $field['label'] ?? '' ), (string) ( $choice['label'] ?? '' ) );
+				$errors[] = sprintf( __( '"%1$s" includes unavailable choice "%2$s".', 'open-product-fields-for-woocommerce' ), $label, (string) ( $choice['label'] ?? '' ) );
 			}
+		}
+		if ( isset( $field['min_choices'] ) && $count < (int) $field['min_choices'] ) {
+			/* translators: 1: field label, 2: minimum selection count. */
+			$errors[] = sprintf( __( '"%1$s" requires at least %2$d selection(s).', 'open-product-fields-for-woocommerce' ), $label, (int) $field['min_choices'] );
+		}
+		if ( isset( $field['max_choices'] ) && $count > (int) $field['max_choices'] ) {
+			/* translators: 1: field label, 2: maximum selection count. */
+			$errors[] = sprintf( __( '"%1$s" allows at most %2$d selection(s).', 'open-product-fields-for-woocommerce' ), $label, (int) $field['max_choices'] );
 		}
 		return $errors;
 	}
@@ -239,6 +274,37 @@ final class FieldValue {
 			return [ sprintf( __( '"%s" must be a valid URL.', 'open-product-fields-for-woocommerce' ), $label ) ];
 		}
 
+		if ( 'number' === $type ) {
+			// WAPF validates number fields server-side (class-cart.php
+			// validate_number_field): numeric input, optional integer mode,
+			// min/max bounds, and step counted from the configured minimum.
+			if ( ! is_numeric( $value ) ) {
+				/* translators: %s: field label. */
+				return [ sprintf( __( '"%s" must be a number.', 'open-product-fields-for-woocommerce' ), $label ) ];
+			}
+			$number = (float) $value;
+			if ( 'integer' === ( $field['number_mode'] ?? null ) && abs( $number - round( $number ) ) > 0.0000001 ) {
+				/* translators: %s: field label. */
+				return [ sprintf( __( '"%s" must be a whole number.', 'open-product-fields-for-woocommerce' ), $label ) ];
+			}
+			if ( isset( $field['min'] ) && '' !== $field['min'] && $number < (float) $field['min'] ) {
+				/* translators: 1: field label, 2: minimum allowed number. */
+				return [ sprintf( __( '"%1$s" must be at least %2$s.', 'open-product-fields-for-woocommerce' ), $label, (string) $field['min'] ) ];
+			}
+			if ( isset( $field['max'] ) && '' !== $field['max'] && $number > (float) $field['max'] ) {
+				/* translators: 1: field label, 2: maximum allowed number. */
+				return [ sprintf( __( '"%1$s" must be at most %2$s.', 'open-product-fields-for-woocommerce' ), $label, (string) $field['max'] ) ];
+			}
+			if ( isset( $field['step'] ) && is_numeric( $field['step'] ) && (float) $field['step'] > 0 ) {
+				$step_origin = isset( $field['min'] ) && is_numeric( $field['min'] ) ? (float) $field['min'] : 0.0;
+				$step_ratio  = ( $number - $step_origin ) / (float) $field['step'];
+				if ( abs( $step_ratio - round( $step_ratio ) ) > 0.0000001 ) {
+					/* translators: 1: field label, 2: required increment. */
+					return [ sprintf( __( '"%1$s" must use increments of %2$s.', 'open-product-fields-for-woocommerce' ), $label, (string) $field['step'] ) ];
+				}
+			}
+		}
+
 		if ( 'date' === $type ) {
 			$date   = \DateTimeImmutable::createFromFormat( '!Y-m-d', $value, new \DateTimeZone( 'UTC' ) );
 			$errors = \DateTimeImmutable::getLastErrors();
@@ -278,12 +344,61 @@ final class FieldValue {
 				/* translators: %s: field label. */
 				return [ sprintf( __( '"%s" contains a disallowed date.', 'open-product-fields-for-woocommerce' ), $label ) ];
 			}
-			if ( isset( $field['cutoff_time'] ) && $value === $current->format( 'Y-m-d' ) && $current->format( 'H:i:s' ) > $field['cutoff_time'] . ':00' ) {
+			if ( isset( $field['cutoff_time'] ) && $value === $current->format( 'Y-m-d' ) && $current->format( 'H:i:s' ) >= $field['cutoff_time'] . ':00' ) {
 				/* translators: %s: field label. */
 				return [ sprintf( __( '"%s" is no longer available for today.', 'open-product-fields-for-woocommerce' ), $label ) ];
 			}
 		}
 
+		// Length and pattern constraints are stored on text/textarea fields
+		// (WAPF only emits them as native attributes; OPF enforces them
+		// server-side as well). They apply to any type carrying the keys.
+		$value_length = self::text_length( $value );
+		if ( isset( $field['minlength'] ) && $value_length < (int) $field['minlength'] ) {
+			/* translators: 1: field label, 2: minimum character count. */
+			return [ sprintf( __( '"%1$s" must be at least %2$d characters.', 'open-product-fields-for-woocommerce' ), $label, (int) $field['minlength'] ) ];
+		}
+		if ( isset( $field['maxlength'] ) && $value_length > (int) $field['maxlength'] ) {
+			/* translators: 1: field label, 2: maximum character count. */
+			return [ sprintf( __( '"%1$s" must be at most %2$d characters.', 'open-product-fields-for-woocommerce' ), $label, (int) $field['maxlength'] ) ];
+		}
+		if ( isset( $field['pattern'] ) && 1 !== self::matches_pattern( (string) $field['pattern'], $value ) ) {
+			/* translators: %s: field label. */
+			return [ sprintf( __( '"%s" has an invalid format.', 'open-product-fields-for-woocommerce' ), $label ) ];
+		}
+
 		return [];
+	}
+
+	/**
+	 * Count submitted characters the way the HTML minlength/maxlength
+	 * attributes do: Unicode code points, not bytes.
+	 */
+	private static function text_length( string $value ): int {
+		return function_exists( 'mb_strlen' ) ? mb_strlen( $value, 'UTF-8' ) : strlen( $value );
+	}
+
+	/**
+	 * Match a stored pattern against the complete submitted value.
+	 *
+	 * HTML pattern semantics anchor the whole input, so the stored
+	 * expression is wrapped in `\A(?: … )\z` before matching. A
+	 * delimiter that cannot appear inside the pattern is picked so
+	 * author-supplied expressions containing `/` still work.
+	 */
+	private static function matches_pattern( string $pattern, string $value ): int {
+		if ( '' === $pattern ) {
+			return 1;
+		}
+		foreach ( [ '~', '#', '%', '!' ] as $delimiter ) {
+			if ( false === strpos( $pattern, $delimiter ) ) {
+				$compiled = @preg_match( $delimiter . '\A(?:' . $pattern . ')\z' . $delimiter . 'u', $value );
+				return false === $compiled ? 0 : $compiled;
+			}
+		}
+		// Every safe delimiter occurs in the pattern: fall back to `/` and
+		// let preg_quote handle nothing — the pattern simply cannot compile.
+		$compiled = @preg_match( '/\A(?:' . str_replace( '/', '\/', $pattern ) . ')\z/u', $value );
+		return false === $compiled ? 0 : $compiled;
 	}
 }

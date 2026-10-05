@@ -45,6 +45,10 @@ final class WapfMapper {
 		'content'       => 'paragraph',
 		'paragraph'     => 'paragraph',
 		'p'             => 'paragraph',
+		// WAPF `shortcode`: non-submittable content whose p_content runs
+		// through do_shortcode at render time (see the paragraph block below
+		// for content extraction).
+		'shortcode'      => 'shortcode',
 		'img'            => 'content_image',
 		'section'        => 'section',
 		'sectionend'     => 'section_end',
@@ -194,12 +198,12 @@ final class WapfMapper {
 			$image_id = 0;
 			$content_format = 'plain';
 			$process_shortcodes = false;
-			if ( 'paragraph' === self::TYPE_MAP[ $wapf_type ] ) {
+			if ( in_array( self::TYPE_MAP[ $wapf_type ], [ 'paragraph', 'shortcode' ], true ) ) {
 				$content = (string) ( $wapf_field['options']['p_content'] ?? $wapf_field['p_content'] ?? '' );
 				if ( 'p' === $wapf_type ) {
 					$content_format = 'html';
 					$process_shortcodes = true;
-				} elseif ( preg_match( '/<\/?[a-z][^>]*>/i', $content ) ) {
+				} elseif ( 'paragraph' === self::TYPE_MAP[ $wapf_type ] && preg_match( '/<\/?[a-z][^>]*>/i', $content ) ) {
 					$notes[] = sprintf( 'field "%s" contains HTML; the plain-text paragraph was imported with markup removed.', (string) ( $wapf_field['label'] ?? $wapf_field['id'] ?? '?' ) );
 					$needs_review = true;
 					$content = function_exists( 'sanitize_textarea_field' ) ? sanitize_textarea_field( $content ) : strip_tags( $content );

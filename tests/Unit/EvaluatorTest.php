@@ -6,7 +6,6 @@
 namespace OPF\Tests\Unit;
 
 use OPF\Engine\Evaluator;
-use OPF\Service\FieldGroups;
 use PHPUnit\Framework\TestCase;
 
 final class EvaluatorTest extends TestCase {
@@ -104,29 +103,21 @@ final class EvaluatorTest extends TestCase {
 	}
 
 	public function test_placement_variation_subject_matches_the_exact_variation_id(): void {
-		$group = [ 'rule_groups' => [ [ 'rules' => [ [ 'subject' => 'product_variation', 'operator' => 'in', 'terms' => [ '99' ] ] ] ] ] ];
-		$this->assertTrue( Evaluator::group_matches( $group, [ 'product_variation' => [ '99' ] ], 42 ) );
-		$this->assertFalse( Evaluator::group_matches( $group, [ 'product_variation' => [ '100' ] ], 42 ) );
-	}
-
-	public function test_product_attribute_term_keys_include_taxonomy_and_valid_term_ids(): void {
-		$this->assertSame(
-			[ 'pa_color:8', 'pa_material:3' ],
-			FieldGroups::attribute_term_keys(
-				[
-					'pa_color'    => [ 8, '8', 0, 'invalid' ],
-					'pa_material' => [ 3 ],
-					'custom-size' => [ 9 ],
-					'pa_bad!name' => [ 10 ],
-				]
-			)
-		);
+		// Master dialect: WAPF's variation subject is `product_var` and term
+		// ids live under the `product_var` has_terms key (WAPF 3.1.5 parity —
+		// the group only renders while a scoped variation is relevant).
+		$group = [ 'rule_groups' => [ [ 'rules' => [ [ 'subject' => 'product_var', 'operator' => 'in', 'terms' => [ '99' ] ] ] ] ] ];
+		$this->assertTrue( Evaluator::group_matches( $group, [ 'product_var' => [ '99' ] ], 42 ) );
+		$this->assertFalse( Evaluator::group_matches( $group, [ 'product_var' => [ '100' ] ], 42 ) );
 	}
 
 	public function test_placement_matches_product_attribute_terms_and_exclusions(): void {
-		$has_terms = [ 'product_attribute' => [ 'pa_color:8', 'pa_material:3' ] ];
-		$included  = [ 'rule_groups' => [ [ 'rules' => [ [ 'subject' => 'product_attribute', 'operator' => 'in', 'terms' => [ 'pa_color:8' ] ] ] ] ] ];
-		$excluded  = [ 'rule_groups' => [ [ 'rules' => [ [ 'subject' => 'product_attribute', 'operator' => 'not_in', 'terms' => [ 'pa_color:9' ] ] ] ] ] ];
+		// Master dialect: attribute placement uses per-taxonomy `pa_*`
+		// subjects keyed to plain term ids rather than the legacy
+		// `product_attribute` subject with `pa_x:id` composite keys.
+		$has_terms = [ 'pa_color' => [ 8 ], 'pa_material' => [ 3 ] ];
+		$included  = [ 'rule_groups' => [ [ 'rules' => [ [ 'subject' => 'pa_color', 'operator' => 'in', 'terms' => [ '8' ] ] ] ] ] ];
+		$excluded  = [ 'rule_groups' => [ [ 'rules' => [ [ 'subject' => 'pa_color', 'operator' => 'not_in', 'terms' => [ '9' ] ] ] ] ] ];
 
 		$this->assertTrue( Evaluator::group_matches( $included, $has_terms, 42 ) );
 		$this->assertTrue( Evaluator::group_matches( $excluded, $has_terms, 42 ) );

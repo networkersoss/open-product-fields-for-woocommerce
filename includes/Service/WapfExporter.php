@@ -21,6 +21,7 @@ final class WapfExporter {
 		'placeholder', 'choices', 'pricing', 'conditionals',
 		'description_presentation', 'hide_cart', 'hide_checkout', 'hide_order',
 		'content', 'content_format', 'process_shortcodes', 'image_url', 'image_id',
+		'alt', 'heading',
 		'swatch_style', 'multiple', 'min_choices', 'max_choices', 'color_layout',
 		'color_size', 'color_label_pos', 'image_zoom', 'label_pos', 'grid_layout',
 		'item_width', 'items_per_row', 'items_per_row_tablet', 'items_per_row_mobile',

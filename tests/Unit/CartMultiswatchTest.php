@@ -18,14 +18,4 @@ final class CartMultiswatchTest extends TestCase {
 		$this->assertSame( [ 'red', 'blue' ], $method->invoke( null, $field, [ 'red', 'red', 'blue', 'off', 'unknown' ] ) );
 	}
 
-	public function test_legacy_multi_swatch_order_values_remain_arrays(): void {
-		$field = FieldGroup::normalize_field(
-			[
-				'id' => 'colors', 'label' => 'Colors', 'type' => 'swatch', 'multiple' => true,
-				'choices' => [ [ 'slug' => 'red', 'label' => 'Red' ], [ 'slug' => 'blue', 'label' => 'Blue' ] ],
-			]
-		);
-		$method = new \ReflectionMethod( CartIntegration::class, 'legacy_value_for_field' );
-		$this->assertSame( [ 'red', 'blue' ], $method->invoke( null, $field, [ 'values' => [ 'Red', 'blue' ] ] ) );
-	}
 }

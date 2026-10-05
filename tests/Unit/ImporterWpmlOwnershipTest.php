@@ -4,14 +4,34 @@ namespace OPF\Service {
 	function wp_json_encode( $value, int $flags = 0 ) { return json_encode( $value, $flags ); }
 	function wp_slash( $value ) { return $value; }
 	function is_wp_error( $value ): bool { return false; }
-	function get_post_field( string $field, int $id ) { return ''; }
+	function get_post_field( string $field, int $id ) {
+		// ImporterTest fixtures drive the same code paths through the global
+		// get_post/get_post_field stubs via $GLOBALS['opf_importer_test'].
+		if ( isset( $GLOBALS['opf_importer_test'] ) ) {
+			$post = function_exists( '\\get_post' ) ? \get_post( $id ) : null;
+			return is_object( $post ) ? ( $post->$field ?? '' ) : '';
+		}
+		return '';
+	}
 	function update_post_meta( int $id, string $key, $value ): bool {
 		$GLOBALS['opf_woocs_meta'][ $id ][ $key ] = $value;
+		if ( isset( $GLOBALS['opf_importer_test'] ) ) {
+			$GLOBALS['opf_importer_test']['meta'][ $id ][ $key ] = $value;
+		}
 		return true;
 	}
 	function wp_insert_post( array $args, bool $return_error = false ): int {
-		$id = 71 + count( $GLOBALS['opf_import_saved_posts'] );
-		$GLOBALS['opf_import_saved_posts'][] = $args;
+		if ( isset( $GLOBALS['opf_importer_test'] ) ) {
+			$GLOBALS['opf_importer_test']['posts'][] = $args;
+			foreach ( $args['meta_input'] ?? [] as $key => $value ) {
+				update_post_meta( 501, $key, $value );
+			}
+			return 501;
+		}
+		$saved = $GLOBALS['opf_import_saved_posts'] ?? [];
+		$id = 71 + count( $saved );
+		$saved[] = $args;
+		$GLOBALS['opf_import_saved_posts'] = $saved;
 		foreach ( $args['meta_input'] ?? [] as $key => $value ) {
 			update_post_meta( $id, $key, $value );
 		}

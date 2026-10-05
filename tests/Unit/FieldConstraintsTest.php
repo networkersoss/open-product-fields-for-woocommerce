@@ -44,6 +44,6 @@ final class FieldConstraintsTest extends TestCase {
 
 	public function test_contradictory_checkbox_limits_are_rejected(): void {
 		$this->expectException( \InvalidArgumentException::class );
-		FieldGroup::normalize_field( [ 'id' => 'extras', 'type' => 'checkbox', 'min_selections' => 2, 'max_selections' => 1, 'choices' => [ [ 'label' => 'A' ], [ 'label' => 'B' ] ] ] );
+		FieldGroup::normalize_field( [ 'id' => 'extras', 'type' => 'checkbox', 'min_choices' => 2, 'max_choices' => 1, 'choices' => [ [ 'label' => 'A' ], [ 'label' => 'B' ] ] ] );
 	}
 }

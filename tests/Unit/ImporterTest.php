@@ -8,17 +8,18 @@ namespace {
 	}
 	if ( ! function_exists( 'get_post' ) ) {
 		function get_post( $post_id ) {
-			$source = $GLOBALS['opf_importer_test']['source_product'] ?? null;
+			$fixture = $GLOBALS['opf_importer_test'] ?? [];
+			$source  = $fixture['source_product'] ?? null;
 			if ( is_object( $source ) && (int) $source->ID === (int) $post_id ) {
 				return $source;
 			}
-			return $GLOBALS['opf_importer_test']['existing_post'] ?? null;
+			return $fixture['existing_post'] ?? null;
 		}
 	}
 	if ( ! function_exists( 'get_post_field' ) ) {
 		function get_post_field( $field, $post_id ) {
 			$post = get_post( $post_id );
-			return $post->$field ?? '';
+			return is_object( $post ) ? ( $post->$field ?? '' ) : '';
 		}
 	}
 	if ( ! function_exists( 'get_post_meta' ) ) {
@@ -67,6 +68,20 @@ namespace OPF\Tests\Unit {
 	use PHPUnit\Framework\TestCase;
 
 	final class ImporterTest extends TestCase {
+
+		protected function setUp(): void {
+			// The OPF\Service namespace stubs in ImporterWpmlOwnershipTest and
+			// WoocsRuntimeTest are process-wide; this registry switches them
+			// into importer-fixture mode. Clear state other suites may leave.
+			$GLOBALS['opf_importer_test'] = [ 'posts' => [], 'meta' => [] ];
+			$GLOBALS['opf_auth_test_posts'] = [];
+			$GLOBALS['opf_woocs_meta'] = [];
+			$GLOBALS['opf_import_saved_posts'] = [];
+		}
+
+		protected function tearDown(): void {
+			unset( $GLOBALS['opf_importer_test'], $GLOBALS['opf_auth_test_posts'], $GLOBALS['opf_woocs_meta'], $GLOBALS['opf_import_saved_posts'], $GLOBALS['wpdb'] );
+		}
 
 		public function test_groups_needing_review_are_imported_as_drafts(): void {
 			$report = $this->run_import(

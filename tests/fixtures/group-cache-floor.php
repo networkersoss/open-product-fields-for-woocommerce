@@ -30,7 +30,7 @@ function wc_get_product_term_ids( $id, $taxonomy ) { return []; }
 function wp_json_encode( $value, $flags = 0 ) { return json_encode( $value, $flags ); }
 function wp_slash( $value ) { return $value; }
 function is_wp_error( $value ) { return false; }
-function get_post_field( $field, $id ) { return $GLOBALS['cache_probe_posts'][ $id ]->$field; }
+function get_post_field( $field, $id ) { return $GLOBALS['cache_probe_posts'][ $id ]->$field ?? ''; }
 function wp_insert_post( $fields, $return_error = false ) {
 	$id = $fields['ID'] ?: count( $GLOBALS['cache_probe_posts'] ) + 1;
 	$GLOBALS['cache_probe_posts'][ $id ] = new WP_Post( $id, $fields['post_title'], $fields['post_content'] );

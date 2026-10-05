@@ -118,6 +118,7 @@ final class Importer {
 			'groups'      => [],
 		];
 		$report['date_format'] = self::migrate_date_format( $commit );
+		$report['price_hints'] = self::migrate_price_hint_settings( $commit );
 
 		$post_status = [ 'publish' ];
 
@@ -149,7 +150,9 @@ final class Importer {
 			if ( 'imported' === $result['result'] ) {
 				$report['imported']++;
 				if ( $result['needs_review'] ) {
-					$report['needs_review'][] = $result['opf_id'];
+					// Dry-run imports have no opf_id yet — report the source
+					// identifier so the review list stays meaningful.
+					$report['needs_review'][] = $result['opf_id'] ?: $result['source'];
 				}
 			} else {
 				$report['skipped']++;
@@ -200,7 +203,9 @@ final class Importer {
 			if ( 'imported' === $result['result'] ) {
 				$report['imported']++;
 				if ( $result['needs_review'] ) {
-					$report['needs_review'][] = $result['opf_id'];
+					// Dry-run imports have no opf_id yet — report the source
+					// identifier so the review list stays meaningful.
+					$report['needs_review'][] = $result['opf_id'] ?: $result['source'];
 				}
 			} else {
 				$report['skipped']++;
@@ -233,6 +238,50 @@ final class Importer {
 	}
 
 	/**
+	 * Copy WAPF's pricing-hint options once, without replacing explicit OPF
+	 * preferences (WAPF-DISPLAY-PRICE-HINTS): `wapf_show_pricing_hints` feeds
+	 * `opf_show_price_hints`, `wapf_hint_format` feeds `opf_hint_format`.
+	 */
+	private static function migrate_price_hint_settings( bool $commit ): array {
+		return [
+			'show_hints' => self::migrate_hint_option( 'wapf_show_pricing_hints', 'opf_show_price_hints', $commit, static function ( $value ) {
+				return in_array( $value, [ 'yes', 'no' ], true ) ? $value : null;
+			} ),
+			'format'     => self::migrate_hint_option( 'wapf_hint_format', 'opf_hint_format', $commit, static function ( $value ) {
+				return is_string( $value ) && '' !== trim( $value ) ? $value : null;
+			} ),
+		];
+	}
+
+	/**
+	 * Copy one scalar WAPF site option when the OPF preference is unset.
+	 * Same lifecycle as migrate_date_format: already-configured wins,
+	 * absent/invalid sources never write, dry runs report only.
+	 *
+	 * @param callable $sanitize Returns the importable value or null.
+	 */
+	private static function migrate_hint_option( string $source_key, string $option_key, bool $commit, callable $sanitize ): array {
+		$existing = get_option( $option_key, null );
+		if ( null !== $existing ) {
+			return [ 'result' => 'already-configured', 'value' => $existing ];
+		}
+		$source = get_option( $source_key, null );
+		if ( null === $source ) {
+			return [ 'result' => 'source-absent' ];
+		}
+		$value = $sanitize( $source );
+		if ( null === $value ) {
+			return [ 'result' => 'invalid-source', 'source' => $source ];
+		}
+		if ( ! $commit ) {
+			return [ 'result' => 'would-import', 'value' => $value ];
+		}
+		return update_option( $option_key, $value )
+			? [ 'result' => 'imported', 'value' => $value ]
+			: [ 'result' => 'write-failed', 'value' => $value ];
+	}
+
+	/**
 	 * Import one mapped group.
 	 *
 	 * @param array<string,mixed> $wapf      Parsed WAPF payload.
@@ -257,7 +306,10 @@ final class Importer {
 			]
 		);
 		if ( ! empty( $existing ) ) {
-			return [ 'source' => $source_key, 'result' => 'already-imported', 'opf_id' => (int) $existing[0] ];
+			// get_posts stubs/fixtures may hand back WP_Post objects even when
+			// ids were requested; accept both shapes.
+			$existing_id = is_object( $existing[0] ) ? (int) ( $existing[0]->ID ?? 0 ) : (int) $existing[0];
+			return [ 'source' => $source_key, 'result' => 'already-imported', 'opf_id' => $existing_id ];
 		}
 
 		$empty_fields = empty( $wapf['fields'] );
@@ -315,6 +367,7 @@ final class Importer {
 			'title'        => $title,
 			'fields'       => count( $mapped['group']['fields'] ),
 			'status'       => $status,
+			'post_status'  => $status,
 			'needs_review' => $mapped['needs_review'],
 			'notes'        => array_slice( $mapped['notes'], 0, 10 ),
 		];

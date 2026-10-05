@@ -52,8 +52,9 @@ final class Calculator {
 		$field_values = is_array( $context['field_values'] ?? null ) ? $context['field_values'] : [];
 		$field_prices = is_array( $context['field_prices'] ?? null ) ? $context['field_prices'] : [];
 		$field_labels = is_array( $context['field_labels'] ?? null ) ? $context['field_labels'] : [];
-		// Optional WAPF formula context (variables, field defs, lookup tables).
-		$options = array_intersect_key( $context, array_flip( [ 'variables', 'fields', 'lookup_tables' ] ) );
+		// Optional WAPF formula context (variables, field defs, lookup tables,
+		// resolved acf()/acf_option() variable values).
+		$options = array_intersect_key( $context, array_flip( [ 'variables', 'fields', 'lookup_tables', 'formula_variables' ] ) );
 
 		if ( ! empty( $field['repeat']['enabled'] ) ) {
 			$instance_field = $field;
@@ -141,7 +142,7 @@ final class Calculator {
 		if ( '' === trim( $formula ) ) {
 			return 0.0;
 		}
-		$options = array_intersect_key( $context, array_flip( [ 'variables', 'fields', 'lookup_tables' ] ) );
+		$options = array_intersect_key( $context, array_flip( [ 'variables', 'fields', 'lookup_tables', 'formula_variables' ] ) );
 		$field_values = is_array( $context['field_values'] ?? null ) ? $context['field_values'] : [];
 		$field_prices = is_array( $context['field_prices'] ?? null ) ? $context['field_prices'] : [];
 		$field_labels = is_array( $context['field_labels'] ?? null ) ? $context['field_labels'] : [];
@@ -159,6 +160,162 @@ final class Calculator {
 			$field_labels,
 			$options
 		);
+	}
+
+	/**
+	 * Resolve submitted values and derived calculation outputs in dependency
+	 * order.
+	 *
+	 * Calculation fields may refer forward to other fields, so this uses a
+	 * dependency walk instead of field display order. A dependency cycle is
+	 * unavailable and omitted; it cannot make a conditional pass or
+	 * contribute a price. Conditional rules on calculation values therefore
+	 * evaluate against server-computed results exactly like WAPF, never
+	 * against forged submissions.
+	 *
+	 * Handles both field spellings: OPF's canonical `calc` and the legacy
+	 * `calculation` type, sharing the `formula` key.
+	 *
+	 * @param array<int,array<string,mixed>> $fields    Normalized group fields.
+	 * @param array<string,mixed>            $submitted Sanitized submitted values.
+	 * @param array<string,mixed>            $context   Formula context.
+	 * @return array<string,mixed> Visible input values plus visible numeric calculations.
+	 */
+	public static function resolve_calculation_values( array $fields, array $submitted, array $context = [] ): array {
+		$by_id = [];
+		$raw = [];
+		foreach ( $fields as $field ) {
+			$id = strtolower( (string) ( $field['id'] ?? '' ) );
+			if ( '' !== $id ) {
+				$by_id[ $id ] = $field;
+			}
+		}
+		foreach ( $submitted as $id => $value ) {
+			$raw[ strtolower( (string) $id ) ] = $value;
+		}
+		$is_calculation = static function ( array $field ): bool {
+			return in_array( (string) ( $field['type'] ?? '' ), [ 'calculation', 'calc' ], true );
+		};
+		$options = array_intersect_key( $context, array_flip( [ 'variables', 'fields', 'lookup_tables', 'formula_variables' ] ) );
+
+		$values = [];
+		$states = [];
+		$stack = [];
+		$cycles = [];
+		$resolve = null;
+		$resolve = static function ( string $id ) use ( &$resolve, &$values, &$states, &$stack, &$cycles, $by_id, $raw, $context, $options, $is_calculation ): bool {
+			$id = strtolower( $id );
+			if ( 'resolved' === ( $states[ $id ] ?? '' ) ) {
+				return array_key_exists( $id, $values );
+			}
+			if ( 'resolving' === ( $states[ $id ] ?? '' ) ) {
+				$cycle_start = array_search( $id, $stack, true );
+				if ( false !== $cycle_start ) {
+					foreach ( array_slice( $stack, $cycle_start ) as $cycle_id ) {
+						$cycles[ $cycle_id ] = true;
+					}
+				}
+				return false;
+			}
+			if ( ! isset( $by_id[ $id ] ) ) {
+				return false;
+			}
+
+			$field = $by_id[ $id ];
+			$states[ $id ] = 'resolving';
+			$stack[] = $id;
+			$dependencies = [];
+			foreach ( (array) ( $field['conditionals'] ?? [] ) as $conditional ) {
+				foreach ( (array) ( $conditional['rules'] ?? [] ) as $rule ) {
+					$dependency = strtolower( (string) ( $rule['field'] ?? '' ) );
+					if ( '' !== $dependency ) {
+						$dependencies[] = $dependency;
+					}
+				}
+			}
+			if ( $is_calculation( $field ) ) {
+				preg_match_all( '/\\[field\\.([a-zA-Z0-9_-]+)\\]|(?:checked|files|sumQty)\\s*\\(\\s*([a-zA-Z0-9_-]+)\\s*\\)/i', (string) ( $field['formula'] ?? '' ), $matches, PREG_SET_ORDER );
+				foreach ( $matches as $match ) {
+					// Unmatched alternation groups surface as '' (not null) —
+					// files(art) must resolve the 'art' dependency, not ''.
+					$dependency = '' !== (string) ( $match[1] ?? '' ) ? $match[1] : ( $match[2] ?? '' );
+					$dependency = strtolower( (string) $dependency );
+					if ( '' !== $dependency ) {
+						$dependencies[] = $dependency;
+					}
+				}
+				if ( preg_match_all( '/lookuptable\\s*\\(([^()]*)\\)/i', (string) ( $field['formula'] ?? '' ), $lookup_matches ) ) {
+					foreach ( $lookup_matches[1] as $lookup_args ) {
+						$args = array_slice( array_map( 'trim', explode( ';', $lookup_args ) ), 1 );
+						foreach ( $args as $dependency ) {
+							$dependency = preg_replace( '/^\\[field\\.([a-zA-Z0-9_-]+)\\]$/', '$1', $dependency );
+							if ( preg_match( '/^[a-zA-Z0-9_-]+$/', (string) $dependency ) ) {
+								$dependencies[] = strtolower( (string) $dependency );
+							}
+						}
+					}
+				}
+			}
+			$dependencies = array_values( array_unique( $dependencies ) );
+			$dependencies_available = true;
+			foreach ( $dependencies as $dependency ) {
+				$dependency_visible = $resolve( $dependency );
+				if ( ( ! $dependency_visible && isset( $cycles[ $dependency ] ) ) || ( ! $dependency_visible && $is_calculation( $by_id[ $dependency ] ?? [] ) ) ) {
+					$dependencies_available = false;
+				}
+			}
+			array_pop( $stack );
+
+			if ( isset( $cycles[ $id ] ) || ! $dependencies_available ) {
+				$states[ $id ] = 'resolved';
+				unset( $values[ $id ] );
+				return false;
+			}
+			if ( ! empty( $field['conditionals'] ) ) {
+				foreach ( $dependencies as $dependency ) {
+					if ( isset( $cycles[ $dependency ] ) ) {
+						$states[ $id ] = 'resolved';
+						unset( $values[ $id ] );
+						return false;
+					}
+				}
+			}
+			if ( ! Evaluator::is_visible( $field, $values ) ) {
+				$states[ $id ] = 'resolved';
+				unset( $values[ $id ] );
+				return false;
+			}
+
+			if ( $is_calculation( $field ) ) {
+				$resolved = self::evaluate_formula(
+					(string) ( $field['formula'] ?? '' ),
+					(float) ( $context['price'] ?? 0.0 ),
+					max( 1, (int) ( $context['qty'] ?? 1 ) ),
+					(float) ( $context['addons'] ?? 0.0 ),
+					'',
+					isset( $context['today'] ) ? (string) $context['today'] : null,
+					$values,
+					(int) ( $context['product_id'] ?? 0 ),
+					(array) ( $context['field_prices'] ?? [] ),
+					(array) ( $context['field_labels'] ?? [] ),
+					$options
+				);
+				if ( ! is_finite( $resolved ) ) {
+					$states[ $id ] = 'resolved';
+					return false;
+				}
+				$values[ $id ] = $resolved;
+			} elseif ( array_key_exists( $id, $raw ) ) {
+				$values[ $id ] = $raw[ $id ];
+			}
+			$states[ $id ] = 'resolved';
+			return array_key_exists( $id, $values );
+		};
+
+		foreach ( array_keys( $by_id ) as $id ) {
+			$resolve( $id );
+		}
+		return $values;
 	}
 
 	/**
@@ -496,95 +653,117 @@ final class Calculator {
 			},
 			$formula
 		);
-		$formula = preg_replace_callback(
-			'/\[field\.([a-zA-Z0-9_-]+)\]/i',
-			static function ( array $match ) use ( $field_values, $field_labels ): string {
-				return self::formula_field_label( $match[1], $field_values, $field_labels );
-			},
-			$formula
-		);
-		$formula = preg_replace( '/today\s*\(\s*\)/i', '__OPF_TODAY__', $formula );
-		$formula = preg_replace_callback(
-			'/\bdatediff\s*\(([^()]*)\)/i',
-			static function ( array $match ) use ( $val, $today, $field_values, $field_labels ): string {
-				$args = self::split_formula_arguments( $match[1] );
-				if ( 2 !== count( $args ) ) {
-					return '0';
-				}
-				$date1 = self::parse_formula_date( $args[0], $val, $field_values, $today, $field_labels );
-				$date2 = self::parse_formula_date( $args[1], $val, $field_values, $today, $field_labels );
-				if ( null === $date1 || null === $date2 ) {
-					return '0';
-				}
-				return (string) $date1->diff( $date2 )->days;
-			},
-			$formula
-		);
-		$formula = preg_replace_callback(
-			'/\b(dow|month)\s*\(([^()]*)\)/i',
-			static function ( array $match ) use ( $val, $today, $field_values, $field_labels ): string {
-				$date = self::parse_formula_date( $match[2], $val, $field_values, $today, $field_labels );
-				if ( null === $date ) {
-					return '0';
-				}
-				return 'dow' === strtolower( $match[1] ) ? $date->format( 'w' ) : $date->format( 'n' );
-			},
-			$formula
-		);
-		$formula = str_ireplace(
-			[ '[price]', '[qty]', '[addons]', '[options_total]', '[val]', '[x]' ],
-			[ ' P ', ' Q ', ' A ', ' A ', ' V ', ' V ' ],
-			$formula
-		);
-		// WAPF evaluate_variables runs after token replacement: resolve
-		// [var_name] to its evaluated numeric string before function expansion.
-		$formula = self::expand_formula_variables(
-			$formula,
-			$options,
-			$price,
-			$qty,
-			$addons,
-			$val,
-			$product_id,
-			$field_values,
-			$field_prices,
-			$field_labels
-		);
-		if ( null === $formula ) {
-			return 0.0;
-		}
-		$formula = self::expand_formula_functions(
-			$formula,
-			[
-				'price'         => $price,
-				'qty'           => $qty,
-				'addons'        => $addons,
-				'value'         => $val,
-				'field_values'  => $field_values,
-				'field_prices'  => $field_prices,
-				'field_labels'  => $field_labels,
-				'product_id'    => $product_id > 0 ? $product_id : null,
-				'lookup_tables' => is_array( $options['lookup_tables'] ?? null ) ? $options['lookup_tables'] : [],
-				'options'       => $options,
-			]
-		);
-		if ( null === $formula ) {
-			return 0.0;
-		}
-		$vars = [ 'P' => $price, 'Q' => (float) $qty, 'A' => $addons, 'V' => (float) $val ];
+		// WAPF substitutes the raw submitted label for [field.X] and its
+		// evaluate_math_string then strips every non-numeric character, so a
+		// non-numeric submission contributes nothing while the rest of the
+		// arithmetic still runs. OPF's strict tokenizer fails the whole
+		// formula on that garbage instead — which is the correct fail-closed
+		// behavior for authored formula text ('[price] *' → 0). To recover
+		// WAPF's user-data semantics without loosening the authored-formula
+		// contract the [field.*] substitution + evaluation is run twice: a
+		// poisoned first pass retries once with non-numeric field
+		// substitutions zeroed. String consumers (if()/len()/comparisons)
+		// always resolve on the first pass, so labels keep working there.
+		$evaluate = static function ( bool $numeric_field_values ) use ( $formula, $price, $qty, $addons, $val, $today, $field_values, $field_prices, $field_labels, $product_id, $options ): ?float {
+			$f = preg_replace_callback(
+				'/\[field\.([a-zA-Z0-9_-]+)\]/i',
+				static function ( array $match ) use ( $field_values, $field_labels, $numeric_field_values ): string {
+					return self::formula_field_label( $match[1], $field_values, $field_labels, $numeric_field_values );
+				},
+				$formula
+			);
+			if ( null === $f ) {
+				return null;
+			}
+			$f = preg_replace( '/today\s*\(\s*\)/i', '__OPF_TODAY__', $f );
+			$f = preg_replace_callback(
+				'/\bdatediff\s*\(([^()]*)\)/i',
+				static function ( array $match ) use ( $val, $today, $field_values, $field_labels ): string {
+					$args = self::split_formula_arguments( $match[1] );
+					if ( 2 !== count( $args ) ) {
+						return '0';
+					}
+					$date1 = self::parse_formula_date( $args[0], $val, $field_values, $today, $field_labels );
+					$date2 = self::parse_formula_date( $args[1], $val, $field_values, $today, $field_labels );
+					if ( null === $date1 || null === $date2 ) {
+						return '0';
+					}
+					return (string) $date1->diff( $date2 )->days;
+				},
+				$f
+			);
+			$f = preg_replace_callback(
+				'/\b(dow|month)\s*\(([^()]*)\)/i',
+				static function ( array $match ) use ( $val, $today, $field_values, $field_labels ): string {
+					$date = self::parse_formula_date( $match[2], $val, $field_values, $today, $field_labels );
+					if ( null === $date ) {
+						return '0';
+					}
+					return 'dow' === strtolower( $match[1] ) ? $date->format( 'w' ) : $date->format( 'n' );
+				},
+				$f
+			);
+			$f = str_ireplace(
+				[ '[price]', '[qty]', '[addons]', '[options_total]', '[val]', '[x]' ],
+				[ ' P ', ' Q ', ' A ', ' A ', ' V ', ' V ' ],
+				$f
+			);
+			// WAPF evaluate_variables runs after token replacement: resolve
+			// [var_name] to its evaluated numeric string before function expansion.
+			$f = self::expand_formula_variables(
+				$f,
+				$options,
+				$price,
+				$qty,
+				$addons,
+				$val,
+				$product_id,
+				$field_values,
+				$field_prices,
+				$field_labels
+			);
+			if ( null === $f ) {
+				return null;
+			}
+			$f = self::expand_formula_functions(
+				$f,
+				[
+					'price'         => $price,
+					'qty'           => $qty,
+					'addons'        => $addons,
+					'value'         => $val,
+					'field_values'  => $field_values,
+					'field_prices'  => $field_prices,
+					'field_labels'  => $field_labels,
+					'product_id'    => $product_id > 0 ? $product_id : null,
+					'lookup_tables' => is_array( $options['lookup_tables'] ?? null ) ? $options['lookup_tables'] : [],
+					'options'       => $options,
+				]
+			);
+			if ( null === $f ) {
+				return null;
+			}
+			$vars = [ 'P' => $price, 'Q' => (float) $qty, 'A' => $addons, 'V' => (float) $val ];
 
-		$tokens = self::tokenize( $formula, $vars );
-		if ( null === $tokens ) {
-			return 0.0;
-		}
-		$pos   = 0;
-		$value = self::parse_expression( $tokens, $pos );
-		if ( null === $value || $pos < count( $tokens ) ) {
-			return 0.0;
+			$tokens = self::tokenize( $f, $vars );
+			if ( null === $tokens ) {
+				return null;
+			}
+			$pos   = 0;
+			$value = self::parse_expression( $tokens, $pos );
+			if ( null === $value || $pos < count( $tokens ) ) {
+				return null;
+			}
+			return is_finite( $value ) ? (float) $value : 0.0;
+		};
+
+		$result = $evaluate( false );
+		if ( null === $result ) {
+			$result = $evaluate( true );
 		}
 		// Signed contributions may offset the base price or other addons.
 		// Clamp only the final product price in CartIntegration::apply_prices().
-		return is_finite( $value ) ? (float) $value : 0.0;
+		return $result ?? 0.0;
 	}
 
 	/**
@@ -871,30 +1050,43 @@ final class Calculator {
 	 * has several; OPF field ids may contain underscores, so the full token
 	 * is tried as a field id before the suffix split.
 	 */
-	private static function formula_field_label( string $token, array $field_values, array $field_labels ): string {
-		$parts  = explode( '_', $token );
-		$fid    = strtolower( (string) $parts[0] );
-		$option = $parts[1] ?? null;
+	private static function formula_field_label( string $token, array $field_values, array $field_labels, bool $numeric_only = false ): string {
+		$resolved = null;
+		$parts    = explode( '_', $token );
+		$fid      = strtolower( (string) $parts[0] );
+		$option   = $parts[1] ?? null;
 		if ( ! array_key_exists( $fid, $field_values ) ) {
 			$whole = strtolower( $token );
 			if ( ! array_key_exists( $whole, $field_values ) ) {
-				return '';
+				$resolved = '';
+			} else {
+				$fid    = $whole;
+				$option = null;
 			}
-			$fid    = $whole;
-			$option = null;
 		}
-		$values = is_array( $field_values[ $fid ] ) ? array_values( $field_values[ $fid ] ) : [ $field_values[ $fid ] ];
-		if ( null !== $option && count( $values ) > 1 ) {
-			foreach ( $values as $submitted ) {
-				if ( is_scalar( $submitted ) && (string) $submitted === $option ) {
-					return isset( $field_labels[ $fid ][ (string) $submitted ] ) ? (string) $field_labels[ $fid ][ (string) $submitted ] : '0';
+		if ( null === $resolved ) {
+			$values = is_array( $field_values[ $fid ] ) ? array_values( $field_values[ $fid ] ) : [ $field_values[ $fid ] ];
+			if ( null !== $option && count( $values ) > 1 ) {
+				$resolved = '0';
+				foreach ( $values as $submitted ) {
+					if ( is_scalar( $submitted ) && (string) $submitted === $option ) {
+						$resolved = isset( $field_labels[ $fid ][ (string) $submitted ] ) ? (string) $field_labels[ $fid ][ (string) $submitted ] : '0';
+						break;
+					}
 				}
+			} else {
+				$first    = $values[0] ?? '';
+				$scalar   = is_scalar( $first ) ? (string) $first : '';
+				$resolved = isset( $field_labels[ $fid ][ $scalar ] ) ? (string) $field_labels[ $fid ][ $scalar ] : $scalar;
 			}
+		}
+		// Retry pass: user-supplied text is not formula source — a
+		// non-numeric substitution contributes 0 to arithmetic instead of
+		// failing the whole expression closed.
+		if ( $numeric_only && ! is_numeric( $resolved ) ) {
 			return '0';
 		}
-		$first  = $values[0] ?? '';
-		$scalar = is_scalar( $first ) ? (string) $first : '';
-		return isset( $field_labels[ $fid ][ $scalar ] ) ? (string) $field_labels[ $fid ][ $scalar ] : $scalar;
+		return $resolved;
 	}
 
 	/**

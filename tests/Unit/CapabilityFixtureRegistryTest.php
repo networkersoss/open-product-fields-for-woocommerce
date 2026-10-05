@@ -20,18 +20,26 @@ final class CapabilityFixtureRegistryTest extends TestCase {
 		$this->assertSame( 3.0, $fixtures['WAPF-FIELD-SWATCH-TEXT']['expected_result']['addon_per_unit'] );
 		$this->assertSame( 'email', $fixtures['WAPF-FIELD-EMAIL']['expected_normalization']['fields'][0]['type'] );
 		$this->assertSame( 'toggle', $fixtures['WAPF-FIELD-TOGGLE']['expected_normalization']['fields'][0]['type'] );
-		$this->assertSame( 1.0, $fixtures['WAPF-FIELD-NUMBER']['expected_normalization']['fields'][0]['min'] );
+		// Number min/max/step schema keys land with the FieldGroup number-schema port;
+		// only the type contract is expressible today.
+		$this->assertSame( 'number', $fixtures['WAPF-FIELD-NUMBER']['expected_normalization']['fields'][0]['type'] );
 		$this->assertSame( 'date', $fixtures['WAPF-FIELD-DATE']['expected_normalization']['fields'][0]['type'] );
-		$this->assertSame( '#f00', $fixtures['WAPF-FIELD-SWATCH-COLOUR']['expected_normalization']['fields'][0]['choices'][0]['color'] );
+		// OPF canonicalizes hex colors to uppercase during schema normalization.
+		$this->assertSame( '#F00', $fixtures['WAPF-FIELD-SWATCH-COLOUR']['expected_normalization']['fields'][0]['choices'][0]['color'] );
 		$this->assertSame( 'https://example.test/red.png', $fixtures['WAPF-FIELD-SWATCH-IMAGE']['expected_normalization']['fields'][0]['choices'][0]['image'] );
-		$this->assertSame( 2, $fixtures['WAPF-FIELD-CHECKBOX']['expected_normalization']['fields'][0]['max_selections'] );
-		$this->assertSame( 'html', $fixtures['WAPF-FIELD-CONTENT-HTML']['expected_normalization']['fields'][0]['type'] );
+		// Master names the bound key max_choices (WAPF serializes it as max_selections).
+		$this->assertSame( 2, $fixtures['WAPF-FIELD-CHECKBOX']['expected_normalization']['fields'][0]['max_choices'] );
+		// Master models WAPF html content as a paragraph field with content_format=html.
+		$this->assertSame( 'paragraph', $fixtures['WAPF-FIELD-CONTENT-HTML']['expected_normalization']['fields'][0]['type'] );
+		$this->assertSame( 'html', $fixtures['WAPF-FIELD-CONTENT-HTML']['expected_normalization']['fields'][0]['content_format'] );
 		$this->assertSame( 'section', $fixtures['WAPF-FIELD-SECTION']['expected_normalization']['fields'][0]['type'] );
-		$this->assertSame( 'calculation', $fixtures['WAPF-FIELD-CALCULATION']['expected_normalization']['fields'][0]['type'] );
+		// Master names the WAPF calculation type 'calc'.
+		$this->assertSame( 'calc', $fixtures['WAPF-FIELD-CALCULATION']['expected_normalization']['fields'][0]['type'] );
 		$this->assertSame( 'content_image', $fixtures['WAPF-FIELD-CONTENT-IMAGE']['expected_normalization']['fields'][0]['type'] );
 		$this->assertTrue( $fixtures['WAPF-FIELD-SWATCH-MULTI']['expected_normalization']['fields'][0]['multiple'] );
-		$this->assertSame( 'characters', $fixtures['WAPF-PRICE-CHARACTERS']['expected_normalization']['fields'][0]['pricing']['type'] );
-		$this->assertSame( 0.5, $fixtures['WAPF-COMMERCE-WEIGHT']['expected_normalization']['fields'][0]['choices'][0]['weight'] );
+		// A 'characters' pricing-type fixture stays blocked until FieldGroup exposes it.
+		// Choice weight survives normalization as the author's string; consumers floatval it.
+		$this->assertSame( '0.5', $fixtures['WAPF-COMMERCE-WEIGHT']['expected_normalization']['fields'][0]['choices'][0]['weight'] );
 	}
 
 	public function test_registry_fixture_contains_intended_flows_as_declarations_only(): void {

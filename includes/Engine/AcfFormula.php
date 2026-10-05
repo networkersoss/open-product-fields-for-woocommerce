@@ -11,8 +11,44 @@ defined( 'ABSPATH' ) || exit;
 
 final class AcfFormula {
 
+	/**
+	 * Register the `acf(selector)` and `acf_option(selector)` formula
+	 * functions with the calculator.
+	 *
+	 * Both read the pre-resolved numeric map carried in
+	 * `$context['options']['formula_variables']` — produced by
+	 * {@see variable_values_for_group()} (or the group-level
+	 * FieldGroup::resolve_product_formula_variables bridge). Unresolved or
+	 * malformed selectors evaluate to 0, matching WAPF's fail-closed ACF
+	 * substitution.
+	 */
+	public static function register(): void {
+		static $registered = false;
+		if ( $registered ) {
+			return;
+		}
+		$registered = true;
+		$resolve = static function ( array $args, array $context, string $source ): float {
+			$selector = trim( (string) ( $args[0] ?? '' ) );
+			if ( ! preg_match( '/^[a-zA-Z][a-zA-Z0-9_-]{0,63}$/', $selector ) ) {
+				return 0.0;
+			}
+			$key    = 'opf_acf_' . $source . '_' . strtolower( $selector );
+			$values = is_array( $context['options']['formula_variables'] ?? null ) ? $context['options']['formula_variables'] : [];
+			$value  = $values[ $key ] ?? 0.0;
+			return is_numeric( $value ) && is_finite( (float) $value ) ? (float) $value : 0.0;
+		};
+		Calculator::register_formula_function( 'acf', static function ( array $args, array $context ) use ( $resolve ): float {
+			return $resolve( $args, $context, 'field' );
+		} );
+		Calculator::register_formula_function( 'acf_option', static function ( array $args, array $context ) use ( $resolve ): float {
+			return $resolve( $args, $context, 'option' );
+		} );
+	}
+
 	/** Resolve only numeric ACF fields referenced by formulas in a group. */
 	public static function variable_values_for_group( array $group_data, int $product_id ): array {
+		self::register();
 		if ( ! function_exists( 'get_field' ) ) {
 			return [];
 		}
