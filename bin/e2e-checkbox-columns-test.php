@@ -41,7 +41,7 @@ if ( 'prepare' === $action ) {
 	$product_id = $product->save();
 	$group = new OPF\Engine\FieldGroup( [
 		'fields' => [
-			[ 'id' => 'extras', 'label' => 'Extras', 'type' => 'checkbox', 'columns' => 2, 'choices' => [
+			[ 'id' => 'extras', 'label' => 'Extras', 'type' => 'checkbox', 'columns' => 3, 'choices' => [
 				[ 'slug' => 'gift', 'label' => 'Gift wrap', 'pricing' => [ 'type' => 'fixed', 'amount' => 2.5 ] ],
 				[ 'slug' => 'note', 'label' => 'Gift note', 'pricing' => [ 'type' => 'none', 'amount' => 0 ] ],
 				[ 'slug' => 'rush', 'label' => 'Rush packing', 'pricing' => [ 'type' => 'fixed', 'amount' => 1.25 ] ],
