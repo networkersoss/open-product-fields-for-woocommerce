@@ -1,0 +1,213 @@
+{
+  "utc": "2026-10-05T23:16:52.082Z",
+  "clone": {
+    "base": "http://127.0.0.1:8291",
+    "clone": "/tmp/opf-lane-formulaadv-wp/",
+    "database": "/tmp/opf-lane-formulaadv-wp/wp-content/database/.ht.sqlite",
+    "wordpress": "7.1.2",
+    "woocommerce": "11.1.0",
+    "php": "8.5.11",
+    "extended": "3.1.5",
+    "curcy": "2.4.3",
+    "opf": "0.1.0",
+    "eur_rate": 1.5
+  },
+  "currencies": {
+    "base": "USD",
+    "current": "EUR",
+    "curcy_rate": 1.5,
+    "base_product_price_usd": 10,
+    "quantity": 1
+  },
+  "orders": {
+    "opf": 61,
+    "wapf": 63
+  },
+  "order_totals": {
+    "opf": {
+      "currency": "EUR",
+      "subtotal": 180,
+      "tax": "11.86",
+      "total": "191.86",
+      "payment_method": "cod"
+    },
+    "wapf": {
+      "currency": "EUR",
+      "subtotal": 180,
+      "tax": "11.86",
+      "total": "191.86",
+      "payment_method": "cheque"
+    }
+  },
+  "rows": [
+    {
+      "id": "arith",
+      "formula": "round(sqrt(pow([field.x];2)))*[qty]",
+      "tax_class": "standard",
+      "tax_rate": 10,
+      "expected_addon_base": 2,
+      "expected_unit_eur": 18,
+      "expected_line_tax_eur": 1.8,
+      "opf": {
+        "unit_eur": 18,
+        "addon_base": 2,
+        "line_tax_eur": 1.8,
+        "tax_class": "",
+        "field_meta": true
+      },
+      "wapf": {
+        "unit_eur": 18,
+        "addon_base": 2,
+        "line_tax_eur": 1.8,
+        "tax_class": "",
+        "field_meta": true
+      },
+      "storefront_preview": {
+        "opf": "Product total €15.00\nOptions total €2.00\nGrand total €17.00",
+        "wapf": "Product total\n€15.00\nOptions total\n€2.00\nGrand total\n€17.00"
+      },
+      "match": true
+    },
+    {
+      "id": "minmax",
+      "formula": "max(3;min([field.x];7))*[qty]",
+      "tax_class": "reduced-rate",
+      "tax_rate": 5,
+      "expected_addon_base": 5,
+      "expected_unit_eur": 22.5,
+      "expected_line_tax_eur": 1.13,
+      "opf": {
+        "unit_eur": 22.5,
+        "addon_base": 5,
+        "line_tax_eur": 1.13,
+        "tax_class": "reduced-rate",
+        "field_meta": true
+      },
+      "wapf": {
+        "unit_eur": 22.5,
+        "addon_base": 5,
+        "line_tax_eur": 1.13,
+        "tax_class": "reduced-rate",
+        "field_meta": true
+      },
+      "storefront_preview": {
+        "opf": "Product total €15.00\nOptions total €5.00\nGrand total €20.00",
+        "wapf": "Product total\n€15.00\nOptions total\n€5.00\nGrand total\n€20.00"
+      },
+      "match": true
+    },
+    {
+      "id": "len",
+      "formula": "len([field.t];true)*[qty]",
+      "tax_class": "zero-rate",
+      "tax_rate": 0,
+      "expected_addon_base": 2,
+      "expected_unit_eur": 18,
+      "expected_line_tax_eur": 0,
+      "opf": {
+        "unit_eur": 18,
+        "addon_base": 2,
+        "line_tax_eur": 0,
+        "tax_class": "zero-rate",
+        "field_meta": true
+      },
+      "wapf": {
+        "unit_eur": 18,
+        "addon_base": 2,
+        "line_tax_eur": 0,
+        "tax_class": "zero-rate",
+        "field_meta": true
+      },
+      "storefront_preview": {
+        "opf": "Product total €15.00\nOptions total €2.00\nGrand total €17.00",
+        "wapf": "Product total\n€15.00\nOptions total\n€2.00\nGrand total\n€17.00"
+      },
+      "match": true
+    },
+    {
+      "id": "date",
+      "formula": "dow([field.d])*7*[qty]",
+      "tax_class": "standard",
+      "tax_rate": 10,
+      "expected_addon_base": 42,
+      "expected_unit_eur": 78,
+      "expected_line_tax_eur": 7.8,
+      "opf": {
+        "unit_eur": 78,
+        "addon_base": 42,
+        "line_tax_eur": 7.8,
+        "tax_class": "",
+        "field_meta": true
+      },
+      "wapf": {
+        "unit_eur": 78,
+        "addon_base": 42,
+        "line_tax_eur": 7.8,
+        "tax_class": "",
+        "field_meta": true
+      },
+      "storefront_preview": {
+        "opf": "Product total €15.00\nOptions total €42.00\nGrand total €57.00",
+        "wapf": "Product total\n€15.00\nOptions total\n€42.00\nGrand total\n€57.00"
+      },
+      "match": true
+    },
+    {
+      "id": "sumqty",
+      "formula": "sumQty(prints)*[qty]",
+      "tax_class": "reduced-rate",
+      "tax_rate": 5,
+      "expected_addon_base": 5,
+      "expected_unit_eur": 22.5,
+      "expected_line_tax_eur": 1.13,
+      "opf": {
+        "unit_eur": 22.5,
+        "addon_base": 5,
+        "line_tax_eur": 1.13,
+        "tax_class": "reduced-rate",
+        "field_meta": true
+      },
+      "wapf": {
+        "unit_eur": 22.5,
+        "addon_base": 5,
+        "line_tax_eur": 1.13,
+        "tax_class": "reduced-rate",
+        "field_meta": true
+      },
+      "storefront_preview": {
+        "opf": "Product total €15.00\nOptions total €5.00\nGrand total €20.00",
+        "wapf": "Product total\n€15.00\nOptions total\n€5.00\nGrand total\n€20.00"
+      },
+      "match": true
+    },
+    {
+      "id": "customvar",
+      "formula": "[var_rate]*[qty]",
+      "tax_class": "zero-rate",
+      "tax_rate": 0,
+      "expected_addon_base": 4,
+      "expected_unit_eur": 21,
+      "expected_line_tax_eur": 0,
+      "opf": {
+        "unit_eur": 21,
+        "addon_base": 4,
+        "line_tax_eur": 0,
+        "tax_class": "zero-rate",
+        "field_meta": true
+      },
+      "wapf": {
+        "unit_eur": 21,
+        "addon_base": 4,
+        "line_tax_eur": 0,
+        "tax_class": "zero-rate",
+        "field_meta": true
+      },
+      "storefront_preview": {
+        "opf": "Product total €15.00\nOptions total €4.00\nGrand total €19.00",
+        "wapf": "Product total\n€15.00\nOptions total\n€4.00\nGrand total\n€19.00"
+      },
+      "match": true
+    }
+  ],
+  "all_match": true
+}

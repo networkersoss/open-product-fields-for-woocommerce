@@ -1,0 +1,1139 @@
+{
+  "utc": "2026-10-05T23:15:57.362Z",
+  "runtime": {
+    "base": "http://127.0.0.1:8291",
+    "clone": "/tmp/opf-lane-formulaadv-wp/",
+    "database": "/tmp/opf-lane-formulaadv-wp/wp-content/database/.ht.sqlite",
+    "wordpress": "7.1.2",
+    "woocommerce": "11.1.0",
+    "php": "8.5.11",
+    "extended": "3.1.5",
+    "curcy": "2.4.3",
+    "opf": "0.1.0",
+    "eur_rate": 1.5
+  },
+  "curcy": {
+    "version": "2.4.3",
+    "eur_rate": 1.5,
+    "base_currency": "USD"
+  },
+  "expected": {
+    "units_eur": {
+      "arith": 1800,
+      "minmax": 2250,
+      "len": 1800,
+      "date": 7800,
+      "sumqty": 2250,
+      "customvar": 2100
+    },
+    "line_tax_eur": {
+      "arith": 1.8,
+      "minmax": 1.13,
+      "len": 0,
+      "date": 7.8,
+      "sumqty": 1.13,
+      "customvar": 0
+    },
+    "subtotal_eur": 180,
+    "tax_total_eur": 11.85,
+    "order_total_eur": 191.85
+  },
+  "providers": {
+    "opf": {
+      "provider": "opf",
+      "cases": {
+        "arith": {
+          "product": 29,
+          "group": 30,
+          "http_status": 200,
+          "expected_unit_eur": 18,
+          "tax_class": "standard",
+          "tax_rate": 10,
+          "formula": "round(sqrt(pow([field.x];2)))*[qty]",
+          "pageErrors": [],
+          "rendered": "x\nfee *\nChoose an option\na\nProduct total €15.00\nOptions total €0.00\nGrand total €15.00\nDisposable FormulaAdv arith quantity\nAdd to cart",
+          "preview": "Product total €15.00\nOptions total €2.00\nGrand total €17.00",
+          "cart_line": {
+            "quantity": 1,
+            "unit_price": "1800",
+            "line_total": "1800",
+            "line_tax": "180",
+            "item_data": [
+              {
+                "name": "x",
+                "value": "2",
+                "display": ""
+              },
+              {
+                "name": "fee",
+                "value": "a",
+                "display": "a <span class=\"opf-pricing-hint\">(+&euro;2.00)</span>"
+              }
+            ]
+          },
+          "unit_ok": true
+        },
+        "minmax": {
+          "product": 31,
+          "group": 32,
+          "http_status": 200,
+          "expected_unit_eur": 22.5,
+          "tax_class": "reduced-rate",
+          "tax_rate": 5,
+          "formula": "max(3;min([field.x];7))*[qty]",
+          "pageErrors": [],
+          "rendered": "x\nfee *\nChoose an option\na (+ &euro;3)\nProduct total €15.00\nOptions total €0.00\nGrand total €15.00\nDisposable FormulaAdv minmax quantity\nAdd to cart",
+          "preview": "Product total €15.00\nOptions total €5.00\nGrand total €20.00",
+          "cart_line": {
+            "quantity": 1,
+            "unit_price": "2250",
+            "line_total": "2250",
+            "line_tax": "113",
+            "item_data": [
+              {
+                "name": "x",
+                "value": "5",
+                "display": ""
+              },
+              {
+                "name": "fee",
+                "value": "a",
+                "display": "a <span class=\"opf-pricing-hint\">(+&euro;5.00)</span>"
+              }
+            ]
+          },
+          "unit_ok": true
+        },
+        "len": {
+          "product": 33,
+          "group": 34,
+          "http_status": 200,
+          "expected_unit_eur": 18,
+          "tax_class": "zero-rate",
+          "tax_rate": 0,
+          "formula": "len([field.t];true)*[qty]",
+          "pageErrors": [],
+          "rendered": "t\nfee *\nChoose an option\na\nProduct total €15.00\nOptions total €0.00\nGrand total €15.00\nDisposable FormulaAdv len quantity\nAdd to cart",
+          "preview": "Product total €15.00\nOptions total €2.00\nGrand total €17.00",
+          "cart_line": {
+            "quantity": 1,
+            "unit_price": "1800",
+            "line_total": "1800",
+            "line_tax": "0",
+            "item_data": [
+              {
+                "name": "t",
+                "value": "a b",
+                "display": ""
+              },
+              {
+                "name": "fee",
+                "value": "a",
+                "display": "a <span class=\"opf-pricing-hint\">(+&euro;2.00)</span>"
+              }
+            ]
+          },
+          "unit_ok": true
+        },
+        "date": {
+          "product": 35,
+          "group": 36,
+          "http_status": 200,
+          "expected_unit_eur": 78,
+          "tax_class": "standard",
+          "tax_rate": 10,
+          "formula": "dow([field.d])*7*[qty]",
+          "pageErrors": [],
+          "rendered": "d\nChoose date\nfee *\nChoose an option\na\nProduct total €15.00\nOptions total €0.00\nGrand total €15.00\nDisposable FormulaAdv date quantity\nAdd to cart",
+          "preview": "Product total €15.00\nOptions total €42.00\nGrand total €57.00",
+          "cart_line": {
+            "quantity": 1,
+            "unit_price": "7800",
+            "line_total": "7800",
+            "line_tax": "780",
+            "item_data": [
+              {
+                "name": "d",
+                "value": "10-03-2026",
+                "display": ""
+              },
+              {
+                "name": "fee",
+                "value": "a",
+                "display": "a <span class=\"opf-pricing-hint\">(+&euro;42.00)</span>"
+              }
+            ]
+          },
+          "unit_ok": true
+        },
+        "sumqty": {
+          "product": 37,
+          "group": 38,
+          "http_status": 200,
+          "expected_unit_eur": 22.5,
+          "tax_class": "reduced-rate",
+          "tax_rate": 5,
+          "formula": "sumQty(prints)*[qty]",
+          "pageErrors": [],
+          "rendered": "prints\nOakAsh\nfee *\nChoose an option\na (+ &euro;1)\nProduct total €15.00\nOptions total €0.00\nGrand total €15.00\nDisposable FormulaAdv sumqty quantity\nAdd to cart",
+          "preview": "Product total €15.00\nOptions total €5.00\nGrand total €20.00",
+          "cart_line": {
+            "quantity": 1,
+            "unit_price": "2250",
+            "line_total": "2250",
+            "line_tax": "113",
+            "item_data": [
+              {
+                "name": "prints",
+                "value": "Oak: 2, Ash: 3",
+                "display": ""
+              },
+              {
+                "name": "fee",
+                "value": "a",
+                "display": "a <span class=\"opf-pricing-hint\">(+&euro;5.00)</span>"
+              }
+            ]
+          },
+          "unit_ok": true
+        },
+        "customvar": {
+          "product": 39,
+          "group": 40,
+          "http_status": 200,
+          "expected_unit_eur": 21,
+          "tax_class": "zero-rate",
+          "tax_rate": 0,
+          "formula": "[var_rate]*[qty]",
+          "pageErrors": [],
+          "rendered": "note\nfee *\nChoose an option\na\nProduct total €15.00\nOptions total €0.00\nGrand total €15.00\nDisposable FormulaAdv customvar quantity\nAdd to cart",
+          "preview": "Product total €15.00\nOptions total €4.00\nGrand total €19.00",
+          "cart_line": {
+            "quantity": 1,
+            "unit_price": "2100",
+            "line_total": "2100",
+            "line_tax": "0",
+            "item_data": [
+              {
+                "name": "note",
+                "value": "ok",
+                "display": ""
+              },
+              {
+                "name": "fee",
+                "value": "a",
+                "display": "a <span class=\"opf-pricing-hint\">(+&euro;4.00)</span>"
+              }
+            ]
+          },
+          "unit_ok": true
+        }
+      },
+      "pageErrors": [],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "cookie": [
+        {
+          "name": "wmc_current_currency",
+          "value": "EUR",
+          "domain": "127.0.0.1",
+          "path": "/",
+          "expires": 1791328558.374742,
+          "httpOnly": false,
+          "secure": false,
+          "sameSite": "Lax"
+        },
+        {
+          "name": "wmc_current_currency_old",
+          "value": "EUR",
+          "domain": "127.0.0.1",
+          "path": "/",
+          "expires": 1791328558.374881,
+          "httpOnly": false,
+          "secure": false,
+          "sameSite": "Lax"
+        }
+      ],
+      "curcy_price_path": {
+        "note": "CURCY converts catalog prices through the general Woo price path (woocommerce_product_get_price -> wmc_get_price); this run never loads the WOOCS or Aelia adapter.",
+        "base_product_price_usd": 10,
+        "store_api_price_minor_units": "1500",
+        "store_api_currency": "EUR",
+        "expected_minor_units": 1500
+      },
+      "logged_in": true,
+      "cart": {
+        "currency": "EUR",
+        "total": "19186",
+        "tax": "1186",
+        "line_items": [
+          {
+            "id": 29,
+            "qty": 1,
+            "unit": "1800",
+            "line_total": "1800",
+            "line_tax": "180"
+          },
+          {
+            "id": 31,
+            "qty": 1,
+            "unit": "2250",
+            "line_total": "2250",
+            "line_tax": "113"
+          },
+          {
+            "id": 33,
+            "qty": 1,
+            "unit": "1800",
+            "line_total": "1800",
+            "line_tax": "0"
+          },
+          {
+            "id": 35,
+            "qty": 1,
+            "unit": "7800",
+            "line_total": "7800",
+            "line_tax": "780"
+          },
+          {
+            "id": 37,
+            "qty": 1,
+            "unit": "2250",
+            "line_total": "2250",
+            "line_tax": "113"
+          },
+          {
+            "id": 39,
+            "qty": 1,
+            "unit": "2100",
+            "line_total": "2100",
+            "line_tax": "0"
+          }
+        ]
+      },
+      "cart_total_ok": true,
+      "checkout_rendered": "Product\tSubtotal\nDisposable FormulaAdv arith  × 1\nx:\n\n2\n\nfee:\n\na (+€2.00)\n\n\t€18.00\nDisposable FormulaAdv minmax  × 1\nx:\n\n5\n\nfee:\n\na (+€5.00)\n\n\t€22.50\nDisposable FormulaAdv len  × 1\nt:\n\na b\n\nfee:\n\na (+€2.00)\n\n\t€18.00\nDisposable FormulaAdv date  × 1\nd:\n\n10-03-2026\n\nfee:\n\na (+€42.00)\n\n\t€78.00\nDisposable FormulaAdv sumqty  × 1\nprints:\n\nOak: 2, Ash: 3\n\nfee:\n\na (+€5.00)\n\n\t€22.50\nDisposable FormulaAdv customvar  × 1\nnote:\n\nok\n\nfee:\n\na (+€4.00)\n\n\t€21.00\nSubtotal\t€180.00\nVAT 10\t€9.60\nVAT 5\t€2.26\nTotal\t€191.86\n Cheque (proof)\n\nPlease send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.\n\n Cash on delivery (proof)\n\nYour personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our privac",
+      "payment_method": "cod",
+      "checkout_result": "success",
+      "checkout_raw": "{\"result\":\"success\",\"redirect\":\"http:\\/\\/127.0.0.1:8291\\/checkout\\/order-received\\/61\\/?key=wc_order_csoqf6Uq4lSUe\",\"order_id\":61}",
+      "order_id": 61,
+      "order": {
+        "id": 61,
+        "status": "processing",
+        "currency": "EUR",
+        "subtotal": 180,
+        "total_tax": "11.86",
+        "total": "191.86",
+        "payment_method": "cod",
+        "meta_keys": [],
+        "lines": [
+          {
+            "product_id": 29,
+            "qty": 1,
+            "subtotal": "18",
+            "total": "18",
+            "total_tax": "1.8",
+            "tax_class": "",
+            "meta": [
+              "x",
+              "fee",
+              "_opf_fields",
+              "_opf_cart_item_key",
+              "_opf_fields_snapshot"
+            ]
+          },
+          {
+            "product_id": 31,
+            "qty": 1,
+            "subtotal": "22.5",
+            "total": "22.5",
+            "total_tax": "1.13",
+            "tax_class": "reduced-rate",
+            "meta": [
+              "x",
+              "fee",
+              "_opf_fields",
+              "_opf_cart_item_key",
+              "_opf_fields_snapshot"
+            ]
+          },
+          {
+            "product_id": 33,
+            "qty": 1,
+            "subtotal": "18",
+            "total": "18",
+            "total_tax": "0",
+            "tax_class": "zero-rate",
+            "meta": [
+              "t",
+              "fee",
+              "_opf_fields",
+              "_opf_cart_item_key",
+              "_opf_fields_snapshot"
+            ]
+          },
+          {
+            "product_id": 35,
+            "qty": 1,
+            "subtotal": "78",
+            "total": "78",
+            "total_tax": "7.8",
+            "tax_class": "",
+            "meta": [
+              "d",
+              "fee",
+              "_opf_fields",
+              "_opf_cart_item_key",
+              "_opf_fields_snapshot"
+            ]
+          },
+          {
+            "product_id": 37,
+            "qty": 1,
+            "subtotal": "22.5",
+            "total": "22.5",
+            "total_tax": "1.13",
+            "tax_class": "reduced-rate",
+            "meta": [
+              "prints",
+              "fee",
+              "_opf_fields",
+              "_opf_cart_item_key",
+              "_opf_fields_snapshot"
+            ]
+          },
+          {
+            "product_id": 39,
+            "qty": 1,
+            "subtotal": "21",
+            "total": "21",
+            "total_tax": "0",
+            "tax_class": "zero-rate",
+            "meta": [
+              "note",
+              "fee",
+              "_opf_fields",
+              "_opf_cart_item_key",
+              "_opf_fields_snapshot"
+            ]
+          }
+        ]
+      },
+      "line_checks": {
+        "arith": {
+          "expected_unit_eur": 18,
+          "observed_total": 18,
+          "observed_total_tax": 1.8,
+          "expected_tax_eur": 1.8,
+          "unit_ok": true,
+          "tax_ok": true,
+          "tax_class": "",
+          "meta": [
+            "x",
+            "fee",
+            "_opf_fields",
+            "_opf_cart_item_key",
+            "_opf_fields_snapshot"
+          ],
+          "field_meta_present": true,
+          "formula": "round(sqrt(pow([field.x];2)))*[qty]",
+          "addon_base_expected": 2,
+          "addon_base_observed": 2,
+          "addon_ok": true
+        },
+        "minmax": {
+          "expected_unit_eur": 22.5,
+          "observed_total": 22.5,
+          "observed_total_tax": 1.13,
+          "expected_tax_eur": 1.13,
+          "unit_ok": true,
+          "tax_ok": true,
+          "tax_class": "reduced-rate",
+          "meta": [
+            "x",
+            "fee",
+            "_opf_fields",
+            "_opf_cart_item_key",
+            "_opf_fields_snapshot"
+          ],
+          "field_meta_present": true,
+          "formula": "max(3;min([field.x];7))*[qty]",
+          "addon_base_expected": 5,
+          "addon_base_observed": 5,
+          "addon_ok": true
+        },
+        "len": {
+          "expected_unit_eur": 18,
+          "observed_total": 18,
+          "observed_total_tax": 0,
+          "expected_tax_eur": 0,
+          "unit_ok": true,
+          "tax_ok": true,
+          "tax_class": "zero-rate",
+          "meta": [
+            "t",
+            "fee",
+            "_opf_fields",
+            "_opf_cart_item_key",
+            "_opf_fields_snapshot"
+          ],
+          "field_meta_present": true,
+          "formula": "len([field.t];true)*[qty]",
+          "addon_base_expected": 2,
+          "addon_base_observed": 2,
+          "addon_ok": true
+        },
+        "date": {
+          "expected_unit_eur": 78,
+          "observed_total": 78,
+          "observed_total_tax": 7.8,
+          "expected_tax_eur": 7.8,
+          "unit_ok": true,
+          "tax_ok": true,
+          "tax_class": "",
+          "meta": [
+            "d",
+            "fee",
+            "_opf_fields",
+            "_opf_cart_item_key",
+            "_opf_fields_snapshot"
+          ],
+          "field_meta_present": true,
+          "formula": "dow([field.d])*7*[qty]",
+          "addon_base_expected": 42,
+          "addon_base_observed": 42,
+          "addon_ok": true
+        },
+        "sumqty": {
+          "expected_unit_eur": 22.5,
+          "observed_total": 22.5,
+          "observed_total_tax": 1.13,
+          "expected_tax_eur": 1.13,
+          "unit_ok": true,
+          "tax_ok": true,
+          "tax_class": "reduced-rate",
+          "meta": [
+            "prints",
+            "fee",
+            "_opf_fields",
+            "_opf_cart_item_key",
+            "_opf_fields_snapshot"
+          ],
+          "field_meta_present": true,
+          "formula": "sumQty(prints)*[qty]",
+          "addon_base_expected": 5,
+          "addon_base_observed": 5,
+          "addon_ok": true
+        },
+        "customvar": {
+          "expected_unit_eur": 21,
+          "observed_total": 21,
+          "observed_total_tax": 0,
+          "expected_tax_eur": 0,
+          "unit_ok": true,
+          "tax_ok": true,
+          "tax_class": "zero-rate",
+          "meta": [
+            "note",
+            "fee",
+            "_opf_fields",
+            "_opf_cart_item_key",
+            "_opf_fields_snapshot"
+          ],
+          "field_meta_present": true,
+          "formula": "[var_rate]*[qty]",
+          "addon_base_expected": 4,
+          "addon_base_observed": 4,
+          "addon_ok": true
+        }
+      },
+      "order_currency_ok": true,
+      "order_total_ok": true,
+      "all_addons_ok": true,
+      "field_meta_key": "_opf_fields",
+      "field_meta_payload": "{\"30\":{\"x\":\"2\",\"fee\":\"a\"}}",
+      "all_units_ok": true,
+      "all_tax_ok": true,
+      "all_meta_ok": true,
+      "refund": {
+        "refund_id": 62,
+        "order_total": "191.86",
+        "refunded": 2,
+        "status": "processing"
+      },
+      "refund_ok": true,
+      "order_again_action": 1,
+      "order_again": {
+        "currency": "EUR",
+        "lines": [
+          {
+            "id": 29,
+            "qty": 1,
+            "unit": "1800",
+            "line_total": "1800"
+          },
+          {
+            "id": 31,
+            "qty": 1,
+            "unit": "2250",
+            "line_total": "2250"
+          },
+          {
+            "id": 33,
+            "qty": 1,
+            "unit": "1800",
+            "line_total": "1800"
+          },
+          {
+            "id": 35,
+            "qty": 1,
+            "unit": "7800",
+            "line_total": "7800"
+          },
+          {
+            "id": 37,
+            "qty": 1,
+            "unit": "2250",
+            "line_total": "2250"
+          },
+          {
+            "id": 39,
+            "qty": 1,
+            "unit": "2100",
+            "line_total": "2100"
+          }
+        ]
+      },
+      "order_again_ok": true,
+      "order_again_total": "19186"
+    },
+    "wapf": {
+      "provider": "wapf",
+      "cases": {
+        "arith": {
+          "product": 29,
+          "group": 30,
+          "http_status": 200,
+          "expected_unit_eur": 18,
+          "tax_class": "standard",
+          "tax_rate": 10,
+          "formula": "round(sqrt(pow([field.x];2)))*[qty]",
+          "pageErrors": [],
+          "rendered": "x\nfee *\nChoose an option\na (€0.00)\nProduct total\n€15.00\nOptions total\n€0.00\nGrand total\n€15.00\nDisposable FormulaAdv arith quantity\nAdd to cart",
+          "preview": "Product total\n€15.00\nOptions total\n€2.00\nGrand total\n€17.00",
+          "cart_line": {
+            "quantity": 1,
+            "unit_price": "1800",
+            "line_total": "1800",
+            "line_tax": "180",
+            "item_data": []
+          },
+          "unit_ok": true
+        },
+        "minmax": {
+          "product": 31,
+          "group": 32,
+          "http_status": 200,
+          "expected_unit_eur": 22.5,
+          "tax_class": "reduced-rate",
+          "tax_rate": 5,
+          "formula": "max(3;min([field.x];7))*[qty]",
+          "pageErrors": [],
+          "rendered": "x\nfee *\nChoose an option\na (+€3.00)\nProduct total\n€15.00\nOptions total\n€0.00\nGrand total\n€15.00\nDisposable FormulaAdv minmax quantity\nAdd to cart",
+          "preview": "Product total\n€15.00\nOptions total\n€5.00\nGrand total\n€20.00",
+          "cart_line": {
+            "quantity": 1,
+            "unit_price": "2250",
+            "line_total": "2250",
+            "line_tax": "113",
+            "item_data": []
+          },
+          "unit_ok": true
+        },
+        "len": {
+          "product": 33,
+          "group": 34,
+          "http_status": 200,
+          "expected_unit_eur": 18,
+          "tax_class": "zero-rate",
+          "tax_rate": 0,
+          "formula": "len([field.t];true)*[qty]",
+          "pageErrors": [],
+          "rendered": "t\nfee *\nChoose an option\na (€0.00)\nProduct total\n€15.00\nOptions total\n€0.00\nGrand total\n€15.00\nDisposable FormulaAdv len quantity\nAdd to cart",
+          "preview": "Product total\n€15.00\nOptions total\n€2.00\nGrand total\n€17.00",
+          "cart_line": {
+            "quantity": 1,
+            "unit_price": "1800",
+            "line_total": "1800",
+            "line_tax": "0",
+            "item_data": []
+          },
+          "unit_ok": true
+        },
+        "date": {
+          "product": 35,
+          "group": 36,
+          "http_status": 200,
+          "expected_unit_eur": 78,
+          "tax_class": "standard",
+          "tax_rate": 10,
+          "formula": "dow([field.d])*7*[qty]",
+          "pageErrors": [],
+          "rendered": "d\nfee *\nChoose an option\na (€0.00)\nProduct total\n€15.00\nOptions total\n€0.00\nGrand total\n€15.00\nDisposable FormulaAdv date quantity\nAdd to cart",
+          "preview": "Product total\n€15.00\nOptions total\n€42.00\nGrand total\n€57.00",
+          "cart_line": {
+            "quantity": 1,
+            "unit_price": "7800",
+            "line_total": "7800",
+            "line_tax": "780",
+            "item_data": []
+          },
+          "unit_ok": true
+        },
+        "sumqty": {
+          "product": 37,
+          "group": 38,
+          "http_status": 200,
+          "expected_unit_eur": 22.5,
+          "tax_class": "reduced-rate",
+          "tax_rate": 5,
+          "formula": "sumQty(prints)*[qty]",
+          "pageErrors": [],
+          "rendered": "prints\nOak quantity\nOak\nAsh quantity\nAsh\nfee *\nChoose an option\na (€0.00)\nProduct total\n€15.00\nOptions total\n€0.00\nGrand total\n€15.00\nDisposable FormulaAdv sumqty quantity\nAdd to cart",
+          "preview": "Product total\n€15.00\nOptions total\n€5.00\nGrand total\n€20.00",
+          "cart_line": {
+            "quantity": 1,
+            "unit_price": "2250",
+            "line_total": "2250",
+            "line_tax": "113",
+            "item_data": []
+          },
+          "unit_ok": true
+        },
+        "customvar": {
+          "product": 39,
+          "group": 40,
+          "http_status": 200,
+          "expected_unit_eur": 21,
+          "tax_class": "zero-rate",
+          "tax_rate": 0,
+          "formula": "[var_rate]*[qty]",
+          "pageErrors": [],
+          "rendered": "note\nfee *\nChoose an option\na (+€4.00)\nProduct total\n€15.00\nOptions total\n€0.00\nGrand total\n€15.00\nDisposable FormulaAdv customvar quantity\nAdd to cart",
+          "preview": "Product total\n€15.00\nOptions total\n€4.00\nGrand total\n€19.00",
+          "cart_line": {
+            "quantity": 1,
+            "unit_price": "2100",
+            "line_total": "2100",
+            "line_tax": "0",
+            "item_data": []
+          },
+          "unit_ok": true
+        }
+      },
+      "pageErrors": [],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "cookie": [
+        {
+          "name": "wmc_current_currency",
+          "value": "EUR",
+          "domain": "127.0.0.1",
+          "path": "/",
+          "expires": 1791328586.617207,
+          "httpOnly": false,
+          "secure": false,
+          "sameSite": "Lax"
+        },
+        {
+          "name": "wmc_current_currency_old",
+          "value": "EUR",
+          "domain": "127.0.0.1",
+          "path": "/",
+          "expires": 1791328586.617281,
+          "httpOnly": false,
+          "secure": false,
+          "sameSite": "Lax"
+        }
+      ],
+      "curcy_price_path": {
+        "note": "CURCY converts catalog prices through the general Woo price path (woocommerce_product_get_price -> wmc_get_price); this run never loads the WOOCS or Aelia adapter.",
+        "base_product_price_usd": 10,
+        "store_api_price_minor_units": "1500",
+        "store_api_currency": "EUR",
+        "expected_minor_units": 1500
+      },
+      "logged_in": true,
+      "cart": {
+        "currency": "EUR",
+        "total": "19186",
+        "tax": "1186",
+        "line_items": [
+          {
+            "id": 29,
+            "qty": 1,
+            "unit": "1800",
+            "line_total": "1800",
+            "line_tax": "180"
+          },
+          {
+            "id": 31,
+            "qty": 1,
+            "unit": "2250",
+            "line_total": "2250",
+            "line_tax": "113"
+          },
+          {
+            "id": 33,
+            "qty": 1,
+            "unit": "1800",
+            "line_total": "1800",
+            "line_tax": "0"
+          },
+          {
+            "id": 35,
+            "qty": 1,
+            "unit": "7800",
+            "line_total": "7800",
+            "line_tax": "780"
+          },
+          {
+            "id": 37,
+            "qty": 1,
+            "unit": "2250",
+            "line_total": "2250",
+            "line_tax": "113"
+          },
+          {
+            "id": 39,
+            "qty": 1,
+            "unit": "2100",
+            "line_total": "2100",
+            "line_tax": "0"
+          }
+        ]
+      },
+      "cart_total_ok": true,
+      "checkout_rendered": "Product\tSubtotal\nDisposable FormulaAdv arith  × 1\nx:\n\n2\n\nfee:\n\na (+€3.00)\n\n\t€18.00\nDisposable FormulaAdv minmax  × 1\nx:\n\n5\n\nfee:\n\na (+€7.50)\n\n\t€22.50\nDisposable FormulaAdv len  × 1\nt:\n\na b\n\nfee:\n\na (+€3.00)\n\n\t€18.00\nDisposable FormulaAdv date  × 1\nd:\n\n10-03-2026\n\nfee:\n\na (+€63.00)\n\n\t€78.00\nDisposable FormulaAdv sumqty  × 1\nprints:\n\nOak: 2 (+€0.00), Ash: 3 (+€0.00)\n\nfee:\n\na (+€7.50)\n\n\t€22.50\nDisposable FormulaAdv customvar  × 1\nnote:\n\nok\n\nfee:\n\na (+€6.00)\n\n\t€21.00\nSubtotal\t€180.00\nVAT 10\t€9.60\nVAT 5\t€2.26\nTotal\t€191.86\n Cheque (proof)\n\nPlease send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.\n\n Cash on delivery (proof)\n\nYour personal data will be used to process your order, support your experience throughout this website, and for other purposes descr",
+      "payment_method": "cheque",
+      "checkout_result": "success",
+      "checkout_raw": "{\"result\":\"success\",\"redirect\":\"http:\\/\\/127.0.0.1:8291\\/checkout\\/order-received\\/63\\/?key=wc_order_H9GZfv1caXbCP\",\"order_id\":63}",
+      "order_id": 63,
+      "order": {
+        "id": 63,
+        "status": "on-hold",
+        "currency": "EUR",
+        "subtotal": 180,
+        "total_tax": "11.86",
+        "total": "191.86",
+        "payment_method": "cheque",
+        "meta_keys": [],
+        "lines": [
+          {
+            "product_id": 29,
+            "qty": 1,
+            "subtotal": "18",
+            "total": "18",
+            "total_tax": "1.8",
+            "tax_class": "",
+            "meta": [
+              "x",
+              "fee",
+              "_wapf_meta"
+            ]
+          },
+          {
+            "product_id": 31,
+            "qty": 1,
+            "subtotal": "22.5",
+            "total": "22.5",
+            "total_tax": "1.13",
+            "tax_class": "reduced-rate",
+            "meta": [
+              "x",
+              "fee",
+              "_wapf_meta"
+            ]
+          },
+          {
+            "product_id": 33,
+            "qty": 1,
+            "subtotal": "18",
+            "total": "18",
+            "total_tax": "0",
+            "tax_class": "zero-rate",
+            "meta": [
+              "t",
+              "fee",
+              "_wapf_meta"
+            ]
+          },
+          {
+            "product_id": 35,
+            "qty": 1,
+            "subtotal": "78",
+            "total": "78",
+            "total_tax": "7.8",
+            "tax_class": "",
+            "meta": [
+              "d",
+              "fee",
+              "_wapf_meta"
+            ]
+          },
+          {
+            "product_id": 37,
+            "qty": 1,
+            "subtotal": "22.5",
+            "total": "22.5",
+            "total_tax": "1.13",
+            "tax_class": "reduced-rate",
+            "meta": [
+              "prints",
+              "fee",
+              "_wapf_meta"
+            ]
+          },
+          {
+            "product_id": 39,
+            "qty": 1,
+            "subtotal": "21",
+            "total": "21",
+            "total_tax": "0",
+            "tax_class": "zero-rate",
+            "meta": [
+              "note",
+              "fee",
+              "_wapf_meta"
+            ]
+          }
+        ]
+      },
+      "line_checks": {
+        "arith": {
+          "expected_unit_eur": 18,
+          "observed_total": 18,
+          "observed_total_tax": 1.8,
+          "expected_tax_eur": 1.8,
+          "unit_ok": true,
+          "tax_ok": true,
+          "tax_class": "",
+          "meta": [
+            "x",
+            "fee",
+            "_wapf_meta"
+          ],
+          "field_meta_present": true,
+          "formula": "round(sqrt(pow([field.x];2)))*[qty]",
+          "addon_base_expected": 2,
+          "addon_base_observed": 2,
+          "addon_ok": true
+        },
+        "minmax": {
+          "expected_unit_eur": 22.5,
+          "observed_total": 22.5,
+          "observed_total_tax": 1.13,
+          "expected_tax_eur": 1.13,
+          "unit_ok": true,
+          "tax_ok": true,
+          "tax_class": "reduced-rate",
+          "meta": [
+            "x",
+            "fee",
+            "_wapf_meta"
+          ],
+          "field_meta_present": true,
+          "formula": "max(3;min([field.x];7))*[qty]",
+          "addon_base_expected": 5,
+          "addon_base_observed": 5,
+          "addon_ok": true
+        },
+        "len": {
+          "expected_unit_eur": 18,
+          "observed_total": 18,
+          "observed_total_tax": 0,
+          "expected_tax_eur": 0,
+          "unit_ok": true,
+          "tax_ok": true,
+          "tax_class": "zero-rate",
+          "meta": [
+            "t",
+            "fee",
+            "_wapf_meta"
+          ],
+          "field_meta_present": true,
+          "formula": "len([field.t];true)*[qty]",
+          "addon_base_expected": 2,
+          "addon_base_observed": 2,
+          "addon_ok": true
+        },
+        "date": {
+          "expected_unit_eur": 78,
+          "observed_total": 78,
+          "observed_total_tax": 7.8,
+          "expected_tax_eur": 7.8,
+          "unit_ok": true,
+          "tax_ok": true,
+          "tax_class": "",
+          "meta": [
+            "d",
+            "fee",
+            "_wapf_meta"
+          ],
+          "field_meta_present": true,
+          "formula": "dow([field.d])*7*[qty]",
+          "addon_base_expected": 42,
+          "addon_base_observed": 42,
+          "addon_ok": true
+        },
+        "sumqty": {
+          "expected_unit_eur": 22.5,
+          "observed_total": 22.5,
+          "observed_total_tax": 1.13,
+          "expected_tax_eur": 1.13,
+          "unit_ok": true,
+          "tax_ok": true,
+          "tax_class": "reduced-rate",
+          "meta": [
+            "prints",
+            "fee",
+            "_wapf_meta"
+          ],
+          "field_meta_present": true,
+          "formula": "sumQty(prints)*[qty]",
+          "addon_base_expected": 5,
+          "addon_base_observed": 5,
+          "addon_ok": true
+        },
+        "customvar": {
+          "expected_unit_eur": 21,
+          "observed_total": 21,
+          "observed_total_tax": 0,
+          "expected_tax_eur": 0,
+          "unit_ok": true,
+          "tax_ok": true,
+          "tax_class": "zero-rate",
+          "meta": [
+            "note",
+            "fee",
+            "_wapf_meta"
+          ],
+          "field_meta_present": true,
+          "formula": "[var_rate]*[qty]",
+          "addon_base_expected": 4,
+          "addon_base_observed": 4,
+          "addon_ok": true
+        }
+      },
+      "order_currency_ok": true,
+      "order_total_ok": true,
+      "all_addons_ok": true,
+      "field_meta_key": "_wapf_meta",
+      "field_meta_payload": {
+        "version": "3.1.5",
+        "fields": {
+          "x": {
+            "id": "x",
+            "type": "text",
+            "label": "x",
+            "value": "2",
+            "values": [
+              {
+                "label": "2",
+                "price": 0,
+                "price_type": "none"
+              }
+            ]
+          },
+          "fee": {
+            "id": "fee",
+            "type": "select",
+            "label": "fee",
+            "value": "a (+&euro;3.00)",
+            "values": [
+              {
+                "label": "a",
+                "price": "(round(sqrt(pow([field.x];2)))*[qty])",
+                "price_type": "fx",
+                "slug": "a",
+                "calc_price": 2,
+                "pricing_hint": "(+&euro;3.00)"
+              }
+            ]
+          }
+        },
+        "settings": {
+          "x": [
+            {
+              "field": "x",
+              "hide": false
+            }
+          ],
+          "fee": [
+            {
+              "field": "fee",
+              "hide": false
+            }
+          ]
+        },
+        "cart_item_key": "152c3b1dcd501b517c521defbc6e0942"
+      },
+      "all_units_ok": true,
+      "all_tax_ok": true,
+      "all_meta_ok": true,
+      "refund": {
+        "refund_id": 64,
+        "order_total": "191.86",
+        "refunded": 2,
+        "status": "on-hold"
+      },
+      "refund_ok": true,
+      "order_again_action": 1,
+      "order_again": {
+        "currency": "EUR",
+        "lines": [
+          {
+            "id": 29,
+            "qty": 1,
+            "unit": "1800",
+            "line_total": "1800"
+          },
+          {
+            "id": 31,
+            "qty": 1,
+            "unit": "2250",
+            "line_total": "2250"
+          },
+          {
+            "id": 33,
+            "qty": 1,
+            "unit": "1800",
+            "line_total": "1800"
+          },
+          {
+            "id": 35,
+            "qty": 1,
+            "unit": "7800",
+            "line_total": "7800"
+          },
+          {
+            "id": 37,
+            "qty": 1,
+            "unit": "2250",
+            "line_total": "2250"
+          },
+          {
+            "id": 39,
+            "qty": 1,
+            "unit": "2100",
+            "line_total": "2100"
+          }
+        ]
+      },
+      "order_again_ok": true,
+      "order_again_total": "19186"
+    }
+  }
+}

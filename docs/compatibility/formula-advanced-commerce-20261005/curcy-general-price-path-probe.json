@@ -1,0 +1,16 @@
+{
+    "active_plugins": [
+        "woocommerce\/woocommerce.php",
+        "woocommerce-multi-currency\/woocommerce-multi-currency.php",
+        "open-product-fields-for-woocommerce\/open-product-fields-for-woocommerce.php"
+    ],
+    "opf_active": true,
+    "curcy_active": true,
+    "woocs_class_present": false,
+    "aelia_class_present": false,
+    "curcy_wapf_pro_integration_file": true,
+    "curcy_opf_integration_file": false,
+    "curcy_registers_product_get_price": true,
+    "curcy_converter": true,
+    "curcy_reverter": true
+}

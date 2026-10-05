@@ -1,0 +1,59 @@
+{
+    "enable": 1,
+    "enable_multi_payment": 1,
+    "currency_default": "USD",
+    "currency": [
+        "USD",
+        "EUR"
+    ],
+    "currency_rate": [
+        "1",
+        "1.5"
+    ],
+    "currency_rate_fee": [
+        0,
+        0
+    ],
+    "currency_rate_fee_type": [
+        "fixed",
+        "fixed"
+    ],
+    "currency_decimals": [
+        2,
+        2
+    ],
+    "currency_pos": [
+        "left",
+        "left"
+    ],
+    "currency_custom": [
+        "",
+        ""
+    ],
+    "currency_thousand_separator": [
+        ",",
+        ","
+    ],
+    "currency_decimal_separator": [
+        ".",
+        "."
+    ],
+    "currency_flag": [
+        "",
+        ""
+    ],
+    "currency_hidden": [
+        0,
+        0
+    ],
+    "enable_fixed_price": 0,
+    "ignore_exchange_rate": 0,
+    "currency_core": "USD",
+    "decimals_core": 2,
+    "key": "ZIMEEK0000000005603B1EBE59708542",
+    "checkout_currency": "USD",
+    "checkout_currency_args": [
+        "USD",
+        "EUR"
+    ]
+}
