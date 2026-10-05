@@ -1290,4 +1290,194 @@ final class WapfMapperTest extends TestCase {
 		$this->assertSame( 'len([x]) * 1', $mapped['group']['fields'][1]['pricing']['formula'] );
 		$this->assertFalse( $mapped['group']['fields'][1]['pricing']['per_unit'] );
 	}
+
+	public function test_number_field_import_preserves_decimal_bounds_default_and_placeholder(): void {
+		$mapped = WapfMapper::map( [ 'fields' => [ [
+			'id' => 'qty', 'label' => 'Quantity', 'type' => 'number', 'required' => true,
+			'options' => [
+				'number_type' => 'any',
+				'minimum' => '0.5',
+				'maximum' => '10',
+				'default' => '2.5',
+				'placeholder' => 'Enter amount',
+			],
+		] ] ] );
+		$field = $mapped['group']['fields'][0];
+
+		$this->assertFalse( $mapped['needs_review'] );
+		$this->assertSame( 'number', $field['type'] );
+		$this->assertSame( 0.5, $field['min'] );
+		$this->assertSame( 10.0, $field['max'] );
+		$this->assertSame( 'decimal', $field['number_mode'] );
+		$this->assertSame( '2.5', $field['default'] );
+		$this->assertSame( 'Enter amount', $field['placeholder'] );
+		$this->assertArrayNotHasKey( 'step', $field );
+	}
+
+	public function test_number_field_int_number_type_maps_to_integer_mode(): void {
+		$mapped = WapfMapper::map( [ 'fields' => [ [
+			'id' => 'count', 'label' => 'Count', 'type' => 'number',
+			'options' => [ 'number_type' => 'int', 'minimum' => '1', 'maximum' => '5', 'default' => '3' ],
+		] ] ] );
+		$field = $mapped['group']['fields'][0];
+
+		$this->assertFalse( $mapped['needs_review'] );
+		$this->assertSame( 'integer', $field['number_mode'] );
+		$this->assertSame( 1.0, $field['min'] );
+		$this->assertSame( 5.0, $field['max'] );
+		$this->assertSame( '3', $field['default'] );
+	}
+
+	public function test_number_field_absent_number_type_uses_wapf_integer_default(): void {
+		$mapped = WapfMapper::map( [ 'fields' => [
+			[ 'id' => 'qty', 'label' => 'Qty', 'type' => 'number' ],
+		] ] );
+
+		$this->assertFalse( $mapped['needs_review'] );
+		$this->assertSame( 'integer', $mapped['group']['fields'][0]['number_mode'] );
+	}
+
+	public function test_number_field_numeric_number_type_maps_to_decimal_step(): void {
+		// WAPF writes `number_type` verbatim into the step attribute, so a
+		// numeric value behaves as a decimal field with that increment.
+		$mapped = WapfMapper::map( [ 'fields' => [ [
+			'id' => 'qty', 'label' => 'Qty', 'type' => 'number',
+			'options' => [ 'number_type' => '0.25' ],
+		] ] ] );
+		$field = $mapped['group']['fields'][0];
+
+		$this->assertFalse( $mapped['needs_review'] );
+		$this->assertSame( 'decimal', $field['number_mode'] );
+		$this->assertSame( 0.25, $field['step'] );
+	}
+
+	public function test_number_field_stored_step_is_mapped_and_flagged_for_review(): void {
+		// WAPF 3.1.5 never serializes `step`; a payload carrying one is
+		// preserved but stays review-required.
+		$mapped = WapfMapper::map( [ 'fields' => [ [
+			'id' => 'qty', 'label' => 'Qty', 'type' => 'number',
+			'options' => [ 'number_type' => 'any', 'step' => '0.5' ],
+		] ] ] );
+		$field = $mapped['group']['fields'][0];
+
+		$this->assertTrue( $mapped['needs_review'] );
+		$this->assertSame( 0.5, $field['step'] );
+		$this->assertSame( 'decimal', $field['number_mode'] );
+		$this->assertStringContainsString( 'stored step', implode( ' ', $mapped['notes'] ) );
+	}
+
+	public function test_number_field_plus_min_display_and_hide_zero_flag_review(): void {
+		$mapped = WapfMapper::map( [ 'fields' => [ [
+			'id' => 'qty', 'label' => 'Qty', 'type' => 'number',
+			'options' => [ 'display' => 'plus_min', 'hide_zero' => true ],
+		] ] ] );
+
+		$this->assertTrue( $mapped['needs_review'] );
+		$notes = implode( ' ', $mapped['notes'] );
+		$this->assertStringContainsString( 'plus/minus buttons', $notes );
+		$this->assertStringContainsString( 'hides zero values', $notes );
+		$this->assertArrayNotHasKey( 'display', $mapped['group']['fields'][0] );
+	}
+
+	public function test_number_field_inverted_bounds_keep_minimum_and_flag_review(): void {
+		// WAPF stores any min/max pair; OPF normalization rejects min > max.
+		$mapped = WapfMapper::map( [ 'fields' => [ [
+			'id' => 'qty', 'label' => 'Qty', 'type' => 'number',
+			'options' => [ 'minimum' => '10', 'maximum' => '5' ],
+		] ] ] );
+		$field = $mapped['group']['fields'][0];
+
+		$this->assertTrue( $mapped['needs_review'] );
+		$this->assertSame( 10.0, $field['min'] );
+		$this->assertArrayNotHasKey( 'max', $field );
+		$this->assertStringContainsString( 'above its maximum', implode( ' ', $mapped['notes'] ) );
+	}
+
+	public function test_number_field_non_numeric_bound_flags_review(): void {
+		$mapped = WapfMapper::map( [ 'fields' => [ [
+			'id' => 'qty', 'label' => 'Qty', 'type' => 'number',
+			'options' => [ 'minimum' => 'soon' ],
+		] ] ] );
+
+		$this->assertTrue( $mapped['needs_review'] );
+		$this->assertArrayNotHasKey( 'min', $mapped['group']['fields'][0] );
+		$this->assertStringContainsString( 'non-numeric minimum bound', implode( ' ', $mapped['notes'] ) );
+	}
+
+	public function test_number_field_out_of_bounds_default_is_dropped_not_fatal(): void {
+		// OPF normalize() rejects a default that violates its constraints; the
+		// mapper drops it with a review note instead of failing the import.
+		$mapped = WapfMapper::map( [ 'fields' => [ [
+			'id' => 'qty', 'label' => 'Qty', 'type' => 'number',
+			'options' => [ 'minimum' => '5', 'default' => '2' ],
+		] ] ] );
+		$field = $mapped['group']['fields'][0];
+
+		$this->assertTrue( $mapped['needs_review'] );
+		$this->assertSame( 5.0, $field['min'] );
+		$this->assertArrayNotHasKey( 'default', $field );
+		$this->assertStringContainsString( 'violates its imported constraints', implode( ' ', $mapped['notes'] ) );
+	}
+
+	public function test_number_field_fractional_default_in_integer_mode_flags_review(): void {
+		$mapped = WapfMapper::map( [ 'fields' => [ [
+			'id' => 'qty', 'label' => 'Qty', 'type' => 'number',
+			'options' => [ 'number_type' => 'int', 'default' => '2.5' ],
+		] ] ] );
+		$field = $mapped['group']['fields'][0];
+
+		$this->assertTrue( $mapped['needs_review'] );
+		$this->assertSame( 'integer', $field['number_mode'] );
+		$this->assertArrayNotHasKey( 'default', $field );
+	}
+
+	public function test_number_field_unrecognized_options_flag_review(): void {
+		$mapped = WapfMapper::map( [ 'fields' => [ [
+			'id' => 'qty', 'label' => 'Qty', 'type' => 'number',
+			'options' => [ 'number_type' => 'any', 'custom_flag' => 'x' ],
+		] ] ] );
+
+		$this->assertTrue( $mapped['needs_review'] );
+		$this->assertStringContainsString( 'unrecognized WAPF options', implode( ' ', $mapped['notes'] ) );
+		$this->assertStringContainsString( 'custom_flag', implode( ' ', $mapped['notes'] ) );
+	}
+
+	public function test_number_field_invalid_number_type_falls_back_to_integer_with_review(): void {
+		$mapped = WapfMapper::map( [ 'fields' => [ [
+			'id' => 'qty', 'label' => 'Qty', 'type' => 'number',
+			'options' => [ 'number_type' => 'fraction' ],
+		] ] ] );
+
+		$this->assertTrue( $mapped['needs_review'] );
+		$this->assertSame( 'integer', $mapped['group']['fields'][0]['number_mode'] );
+		$this->assertStringContainsString( 'unrecognized number_type', implode( ' ', $mapped['notes'] ) );
+	}
+
+	public function test_toggle_custom_true_false_state_labels_flag_review(): void {
+		$mapped = WapfMapper::map( [ 'fields' => [ [
+			'id' => 'wrap', 'label' => 'Gift', 'type' => 'true-false',
+			'options' => [
+				'message' => 'Wrap & ribbon', 'default' => 'checked',
+				'label_true' => 'Yes, please', 'label_false' => 'No thanks',
+			],
+		] ] ] );
+		$field = $mapped['group']['fields'][0];
+
+		$this->assertTrue( $mapped['needs_review'] );
+		$this->assertSame( 'Wrap & ribbon', $field['message'] );
+		$this->assertSame( '1', $field['default'] );
+		$notes = implode( ' ', $mapped['notes'] );
+		$this->assertStringContainsString( 'label_true', $notes );
+		$this->assertStringContainsString( 'label_false', $notes );
+	}
+
+	public function test_toggle_default_state_labels_do_not_flag_review(): void {
+		$mapped = WapfMapper::map( [ 'fields' => [ [
+			'id' => 'wrap', 'label' => 'Gift', 'type' => 'true-false',
+			'options' => [ 'label_true' => 'true', 'label_false' => 'false' ],
+		] ] ] );
+
+		$this->assertFalse( $mapped['needs_review'] );
+		$this->assertSame( '0', $mapped['group']['fields'][0]['default'] );
+	}
 }

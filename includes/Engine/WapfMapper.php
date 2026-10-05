@@ -224,6 +224,7 @@ final class WapfMapper {
 				$repeat = [];
 			}
 			$date_settings = 'date' === $wapf_type ? self::map_date_settings( $wapf_field, $notes, $needs_review ) : [];
+			$number_settings = 'number' === $wapf_type ? self::map_number_settings( $wapf_field, $notes, $needs_review ) : [];
 			$calc_settings = 'calc' === $wapf_type ? self::map_calc_settings( $wapf_field, $notes, $needs_review, $opf_ids_by_wapf_id, $source_order_by_wapf_id, (int) $index, $sumqty_references ) : [];
 			$clone_disabled = in_array( $wapf_field['clone']['enabled'] ?? false, [ false, 0, '0', 'false', null ], true );
 			if ( 'calc' === $wapf_type && ! $clone_disabled ) {
@@ -241,6 +242,18 @@ final class WapfMapper {
 					$needs_review = true;
 				}
 				$toggle_settings['default'] = 'checked' === $default ? '1' : '0';
+				// WAPF `label_true`/`label_false` are alternate cart/checkout/order
+				// captions for the checked/unchecked states; OPF renders its
+				// translated Yes/No values and has no per-field storage, so
+				// custom captions are flagged rather than silently dropped.
+				foreach ( [ 'label_true' => 'true', 'label_false' => 'false' ] as $state_key => $state_default ) {
+					$state_label = $wapf_field['options'][ $state_key ] ?? $wapf_field[ $state_key ] ?? null;
+					if ( null === $state_label || ( is_scalar( $state_label ) && $state_default === (string) $state_label ) ) {
+						continue;
+					}
+					$notes[] = sprintf( 'toggle field "%s" uses custom %s text %s for cart/order display; OPF renders its translated Yes/No values instead and the label needs review.', $label, $state_key, self::review_value( $state_label ) );
+					$needs_review = true;
+				}
 			}
 			$text_settings = [];
 			if ( in_array( $wapf_type, [ 'text', 'url' ], true ) && is_array( $wapf_field['options'] ?? null ) && array_key_exists( 'default', $wapf_field['options'] ) ) {
@@ -293,7 +306,7 @@ final class WapfMapper {
 					// the import verbatim; Calculator::field_weight substitutes
 					// [qty]/[x] and floatvals exactly like WAPF 3.1.5.
 					'weight' => self::map_weight( $wapf_field ),
-				], $image_swatch_settings, $image_quantity_settings, $color_swatch_settings, $selection_limits, $checkbox_limits, $checkbox_columns, $text_validation, $quantity_limits, $date_settings, $calc_settings, $upload_settings, $products_settings, $toggle_settings, $text_settings )
+				], $image_swatch_settings, $image_quantity_settings, $color_swatch_settings, $selection_limits, $checkbox_limits, $checkbox_columns, $text_validation, $quantity_limits, $date_settings, $number_settings, $calc_settings, $upload_settings, $products_settings, $toggle_settings, $text_settings )
 			);
 			if ( 'paragraph' === $field['type'] ) {
 				if ( ! empty( $wapf_field['required'] ) ) {
@@ -615,6 +628,134 @@ final class WapfMapper {
 	private static function review_value( $value ): string {
 		$encoded = function_exists( 'wp_json_encode' ) ? wp_json_encode( $value ) : json_encode( $value );
 		return false === $encoded ? '[unserializable value]' : (string) $encoded;
+	}
+
+	/**
+	 * Map WAPF `number` field settings to the OPF number schema.
+	 *
+	 * WAPF Extended 3.1.5 serializes `number_type` (int/any, default int),
+	 * `display` (default/plus_min), `default`, `placeholder`, `minimum`,
+	 * `maximum`, and `hide_zero` under `options`; there is no stored `step`
+	 * key — its renderer only emits the literal `step="any"` for
+	 * `number_type` != 'int' (class-html.php), so a numeric `number_type`
+	 * behaves as a decimal field with that increment. OPF equivalents are
+	 * `min`/`max`/`step` floats plus `number_mode` ('integer'|'decimal').
+	 * The plus/minus stepper is a global OPF setting rather than a
+	 * per-field display mode, and OPF has no `hide_zero` equivalent, so
+	 * those options are flagged for review instead of silently dropped.
+	 *
+	 * @param array<string,mixed> $wapf_field WAPF field.
+	 * @return array<string,mixed>
+	 */
+	private static function map_number_settings( array $wapf_field, array &$notes, bool &$needs_review ): array {
+		$options  = is_array( $wapf_field['options'] ?? null ) ? $wapf_field['options'] : [];
+		$label    = (string) ( $wapf_field['label'] ?? $wapf_field['id'] ?? '?' );
+		$settings = [];
+
+		foreach ( [ 'minimum' => 'min', 'maximum' => 'max' ] as $source => $target ) {
+			$raw = $options[ $source ] ?? $wapf_field[ $source ] ?? null;
+			if ( null === $raw || '' === $raw ) {
+				continue;
+			}
+			if ( is_numeric( $raw ) ) {
+				$settings[ $target ] = (float) $raw;
+			} else {
+				$notes[] = sprintf( 'number field "%s" has a non-numeric %s bound %s; the bound was not imported and needs review.', $label, $source, self::review_value( $raw ) );
+				$needs_review = true;
+			}
+		}
+		if ( isset( $settings['min'], $settings['max'] ) && $settings['min'] > $settings['max'] ) {
+			// WAPF stores any min/max pair while OPF normalization rejects
+			// min > max; keep the minimum and drop the upper bound so the
+			// field still imports, and flag the loss for manual review.
+			$notes[] = sprintf( 'number field "%s" has a minimum (%s) above its maximum (%s); the maximum was not imported and the bounds need review.', $label, (string) $settings['min'], (string) $settings['max'] );
+			$needs_review = true;
+			unset( $settings['max'] );
+		}
+
+		$number_type = $options['number_type'] ?? $wapf_field['number_type'] ?? 'int';
+		if ( ! is_scalar( $number_type ) ) {
+			$settings['number_mode'] = 'integer';
+			$notes[] = sprintf( 'number field "%s" has an invalid number_type; imported as an integer field and needs review.', $label );
+			$needs_review = true;
+		} elseif ( 'any' === (string) $number_type ) {
+			$settings['number_mode'] = 'decimal';
+		} elseif ( is_numeric( $number_type ) && (float) $number_type > 0 ) {
+			// WAPF writes `number_type` verbatim into the step attribute, so a
+			// numeric value acts as a custom increment on a decimal field.
+			$settings['number_mode'] = 'decimal';
+			$settings['step']        = (float) $number_type;
+		} else {
+			$settings['number_mode'] = 'integer';
+			if ( 'int' !== (string) $number_type && '' !== (string) $number_type ) {
+				$notes[] = sprintf( 'number field "%s" has an unrecognized number_type %s; imported as an integer field and needs review.', $label, self::review_value( $number_type ) );
+				$needs_review = true;
+			}
+		}
+
+		$raw_step = $options['step'] ?? $wapf_field['step'] ?? null;
+		if ( null !== $raw_step && '' !== $raw_step ) {
+			if ( is_numeric( $raw_step ) && (float) $raw_step > 0 ) {
+				$settings['step'] = (float) $raw_step;
+			}
+			// Installed WAPF 3.1.5 never serializes `step`; the value is
+			// preserved when valid but its source shape stays review-required.
+			$notes[] = sprintf( 'number field "%s" carries a stored step %s; WAPF 3.1.5 does not serialize step, so the imported value needs review.', $label, self::review_value( $raw_step ) );
+			$needs_review = true;
+		}
+
+		$display = $options['display'] ?? $wapf_field['display'] ?? 'default';
+		if ( ! is_scalar( $display ) ) {
+			$notes[] = sprintf( 'number field "%s" has an invalid display setting; the standard number input applies.', $label );
+			$needs_review = true;
+		} elseif ( 'plus_min' === $display ) {
+			$notes[] = sprintf( 'number field "%s" uses WAPF plus/minus buttons; OPF renders number steppers through its global Product fields setting, so the display choice needs review.', $label );
+			$needs_review = true;
+		} elseif ( 'default' !== (string) $display && '' !== (string) $display ) {
+			$notes[] = sprintf( 'number field "%s" has an unrecognized display %s; the standard number input applies.', $label, self::review_value( $display ) );
+			$needs_review = true;
+		}
+
+		if ( ! empty( $options['hide_zero'] ) || ! empty( $wapf_field['hide_zero'] ) ) {
+			$notes[] = sprintf( 'number field "%s" hides zero values in the WAPF cart, checkout, and order screens; OPF has no equivalent and the setting needs review.', $label );
+			$needs_review = true;
+		}
+
+		$raw_default = $options['default'] ?? $wapf_field['default'] ?? null;
+		if ( null !== $raw_default && '' !== $raw_default ) {
+			if ( is_scalar( $raw_default ) ) {
+				// OPF stores the sanitized scalar; the default must satisfy
+				// the same constraints normalize() enforces on it, so it is
+				// pre-validated to keep a bad WAPF default from failing the
+				// whole group import.
+				$default = trim( preg_replace( '/[\r\n\t ]+/', ' ', strip_tags( (string) $raw_default ) ) );
+				if ( '' !== $default ) {
+					$probe = array_merge( [ 'type' => 'number', 'label' => $label, 'required' => false ], $settings );
+					if ( [] === FieldValue::validate( $probe, $default, true ) ) {
+						$settings['default'] = $raw_default;
+					} else {
+						$notes[] = sprintf( 'number field "%s" has a default %s that violates its imported constraints; the default was not mapped and needs review.', $label, self::review_value( $raw_default ) );
+						$needs_review = true;
+					}
+				}
+			} else {
+				$notes[] = sprintf( 'number field "%s" has a non-scalar default; it was not mapped and needs review.', $label );
+				$needs_review = true;
+			}
+		}
+
+		$known_options   = [ 'number_type', 'display', 'default', 'placeholder', 'minimum', 'maximum', 'step', 'hide_zero', 'weight', 'pricing', 'hide_cart', 'hide_checkout', 'hide_order' ];
+		$unknown_options = array_diff( array_keys( $options ), $known_options );
+		if ( $unknown_options ) {
+			$unknown_values = [];
+			foreach ( $unknown_options as $key ) {
+				$unknown_values[] = (string) $key . '=' . self::review_value( $options[ $key ] );
+			}
+			$notes[] = sprintf( 'number field "%s" has unrecognized WAPF options (%s); original values need manual review.', $label, implode( ', ', $unknown_values ) );
+			$needs_review = true;
+		}
+
+		return $settings;
 	}
 
 	/** Map WAPF clone settings and flag only settings without an OPF equivalent. */
