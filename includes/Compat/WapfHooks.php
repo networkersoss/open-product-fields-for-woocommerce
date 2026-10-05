@@ -54,6 +54,29 @@ final class WapfHooks {
 		add_filter( 'opf_pricing_addon', [ __CLASS__, 'shim_pricing_addon' ], 10, 4 );
 		add_filter( 'opf_pricing_price_with_tax', [ __CLASS__, 'shim_pricing_price_with_tax' ], 10, 4 );
 		add_filter( 'opf_formula_base_price', [ __CLASS__, 'shim_formula_base_price' ], 10, 2 );
+		add_filter( 'opf_cart_edit_text', [ __CLASS__, 'shim_cart_edit_text' ], 10, 2 );
+		add_filter( 'opf_disable_cart_edit_when_invisible', [ __CLASS__, 'shim_disable_cart_edit_when_invisible' ], 10, 1 );
+		add_filter( 'opf_add_to_cart_redirect_when_editing', [ __CLASS__, 'shim_add_to_cart_redirect_when_editing' ], 10, 1 );
+		add_filter( 'opf_store_api_cart_data', [ __CLASS__, 'shim_store_api_cart_data' ], 10, 2 );
+		add_filter( 'opf_store_api_cart_schema', [ __CLASS__, 'shim_store_api_cart_schema' ], 10, 1 );
+		// Runs last so a `wapf/pricing/display_options` listener has the final
+		// say over the WOOCS/Aelia merged frontend price-format block.
+		add_filter( 'opf_frontend_config', [ __CLASS__, 'shim_pricing_display_options' ], 100, 1 );
+
+		// `wapf/features/change_price_html` gates WAPF's catalog price-html
+		// override. OPF's override is ProductPriceDisplay::filter_price_html
+		// (registered at priority 101 by ProductPriceDisplay::init, which runs
+		// before this bridge). Re-register the same callback behind the WAPF
+		// switch; when it is not registered there is nothing to gate.
+		if (
+			class_exists( '\OPF\Service\ProductPriceDisplay' )
+			&& function_exists( 'has_filter' )
+			&& function_exists( 'remove_filter' )
+			&& has_filter( 'woocommerce_get_price_html' )
+			&& remove_filter( 'woocommerce_get_price_html', [ \OPF\Service\ProductPriceDisplay::class, 'filter_price_html' ], 101 )
+		) {
+			add_filter( 'woocommerce_get_price_html', [ __CLASS__, 'feature_change_price_html' ], 101, 2 );
+		}
 	}
 
 	/* ------------------------------------------------------------------
@@ -152,6 +175,138 @@ final class WapfHooks {
 	 */
 	public static function shim_pricing_price_with_tax( $price_with_tax, $price = 0, $product = null, $for_page = 'shop' ) {
 		return apply_filters( 'wapf/pricing/price_with_tax', $price_with_tax, $price, $product, $for_page );
+	}
+
+	/**
+	 * `wapf/cart_edit_text` — WAPF's inline cart-edit link label.
+	 * WAPF shape: ($cart_text, $cart_item).
+	 *
+	 * @param string $text      Link text.
+	 * @param array  $cart_item Cart line.
+	 */
+	public static function shim_cart_edit_text( $text, $cart_item = [] ) {
+		return apply_filters( 'wapf/cart_edit_text', $text, $cart_item );
+	}
+
+	/**
+	 * `wapf/disable_cart_edit_when_invisible` — boolean gate; WAPF shape ($disable).
+	 *
+	 * @param bool $disable Whether an invisible product's line loses its edit link.
+	 */
+	public static function shim_disable_cart_edit_when_invisible( $disable ) {
+		return apply_filters( 'wapf/disable_cart_edit_when_invisible', $disable );
+	}
+
+	/**
+	 * `wapf/add_to_cart_redirect_when_editing` — boolean gate; WAPF shape ($redirect).
+	 *
+	 * @param bool $redirect Whether an edit submit redirects to the cart.
+	 */
+	public static function shim_add_to_cart_redirect_when_editing( $redirect ) {
+		return apply_filters( 'wapf/add_to_cart_redirect_when_editing', $redirect );
+	}
+
+	/**
+	 * `wapf/store_api/cart/data_callback` — WAPF shape ($data, $cart_item).
+	 *
+	 * @param array $data      Store API cart-item extension data.
+	 * @param array $cart_item Cart line.
+	 */
+	public static function shim_store_api_cart_data( $data, $cart_item = [] ) {
+		return apply_filters( 'wapf/store_api/cart/data_callback', $data, $cart_item );
+	}
+
+	/**
+	 * `wapf/store_api/cart/schema_callback` — WAPF shape ($schema).
+	 *
+	 * @param array $schema Store API cart-item extension schema.
+	 */
+	public static function shim_store_api_cart_schema( $schema ) {
+		return apply_filters( 'wapf/store_api/cart/schema_callback', $schema );
+	}
+
+	/**
+	 * `wapf/pricing/display_options` — WAPF's frontend price-format options.
+	 *
+	 * OPF publishes a reduced `display_options` block inside
+	 * `opf_frontend_config` (printed as `window.opf_config`) and the theme JS
+	 * formats prices from it. The block is shaped for OPF's own keys
+	 * (`symbol`/`thousand`/`decimal`/`decimals` plus `format` or
+	 * `price_format`), while WAPF's `Util::get_price_display_options(true)`
+	 * hands listeners the frontend shape (`format`, `symbol`, `decimals`,
+	 * `decimal`, `thousand`, `trim_zeroes`, `tax_suffix`, `tax_enabled`,
+	 * `price_incl_tax`, `tax_display`). This shim rebuilds that WAPF shape from
+	 * the incoming OPF block, dispatches the WAPF hook with `$for_frontend`
+	 * true, and writes only the keys the incoming block already carried back —
+	 * so a listener that changes the symbol or the format pattern is
+	 * reflected, and an unmodified dispatch returns the block unchanged.
+	 *
+	 * @param mixed $config `opf_frontend_config` value.
+	 * @return mixed
+	 */
+	public static function shim_pricing_display_options( $config ) {
+		if ( ! is_array( $config ) || ! isset( $config['display_options'] ) || ! is_array( $config['display_options'] ) ) {
+			return $config;
+		}
+
+		$opf = $config['display_options'];
+		$wapf = [
+			'format'         => array_key_exists( 'format', $opf )
+				? (string) $opf['format']
+				: self::wc_price_format( (string) ( $opf['price_format'] ?? '' ) ),
+			'symbol'         => (string) ( $opf['symbol'] ?? '' ),
+			'decimals'       => (int) ( $opf['decimals'] ?? 2 ),
+			'decimal'        => (string) ( $opf['decimal'] ?? '' ),
+			'thousand'       => (string) ( $opf['thousand'] ?? '' ),
+			'trim_zeroes'    => function_exists( 'apply_filters' ) ? (bool) apply_filters( 'woocommerce_price_trim_zeros', false ) : false,
+			'tax_suffix'     => function_exists( 'get_option' ) ? (string) get_option( 'woocommerce_price_display_suffix', '' ) : '',
+			'tax_enabled'    => function_exists( 'wc_tax_enabled' ) ? (bool) wc_tax_enabled() : false,
+			'price_incl_tax' => function_exists( 'wc_prices_include_tax' ) ? (bool) wc_prices_include_tax() : false,
+			'tax_display'    => function_exists( 'get_option' ) ? (string) get_option( 'woocommerce_tax_display_shop', '' ) : '',
+		];
+
+		$wapf = (array) apply_filters( 'wapf/pricing/display_options', $wapf, true );
+
+		foreach ( [ 'symbol', 'thousand', 'decimal', 'decimals' ] as $key ) {
+			if ( array_key_exists( $key, $opf ) && array_key_exists( $key, $wapf ) ) {
+				$config['display_options'][ $key ] = 'decimals' === $key ? (int) $wapf[ $key ] : (string) $wapf[ $key ];
+			}
+		}
+		if ( array_key_exists( 'format', $opf ) && array_key_exists( 'format', $wapf ) ) {
+			$config['display_options']['format'] = (string) $wapf['format'];
+		}
+		if ( array_key_exists( 'price_format', $opf ) && array_key_exists( 'format', $wapf ) ) {
+			$config['display_options']['price_format'] = str_replace( [ '%1$s', '%2$s' ], [ 'symbol', 'price' ], (string) $wapf['format'] );
+		}
+
+		return $config;
+	}
+
+	/**
+	 * WAPF's storefront price-format pattern: turn OPF's `symbolprice` shape
+	 * back into a `sprintf()` pattern, defaulting to WooCommerce's own.
+	 *
+	 * @param string $price_format `symbolprice`-style pattern ('' when absent).
+	 */
+	private static function wc_price_format( string $price_format ): string {
+		if ( '' !== $price_format ) {
+			return str_replace( [ 'symbol', 'price' ], [ '%1$s', '%2$s' ], $price_format );
+		}
+		return function_exists( 'get_woocommerce_price_format' ) ? (string) get_woocommerce_price_format() : '%1$s%2$s';
+	}
+
+	/**
+	 * `wapf/features/change_price_html` — gate OPF's catalog price-html
+	 * override. WAPF shape: ($change, ) with a boolean default of true.
+	 *
+	 * @param string $price_html Native WooCommerce price markup.
+	 * @param mixed  $product    Product being rendered.
+	 */
+	public static function feature_change_price_html( $price_html, $product = null ) {
+		if ( ! apply_filters( 'wapf/features/change_price_html', true ) ) {
+			return $price_html;
+		}
+		return \OPF\Service\ProductPriceDisplay::filter_price_html( $price_html, $product );
 	}
 
 	/**

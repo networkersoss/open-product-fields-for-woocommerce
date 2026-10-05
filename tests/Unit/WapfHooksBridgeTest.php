@@ -234,6 +234,18 @@ namespace {
 	if ( ! function_exists( 'update_option' ) ) {
 		function update_option( $key, $value, $autoload = false ) { $GLOBALS['opf_test_options'][ $key ] = $value; return true; }
 	}
+	if ( ! function_exists( 'add_query_arg' ) ) {
+		function add_query_arg( $key, $value, $url ) { return $url . ( str_contains( (string) $url, '?' ) ? '&' : '?' ) . $key . '=' . $value; }
+	}
+	if ( ! function_exists( 'wc_get_cart_url' ) ) {
+		function wc_get_cart_url() { return 'https://shop.test/cart/'; }
+	}
+	if ( ! function_exists( 'woocommerce_store_api_register_endpoint_data' ) ) {
+		function woocommerce_store_api_register_endpoint_data( $args ) { $GLOBALS['opf_wapf_test_store_api'] = $args; }
+	}
+	if ( ! defined( 'ARRAY_A' ) ) {
+		define( 'ARRAY_A', 'ARRAY_A' );
+	}
 
 	if ( ! class_exists( 'WC_Product' ) ) {
 		class WC_Product {
@@ -245,6 +257,7 @@ namespace {
 					'stock' => null, 'sold_individually' => false, 'image_id' => 0,
 					'availability' => 'In stock', 'permalink' => 'https://example.test/p/42',
 					'short_description' => 'Short', 'description' => 'Long', 'attributes' => [],
+					'visible' => true, 'meta' => [],
 				], $data );
 			}
 			public function get_id() { return (int) $this->data['id']; }
@@ -267,6 +280,8 @@ namespace {
 			public function get_short_description() { return (string) $this->data['short_description']; }
 			public function get_description() { return (string) $this->data['description']; }
 			public function get_attributes() { return $this->data['attributes']; }
+			public function is_visible() { return (bool) ( $this->data['visible'] ?? true ); }
+			public function get_meta( $key = '', $single = true ) { return $this->data['meta'][ $key ] ?? ''; }
 		}
 	}
 	if ( ! class_exists( 'WC_Cart' ) ) {
@@ -329,13 +344,24 @@ namespace SW_WAPF_PRO\Includes\Controllers {
 	}
 }
 
+namespace Automattic\WooCommerce\StoreApi\Schemas\V1 {
+	if ( ! class_exists( CartItemSchema::class ) ) {
+		class CartItemSchema {
+			public const IDENTIFIER = 'cart-item';
+		}
+	}
+}
+
 namespace OPF\Tests\Unit {
 
 use OPF\Compat\WapfHooks;
 use OPF\Engine\FieldGroup;
+use OPF\Service\CartEdit;
 use OPF\Service\CartIntegration;
 use OPF\Service\FieldGroups;
 use OPF\Service\LinkedProducts;
+use OPF\Service\PricingHints;
+use OPF\Service\ProductPriceDisplay;
 use OPF\Service\Renderer;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
@@ -394,6 +420,10 @@ final class WapfHooksBridgeTest extends TestCase {
 			'wapf/html/pricing_hint/format', 'wapf/html/pricing_hint/amount',
 			'wapf/html/pricing_hint', 'wapf/pricing/addon', 'wapf/pricing/price_with_tax',
 			'wapf/pricing/cart_item_base_for_formulas',
+			'wapf/cart_edit_text', 'wapf/disable_cart_edit_when_invisible',
+			'wapf/add_to_cart_redirect_when_editing',
+			'wapf/store_api/cart/data_callback', 'wapf/store_api/cart/schema_callback',
+			'wapf/pricing/display_options', 'wapf/features/change_price_html',
 		];
 	}
 
@@ -695,6 +725,167 @@ final class WapfHooksBridgeTest extends TestCase {
 		$size_args = $this->fired( 'wapf/html/image_swatch_size' )[0];
 		$this->assertCount( 4, $size_args, 'wapf/html/image_swatch_size WAPF shape is ($size,$field,$product,$choice).' );
 		$this->assertSame( 'medium', $size_args[0] );
+	}
+
+	/** An OPF-carrying cart line, for the CartEdit/Store API surfaces. */
+	private function editable_cart_item( array $overrides = [] ): array {
+		return array_merge( [
+			'key'                     => 'k1',
+			'product_id'              => 42,
+			'data'                    => new \WC_Product( [ 'id' => 42 ] ),
+			CartIntegration::ITEM_KEY => [ '77' => [ 'name' => 'Hello' ] ],
+		], $overrides );
+	}
+
+	/**
+	 * `wapf/cart_edit_text` — the returned label is what the cart link shows.
+	 */
+	public function test_wapf_cart_edit_text_return_is_consumed(): void {
+		$GLOBALS['opf_test_options']['opf_edit_cart'] = 'yes';
+		$seen = [];
+		add_filter( 'wapf/cart_edit_text', static function ( $text, $cart_item ) use ( &$seen ) {
+			$seen = [ $text, $cart_item ];
+			return 'Edit this item';
+		}, 20, 2 );
+
+		$item = $this->editable_cart_item();
+		ob_start();
+		CartEdit::add_edit_link( $item, 'k1' );
+		$html = (string) ob_get_clean();
+
+		$this->assertStringContainsString( 'Edit this item', $html, 'The value returned by wapf/cart_edit_text must be rendered into the cart link.' );
+		$this->assertSame( '(edit)', $seen[0], 'wapf/cart_edit_text arg 0 is OPF\'s default label.' );
+		$this->assertSame( $item, $seen[1], 'wapf/cart_edit_text arg 1 is the cart line.' );
+		$this->assert_fired( 'wapf/cart_edit_text' );
+	}
+
+	/**
+	 * `wapf/disable_cart_edit_when_invisible` — false restores the link on an
+	 * invisible product, proving the returned boolean drives the gate.
+	 */
+	public function test_wapf_disable_cart_edit_when_invisible_return_is_consumed(): void {
+		$GLOBALS['opf_test_options']['opf_edit_cart'] = 'yes';
+		$item = $this->editable_cart_item( [ 'data' => new \WC_Product( [ 'id' => 42, 'visible' => false ] ) ] );
+
+		ob_start();
+		CartEdit::add_edit_link( $item, 'k1' );
+		$this->assertSame( '', (string) ob_get_clean(), 'The default WAPF gate suppresses edit links for invisible products.' );
+		$this->assert_fired( 'wapf/disable_cart_edit_when_invisible' );
+
+		add_filter( 'wapf/disable_cart_edit_when_invisible', static fn( $disable ) => false, 20, 1 );
+		ob_start();
+		CartEdit::add_edit_link( $item, 'k1' );
+		$this->assertStringContainsString( 'opf-edit-cartitem', (string) ob_get_clean(), 'Returning false from wapf/disable_cart_edit_when_invisible restores the link.' );
+	}
+
+	/**
+	 * `wapf/add_to_cart_redirect_when_editing` — false keeps WooCommerce's own
+	 * redirect, proving the returned boolean drives the branch.
+	 */
+	public function test_wapf_add_to_cart_redirect_when_editing_return_is_consumed(): void {
+		$GLOBALS['opf_test_options']['opf_edit_cart'] = 'yes';
+		$_POST[ CartEdit::POST_PARAM ] = 'k1';
+
+		$this->assertSame( 'https://shop.test/cart/', CartEdit::redirect_to_cart( 'https://example.test/fallback', new \WC_Product() ) );
+		$this->assert_fired( 'wapf/add_to_cart_redirect_when_editing' );
+
+		add_filter( 'wapf/add_to_cart_redirect_when_editing', static fn( $redirect ) => false, 20, 1 );
+		$this->assertSame( 'https://example.test/fallback', CartEdit::redirect_to_cart( 'https://example.test/fallback', new \WC_Product() ) );
+	}
+
+	/**
+	 * `wapf/store_api/cart/{schema,data}_callback` — the returned schema and
+	 * data are what gets registered with the Store API.
+	 */
+	public function test_wapf_store_api_callback_returns_are_consumed(): void {
+		$GLOBALS['opf_test_options']['opf_edit_cart'] = 'yes';
+		$GLOBALS['opf_wapf_test_store_api'] = null;
+
+		CartEdit::register_store_api();
+		$args = $GLOBALS['opf_wapf_test_store_api'] ?? null;
+		$this->assertIsArray( $args );
+
+		add_filter( 'wapf/store_api/cart/schema_callback', static function ( $schema ) {
+			$schema['wapfExtra'] = [ 'type' => 'string' ];
+			return $schema;
+		}, 20, 1 );
+		$schema = ( $args['schema_callback'] )();
+		$this->assertArrayHasKey( 'wapfExtra', $schema, 'The object returned by wapf/store_api/cart/schema_callback must be registered.' );
+		$this->assertArrayHasKey( 'editLink', $schema, 'OPF default schema keys survive the bridge.' );
+
+		add_filter( 'wapf/store_api/cart/data_callback', static function ( $data, $cart_item ) {
+			$data['wapfExtra'] = 'x';
+			return $data;
+		}, 20, 2 );
+		$data = ( $args['data_callback'] )( $this->editable_cart_item() );
+		$this->assertSame( 'x', $data['wapfExtra'] ?? null, 'The array returned by wapf/store_api/cart/data_callback must be registered.' );
+		$this->assertArrayHasKey( 'editLink', $data, 'OPF default data survives the bridge.' );
+		$this->assert_fired( 'wapf/store_api/cart/schema_callback' );
+		$this->assert_fired( 'wapf/store_api/cart/data_callback' );
+	}
+
+	/**
+	 * `wapf/pricing/display_options` — listener edits land in the OPF frontend
+	 * config the theme JS formats prices from.
+	 */
+	public function test_wapf_pricing_display_options_return_is_consumed(): void {
+		$config = static fn() => apply_filters( 'opf_frontend_config', [
+			'ajax'            => 'endpoint',
+			'currency'        => 'USD',
+			'display_options' => [ 'symbol' => '$', 'thousand' => ',', 'decimal' => '.', 'decimals' => 2, 'price_format' => 'symbolprice' ],
+		] );
+
+		$unchanged = $config();
+		$this->assertSame( '$', $unchanged['display_options']['symbol'] );
+		$this->assertSame( 'symbolprice', $unchanged['display_options']['price_format'] );
+
+		$captured = [];
+		add_filter( 'wapf/pricing/display_options', static function ( $options, $for_frontend ) use ( &$captured ) {
+			$captured = [ $options, $for_frontend ];
+			$options['symbol'] = '€';
+			$options['format'] = '%2$s%1$s';
+			return $options;
+		}, 20, 2 );
+
+		$changed = $config();
+		$this->assertSame( '€', $changed['display_options']['symbol'], 'Symbol edits must reach window.opf_config.display_options.' );
+		$this->assertSame( 'pricesymbol', $changed['display_options']['price_format'], 'A changed format pattern must map back onto price_format.' );
+		$this->assertSame( '%1$s%2$s', $captured[0]['format'], 'The listener receives WAPF\'s frontend shape, seeded from the OPF block.' );
+		$this->assertTrue( $captured[1], 'The listener receives $for_frontend = true.' );
+		$this->assertArrayHasKey( 'trim_zeroes', $captured[0], 'The WAPF frontend shape keys are supplied.' );
+	}
+
+	/**
+	 * `wapf/features/change_price_html` — false stops OPF from overriding the
+	 * catalog price html, proving the returned boolean is consumed.
+	 */
+	public function test_wapf_change_price_html_feature_gate_is_consumed(): void {
+		$product = new \WC_Product( [
+			'id'   => 77,
+			'meta' => [ ProductPriceDisplay::META_DISPLAY => 'after', ProductPriceDisplay::META_LABEL => 'Sale' ],
+		] );
+		add_filter( 'woocommerce_get_price_html', [ ProductPriceDisplay::class, 'filter_price_html' ], 101, 2 );
+		WapfHooks::init(); // Re-register OPF's override behind the WAPF switch.
+
+		$on = apply_filters( 'woocommerce_get_price_html', '$10', $product );
+		$this->assertStringContainsString( 'wapf-price-after', $on, 'The default (true) still applies OPF\'s configured price label.' );
+		$this->assert_fired( 'wapf/features/change_price_html' );
+
+		add_filter( 'wapf/features/change_price_html', static fn( $change ) => false, 20, 1 );
+		$this->assertSame( '$10', apply_filters( 'woocommerce_get_price_html', '$10', $product ), 'Returning false must stop OPF from changing the price html.' );
+	}
+
+	/**
+	 * `wapf/pricing/price_with_tax` — an existing bridge, proven consumed: the
+	 * returned amount is what the hint math uses.
+	 */
+	public function test_wapf_pricing_price_with_tax_return_is_consumed(): void {
+		add_filter( 'wapf/pricing/price_with_tax', static fn( $with_tax, $price, $product, $page ) => 99.0, 20, 4 );
+		$this->assertSame( 99.0, PricingHints::maybe_add_tax( $GLOBALS['opf_products'][42], 5.0, 'shop' ) );
+		$this->assert_fired( 'wapf/pricing/price_with_tax' );
+		$args = $this->fired( 'wapf/pricing/price_with_tax' )[0];
+		$this->assertCount( 4, $args, 'WAPF shape is ($price_with_tax,$price,$product,$for_page).' );
+		$this->assertSame( 'shop', $args[3] );
 	}
 
 	/** No `wapf/…` listeners → OPF output must be byte-identical to no bridge. */
