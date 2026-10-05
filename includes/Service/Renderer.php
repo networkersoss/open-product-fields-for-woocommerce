@@ -19,6 +19,7 @@ use OPF\Engine\Calculator;
 use OPF\Engine\Evaluator;
 use OPF\Engine\FieldGroup;
 use OPF\Engine\FieldValue;
+use OPF\Engine\WapfDesign;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -389,6 +390,28 @@ final class Renderer {
 	 * @param array|null $prefill    Cart-edit stored values `fid => value` (null = normal render).
 	 * @param int        $edit_qty   Edited cart line quantity (quantity-mode row padding).
 	 */
+	/** Settings hash of the WAPF design CSS already printed this request. */
+	private static $design_css_hash = null;
+
+	/**
+	 * Print the migrated WAPF `wapf_design_settings` stylesheet once per
+	 * distinct settings revision. Emitting `:root` + `.wapf-custom` rules lets
+	 * theme/add-on CSS written for WAPF (`--apf-*`, `.wapf-custom`) apply to
+	 * OPF's native controls.
+	 */
+	private static function emit_wapf_design_css(): void {
+		$css = WapfDesign::css();
+		if ( '' === $css ) {
+			return;
+		}
+		$hash = md5( $css );
+		if ( $hash === self::$design_css_hash ) {
+			return;
+		}
+		self::$design_css_hash = $hash;
+		echo '<style id="opf-wapf-design-css">' . $css . '</style>'; // phpcs:ignore WordPress.Security.EscapeOutput -- generated from sanitized WAPF design keys.
+	}
+
 	public static function render_group( $gid, string $title, FieldGroup $group, float $base_price, ?\WC_Product $product = null, ?array $prefill = null, int $edit_qty = 1 ): void {
 		$group_fields = $group->data['fields'];
 		// fid => repeat mode for fields nested inside a repeating section
@@ -421,6 +444,11 @@ final class Renderer {
 			$group_attrs .= ' data-wapf-st="' . esc_attr( $gallery_rules['swap_type'] ) . '" data-wapf-gi="' . $gallery_json . '"'
 				. ' data-opf-st="' . esc_attr( $gallery_rules['swap_type'] ) . '" data-opf-gi="' . $gallery_json . '"';
 		}
+
+		// WAPF design layer: emit the migrated `wapf_design_settings` `:root`
+		// variables + `.wapf-custom` skin once per settings revision so theme
+		// CSS written for WAPF keeps working.
+		self::emit_wapf_design_css();
 
 		// Styled native controls opt-in (opf_styled_choice_controls): the group
 		// carries the accent/border CSS variables so themed ::check colors apply.
@@ -1069,6 +1097,13 @@ final class Renderer {
 		$color_swatch = 'swatch' === $field['type'] && 'color' === ( $field['swatch_style'] ?? '' );
 
 		$is_card = 'radio' === $field['type'] && isset( $field['card_layout'] ) && '' !== (string) $field['card_layout'];
+		// WAPF styled checkbox/radio contract: WAPF wraps each native control
+		// with `wapf-checkbox`/`wapf-radio` + a `.wapf-custom` skin span after
+		// the input (views/frontend/fields/checkboxes.php, radio.php). Cards
+		// and switch controls keep their own markup.
+		$wapf_native = 'checkbox' === $field['type'] && empty( $field['switch_control'] )
+			? 'checkbox'
+			: ( 'radio' === $field['type'] && ! $is_card ? 'radio' : '' );
 
 		$wrapper_class = $image_swatch ? 'opf-swatch-wrapper opf-image-swatch-wrapper' : 'opf-swatch-wrapper';
 		$checkbox_columns = 'checkbox' === $field['type'] ? (int) ( $field['columns'] ?? 1 ) : 1;
@@ -1080,6 +1115,13 @@ final class Renderer {
 		}
 		if ( $color_swatch ) {
 			$wrapper_class .= ' opf-color-swatch-wrapper';
+		}
+		// WAPF container classes so theme CSS written for WAPF's choice
+		// wrappers applies to OPF's native checkbox/radio groups.
+		if ( 'checkbox' === $wapf_native ) {
+			$wrapper_class .= ' wapf-checkboxes';
+		} elseif ( 'radio' === $wapf_native ) {
+			$wrapper_class .= ' wapf-radios';
 		}
 		if ( $is_card ) {
 			$wrapper_class .= ' opf-cards opf-cards--' . self::html_class( (string) $field['card_layout'] );
@@ -1137,6 +1179,9 @@ final class Renderer {
 			$choice_selected  = $choice['selected'] && ! $choice['disabled'];
 			$choice_has_image = ! empty( $choice['image'] ) || ! empty( $choice['image_id'] );
 			$swatch_classes   = [ 'opf-swatch', $image_swatch ? 'opf-swatch--image' : ( $color_swatch ? 'opf-swatch--color' : 'opf-swatch--text' ) ];
+			if ( '' !== $wapf_native ) {
+				$swatch_classes[] = 'wapf-' . $wapf_native;
+			}
 			$choice_zoom_url  = '';
 			// WAPF parity: zoom flags scope to choices that actually carry an
 			// image — text swatches get the class only (CSS hover), image
@@ -1194,7 +1239,7 @@ final class Renderer {
 				$choice_label_attr .= ' data-opf-swatch-label="' . esc_attr( $choice['label'] ) . '" data-color-label-position="' . esc_attr( $field['color_label_pos'] ) . '"';
 			}
 			echo '<div class="' . esc_attr( implode( ' ', $swatch_classes ) ) . '"' . $choice_label_attr . '>';
-			echo '<label>';
+			echo '<label' . ( '' !== $wapf_native ? ' class="wapf-input-label"' : '' ) . '>';
 			if ( $color_swatch && ! empty( $choice['color'] ) ) {
 				echo '<span class="opf-color-swatch" aria-hidden="true" style="--opf-swatch-color:' . esc_attr( $choice['color'] ) . ';--opf-swatch-size:' . esc_attr( (string) $field['color_size'] ) . 'px"></span>';
 			}
@@ -1242,13 +1287,18 @@ final class Renderer {
 					echo '<span class="opf-card__description">' . esc_html( $choice['description'] ) . '</span>';
 				}
 			} else {
-				$label_class = $image_swatch ? ' class="opf-image-swatch-label"' : '';
+				$label_class = $image_swatch ? ' class="opf-image-swatch-label"' : ( '' !== $wapf_native ? ' class="wapf-label-text"' : '' );
 				echo '<span' . $label_class . '>' . esc_html( $choice['label'] ) . self::pricing_hint_html( $choice['pricing'], $base_price, $product ) . ' </span>';
 			}
 			if ( 'none' !== $choice['pricing']['type'] ) {
 				echo '<span class="opf-choice__hint" data-opf-choice-hint="' . esc_attr( $choice['slug'] ) . '" aria-live="polite"></span>';
 			}
 			echo '<input type="' . ( $multi ? 'checkbox' : 'radio' ) . '" ' . $attrs . ' />'; // phpcs:ignore WordPress.Security.EscapeOutput -- pre-escaped.
+			if ( '' !== $wapf_native ) {
+				// Skin target for WAPF's global design layer; native semantics
+				// (focus/checked/keyboard) stay on the real input.
+				echo '<span class="wapf-custom" aria-hidden="true"></span>';
+			}
 			echo '</label>';
 			echo '</div>';
 		}
@@ -1693,10 +1743,22 @@ final class Renderer {
 				} else {
 					$num_attrs .= ' step="' . ( 'decimal' === ( $field['number_mode'] ?? 'integer' ) ? 'any' : '1' ) . '"';
 				}
-				if ( 'yes' === get_option( 'opf_number_buttons', 'no' ) ) {
+				// WAPF stores the stepper PER FIELD (`display: plus_min`,
+				// class-config.php:614 and views/frontend/fields/number.php:3).
+				// A field that sets the value overrides the global OPF default;
+				// an absent value keeps the global Product fields setting working.
+				$per_field_display = $field['display'] ?? null;
+				$use_stepper = null !== $per_field_display
+					? 'plus_min' === $per_field_display
+					: 'yes' === get_option( 'opf_number_buttons', 'no' );
+				if ( $use_stepper ) {
 					$stepper_label = trim( wp_strip_all_tags( (string) ( $field['label'] ?? '' ) ) );
 					$stepper_label = '' !== $stepper_label ? $stepper_label : __( 'value', 'open-product-fields-for-woocommerce' );
-					echo '<div class="opf-number-stepper" data-opf-number-stepper><button type="button" class="opf-number-stepper__button" data-opf-number-step="down" aria-label="' . esc_attr( sprintf( /* translators: %s: field label. */ __( 'Decrease %s', 'open-product-fields-for-woocommerce' ), $stepper_label ) ) . '">−</button><input type="number" value="' . esc_attr( (string) ( $field['default'] ?? '' ) ) . '" ' . $shared . $num_attrs . ' /><button type="button" class="opf-number-stepper__button" data-opf-number-step="up" aria-label="' . esc_attr( sprintf( /* translators: %s: field label. */ __( 'Increase %s', 'open-product-fields-for-woocommerce' ), $stepper_label ) ) . '">+</button></div>'; // phpcs:ignore WordPress.Security.EscapeOutput -- pre-escaped.
+					// WAPF-compatible wrapper/button classes (`apf-plusmin`,
+					// `button apf-minus`/`apf-plus`, tabindex -1) so theme CSS
+					// written for WAPF keeps working; OPF's own hook classes and
+					// descriptive labels ride along.
+					echo '<div class="opf-number-stepper apf-plusmin" data-opf-number-stepper><button type="button" tabindex="-1" class="opf-number-stepper__button button apf-minus" data-opf-number-step="down" aria-label="' . esc_attr( sprintf( /* translators: %s: field label. */ __( 'Decrease %s', 'open-product-fields-for-woocommerce' ), $stepper_label ) ) . '">−</button><input type="number" value="' . esc_attr( (string) ( $field['default'] ?? '' ) ) . '" ' . $shared . $num_attrs . ' /><button type="button" tabindex="-1" class="opf-number-stepper__button button apf-plus" data-opf-number-step="up" aria-label="' . esc_attr( sprintf( /* translators: %s: field label. */ __( 'Increase %s', 'open-product-fields-for-woocommerce' ), $stepper_label ) ) . '">+</button></div>'; // phpcs:ignore WordPress.Security.EscapeOutput -- pre-escaped.
 				} else {
 					echo '<input type="number" value="' . esc_attr( (string) ( $field['default'] ?? '' ) ) . '" ' . $shared . $num_attrs . ' />'; // phpcs:ignore WordPress.Security.EscapeOutput
 				}
@@ -1708,10 +1770,10 @@ final class Renderer {
 					$week_start = 0; // WordPress week start is 0-6; anything else falls back to Sunday.
 				}
 				$date_attrs .= ' data-opf-week-start="' . esc_attr( (string) $week_start ) . '"';
+				$current = function_exists( 'current_datetime' ) ? \current_datetime() : new \DateTimeImmutable( 'now', new \DateTimeZone( 'UTC' ) );
+				$site_today = $current->format( 'Y-m-d' );
 				$date_min = isset( $field['min_date'] ) ? FieldValue::resolve_date_boundary( (string) $field['min_date'] ) : null;
 				$date_max = isset( $field['max_date'] ) ? FieldValue::resolve_date_boundary( (string) $field['max_date'] ) : null;
-				$current = function_exists( 'current_datetime' ) ? current_datetime() : new \DateTimeImmutable( 'now', new \DateTimeZone( 'UTC' ) );
-				$site_today = $current->format( 'Y-m-d' );
 				if ( false === ( $field['allow_past'] ?? true ) && ( null === $date_min || $date_min < $site_today ) ) {
 					$date_min = $site_today;
 				}
@@ -1724,17 +1786,35 @@ final class Renderer {
 						$date_attrs .= ' ' . $attribute . '="' . esc_attr( $date ) . '"';
 					}
 				}
+				// WAPF field-relative bounds (`[field.x]<period>`) resolve against
+				// another date field's runtime value; hand the raw expression to
+				// the picker so it can re-resolve as the sibling changes.
+				$field_relative_bound = false;
+				foreach ( [ 'min_date' => 'min', 'max_date' => 'max' ] as $key => $attribute ) {
+					if ( ! isset( $field[ $key ] ) || null === FieldValue::date_boundary_reference( (string) $field[ $key ] ) ) {
+						continue;
+					}
+					$field_relative_bound = true;
+					$date_attrs .= ' data-opf-date-' . $attribute . '-expression="' . esc_attr( (string) $field[ $key ] ) . '"';
+				}
+				if ( ! empty( $field['disable_today'] ) ) {
+					$date_attrs .= ' data-opf-disable-today="1"';
+				}
 				if ( ! empty( $field['disabled_weekdays'] ) ) {
 					$date_attrs .= ' data-opf-disabled-weekdays="' . esc_attr( wp_json_encode( array_values( $field['disabled_weekdays'] ) ) ) . '"';
 				}
 				if ( ! empty( $field['disabled_dates'] ) ) {
 					$date_attrs .= ' data-opf-disabled-dates="' . esc_attr( wp_json_encode( array_values( $field['disabled_dates'] ) ) ) . '"';
 				}
-				if ( isset( $field['cutoff_time'] ) ) {
-					$current = function_exists( 'current_datetime' ) ? current_datetime() : new \DateTimeImmutable( 'now', new \DateTimeZone( 'UTC' ) );
-					$date_attrs .= ' data-opf-date-cutoff="' . esc_attr( $field['cutoff_time'] ) . '"';
+				// The site clock backs the cutoff, disable_today, and any
+				// field-relative bound so server and browser resolve identically.
+				if ( isset( $field['cutoff_time'] ) || ! empty( $field['disable_today'] ) || $field_relative_bound ) {
+					$current = function_exists( 'current_datetime' ) ? \current_datetime() : new \DateTimeImmutable( 'now', new \DateTimeZone( 'UTC' ) );
 					$date_attrs .= ' data-opf-date-site-epoch="' . esc_attr( (string) $current->getTimestamp() ) . '"';
-					$date_attrs .= ' data-opf-date-timezone="' . esc_attr( function_exists( 'wp_timezone_string' ) ? wp_timezone_string() : 'UTC' ) . '"';
+					$date_attrs .= ' data-opf-date-timezone="' . esc_attr( function_exists( 'wp_timezone_string' ) ? \wp_timezone_string() : 'UTC' ) . '"';
+				}
+				if ( isset( $field['cutoff_time'] ) ) {
+					$date_attrs .= ' data-opf-date-cutoff="' . esc_attr( $field['cutoff_time'] ) . '"';
 				}
 				// Cart-edit prefills via `_opf_prefill`; authored defaults are
 				// handled by the date picker bootstrap.
@@ -1770,7 +1850,7 @@ final class Renderer {
 		if ( ! is_array( $map ) ) {
 			return $default;
 		}
-		$lang = function_exists( 'pll_current_language' ) ? pll_current_language( 'slug' ) : '';
+		$lang = function_exists( 'pll_current_language' ) ? \pll_current_language( 'slug' ) : '';
 		return isset( $map[ $lang ] ) && is_array( $map[ $lang ] ) ? array_merge( $default, $map[ $lang ] ) : $default;
 	}
 

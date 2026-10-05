@@ -291,6 +291,73 @@ const dateMatchesBlackout = ( isoDate, disabledDates ) => {
 	} );
 };
 
+// WAPF field-relative date bounds: `[field.id]<period>` resolves against
+// another date field's value. Periods apply days → months → years like the PHP
+// resolver (WAPF extend/date.php adds days, then months, then years).
+const resolveRelativePeriodDate = ( iso, period ) => {
+	if ( ! /^\d{4}-\d{2}-\d{2}$/.test( iso ) ) return '';
+	const date = new Date( iso + 'T00:00:00Z' );
+	if ( Number.isNaN( date.getTime() ) ) return '';
+	let days = 0;
+	let months = 0;
+	let years = 0;
+	String( period || '' ).trim().split( /\s+/ ).forEach( ( token ) => {
+		const match = /^([+-]?\d+)([ymd])$/i.exec( token );
+		if ( ! match ) return;
+		const amount = Number.parseInt( match[ 1 ], 10 );
+		const unit = match[ 2 ].toLowerCase();
+		if ( 'y' === unit ) years += amount;
+		else if ( 'm' === unit ) months += amount;
+		else days += amount;
+	} );
+	if ( days ) date.setUTCDate( date.getUTCDate() + days );
+	if ( months ) date.setUTCMonth( date.getUTCMonth() + months );
+	if ( years ) date.setUTCFullYear( date.getUTCFullYear() + years );
+	return date.toISOString().slice( 0, 10 );
+};
+
+const resolveDateBoundExpression = ( input, expression, scope ) => {
+	const match = /^\[field\.([A-Za-z0-9_-]+)\]/.exec( expression );
+	if ( ! match ) return '';
+	const host = scope || ( input.closest ? input.closest( '.opf-field-group' ) : null ) || document;
+	const referenceInput = host.querySelector ? host.querySelector( '[data-opf-field="' + match[ 1 ] + '"] input[type="date"]' ) : null;
+	const referenceValue = referenceInput && /^\d{4}-\d{2}-\d{2}$/.test( referenceInput.value ) ? referenceInput.value : '';
+	// WAPF drops the bound when the referenced field is empty (extend/date.php
+	// `if( $target_value )`); mirror that so the two engines agree.
+	return referenceValue ? resolveRelativePeriodDate( referenceValue, expression.slice( match[ 0 ].length ).trim() ) : '';
+};
+
+// Re-resolve a date input's field-relative min/max from its sibling values.
+const syncDateBounds = ( input, scope ) => {
+	if ( ! input || 'date' !== input.type ) return false;
+	let changed = false;
+	[ [ 'min', input.dataset.opfDateMinExpression ], [ 'max', input.dataset.opfDateMaxExpression ] ].forEach( ( entry ) => {
+		const attribute = entry[ 0 ];
+		const expression = entry[ 1 ];
+		if ( ! expression ) return;
+		const resolved = resolveDateBoundExpression( input, expression, scope );
+		if ( resolved ) {
+			if ( input.getAttribute( attribute ) !== resolved ) {
+				input.setAttribute( attribute, resolved );
+				changed = true;
+			}
+		} else if ( input.hasAttribute( attribute ) ) {
+			input.removeAttribute( attribute );
+			changed = true;
+		}
+	} );
+	return changed;
+};
+
+const refreshDateBounds = ( groupEl ) => {
+	if ( ! groupEl || ! groupEl.querySelectorAll ) return;
+	groupEl.querySelectorAll( 'input[type="date"]' ).forEach( ( dateInput ) => {
+		const changed = syncDateBounds( dateInput, groupEl );
+		const panel = dateInput.closest && dateInput.closest( '[data-opf-field]' ) && dateInput.closest( '[data-opf-field]' ).querySelector( '.opf-date-picker__panel' );
+		if ( changed && panel && ! panel.hidden && dateInput.opfRenderDateCalendar ) dateInput.opfRenderDateCalendar();
+	} );
+};
+
 const dateSelectionAllowed = ( input, isoDate ) => {
 	if ( input.min && isoDate < input.min ) return false;
 	if ( input.max && isoDate > input.max ) return false;
@@ -301,11 +368,13 @@ const dateSelectionAllowed = ( input, isoDate ) => {
 	if ( weekdays.includes( date.getUTCDay() ) || dateMatchesBlackout( isoDate, disabledDates ) ) return false;
 	const allowPast = input.dataset.opfAllowPast !== '0';
 	const allowFuture = input.dataset.opfAllowFuture !== '0';
+	const disableToday = input.dataset.opfDisableToday === '1';
 	const cutoff = input.dataset.opfDateCutoff;
-	const clock = cutoff || ! allowPast || ! allowFuture ? dateSiteClock( input ) : null;
-	if ( ( cutoff || ! allowPast || ! allowFuture ) && ! clock ) return false;
+	const clock = cutoff || ! allowPast || ! allowFuture || disableToday ? dateSiteClock( input ) : null;
+	if ( ( cutoff || ! allowPast || ! allowFuture || disableToday ) && ! clock ) return false;
 	if ( clock && ! allowPast && isoDate < clock.date ) return false;
 	if ( clock && ! allowFuture && isoDate > clock.date ) return false;
+	if ( disableToday && clock && isoDate === clock.date ) return false;
 	if ( cutoff && clock && isoDate === clock.date && clock.time >= cutoff ) return false;
 	return true;
 };
@@ -361,6 +430,7 @@ const initDatePicker = ( fieldEl, input ) => {
 	let visibleMonth = ( input.value && /^\d{4}-\d{2}-\d{2}$/.test( input.value ) ? input.value : ( dateSiteClock( input ) || {} ).date || new Date().toISOString().slice( 0, 10 ) ).slice( 0, 7 ) + '-01';
 	let activeDate = input.value;
 	const render = () => {
+		syncDateBounds( input );
 		const formattedValue = formatIsoDate( input.value, input.dataset.opfDateFormat );
 		toggle.textContent = formattedValue || tr( 'choose_date', 'Choose date' );
 		toggle.setAttribute( 'aria-label', formattedValue ? tr( 'change_date', 'Change date, %s' ).replace( '%s', formattedValue ) : tr( 'choose_date', 'Choose date' ) );
@@ -1170,10 +1240,12 @@ const init = ( root = document ) => {
 					const cutoff = input.dataset.opfDateCutoff;
 					const allowPast = input.dataset.opfAllowPast !== '0';
 					const allowFuture = input.dataset.opfAllowFuture !== '0';
-					const clock = cutoff || ! allowPast || ! allowFuture ? dateSiteClock( input ) : null;
-					if ( ! message && ( cutoff || ! allowPast || ! allowFuture ) && ! clock ) message = 'Date availability cannot be confirmed.';
+					const disableToday = input.dataset.opfDisableToday === '1';
+					const clock = cutoff || ! allowPast || ! allowFuture || disableToday ? dateSiteClock( input ) : null;
+					if ( ! message && ( cutoff || ! allowPast || ! allowFuture || disableToday ) && ! clock ) message = 'Date availability cannot be confirmed.';
 					if ( ! message && clock && ! allowPast && value < clock.date ) message = 'Past dates are unavailable.';
 					if ( ! message && clock && ! allowFuture && value > clock.date ) message = 'Future dates are unavailable.';
+					if ( ! message && disableToday && clock && value === clock.date ) message = 'Today is not available.';
 					if ( ! message && cutoff && clock && value === clock.date && clock.time >= cutoff ) message = 'Today is no longer available.';
 				}
 				input.setCustomValidity( message );
@@ -1186,7 +1258,7 @@ const init = ( root = document ) => {
 		// become disabled.
 		if ( window.setInterval && ! groupEl.opfDateCutoffTimer && Array.from( fields ).some( ( fieldEl ) => {
 			const input = fieldEl.querySelector ? fieldEl.querySelector( 'input[type="date"]' ) : null;
-			return input && ( input.dataset.opfDateCutoff || input.dataset.opfAllowPast === '0' || input.dataset.opfAllowFuture === '0' );
+			return input && ( input.dataset.opfDateCutoff || input.dataset.opfAllowPast === '0' || input.dataset.opfAllowFuture === '0' || input.dataset.opfDisableToday === '1' || input.dataset.opfDateMinExpression || input.dataset.opfDateMaxExpression );
 		} ) ) {
 			groupEl.opfDateCutoffTimer = window.setInterval( () => {
 				validateDateRestrictions();
@@ -1240,6 +1312,7 @@ const init = ( root = document ) => {
 			validateChoiceLimits();
 			validateDateRestrictions();
 			updateNumberStepperButtons( fieldEl );
+			refreshDateBounds( groupEl );
 			refresh();
 			// WAPF evaluates gallery rules on every field change (and again on
 			// wapf/dependencies); OPF mirrors both triggers here.
@@ -1373,7 +1446,7 @@ const init = ( root = document ) => {
 		};
 		groupEl.querySelectorAll( '[data-opf-edit-rows]' ).forEach( ( repeater ) => {
 			let rows = [];
-			try { rows = JSON.parse( repeater.dataset.opfEditRows || '[]' ) || []; } catch ( error ) { rows = []; }
+			try { rows = JSON.parse( repeater.dataset.opfEditRows || '[]' ) || []; } catch ( _error ) { rows = []; }
 			if ( ! Array.isArray( rows ) || ! rows.length ) return;
 			const rowsEl = repeater.querySelector( ':scope > .opf-field-repeat__rows' );
 			if ( ! rowsEl ) return;
@@ -1715,7 +1788,7 @@ const evalFormula = (formula, price, qty, addons, val, fieldValues = {}, todayOv
     const value = fieldPrices[String(id).toLowerCase()];
     const amount = Array.isArray(value) ? value.reduce((sum, item) => sum + (Number(item) || 0), 0) : Number(value);
     return String(Number.isFinite(amount) ? amount : 0);
-  }).replace(/\[field\.([a-z0-9_-]+)\]/gi, (token, id) => formulaFieldLabel(String(id), fieldValues));
+  }).replace(/\[field\.([a-z0-9_-]+)\]/gi, (_token, id) => formulaFieldLabel(String(id), fieldValues));
   const expr = resolved
     .replace(/\[price\]/gi, ' P ')
     .replace(/\[qty\]/gi, ' Q ')
@@ -2118,7 +2191,7 @@ const evalFormula = (formula, price, qty, addons, val, fieldValues = {}, todayOv
             if (failed) break;
             const numeric = Number(leaf);
             result = Number.isFinite(numeric) ? numeric : 0;
-          } catch (lookupError) {
+          } catch (_lookupError) {
             result = 0;
           }
           break;
@@ -2757,7 +2830,7 @@ const groupFormulaOptions = (groupEl, gid) => {
   const registryGroup = (window.OPF_FIELDS || {})[gid] || {};
   let variables = Array.isArray(registryGroup.__opf_variables) ? registryGroup.__opf_variables : null;
   if (!variables && groupEl && typeof groupEl.getAttribute === 'function') {
-    try { variables = JSON.parse(groupEl.getAttribute('data-variables') || '[]') || []; } catch (e) { variables = []; }
+    try { variables = JSON.parse(groupEl.getAttribute('data-variables') || '[]') || []; } catch (_e) { variables = []; }
   }
   return {
     variables: Array.isArray(variables) ? variables : [],
@@ -2807,7 +2880,7 @@ const imageUrlMatches = ( image, target, baseUrl ) => {
 		try {
 			const url = new URL( value, baseUrl || 'https://opf.invalid/' );
 			return url.origin + url.pathname;
-		} catch ( error ) { return String( value ); }
+		} catch ( _error ) { return String( value ); }
 	};
 	const expected = normalize( target );
 	return !! expected && values.some( ( value ) => normalize( value ) === expected );
@@ -2877,7 +2950,7 @@ const updateProductImage = ( doc, evaluations, legacyValues = null ) => {
 			try {
 				const control = jq( gallery );
 				if ( control.data( 'flexslider' ) && typeof control.flexslider === 'function' ) { control.flexslider( index ); return true; }
-			} catch ( error ) { /* theme supplied jQuery data may not be FlexSlider */ }
+			} catch ( _error ) { /* theme supplied jQuery data may not be FlexSlider */ }
 		}
 		const thumbs = gallery.querySelectorAll( '.flex-control-nav a' );
 		if ( thumbs[ index ] && typeof thumbs[ index ].click === 'function' ) { thumbs[ index ].click(); return true; }
@@ -3162,7 +3235,7 @@ const writeTotals = async () => {
     // the WHOLE unit — every quantity-scope field's value at that index —
     // exactly what CartIntegration::split_quantity_repeat_cart_item hashes.
     // unitIndex → { count, firstIndex } — identical-unit group size + leader.
-    const unitGroups = unitSigs.map((sig, unitIndex) => {
+    const unitGroups = unitSigs.map((sig, _unitIndex) => {
       let count = 0;
       let firstIndex = -1;
       unitSigs.forEach((other, otherIndex) => {
@@ -3315,7 +3388,7 @@ const writeTotals = async () => {
       }
       displayed = preview;
       displayedIsServerPriced = true;
-    } catch (error) {
+    } catch (_error) {
       if (requestId !== pricePreviewRequestId) return;
       totalsEl.setAttribute('data-opf-price-preview-error', '1');
       totalsEl.removeAttribute('aria-busy');
@@ -3330,6 +3403,7 @@ const writeTotals = async () => {
   if (totalsEl) {
     const fmtEl = (el, amount) => {
       if (!el) return;
+      // pi-lens-ignore: no-inner-html-js -- localized WooCommerce money string (no user markup).
       el.innerHTML = fmtMoney(amount);
     };
     // Server preview payloads are already display-priced; local fallbacks go
@@ -3360,7 +3434,7 @@ const writeTotals = async () => {
         },
       }));
     }
-  } catch (e) {
+  } catch (_e) {
     // A consumer-side failure must never break the totals render.
   }
 };

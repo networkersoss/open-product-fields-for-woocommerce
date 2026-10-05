@@ -169,6 +169,46 @@ final class WapfExporterTest extends TestCase {
 		$this->assertSame( '0', $payload['fields'][0]['disabled_days'] );
 	}
 
+	public function test_date_disable_today_and_field_relative_bounds_round_trip_through_wapf_tools_payload(): void {
+		$opf = FieldGroup::normalize( [ 'fields' => [
+			[ 'id' => 'start', 'label' => 'Start', 'type' => 'date' ],
+			[ 'id' => 'end', 'label' => 'End', 'type' => 'date', 'disable_today' => true, 'min_date' => '[field.start]+1d', 'max_date' => '[field.start]3m' ],
+		] ] );
+
+		$payload = WapfExporter::build_payload( $opf );
+		$end = $payload['fields'][1];
+		$this->assertTrue( $end['disable_today'] );
+		$this->assertSame( '[field.start]+1d', $end['min_date'] );
+		$this->assertSame( '[field.start]3m', $end['max_date'] );
+
+		$date_keys = [ 'disable_past', 'disable_future', 'disable_today', 'min_date', 'max_date', 'disabled_days', 'disabled_dates', 'disable_today_after' ];
+		$start = $payload['fields'][0];
+		$start['options'] = array_intersect_key( $start, array_flip( $date_keys ) );
+		$end['options'] = array_intersect_key( $end, array_flip( $date_keys ) );
+
+		$round_trip = WapfMapper::map( [ 'fields' => [ $start, $end ] ] );
+		$this->assertFalse( $round_trip['needs_review'] );
+		$mapped = $round_trip['group']['fields'][1];
+		$this->assertTrue( $mapped['disable_today'] );
+		$this->assertSame( '[field.start]+1d', $mapped['min_date'] );
+		$this->assertSame( '[field.start]3m', $mapped['max_date'] );
+	}
+
+	public function test_number_display_plus_min_round_trips_through_wapf_tools_payload(): void {
+		$opf = FieldGroup::normalize( [ 'fields' => [ [
+			'id' => 'qty', 'label' => 'Qty', 'type' => 'number', 'display' => 'plus_min', 'number_mode' => 'integer',
+		] ] ] );
+
+		$payload = WapfExporter::build_payload( $opf );
+		$this->assertSame( 'plus_min', $payload['fields'][0]['display'] );
+
+		$field = $payload['fields'][0];
+		$field['options'] = array_intersect_key( $field, array_flip( [ 'number_type', 'display', 'minimum', 'maximum', 'default', 'placeholder', 'hide_zero' ] ) );
+		$round_trip = WapfMapper::map( [ 'fields' => [ $field ] ] );
+		$this->assertFalse( $round_trip['needs_review'] );
+		$this->assertSame( 'plus_min', $round_trip['group']['fields'][0]['display'] );
+	}
+
 	public function test_number_integer_mode_round_trips_bounds_and_default(): void {
 		$opf = FieldGroup::normalize( [ 'fields' => [ [
 			'id' => 'count', 'label' => 'Count', 'type' => 'number',

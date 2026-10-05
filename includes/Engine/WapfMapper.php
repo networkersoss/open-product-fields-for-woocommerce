@@ -223,7 +223,7 @@ final class WapfMapper {
 				$needs_review = true;
 				$repeat = [];
 			}
-			$date_settings = 'date' === $wapf_type ? self::map_date_settings( $wapf_field, $notes, $needs_review ) : [];
+			$date_settings = 'date' === $wapf_type ? self::map_date_settings( $wapf_field, $notes, $needs_review, $opf_ids_by_wapf_id ) : [];
 			$number_settings = 'number' === $wapf_type ? self::map_number_settings( $wapf_field, $notes, $needs_review ) : [];
 			$calc_settings = 'calc' === $wapf_type ? self::map_calc_settings( $wapf_field, $notes, $needs_review, $opf_ids_by_wapf_id, $source_order_by_wapf_id, (int) $index, $sumqty_references ) : [];
 			$clone_disabled = in_array( $wapf_field['clone']['enabled'] ?? false, [ false, 0, '0', 'false', null ], true );
@@ -497,7 +497,7 @@ final class WapfMapper {
 		];
 	}
 
-	private static function map_date_settings( array $wapf_field, array &$notes, bool &$needs_review ): array {
+	private static function map_date_settings( array $wapf_field, array &$notes, bool &$needs_review, array $opf_ids_by_wapf_id = [] ): array {
 		$options = is_array( $wapf_field['options'] ?? null ) ? $wapf_field['options'] : [];
 		$label = (string) ( $wapf_field['label'] ?? $wapf_field['id'] ?? '?' );
 		$settings = [];
@@ -514,11 +514,11 @@ final class WapfMapper {
 				continue;
 			}
 			$value = is_scalar( $options[ $source ] ) ? trim( (string) $options[ $source ] ) : '';
-			$boundary = self::wapf_date_boundary( $value );
+			$boundary = self::wapf_date_boundary( $value, $opf_ids_by_wapf_id );
 			if ( null !== $boundary ) {
 				$settings[ $target ] = $boundary;
 			} else {
-				$notes[] = sprintf( 'date field "%s" has unsupported %s value "%s" (including WAPF field-relative dates); the original value was not mapped and needs manual review.', $label, $source, $value );
+				$notes[] = sprintf( 'date field "%s" has unsupported %s value "%s"; the original value was not mapped and needs manual review.', $label, $source, $value );
 				$needs_review = true;
 			}
 		}
@@ -584,9 +584,16 @@ final class WapfMapper {
 				$settings['disabled_dates'] = $dates;
 			}
 		}
-		if ( ! empty( $options['disable_today'] ) ) {
-			$notes[] = sprintf( 'date field "%s" has unsupported disable_today value %s; OPF has no equivalent and the source value needs manual review.', $label, self::review_value( $options['disable_today'] ) );
-			$needs_review = true;
+		// WAPF `disable_today` is the boolean selection policy beside
+		// disable_past/disable_future (class-config.php true-falses group);
+		// it bans the site's current date on both the picker and the server.
+		if ( array_key_exists( 'disable_today', $options ) ) {
+			if ( in_array( $options['disable_today'], [ true, false, 0, 1, '0', '1' ], true ) ) {
+				$settings['disable_today'] = in_array( $options['disable_today'], [ true, 1, '1' ], true );
+			} else {
+				$notes[] = sprintf( 'date field "%s" has invalid disable_today value %s; the setting needs review.', $label, self::review_value( $options['disable_today'] ) );
+				$needs_review = true;
+			}
 		}
 		if ( isset( $options['default'] ) && '' !== $options['default'] ) {
 			$default = is_scalar( $options['default'] ) ? (string) $options['default'] : '[complex value]';
@@ -615,11 +622,30 @@ final class WapfMapper {
 		return $settings;
 	}
 
-	/** Convert WAPF's mm-dd-yyyy literal to OPF's ISO boundary, preserving relative periods. */
-	private static function wapf_date_boundary( string $value ): ?string {
+	/** Convert WAPF's mm-dd-yyyy literal or field-relative bound to OPF's ISO/expression.
+	 *
+	 * WAPF `wapfe_get_minmax_day` (extend/date.php:110) accepts a literal
+	 * `mm-dd-yyyy`, a relative period, or `[field.<wapfId>]<period>` where the
+	 * period is resolved against the referenced date field. References are
+	 * remapped onto the generated OPF field id; an unresolved reference stays
+	 * review-required rather than silently dropping the constraint.
+	 */
+	private static function wapf_date_boundary( string $value, array $opf_ids_by_wapf_id = [] ): ?string {
 		if ( preg_match( '/^(\d{2})-(\d{2})-(\d{4})$/', $value, $match ) ) {
 			$date = sprintf( '%04d-%02d-%02d', (int) $match[3], (int) $match[1], (int) $match[2] );
 			return FieldValue::is_date_boundary( $date ) ? $date : null;
+		}
+		if ( preg_match( '/^\[field\.([A-Za-z0-9_-]+)\](.*)$/s', $value, $match ) ) {
+			$reference = $match[1];
+			if ( ! array_key_exists( $reference, $opf_ids_by_wapf_id ) || null === $opf_ids_by_wapf_id[ $reference ] ) {
+				return null;
+			}
+			$expression = '[field.' . (string) $opf_ids_by_wapf_id[ $reference ] . ']';
+			$period = trim( $match[2] );
+			if ( '' !== $period ) {
+				$expression .= $period;
+			}
+			return FieldValue::is_date_boundary( $expression ) ? $expression : null;
 		}
 		return FieldValue::is_date_boundary( $value ) ? $value : null;
 	}
@@ -639,10 +665,10 @@ final class WapfMapper {
 	 * key — its renderer only emits the literal `step="any"` for
 	 * `number_type` != 'int' (class-html.php), so a numeric `number_type`
 	 * behaves as a decimal field with that increment. OPF equivalents are
-	 * `min`/`max`/`step` floats plus `number_mode` ('integer'|'decimal').
-	 * The plus/minus stepper is a global OPF setting rather than a
-	 * per-field display mode, and OPF has no `hide_zero` equivalent, so
-	 * those options are flagged for review instead of silently dropped.
+	 * `min`/`max`/`step` floats plus `number_mode` ('integer'|'decimal')
+	 * and the per-field `display` ('default'|'plus_min') stepper mode.
+	 * OPF has no `hide_zero` equivalent, so that option is flagged for review
+	 * instead of silently dropped.
 	 *
 	 * @param array<string,mixed> $wapf_field WAPF field.
 	 * @return array<string,mixed>
@@ -704,16 +730,19 @@ final class WapfMapper {
 			$needs_review = true;
 		}
 
-		$display = $options['display'] ?? $wapf_field['display'] ?? 'default';
-		if ( ! is_scalar( $display ) ) {
-			$notes[] = sprintf( 'number field "%s" has an invalid display setting; the standard number input applies.', $label );
-			$needs_review = true;
-		} elseif ( 'plus_min' === $display ) {
-			$notes[] = sprintf( 'number field "%s" uses WAPF plus/minus buttons; OPF renders number steppers through its global Product fields setting, so the display choice needs review.', $label );
-			$needs_review = true;
-		} elseif ( 'default' !== (string) $display && '' !== (string) $display ) {
-			$notes[] = sprintf( 'number field "%s" has an unrecognized display %s; the standard number input applies.', $label, self::review_value( $display ) );
-			$needs_review = true;
+		$display = $options['display'] ?? $wapf_field['display'] ?? null;
+		if ( null !== $display ) {
+			if ( ! is_scalar( $display ) ) {
+				$notes[] = sprintf( 'number field "%s" has an invalid display setting; the standard number input applies.', $label );
+				$needs_review = true;
+			} elseif ( in_array( (string) $display, [ 'default', 'plus_min' ], true ) ) {
+				// WAPF per-field stepper (class-config.php:614). Preserved so a
+				// field that does not set it keeps the global OPF default.
+				$settings['display'] = (string) $display;
+			} elseif ( '' !== (string) $display ) {
+				$notes[] = sprintf( 'number field "%s" has an unrecognized display %s; the standard number input applies.', $label, self::review_value( $display ) );
+				$needs_review = true;
+			}
 		}
 
 		if ( ! empty( $options['hide_zero'] ) || ! empty( $wapf_field['hide_zero'] ) ) {

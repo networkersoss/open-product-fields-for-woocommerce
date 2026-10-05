@@ -53,4 +53,47 @@ final class RendererNumberStepperTest extends TestCase {
 			}
 		}
 	}
+
+	public function test_per_field_plus_min_renders_wapf_stepper_classes_even_when_global_is_off(): void {
+		$previous = $GLOBALS['opf_test_options']['opf_number_buttons'] ?? null;
+		$GLOBALS['opf_test_options']['opf_number_buttons'] = 'no';
+		try {
+			$group = new FieldGroup( [ 'fields' => [ [ 'id' => 'quantity', 'label' => 'Quantity', 'type' => 'number', 'display' => 'plus_min', 'min' => 0, 'max' => 5 ] ] ] );
+			ob_start();
+			Renderer::render_group( '17', 'Options', $group, 10.0 );
+			$html = (string) ob_get_clean();
+
+			$this->assertStringContainsString( 'opf-number-stepper apf-plusmin', $html );
+			$this->assertStringContainsString( 'button apf-minus', $html );
+			$this->assertStringContainsString( 'button apf-plus', $html );
+			$this->assertStringContainsString( 'data-opf-number-step="down"', $html );
+			$this->assertStringContainsString( 'data-opf-number-step="up"', $html );
+		} finally {
+			if ( null === $previous ) {
+				unset( $GLOBALS['opf_test_options']['opf_number_buttons'] );
+			} else {
+				$GLOBALS['opf_test_options']['opf_number_buttons'] = $previous;
+			}
+		}
+	}
+
+	public function test_per_field_default_suppresses_the_global_stepper(): void {
+		$previous = $GLOBALS['opf_test_options']['opf_number_buttons'] ?? null;
+		$GLOBALS['opf_test_options']['opf_number_buttons'] = 'yes';
+		try {
+			$group = new FieldGroup( [ 'fields' => [ [ 'id' => 'quantity', 'label' => 'Quantity', 'type' => 'number', 'display' => 'default' ] ] ] );
+			ob_start();
+			Renderer::render_group( '17', 'Options', $group, 10.0 );
+			$html = (string) ob_get_clean();
+
+			$this->assertStringNotContainsString( 'opf-number-stepper', $html );
+			$this->assertStringContainsString( '<input type="number"', $html );
+		} finally {
+			if ( null === $previous ) {
+				unset( $GLOBALS['opf_test_options']['opf_number_buttons'] );
+			} else {
+				$GLOBALS['opf_test_options']['opf_number_buttons'] = $previous;
+			}
+		}
+	}
 }

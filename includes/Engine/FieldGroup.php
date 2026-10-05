@@ -1032,11 +1032,11 @@ final class FieldGroup {
 				if ( 'image' === $style ) {
 					$label_pos = $field['label_pos'] ?? 'out';
 					if ( ! in_array( $label_pos, [ 'default', 'out', 'hide', 'tooltip' ], true ) ) {
-						throw new InvalidArgumentException( 'Image swatch label position must be default, out, hide, or tooltip.' );
+						throw new \InvalidArgumentException( 'Image swatch label position must be default, out, hide, or tooltip.' );
 					}
 					$grid_layout = $field['grid_layout'] ?? 'fixed';
 					if ( ! in_array( $grid_layout, [ 'fixed', 'flexible' ], true ) ) {
-						throw new InvalidArgumentException( 'Image swatch grid layout must be fixed or flexible.' );
+						throw new \InvalidArgumentException( 'Image swatch grid layout must be fixed or flexible.' );
 					}
 					$normalized['label_pos'] = $label_pos;
 					$normalized['grid_layout'] = $grid_layout;
@@ -1047,7 +1047,7 @@ final class FieldGroup {
 				}
 				$image_zoom = $field['image_zoom'] ?? false;
 				if ( ! in_array( $image_zoom, [ true, false, 0, 1, '0', '1' ], true ) ) {
-					throw new InvalidArgumentException( 'Image swatch zoom setting must be boolean.' );
+					throw new \InvalidArgumentException( 'Image swatch zoom setting must be boolean.' );
 				}
 				if ( in_array( $image_zoom, [ true, 1, '1' ], true ) && $has_image_choice ) {
 					$normalized['image_zoom'] = true;
@@ -1131,6 +1131,16 @@ final class FieldGroup {
 					throw new \InvalidArgumentException( sprintf( 'Date field %s must be a boolean.', $key ) );
 				}
 				$normalized[ $key ] = in_array( $value, [ true, 1, '1' ], true );
+			}
+			// WAPF `disable_today` bans the current site date (class-config.php
+			// true-falses group). Stored only when authored so existing date
+			// fields keep their canonical shape.
+			if ( array_key_exists( 'disable_today', $field ) ) {
+				$disable_today = $field['disable_today'];
+				if ( ! in_array( $disable_today, [ true, false, 0, 1, '0', '1' ], true ) ) {
+					throw new \InvalidArgumentException( 'Date field disable_today must be a boolean.' );
+				}
+				$normalized['disable_today'] = in_array( $disable_today, [ true, 1, '1' ], true );
 			}
 			foreach ( [ 'min_date', 'max_date' ] as $key ) {
 				if ( ! array_key_exists( $key, $field ) ) {
@@ -1243,6 +1253,14 @@ final class FieldGroup {
 			}
 			if ( in_array( $field['number_mode'] ?? null, [ 'integer', 'decimal' ], true ) ) {
 				$normalized['number_mode'] = $field['number_mode'];
+			}
+			// WAPF number fields carry `display` = default|plus_min
+			// (class-config.php:614). Emitted only when authored so existing
+			// number fields keep their canonical shape; renderers fall back to
+			// the global Product fields stepper setting when it is absent.
+			if ( array_key_exists( 'display', $field ) ) {
+				$display = (string) $field['display'];
+				$normalized['display'] = in_array( $display, [ 'default', 'plus_min' ], true ) ? $display : 'default';
 			}
 			// A stored default must satisfy the same constraints a customer
 			// submission would (integer mode, min/max, step from the minimum).

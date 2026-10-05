@@ -1058,11 +1058,26 @@ final class WapfMapperTest extends TestCase {
 		] ] ] );
 
 		$this->assertTrue( $mapped['needs_review'] );
+		// disable_today is now mapped end to end; the unresolved sibling
+		// reference, the default, and the unknown option stay fail-closed.
+		$this->assertTrue( $mapped['group']['fields'][0]['disable_today'] );
 		$notes = implode( ' ', $mapped['notes'] );
 		$this->assertStringContainsString( '[field.start]+1d', $notes );
-		$this->assertStringContainsString( 'disable_today value true', $notes );
 		$this->assertStringContainsString( '10-03-2026', $notes );
 		$this->assertStringContainsString( 'mystery', $notes );
+	}
+
+	public function test_maps_wapf_disable_today_and_field_relative_bounds(): void {
+		$mapped = WapfMapper::map( [ 'fields' => [
+			[ 'id' => 'start', 'label' => 'Start date', 'type' => 'date', 'options' => [] ],
+			[ 'id' => 'end', 'label' => 'End date', 'type' => 'date', 'options' => [ 'disable_today' => '1', 'min_date' => '[field.start]+1d', 'max_date' => '[field.start]3m' ] ],
+		] ] );
+
+		$this->assertFalse( $mapped['needs_review'] );
+		$end = $mapped['group']['fields'][1];
+		$this->assertTrue( $end['disable_today'] );
+		$this->assertSame( '[field.start-date]+1d', $end['min_date'] );
+		$this->assertSame( '[field.start-date]3m', $end['max_date'] );
 	}
 
 	public function test_text_field_import_preserves_wapf_default_and_absent_state(): void {
@@ -1366,16 +1381,25 @@ final class WapfMapperTest extends TestCase {
 		$this->assertStringContainsString( 'stored step', implode( ' ', $mapped['notes'] ) );
 	}
 
-	public function test_number_field_plus_min_display_and_hide_zero_flag_review(): void {
+	public function test_number_field_plus_min_display_maps_and_hide_zero_flag_review(): void {
 		$mapped = WapfMapper::map( [ 'fields' => [ [
 			'id' => 'qty', 'label' => 'Qty', 'type' => 'number',
 			'options' => [ 'display' => 'plus_min', 'hide_zero' => true ],
 		] ] ] );
 
 		$this->assertTrue( $mapped['needs_review'] );
+		$this->assertSame( 'plus_min', $mapped['group']['fields'][0]['display'] );
 		$notes = implode( ' ', $mapped['notes'] );
-		$this->assertStringContainsString( 'plus/minus buttons', $notes );
 		$this->assertStringContainsString( 'hides zero values', $notes );
+	}
+
+	public function test_number_field_absent_display_leaves_the_field_without_a_per_field_override(): void {
+		$mapped = WapfMapper::map( [ 'fields' => [ [
+			'id' => 'qty', 'label' => 'Qty', 'type' => 'number',
+			'options' => [ 'number_type' => 'int' ],
+		] ] ] );
+
+		$this->assertFalse( $mapped['needs_review'] );
 		$this->assertArrayNotHasKey( 'display', $mapped['group']['fields'][0] );
 	}
 

@@ -110,6 +110,10 @@ test('builder saves selected product-attribute terms through the real save handl
 	assert.ok(numberMode, 'builder should expose whole-number and decimal modes');
 	numberMode.value = 'decimal';
 	numberMode.listeners.change();
+	const numberDisplay = findElement(mount, (node) => node.attributes && node.attributes['data-opf-number-display'] === '1');
+	assert.ok(numberDisplay, 'builder should expose the per-field number stepper choice');
+	numberDisplay.value = 'plus_min';
+	numberDisplay.listeners.change();
 	const typeSelectors = findElements(mount, (node) => node.tagName === 'select' && node.attributes && node.attributes.title === 'Field type');
 	typeSelectors[4].value = 'number';
 	typeSelectors[4].listeners.change();
@@ -138,6 +142,7 @@ test('builder saves selected product-attribute terms through the real save handl
 		choices: [{ slug: 'small', label: 'Small', image: '/small.jpg', pricing: { type: 'fixed', amount: 2 } }],
 	});
 	assert.equal(body.data.fields[2].number_mode, 'decimal');
+	assert.equal(body.data.fields[2].display, 'plus_min', 'per-field stepper choice round-trips through save');
 	assert.equal(body.data.fields[3].number_mode, undefined, 'legacy number mode remains unset unless changed');
 	assert.equal(body.data.fields[4].number_mode, 'integer', 'new number fields default to whole-number behavior');
 	assert.equal(body.data.fields[5].min_files, 2);

@@ -240,7 +240,7 @@
 	// `label<TAB>value<TAB>fixed price`. The import is atomic: any malformed
 	// line aborts with a per-line error and no partial mutation. Color swatch
 	// fields additionally accept `Label, #hex` in the label column.
-	function bulkChoiceImport( field, list ) {
+	function bulkChoiceImport( field, _list ) {
 		var color = 'swatch' === field.type && 'color' === field.swatch_style;
 		var bulkHelpId = 'opf-b-bulk-choice-help-' + String( field.id || '' ).replace( /[^a-zA-Z0-9_-]/g, '' );
 		var status = el( 'span', { class: 'opf-b-status', 'data-opf-bulk-choice-status': '1', role: 'status', 'aria-live': 'polite' } );
@@ -1346,6 +1346,19 @@
 				field.number_mode = numberMode.value;
 			} );
 			var numberSettings = el( 'div', { class: 'opf-b-constraints' }, [ labeledControl( __( 'Number type', 'open-product-fields-for-woocommerce' ), numberMode ) ] );
+			// WAPF per-field stepper (`display` = default|plus_min); an empty
+			// choice leaves the field on the site-wide Product fields setting.
+			var numberDisplay = el( 'select', { class: 'opf-b-input', title: __( 'Number controls', 'open-product-fields-for-woocommerce' ), 'data-opf-number-display': '1' }, [
+				el( 'option', { value: '', text: __( 'Use site default', 'open-product-fields-for-woocommerce' ) } ),
+				el( 'option', { value: 'default', text: __( 'Number input only', 'open-product-fields-for-woocommerce' ) } ),
+				el( 'option', { value: 'plus_min', text: __( '+/− buttons', 'open-product-fields-for-woocommerce' ) } ),
+			] );
+			numberDisplay.value = field.display || '';
+			numberDisplay.addEventListener( 'change', function () {
+				if ( numberDisplay.value ) field.display = numberDisplay.value;
+				else delete field.display;
+			} );
+			numberSettings.appendChild( labeledControl( __( 'Number controls', 'open-product-fields-for-woocommerce' ), numberDisplay ) );
 			[ [ 'min', __( 'Minimum', 'open-product-fields-for-woocommerce' ) ], [ 'max', __( 'Maximum', 'open-product-fields-for-woocommerce' ) ], [ 'step', __( 'Step', 'open-product-fields-for-woocommerce' ) ] ].forEach( function ( setting ) {
 				var input = el( 'input', { class: 'opf-b-input', type: 'number', value: field[ setting[ 0 ] ] === undefined ? '' : field[ setting[ 0 ] ], placeholder: setting[ 1 ] } );
 				input.addEventListener( 'input', function ( e ) {
@@ -1850,7 +1863,7 @@
 				throw new Error( 'Lookup tables must be a JSON object.' );
 			}
 			model.lookup_tables = parsedLookupTables;
-		} catch ( error ) {
+		} catch ( _error ) {
 			var lookupStatus = document.getElementById( 'opf-b-lookup-status' );
 			if ( lookupStatus ) lookupStatus.textContent = __( 'Fix lookup table JSON before saving.', 'open-product-fields-for-woocommerce' );
 			return;
@@ -1862,7 +1875,7 @@
 				throw new Error( 'Formula variables must be a JSON object.' );
 			}
 			model.formula_variables = parsedVariables;
-		} catch ( error ) {
+		} catch ( _error ) {
 			var variableStatus = document.getElementById( 'opf-b-formula-variable-status' );
 			if ( variableStatus ) variableStatus.textContent = __( 'Fix formula variable JSON before saving.', 'open-product-fields-for-woocommerce' );
 			return;
@@ -2121,7 +2134,7 @@
 			model.lookup_tables = parsedTables;
 			var lookupStatus = document.getElementById( 'opf-b-lookup-status' );
 			if ( lookupStatus ) lookupStatus.textContent = '';
-		} catch ( error ) {
+		} catch ( _error ) {
 			var lookupStatusErr = document.getElementById( 'opf-b-lookup-status' );
 			if ( lookupStatusErr ) lookupStatusErr.textContent = __( 'Invalid JSON; save is disabled until corrected.', 'open-product-fields-for-woocommerce' );
 		}
@@ -2139,7 +2152,7 @@
 			model.formula_variables = parsedVars;
 			var variableStatus = document.getElementById( 'opf-b-formula-variable-status' );
 			if ( variableStatus ) variableStatus.textContent = '';
-		} catch ( error ) {
+		} catch ( _error ) {
 			var variableStatusErr = document.getElementById( 'opf-b-formula-variable-status' );
 			if ( variableStatusErr ) variableStatusErr.textContent = __( 'Invalid JSON; save is disabled until corrected.', 'open-product-fields-for-woocommerce' );
 		}

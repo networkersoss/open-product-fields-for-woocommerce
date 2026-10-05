@@ -1952,7 +1952,7 @@ final class CartIntegration {
 				}
 				$value    = $provided && ! is_array( $given[ $field['id'] ] ) ? (string) $given[ $field['id'] ] : null;
 				if ( in_array( $field['type'], [ 'email', 'url', 'date', 'toggle', 'number', 'text', 'textarea' ], true ) ) {
-					$errors = array_merge( $errors, FieldValue::validate( $field, $value, $provided ) );
+					$errors = array_merge( $errors, FieldValue::validate( $field, $value, $provided, null, $given ) );
 				} elseif ( $field['required'] && ! $provided ) {
 					$errors[] = sprintf( '"%s" is a required field.', $field['label'] );
 				}

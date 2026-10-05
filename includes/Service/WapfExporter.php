@@ -8,6 +8,7 @@
 namespace OPF\Service;
 
 use OPF\Engine\FieldGroup;
+use OPF\Engine\FieldValue;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -26,7 +27,7 @@ final class WapfExporter {
 		'color_size', 'color_label_pos', 'image_zoom', 'label_pos', 'grid_layout',
 		'item_width', 'items_per_row', 'items_per_row_tablet', 'items_per_row_mobile',
 		'allow_past', 'allow_future', 'min_date', 'max_date', 'disabled_weekdays',
-		'disabled_dates', 'cutoff_time',
+		'disabled_dates', 'cutoff_time', 'disable_today',
 		// Linked products (WAPF `products` type) and file upload fields.
 		'subtype', 'product_selection', 'qty_method', 'product_query', 'display',
 		'slot_1', 'slot_2', 'slot_3', 'incl_img', 'incl_desc', 'img_fit',
@@ -266,7 +267,7 @@ final class WapfExporter {
 			$out['placeholder'] = $field['placeholder'];
 		}
 		if ( 'date' === $type ) {
-			$out = array_merge( $out, self::map_date_settings( $field ) );
+			$out = array_merge( $out, self::map_date_settings( $field, $field_ids ) );
 		}
 		if ( in_array( $type, [ 'text', 'textarea', 'email', 'url', 'number' ], true ) && isset( $field['default'] ) ) {
 			$out['default'] = $field['default'];
@@ -468,7 +469,9 @@ final class WapfExporter {
 	 *  - decimal mode with a positive step → `number_type` carrying that step,
 	 *    because WAPF 3.1.5 never serializes a `step` key: its renderer writes
 	 *    `number_type` verbatim into the `step` attribute (class-html.php) and
-	 *    only `int`/`any` appear in its admin (class-config.php).
+	 *    only `int`/`any` appear in its admin (class-config.php);
+	 *  - `display` (`default`/`plus_min`) exports the per-field WAPF stepper
+	 *    choice verbatim so a migrated field keeps its control.
 	 *
 	 * WAPF also re-sanitizes the imported `default` inside `number_type`'s
 	 * value space (class-field-groups.php: `int` unless the type is exactly
@@ -495,6 +498,9 @@ final class WapfExporter {
 		} else {
 			$out['number_type'] = 'any';
 		}
+		if ( isset( $field['display'] ) && in_array( $field['display'], [ 'default', 'plus_min' ], true ) ) {
+			$out['display'] = $field['display'];
+		}
 		return $out;
 	}
 
@@ -503,26 +509,30 @@ final class WapfExporter {
 	 * (the inverse of WapfMapper::map_date_settings):
 	 *
 	 *  - `allow_past`/`allow_future` invert to `disable_past`/`disable_future`;
+	 *  - `disable_today` exports verbatim;
 	 *  - ISO `YYYY-MM-DD` bounds/blackouts convert to WAPF `mm-dd-yyyy`, while
-	 *    relative periods such as `7d`/`1y 9m 3d` pass through unchanged;
+	 *    relative periods such as `7d`/`1y 9m 3d` and field-relative bounds
+	 *    such as `[field.start]+1d` pass through unchanged;
 	 *  - `disabled_weekdays` becomes the CSV scalar WAPF stores (a lone Sunday
 	 *    keeps WAPF's bare `'0'` special case);
 	 *  - inclusive date rules keep WAPF's space-separated range and CSV list;
 	 *  - `cutoff_time` maps to `disable_today_after`.
 	 *
-	 * OPF has no `disable_today` equivalent, so nothing is emitted for it.
-	 *
-	 * @param array<string,mixed> $field Normalized OPF date field.
+	 * @param array<string,mixed> $field     Normalized OPF date field.
+	 * @param string[]            $field_ids Exported field ids (field-relative refs must resolve).
 	 * @return array<string,mixed>
 	 */
-	private static function map_date_settings( array $field ): array {
+	private static function map_date_settings( array $field, array $field_ids = [] ): array {
 		$out = [];
 		foreach ( [ 'allow_past' => 'disable_past', 'allow_future' => 'disable_future' ] as $opf_key => $wapf_key ) {
 			$out[ $wapf_key ] = empty( $field[ $opf_key ] );
 		}
+		if ( ! empty( $field['disable_today'] ) ) {
+			$out['disable_today'] = true;
+		}
 		foreach ( [ 'min_date', 'max_date' ] as $key ) {
 			if ( isset( $field[ $key ] ) && '' !== (string) $field[ $key ] ) {
-				$out[ $key ] = self::date_to_wapf( (string) $field[ $key ] );
+				$out[ $key ] = self::date_bound_to_wapf( (string) $field[ $key ], $field_ids );
 			}
 		}
 		if ( ! empty( $field['disabled_weekdays'] ) ) {
@@ -557,6 +567,14 @@ final class WapfExporter {
 			return $match[2] . '-' . $match[3] . '-' . $match[1];
 		}
 		return $value;
+	}
+
+	/** Serialize a min/max bound, remapping field-relative references onto exported ids. */
+	private static function date_bound_to_wapf( string $value, array $field_ids ): string {
+		if ( null === FieldValue::date_boundary_reference( $value ) ) {
+			return self::date_to_wapf( $value );
+		}
+		return self::map_formula_references( $value, $field_ids );
 	}
 
 	/**

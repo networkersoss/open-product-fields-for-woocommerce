@@ -93,7 +93,10 @@ final class FieldValue {
 		return $errors;
 	}
 
-	/** Return whether a date bound is canonical ISO or a WAPF relative period. */
+	/**
+	 * Return whether a date bound is canonical ISO, a WAPF relative period,
+	 * or a WAPF field-relative period such as `[field.start]+1d`.
+	 */
 	public static function is_date_boundary( string $boundary ): bool {
 		if ( preg_match( '/^\d{4}-\d{2}-\d{2}$/', $boundary ) ) {
 			$date   = \DateTimeImmutable::createFromFormat( '!Y-m-d', $boundary, new \DateTimeZone( 'UTC' ) );
@@ -104,11 +107,43 @@ final class FieldValue {
 		if ( '' === trim( $boundary ) || strlen( $boundary ) > 128 ) {
 			return false;
 		}
-		$matched = preg_match_all( '/[+-]?\d{1,5}[ymd]/i', trim( $boundary ), $tokens );
+		// WAPF `wapfe_get_minmax_day` treats a value starting with `[field.`
+		// as a period resolved against another date field (extend/date.php:110).
+		if ( null !== self::date_boundary_reference( $boundary ) ) {
+			$period = self::date_boundary_period( $boundary );
+			return '' === $period || self::is_relative_period( $period );
+		}
+		return self::is_relative_period( $boundary );
+	}
+
+	/**
+	 * Referenced OPF field id for a WAPF field-relative bound, or null when the
+	 * bound is not field-relative.
+	 */
+	public static function date_boundary_reference( string $boundary ): ?string {
+		if ( ! preg_match( '/^\[field\.([A-Za-z0-9_-]+)\]/', trim( $boundary ), $match ) ) {
+			return null;
+		}
+		return $match[1];
+	}
+
+	/** Period suffix that follows a `[field.id]` reference ('' means the reference itself). */
+	private static function date_boundary_period( string $boundary ): string {
+		$stripped = preg_replace( '/^\[field\.[A-Za-z0-9_-]+\]/', '', trim( $boundary ) );
+		return is_string( $stripped ) ? trim( $stripped ) : '';
+	}
+
+	/** Whether a whitespace-separated y/m/d period is well formed and bounded. */
+	private static function is_relative_period( string $period ): bool {
+		$period = trim( $period );
+		if ( '' === $period ) {
+			return false;
+		}
+		$matched = preg_match_all( '/[+-]?\d{1,5}[ymd]/i', $period, $tokens );
 		if ( false === $matched || 0 === $matched || $matched > 12 ) {
 			return false;
 		}
-		$remainder = preg_replace( '/[+-]?\d{1,5}[ymd]/i', '', trim( $boundary ) );
+		$remainder = preg_replace( '/[+-]?\d{1,5}[ymd]/i', '', $period );
 		if ( null === $remainder || '' !== trim( $remainder ) ) {
 			return false;
 		}
@@ -120,30 +155,58 @@ final class FieldValue {
 		return true;
 	}
 
-	/** Resolve WAPF periods such as `1y 9m 3d` in the WordPress site timezone. */
-	public static function resolve_date_boundary( string $boundary, ?\DateTimeImmutable $today = null ): ?string {
+	/**
+	 * Resolve WAPF periods such as `1y 9m 3d` in the WordPress site timezone.
+	 *
+	 * WAPF applies the intervals days → months → years (`extend/date.php:83`
+	 * `->add($dInterval)->add($mInterval)->add($yInterval)`), so OPF must too —
+	 * month-end arithmetic differs by order. When `$boundary` references another
+	 * date field, `$reference_value` carries that field's ISO value; an absent
+	 * or non-ISO reference resolves to null (no bound), matching WAPF's
+	 * `if( $target_value )` gate (`extend/date.php:150`).
+	 *
+	 * @param string                 $boundary        ISO date, relative period, or `[field.id]<period>`.
+	 * @param \DateTimeImmutable|null $today           Base for plain relative periods.
+	 * @param string|null            $reference_value ISO value of the referenced field.
+	 */
+	public static function resolve_date_boundary( string $boundary, ?\DateTimeImmutable $today = null, ?string $reference_value = null ): ?string {
 		if ( ! self::is_date_boundary( $boundary ) ) {
 			return null;
 		}
 		if ( preg_match( '/^\d{4}-\d{2}-\d{2}$/', $boundary ) ) {
 			return $boundary;
 		}
+		if ( null !== self::date_boundary_reference( $boundary ) ) {
+			$reference_value = is_string( $reference_value ) ? trim( $reference_value ) : '';
+			if ( ! self::is_iso_date( $reference_value ) ) {
+				return null;
+			}
+			$base = new \DateTimeImmutable( $reference_value . ' 00:00:00', new \DateTimeZone( 'UTC' ) );
+			return self::apply_relative_period( $base, self::date_boundary_period( $boundary ) );
+		}
 		if ( null === $today ) {
 			$today = function_exists( 'current_datetime' )
-				? current_datetime()
+				? \current_datetime()
 				: new \DateTimeImmutable( 'now', new \DateTimeZone( 'UTC' ) );
 		}
+		return self::apply_relative_period( $today, trim( $boundary ) );
+	}
 
+	/** Apply a y/m/d period to a base date in WAPF's days → months → years order. */
+	private static function apply_relative_period( \DateTimeImmutable $base, string $period ): ?string {
+		if ( '' === trim( $period ) ) {
+			return $base->format( 'Y-m-d' );
+		}
 		$totals = [ 'y' => 0, 'm' => 0, 'd' => 0 ];
-		preg_match_all( '/([+-]?\d{1,5})([ymd])/i', trim( $boundary ), $parts, PREG_SET_ORDER );
+		preg_match_all( '/([+-]?\d{1,5})([ymd])/i', trim( $period ), $parts, PREG_SET_ORDER );
 		foreach ( $parts as $part ) {
 			$unit = strtolower( $part[2] );
 			$totals[ $unit ] += (int) $part[1];
 		}
 
 		try {
-			$resolved = $today->setTime( 0, 0 );
-			foreach ( [ 'y' => 'Y', 'm' => 'M', 'd' => 'D' ] as $unit => $interval_unit ) {
+			$resolved = $base->setTime( 0, 0 );
+			foreach ( [ 'd' => 'D', 'm' => 'M', 'y' => 'Y' ] as $unit => $interval_unit ) {
 				$amount = $totals[ $unit ];
 				if ( 0 === $amount ) {
 					continue;
@@ -244,7 +307,7 @@ final class FieldValue {
 	 * @param bool                $provided Whether this input appeared in the payload.
 	 * @return string[]
 	 */
-	public static function validate( array $field, ?string $value, bool $provided, ?\DateTimeImmutable $today = null ): array {
+	public static function validate( array $field, ?string $value, bool $provided, ?\DateTimeImmutable $today = null, ?array $siblings = null ): array {
 		$label = (string) ( $field['label'] ?? '' );
 		$type  = (string) ( $field['type'] ?? '' );
 
@@ -312,8 +375,12 @@ final class FieldValue {
 				/* translators: %s: field label. */
 				return [ sprintf( __( '"%s" must be a valid date.', 'open-product-fields-for-woocommerce' ), $label ) ];
 			}
-			$current = $today ?? ( function_exists( 'current_datetime' ) ? current_datetime() : new \DateTimeImmutable( 'now', new \DateTimeZone( 'UTC' ) ) );
+			$current = $today ?? ( function_exists( 'current_datetime' ) ? \current_datetime() : new \DateTimeImmutable( 'now', new \DateTimeZone( 'UTC' ) ) );
 			$site_today = $current->format( 'Y-m-d' );
+			if ( ! empty( $field['disable_today'] ) && $value === $site_today ) {
+				/* translators: %s: field label. */
+				return [ sprintf( __( '"%s" cannot be today.', 'open-product-fields-for-woocommerce' ), $label ) ];
+			}
 			if ( false === ( $field['allow_past'] ?? true ) && $value < $site_today ) {
 				/* translators: %s: field label. */
 				return [ sprintf( __( '"%s" cannot be in the past.', 'open-product-fields-for-woocommerce' ), $label ) ];
@@ -326,7 +393,17 @@ final class FieldValue {
 				if ( ! isset( $field[ $key ] ) ) {
 					continue;
 				}
-				$boundary = self::resolve_date_boundary( (string) $field[ $key ], $today );
+				$expression = (string) $field[ $key ];
+				// WAPF field-relative bounds resolve against the referenced
+				// field's submitted value (extend/date.php wapfe_get_minmax_day);
+				// an empty/missing reference yields no bound, matching its
+				// `if( $target_value )` gate.
+				$reference_value = null;
+				$reference = self::date_boundary_reference( $expression );
+				if ( null !== $reference && is_array( $siblings ) && array_key_exists( $reference, $siblings ) && is_scalar( $siblings[ $reference ] ) ) {
+					$reference_value = (string) $siblings[ $reference ];
+				}
+				$boundary = self::resolve_date_boundary( $expression, $today, $reference_value );
 				if ( null !== $boundary && ( 'min_date' === $key ? $value < $boundary : $value > $boundary ) ) {
 					if ( 'min_date' === $key ) {
 						/* translators: 1: field label, 2: earliest allowed ISO date. */
