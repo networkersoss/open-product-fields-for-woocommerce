@@ -1,0 +1,21 @@
+{
+    "group_id": 15099,
+    "title": "Linked products currency lane",
+    "choices": [
+        {
+            "slug": "child-alpha",
+            "product_id": 15096,
+            "pricing_type": "fixed"
+        },
+        {
+            "slug": "child-beta",
+            "product_id": 15097,
+            "pricing_type": "fixed"
+        },
+        {
+            "slug": "child-gamma",
+            "product_id": 15098,
+            "pricing_type": "none"
+        }
+    ]
+}

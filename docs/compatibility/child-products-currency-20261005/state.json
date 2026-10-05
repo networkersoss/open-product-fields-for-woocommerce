@@ -1,0 +1,55 @@
+{
+    "parent": 15095,
+    "alpha": 15096,
+    "beta": 15097,
+    "gamma": 15098,
+    "group": 15099,
+    "checkout": 15100,
+    "account": 15101,
+    "base_rate_id": 3,
+    "old_options": {
+        "woocommerce_checkout_page_id": {
+            "exists": true,
+            "value": "7"
+        },
+        "woocommerce_myaccount_page_id": {
+            "exists": true,
+            "value": "8"
+        },
+        "woocommerce_bacs_settings": {
+            "exists": true,
+            "value": {
+                "enabled": "yes",
+                "title": "Bank transfer"
+            }
+        },
+        "woocommerce_currency": {
+            "exists": true,
+            "value": "USD"
+        },
+        "woocommerce_calc_taxes": {
+            "exists": true,
+            "value": "no"
+        },
+        "woocommerce_prices_include_tax": {
+            "exists": true,
+            "value": "no"
+        },
+        "woocommerce_tax_display_shop": {
+            "exists": true,
+            "value": "excl"
+        },
+        "woocommerce_tax_display_cart": {
+            "exists": true,
+            "value": "excl"
+        },
+        "woocommerce_tax_based_on": {
+            "exists": true,
+            "value": "shipping"
+        },
+        "woocommerce_enable_guest_checkout": {
+            "exists": true,
+            "value": "yes"
+        }
+    }
+}

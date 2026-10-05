@@ -1,0 +1,81 @@
+{
+    "fields": [
+        {
+            "id": "linked_cards",
+            "label": "Included products",
+            "description": "",
+            "type": "products",
+            "required": false,
+            "width": 100,
+            "class": "",
+            "conditionals": [],
+            "pricing": {
+                "enabled": false,
+                "type": "fixed",
+                "amount": 0
+            },
+            "subtype": "card",
+            "product_selection": "manual",
+            "choices": [
+                {
+                    "id": 15096,
+                    "slug": "child-alpha",
+                    "label": "",
+                    "selected": false,
+                    "disabled": false,
+                    "pricing_type": "fixed",
+                    "options": []
+                },
+                {
+                    "id": 15097,
+                    "slug": "child-beta",
+                    "label": "",
+                    "selected": false,
+                    "disabled": false,
+                    "pricing_type": "fixed",
+                    "options": []
+                },
+                {
+                    "id": 15098,
+                    "slug": "child-gamma",
+                    "label": "",
+                    "selected": false,
+                    "disabled": false,
+                    "pricing_type": "none",
+                    "options": []
+                }
+            ],
+            "qty_method": "parent",
+            "items_per_row": 2,
+            "items_per_row_tablet": 1,
+            "items_per_row_mobile": 1,
+            "incl_img": false,
+            "incl_desc": false,
+            "slot_1": "price",
+            "slot_2": "none",
+            "slot_3": "none"
+        }
+    ],
+    "conditions": [
+        {
+            "rules": [
+                {
+                    "subject": "product",
+                    "condition": "products",
+                    "value": [
+                        {
+                            "id": "15095",
+                            "text": "15095"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "layout": {
+        "labels_position": "above",
+        "instructions_position": "field",
+        "mark_required": true
+    },
+    "variables": []
+}

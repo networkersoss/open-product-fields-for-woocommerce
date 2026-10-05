@@ -1,0 +1,323 @@
+{
+  "label": "after-both-active",
+  "url": "http://127.0.0.1:8090/product/opf-wapf-coexistcss-product/",
+  "generatedAt": "2026-10-05T23:11:15.865Z",
+  "stylesheets": [
+    "http://127.0.0.1:8090/wp-content/plugins/open-product-fields-for-woocommerce/assets/css/opf-frontend.css?ver=0.1.0",
+    "http://127.0.0.1:8090/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791241845"
+  ],
+  "opfCheckbox": {
+    "desktop": {
+      "width": 1280,
+      "matched": true,
+      "display": "grid",
+      "gridTemplateColumns": "145.5px 145.5px 145.5px 145.5px",
+      "columnCount": 4,
+      "rowGap": "4px",
+      "columnGap": "12px",
+      "classes": "opf-swatch-wrapper opf-checkboxes--columns wapf-checkboxes",
+      "inlineStyle": "--opf-checkbox-columns:4;--opf-checkbox-columns-tablet:2;--opf-checkbox-columns-mobile:1;",
+      "winner": {
+        "sheet": "http://127.0.0.1:8090/wp-content/plugins/open-product-fields-for-woocommerce/assets/css/opf-frontend.css?ver=0.1.0",
+        "selector": ".opf-swatch-wrapper.opf-checkboxes--columns",
+        "media": null,
+        "value": "repeat(var(--opf-checkbox-columns, 1), minmax(0, 1fr))",
+        "applies": true,
+        "specificity": {
+          "score": 200,
+          "ids": 0,
+          "classes": 2,
+          "elements": 0
+        }
+      },
+      "cascade": [
+        {
+          "sheet": "http://127.0.0.1:8090/wp-content/plugins/open-product-fields-for-woocommerce/assets/css/opf-frontend.css?ver=0.1.0",
+          "selector": ".opf-swatch-wrapper.opf-checkboxes--columns",
+          "media": null,
+          "value": "repeat(var(--opf-checkbox-columns, 1), minmax(0, 1fr))",
+          "applies": true
+        },
+        {
+          "sheet": "http://127.0.0.1:8090/wp-content/plugins/open-product-fields-for-woocommerce/assets/css/opf-frontend.css?ver=0.1.0",
+          "selector": ".opf-swatch-wrapper.opf-checkboxes--columns",
+          "media": "(max-width: 720px)",
+          "value": "repeat(var(--opf-checkbox-columns-tablet, 1), minmax(0, 1fr))",
+          "applies": false
+        },
+        {
+          "sheet": "http://127.0.0.1:8090/wp-content/plugins/open-product-fields-for-woocommerce/assets/css/opf-frontend.css?ver=0.1.0",
+          "selector": ".opf-swatch-wrapper.opf-checkboxes--columns",
+          "media": "(max-width: 420px)",
+          "value": "repeat(var(--opf-checkbox-columns-mobile, 1), minmax(0, 1fr))",
+          "applies": false
+        },
+        {
+          "sheet": "http://127.0.0.1:8090/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791241845",
+          "selector": ".wapf-checkboxes, .wapf-radios",
+          "media": null,
+          "value": "auto",
+          "applies": true
+        }
+      ]
+    },
+    "tablet-edge-720": {
+      "width": 720,
+      "matched": true,
+      "display": "grid",
+      "gridTemplateColumns": "318px 318px",
+      "columnCount": 2,
+      "rowGap": "4px",
+      "columnGap": "12px",
+      "classes": "opf-swatch-wrapper opf-checkboxes--columns wapf-checkboxes",
+      "inlineStyle": "--opf-checkbox-columns:4;--opf-checkbox-columns-tablet:2;--opf-checkbox-columns-mobile:1;",
+      "winner": {
+        "sheet": "http://127.0.0.1:8090/wp-content/plugins/open-product-fields-for-woocommerce/assets/css/opf-frontend.css?ver=0.1.0",
+        "selector": ".opf-swatch-wrapper.opf-checkboxes--columns",
+        "media": "(max-width: 720px)",
+        "value": "repeat(var(--opf-checkbox-columns-tablet, 1), minmax(0, 1fr))",
+        "applies": true,
+        "specificity": {
+          "score": 200,
+          "ids": 0,
+          "classes": 2,
+          "elements": 0
+        }
+      },
+      "cascade": [
+        {
+          "sheet": "http://127.0.0.1:8090/wp-content/plugins/open-product-fields-for-woocommerce/assets/css/opf-frontend.css?ver=0.1.0",
+          "selector": ".opf-swatch-wrapper.opf-checkboxes--columns",
+          "media": null,
+          "value": "repeat(var(--opf-checkbox-columns, 1), minmax(0, 1fr))",
+          "applies": true
+        },
+        {
+          "sheet": "http://127.0.0.1:8090/wp-content/plugins/open-product-fields-for-woocommerce/assets/css/opf-frontend.css?ver=0.1.0",
+          "selector": ".opf-swatch-wrapper.opf-checkboxes--columns",
+          "media": "(max-width: 720px)",
+          "value": "repeat(var(--opf-checkbox-columns-tablet, 1), minmax(0, 1fr))",
+          "applies": true
+        },
+        {
+          "sheet": "http://127.0.0.1:8090/wp-content/plugins/open-product-fields-for-woocommerce/assets/css/opf-frontend.css?ver=0.1.0",
+          "selector": ".opf-swatch-wrapper.opf-checkboxes--columns",
+          "media": "(max-width: 420px)",
+          "value": "repeat(var(--opf-checkbox-columns-mobile, 1), minmax(0, 1fr))",
+          "applies": false
+        },
+        {
+          "sheet": "http://127.0.0.1:8090/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791241845",
+          "selector": ".wapf-checkboxes, .wapf-radios",
+          "media": null,
+          "value": "auto",
+          "applies": true
+        }
+      ]
+    },
+    "tablet": {
+      "width": 600,
+      "matched": true,
+      "display": "grid",
+      "gridTemplateColumns": "264px 264px",
+      "columnCount": 2,
+      "rowGap": "4px",
+      "columnGap": "12px",
+      "classes": "opf-swatch-wrapper opf-checkboxes--columns wapf-checkboxes",
+      "inlineStyle": "--opf-checkbox-columns:4;--opf-checkbox-columns-tablet:2;--opf-checkbox-columns-mobile:1;",
+      "winner": {
+        "sheet": "http://127.0.0.1:8090/wp-content/plugins/open-product-fields-for-woocommerce/assets/css/opf-frontend.css?ver=0.1.0",
+        "selector": ".opf-swatch-wrapper.opf-checkboxes--columns",
+        "media": "(max-width: 720px)",
+        "value": "repeat(var(--opf-checkbox-columns-tablet, 1), minmax(0, 1fr))",
+        "applies": true,
+        "specificity": {
+          "score": 200,
+          "ids": 0,
+          "classes": 2,
+          "elements": 0
+        }
+      },
+      "cascade": [
+        {
+          "sheet": "http://127.0.0.1:8090/wp-content/plugins/open-product-fields-for-woocommerce/assets/css/opf-frontend.css?ver=0.1.0",
+          "selector": ".opf-swatch-wrapper.opf-checkboxes--columns",
+          "media": null,
+          "value": "repeat(var(--opf-checkbox-columns, 1), minmax(0, 1fr))",
+          "applies": true
+        },
+        {
+          "sheet": "http://127.0.0.1:8090/wp-content/plugins/open-product-fields-for-woocommerce/assets/css/opf-frontend.css?ver=0.1.0",
+          "selector": ".opf-swatch-wrapper.opf-checkboxes--columns",
+          "media": "(max-width: 720px)",
+          "value": "repeat(var(--opf-checkbox-columns-tablet, 1), minmax(0, 1fr))",
+          "applies": true
+        },
+        {
+          "sheet": "http://127.0.0.1:8090/wp-content/plugins/open-product-fields-for-woocommerce/assets/css/opf-frontend.css?ver=0.1.0",
+          "selector": ".opf-swatch-wrapper.opf-checkboxes--columns",
+          "media": "(max-width: 420px)",
+          "value": "repeat(var(--opf-checkbox-columns-mobile, 1), minmax(0, 1fr))",
+          "applies": false
+        },
+        {
+          "sheet": "http://127.0.0.1:8090/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791241845",
+          "selector": ".wapf-checkboxes, .wapf-radios",
+          "media": null,
+          "value": "auto",
+          "applies": true
+        }
+      ]
+    },
+    "mobile-edge-420": {
+      "width": 420,
+      "matched": true,
+      "display": "grid",
+      "gridTemplateColumns": "360px",
+      "columnCount": 1,
+      "rowGap": "4px",
+      "columnGap": "12px",
+      "classes": "opf-swatch-wrapper opf-checkboxes--columns wapf-checkboxes",
+      "inlineStyle": "--opf-checkbox-columns:4;--opf-checkbox-columns-tablet:2;--opf-checkbox-columns-mobile:1;",
+      "winner": {
+        "sheet": "http://127.0.0.1:8090/wp-content/plugins/open-product-fields-for-woocommerce/assets/css/opf-frontend.css?ver=0.1.0",
+        "selector": ".opf-swatch-wrapper.opf-checkboxes--columns",
+        "media": "(max-width: 420px)",
+        "value": "repeat(var(--opf-checkbox-columns-mobile, 1), minmax(0, 1fr))",
+        "applies": true,
+        "specificity": {
+          "score": 200,
+          "ids": 0,
+          "classes": 2,
+          "elements": 0
+        }
+      },
+      "cascade": [
+        {
+          "sheet": "http://127.0.0.1:8090/wp-content/plugins/open-product-fields-for-woocommerce/assets/css/opf-frontend.css?ver=0.1.0",
+          "selector": ".opf-swatch-wrapper.opf-checkboxes--columns",
+          "media": null,
+          "value": "repeat(var(--opf-checkbox-columns, 1), minmax(0, 1fr))",
+          "applies": true
+        },
+        {
+          "sheet": "http://127.0.0.1:8090/wp-content/plugins/open-product-fields-for-woocommerce/assets/css/opf-frontend.css?ver=0.1.0",
+          "selector": ".opf-swatch-wrapper.opf-checkboxes--columns",
+          "media": "(max-width: 720px)",
+          "value": "repeat(var(--opf-checkbox-columns-tablet, 1), minmax(0, 1fr))",
+          "applies": true
+        },
+        {
+          "sheet": "http://127.0.0.1:8090/wp-content/plugins/open-product-fields-for-woocommerce/assets/css/opf-frontend.css?ver=0.1.0",
+          "selector": ".opf-swatch-wrapper.opf-checkboxes--columns",
+          "media": "(max-width: 420px)",
+          "value": "repeat(var(--opf-checkbox-columns-mobile, 1), minmax(0, 1fr))",
+          "applies": true
+        },
+        {
+          "sheet": "http://127.0.0.1:8090/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791241845",
+          "selector": ".wapf-checkboxes, .wapf-radios",
+          "media": null,
+          "value": "auto",
+          "applies": true
+        }
+      ]
+    },
+    "mobile": {
+      "width": 400,
+      "matched": true,
+      "display": "grid",
+      "gridTemplateColumns": "340px",
+      "columnCount": 1,
+      "rowGap": "4px",
+      "columnGap": "12px",
+      "classes": "opf-swatch-wrapper opf-checkboxes--columns wapf-checkboxes",
+      "inlineStyle": "--opf-checkbox-columns:4;--opf-checkbox-columns-tablet:2;--opf-checkbox-columns-mobile:1;",
+      "winner": {
+        "sheet": "http://127.0.0.1:8090/wp-content/plugins/open-product-fields-for-woocommerce/assets/css/opf-frontend.css?ver=0.1.0",
+        "selector": ".opf-swatch-wrapper.opf-checkboxes--columns",
+        "media": "(max-width: 420px)",
+        "value": "repeat(var(--opf-checkbox-columns-mobile, 1), minmax(0, 1fr))",
+        "applies": true,
+        "specificity": {
+          "score": 200,
+          "ids": 0,
+          "classes": 2,
+          "elements": 0
+        }
+      },
+      "cascade": [
+        {
+          "sheet": "http://127.0.0.1:8090/wp-content/plugins/open-product-fields-for-woocommerce/assets/css/opf-frontend.css?ver=0.1.0",
+          "selector": ".opf-swatch-wrapper.opf-checkboxes--columns",
+          "media": null,
+          "value": "repeat(var(--opf-checkbox-columns, 1), minmax(0, 1fr))",
+          "applies": true
+        },
+        {
+          "sheet": "http://127.0.0.1:8090/wp-content/plugins/open-product-fields-for-woocommerce/assets/css/opf-frontend.css?ver=0.1.0",
+          "selector": ".opf-swatch-wrapper.opf-checkboxes--columns",
+          "media": "(max-width: 720px)",
+          "value": "repeat(var(--opf-checkbox-columns-tablet, 1), minmax(0, 1fr))",
+          "applies": true
+        },
+        {
+          "sheet": "http://127.0.0.1:8090/wp-content/plugins/open-product-fields-for-woocommerce/assets/css/opf-frontend.css?ver=0.1.0",
+          "selector": ".opf-swatch-wrapper.opf-checkboxes--columns",
+          "media": "(max-width: 420px)",
+          "value": "repeat(var(--opf-checkbox-columns-mobile, 1), minmax(0, 1fr))",
+          "applies": true
+        },
+        {
+          "sheet": "http://127.0.0.1:8090/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791241845",
+          "selector": ".wapf-checkboxes, .wapf-radios",
+          "media": null,
+          "value": "auto",
+          "applies": true
+        }
+      ]
+    }
+  },
+  "wapfCheckbox": {
+    "matched": true,
+    "display": "inline-grid",
+    "gridTemplateColumns": "141.141px",
+    "columnCount": 1,
+    "rowGap": "5px",
+    "columnGap": "16px",
+    "classes": "wapf-checkboxes",
+    "inlineStyle": null,
+    "cascade": [
+      {
+        "sheet": "http://127.0.0.1:8090/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791241845",
+        "selector": ".wapf-checkboxes, .wapf-radios",
+        "media": null,
+        "value": "auto",
+        "applies": true
+      }
+    ],
+    "winner": {
+      "sheet": "http://127.0.0.1:8090/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/css/frontend.min.css?ver=3.1.5-1791241845",
+      "selector": ".wapf-checkboxes, .wapf-radios",
+      "media": null,
+      "value": "auto",
+      "applies": true,
+      "specificity": {
+        "score": 100,
+        "ids": 0,
+        "classes": 1,
+        "elements": 0
+      }
+    }
+  },
+  "opfRadio": {
+    "matched": true,
+    "display": "inline-grid",
+    "gridTemplateColumns": "117.344px",
+    "columnCount": 1,
+    "rowGap": "5px",
+    "columnGap": "16px",
+    "classes": "opf-swatch-wrapper wapf-radios",
+    "inlineStyle": null
+  }
+}

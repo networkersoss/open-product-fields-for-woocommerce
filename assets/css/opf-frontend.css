@@ -215,11 +215,17 @@
  * grid. Scoping to OPF's own wrapper class (.opf-swatch-wrapper, always emitted
  * on the choice wrapper) raises specificity to (0,2,0) without !important, so
  * OPF's rule wins for OPF-rendered fields. WAPF's own markup never carries
- * `opf-*` classes, so its `.wapf-checkboxes`/`.wapf-radios` rules are untouched. */
+ * `opf-*` classes, so its `.wapf-checkboxes`/`.wapf-radios` rules are untouched.
+ *
+ * This is the only base rule for the choice grid. The tablet/mobile overrides
+ * below must stay the last declarations for this selector: a base rule after
+ * them wins the cascade and a 4/2/1 configuration renders 4/4/4. The gap is the
+ * value the deleted legacy duplicate rendered, so only the responsive cascade
+ * changes here. */
 .opf-swatch-wrapper.opf-checkboxes--columns {
 	display: grid;
 	grid-template-columns: repeat(var(--opf-checkbox-columns, 1), minmax(0, 1fr));
-	gap: .5em 1em;
+	gap: 0.25rem 0.75rem;
 }
 
 .opf-number-stepper {
@@ -569,11 +575,18 @@
 	gap: 0.4em;
 }
 
-/* WAPF text-swatch chip corner radius: `var(--apf-ts-radius, 4px)` on
- * `.wapf-swatch--text` (frontend-themed.min.css). Scoped to the text-swatch
- * wrapper because OPF also puts `.opf-swatch--text` on plain checkbox/radio
- * choices, which WAPF renders as `.wapf-checkbox`/`.wapf-radio`. */
+/* WAPF text-swatch chip: WAPF's themed stylesheet applies
+ * `border: var(--apf-ts-border, none)`, `color: var(--apf-ts-color, inherit)`,
+ * `background: var(--apf-ts-bg, transparent)` and
+ * `border-radius: var(--apf-ts-radius, 4px)` to `.wapf-swatch--text`
+ * (frontend-themed.min.css); the `--apf-ts-*` values come from the migrated
+ * `wapf_design_settings` option (Engine/WapfDesign.php). Scoped to the
+ * text-swatch wrapper because OPF also puts `.opf-swatch--text` on plain
+ * checkbox/radio choices, which WAPF renders as `.wapf-checkbox`/`.wapf-radio`. */
 .opf-text-swatch-wrapper .opf-swatch--text {
+	border: var(--apf-ts-border, none);
+	background: var(--apf-ts-bg, transparent);
+	color: var(--apf-ts-color, inherit);
 	border-radius: var(--opf-text-swatch-radius, var(--apf-ts-radius, 4px));
 }
 
@@ -988,16 +1001,6 @@
 @media (max-width: 782px) {
 	.opf-group { grid-template-columns: 1fr; }
 	.opf-field, .opf-col-25, .opf-col-50, .opf-col-75 { grid-column: span 1; }
-}
-
-/* Checkbox columns preserve each native label/input pair as one grid item.
- * Scoped with `.opf-swatch-wrapper` (specificity 0,2,0) so it outranks WAPF's
- * one-class `.wapf-checkboxes`/`.wapf-radios` rule regardless of stylesheet
- * order; see the note on the earlier occurrence. */
-.opf-swatch-wrapper.opf-checkboxes--columns {
-	display: grid;
-	grid-template-columns: repeat(var(--opf-checkbox-columns, 1), minmax(0, 1fr));
-	gap: 0.25rem 0.75rem;
 }
 
 /* Linked products (WAPF `products-*` parity). Children are real WooCommerce

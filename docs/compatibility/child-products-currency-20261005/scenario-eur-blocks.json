@@ -1,0 +1,636 @@
+{
+  "scenario": "eur-blocks",
+  "base": "http://127.0.0.1:8431",
+  "eur": true,
+  "blocks": true,
+  "checks": [
+    {
+      "label": "CURCY currency switch request served",
+      "pass": true,
+      "extra": null
+    },
+    {
+      "label": "classic product page served",
+      "pass": true,
+      "extra": null
+    },
+    {
+      "label": "product page renders 3 linked child cards",
+      "pass": true,
+      "extra": [
+        {
+          "name": "OPF Currency Alpha",
+          "price": "€10.00",
+          "slug": "child-alpha"
+        },
+        {
+          "name": "OPF Currency Beta",
+          "price": "€15.00",
+          "slug": "child-beta"
+        },
+        {
+          "name": "OPF Currency Gamma",
+          "price": "€6.25",
+          "slug": "child-gamma"
+        }
+      ]
+    },
+    {
+      "label": "product page uses the EUR symbol",
+      "pass": true,
+      "extra": null
+    },
+    {
+      "label": "empty Store API cart available",
+      "pass": true,
+      "extra": null
+    },
+    {
+      "label": "Store API add-item accepted with OPF selection",
+      "pass": true,
+      "extra": {
+        "items": [
+          {
+            "key": "c5d6fbb57f137d13cb9c3e730773d389",
+            "id": 15095,
+            "type": "simple",
+            "quantity": 2,
+            "quantity_limits": {
+              "minimum": 1,
+              "maximum": 9999,
+              "multiple_of": 1,
+              "editable": true
+            },
+            "name": "OPF Currency Parent",
+            "short_description": "",
+            "description": "",
+            "sku": "",
+            "low_stock_remaining": null,
+            "backorders_allowed": false,
+            "show_backorder_badge": false,
+            "sold_individually": false,
+            "permalink": "http://127.0.0.1:8431/product/opf-currency-parent/",
+            "images": [],
+            "variation": [],
+            "item_data": [],
+            "prices": {
+              "price": "2500",
+              "regular_price": "2500",
+              "sale_price": "2500",
+              "price_range": null,
+              "currency_code": "EUR",
+              "currency_symbol": "€",
+              "currency_minor_unit": 2,
+              "currency_decimal_separator": ".",
+              "currency_thousand_separator": ",",
+              "currency_prefix": "€",
+              "currency_suffix": "",
+              "raw_prices": {
+                "precision": 6,
+                "price": "25000000",
+                "regular_price": "25000000",
+                "sale_price": "25000000"
+              }
+            },
+            "totals": {
+              "line_subtotal": "5000",
+              "line_subtotal_tax": "500",
+              "line_total": "5000",
+              "line_total_tax": "500",
+              "currency_code": "EUR",
+              "currency_symbol": "€",
+              "currency_minor_unit": 2,
+              "currency_decimal_separator": ".",
+              "currency_thousand_separator": ",",
+              "currency_prefix": "€",
+              "currency_suffix": ""
+            },
+            "catalog_visibility": "visible",
+            "extensions": {
+              "opf_edit": [],
+              "opf": {
+                "childItem": false
+              }
+            }
+          },
+          {
+            "key": "524d99fb33dfe46ef0bda647ea6214be",
+            "id": 15096,
+            "type": "simple",
+            "quantity": 2,
+            "quantity_limits": {
+              "minimum": 1,
+              "maximum": 9999,
+              "multiple_of": 1,
+              "editable": true
+            },
+            "name": "OPF Currency Alpha",
+            "short_description": "",
+            "description": "",
+            "sku": "",
+            "low_stock_remaining": null,
+            "backorders_allowed": false,
+            "show_backorder_badge": false,
+            "sold_individually": false,
+            "permalink": "http://127.0.0.1:8431/product/opf-currency-alpha/",
+            "images": [],
+            "variation": [],
+            "item_data": [
+              {
+                "key": "Included with",
+                "value": "OPF Currency Parent",
+                "display": ""
+              }
+            ],
+            "prices": {
+              "price": "1000",
+              "regular_price": "1000",
+              "sale_price": "1000",
+              "price_range": null,
+              "currency_code": "EUR",
+              "currency_symbol": "€",
+              "currency_minor_unit": 2,
+              "currency_decimal_separator": ".",
+              "currency_thousand_separator": ",",
+              "currency_prefix": "€",
+              "currency_suffix": "",
+              "raw_prices": {
+                "precision": 6,
+                "price": "10000000",
+                "regular_price": "10000000",
+                "sale_price": "10000000"
+              }
+            },
+            "totals": {
+              "line_subtotal": "2000",
+              "line_subtotal_tax": "200",
+              "line_total": "2000",
+              "line_total_tax": "200",
+              "currency_code": "EUR",
+              "currency_symbol": "€",
+              "currency_minor_unit": 2,
+              "currency_decimal_separator": ".",
+              "currency_thousand_separator": ",",
+              "currency_prefix": "€",
+              "currency_suffix": ""
+            },
+            "catalog_visibility": "visible",
+            "extensions": {
+              "opf_edit": [],
+              "opf": {
+                "childItem": true
+              }
+            }
+          },
+          {
+            "key": "c73f82eaeab09982a78fa3a643a130d6",
+            "id": 15097,
+            "type": "simple",
+            "quantity": 2,
+            "quantity_limits": {
+              "minimum": 1,
+              "maximum": 9999,
+              "multiple_of": 1,
+              "editable": true
+            },
+            "name": "OPF Currency Beta",
+            "short_description": "",
+            "description": "",
+            "sku": "",
+            "low_stock_remaining": null,
+            "backorders_allowed": false,
+            "show_backorder_badge": false,
+            "sold_individually": false,
+            "permalink": "http://127.0.0.1:8431/product/opf-currency-beta/",
+            "images": [],
+            "variation": [],
+            "item_data": [
+              {
+                "key": "Included with",
+                "value": "OPF Currency Parent",
+                "display": ""
+              }
+            ],
+            "prices": {
+              "price": "1500",
+              "regular_price": "1500",
+              "sale_price": "1500",
+              "price_range": null,
+              "currency_code": "EUR",
+              "currency_symbol": "€",
+              "currency_minor_unit": 2,
+              "currency_decimal_separator": ".",
+              "currency_thousand_separator": ",",
+              "currency_prefix": "€",
+              "currency_suffix": "",
+              "raw_prices": {
+                "precision": 6,
+                "price": "15000000",
+                "regular_price": "15000000",
+                "sale_price": "15000000"
+              }
+            },
+            "totals": {
+              "line_subtotal": "3000",
+              "line_subtotal_tax": "300",
+              "line_total": "3000",
+              "line_total_tax": "300",
+              "currency_code": "EUR",
+              "currency_symbol": "€",
+              "currency_minor_unit": 2,
+              "currency_decimal_separator": ".",
+              "currency_thousand_separator": ",",
+              "currency_prefix": "€",
+              "currency_suffix": ""
+            },
+            "catalog_visibility": "visible",
+            "extensions": {
+              "opf_edit": [],
+              "opf": {
+                "childItem": true
+              }
+            }
+          },
+          {
+            "key": "01558e54f35e8a1eabbade8b3e727d2c",
+            "id": 15098,
+            "type": "simple",
+            "quantity": 2,
+            "quantity_limits": {
+              "minimum": 1,
+              "maximum": 9999,
+              "multiple_of": 1,
+              "editable": true
+            },
+            "name": "OPF Currency Gamma",
+            "short_description": "",
+            "description": "",
+            "sku": "",
+            "low_stock_remaining": null,
+            "backorders_allowed": false,
+            "show_backorder_badge": false,
+            "sold_individually": false,
+            "permalink": "http://127.0.0.1:8431/product/opf-currency-gamma/",
+            "images": [],
+            "variation": [],
+            "item_data": [
+              {
+                "key": "Included with",
+                "value": "OPF Currency Parent",
+                "display": ""
+              }
+            ],
+            "prices": {
+              "price": "0",
+              "regular_price": "625",
+              "sale_price": "0",
+              "price_range": null,
+              "currency_code": "EUR",
+              "currency_symbol": "€",
+              "currency_minor_unit": 2,
+              "currency_decimal_separator": ".",
+              "currency_thousand_separator": ",",
+              "currency_prefix": "€",
+              "currency_suffix": "",
+              "raw_prices": {
+                "precision": 6,
+                "price": "0",
+                "regular_price": "6250000",
+                "sale_price": "0"
+              }
+            },
+            "totals": {
+              "line_subtotal": "0",
+              "line_subtotal_tax": "0",
+              "line_total": "0",
+              "line_total_tax": "0",
+              "currency_code": "EUR",
+              "currency_symbol": "€",
+              "currency_minor_unit": 2,
+              "currency_decimal_separator": ".",
+              "currency_thousand_separator": ",",
+              "currency_prefix": "€",
+              "currency_suffix": ""
+            },
+            "catalog_visibility": "visible",
+            "extensions": {
+              "opf_edit": [],
+              "opf": {
+                "childItem": true
+              }
+            }
+          }
+        ],
+        "coupons": [],
+        "fees": [],
+        "totals": {
+          "total_items": "10000",
+          "total_items_tax": "1000",
+          "total_fees": "0",
+          "total_fees_tax": "0",
+          "total_discount": "0",
+          "total_discount_tax": "0",
+          "total_shipping": null,
+          "total_shipping_tax": null,
+          "total_price": "11000",
+          "total_tax": "1000",
+          "tax_lines": [
+            {
+              "name": "OPF currency base 10",
+              "price": "1000",
+              "rate": "10%"
+            }
+          ],
+          "currency_code": "EUR",
+          "currency_symbol": "€",
+          "currency_minor_unit": 2,
+          "currency_decimal_separator": ".",
+          "currency_thousand_separator": ",",
+          "currency_prefix": "€",
+          "currency_suffix": ""
+        },
+        "shipping_address": {
+          "first_name": "",
+          "last_name": "",
+          "company": "",
+          "address_1": "",
+          "address_2": "",
+          "city": "",
+          "state": "CA",
+          "postcode": "",
+          "country": "US",
+          "phone": ""
+        },
+        "billing_address": {
+          "first_name": "",
+          "last_name": "",
+          "company": "",
+          "address_1": "",
+          "address_2": "",
+          "city": "",
+          "state": "CA",
+          "postcode": "",
+          "country": "US",
+          "email": "",
+          "phone": ""
+        },
+        "needs_payment": true,
+        "needs_shipping": false,
+        "payment_requirements": [
+          "products"
+        ],
+        "has_calculated_shipping": false,
+        "shipping_rates": [],
+        "items_count": 8,
+        "items_weight": 0,
+        "cross_sells": [],
+        "errors": [],
+        "payment_methods": [
+          "bacs"
+        ],
+        "extensions": {}
+      }
+    },
+    {
+      "label": "Store API cart holds parent + 3 child lines",
+      "pass": true,
+      "extra": [
+        {
+          "name": "OPF Currency Parent",
+          "key": "c5d6fbb57f137d13cb9c3e730773d389",
+          "quantity": 2,
+          "unit": 25,
+          "line_total": 50,
+          "line_tax": 5,
+          "child": false
+        },
+        {
+          "name": "OPF Currency Alpha",
+          "key": "524d99fb33dfe46ef0bda647ea6214be",
+          "quantity": 2,
+          "unit": 10,
+          "line_total": 20,
+          "line_tax": 2,
+          "child": true
+        },
+        {
+          "name": "OPF Currency Beta",
+          "key": "c73f82eaeab09982a78fa3a643a130d6",
+          "quantity": 2,
+          "unit": 15,
+          "line_total": 30,
+          "line_tax": 3,
+          "child": true
+        },
+        {
+          "name": "OPF Currency Gamma",
+          "key": "01558e54f35e8a1eabbade8b3e727d2c",
+          "quantity": 2,
+          "unit": 0,
+          "line_total": 0,
+          "line_tax": 0,
+          "child": true
+        }
+      ]
+    },
+    {
+      "label": "Store API child lines carry the OPF marker",
+      "pass": true,
+      "extra": null
+    },
+    {
+      "label": "Block Store API checkout succeeds",
+      "pass": true,
+      "extra": {
+        "order_id": 15107,
+        "status": "on-hold",
+        "order_key": "wc_order_FnJVtJ4J7GSAM",
+        "order_number": "15107",
+        "customer_note": "",
+        "customer_id": 0,
+        "billing_address": {
+          "first_name": "OPF",
+          "last_name": "Child",
+          "company": "",
+          "address_1": "1 Test Street",
+          "address_2": "",
+          "city": "Testville",
+          "state": "CA",
+          "postcode": "90210",
+          "country": "US",
+          "email": "opf-child-blocks@example.invalid",
+          "phone": "5551234567"
+        },
+        "shipping_address": {
+          "first_name": "OPF",
+          "last_name": "Child",
+          "company": "",
+          "address_1": "1 Test Street",
+          "address_2": "",
+          "city": "Testville",
+          "state": "CA",
+          "postcode": "90210",
+          "country": "US",
+          "phone": "5551234567"
+        },
+        "payment_method": "bacs",
+        "payment_result": {
+          "payment_status": "success",
+          "payment_details": [
+            {
+              "key": "result",
+              "value": "success"
+            },
+            {
+              "key": "redirect",
+              "value": "http://127.0.0.1:8431/opf-currency-checkout/order-received/15107/?key=wc_order_FnJVtJ4J7GSAM"
+            }
+          ],
+          "redirect_url": "http://127.0.0.1:8431/opf-currency-checkout/order-received/15107/?key=wc_order_FnJVtJ4J7GSAM"
+        },
+        "additional_fields": {},
+        "__experimentalCart": null,
+        "extensions": {}
+      }
+    }
+  ],
+  "product_page": {
+    "url": "http://127.0.0.1:8431/product/opf-currency-parent/",
+    "currency_symbol": "€",
+    "body_has_symbol": true,
+    "body_currency_code": "unmarked",
+    "parent_price": null,
+    "child_cards": [
+      {
+        "name": "OPF Currency Alpha",
+        "price": "€10.00",
+        "slug": "child-alpha"
+      },
+      {
+        "name": "OPF Currency Beta",
+        "price": "€15.00",
+        "slug": "child-beta"
+      },
+      {
+        "name": "OPF Currency Gamma",
+        "price": "€6.25",
+        "slug": "child-gamma"
+      }
+    ]
+  },
+  "cart": null,
+  "order": {
+    "result": "success",
+    "order_id": 15107,
+    "redirect": "http://127.0.0.1:8431/opf-currency-checkout/order-received/15107/?key=wc_order_FnJVtJ4J7GSAM"
+  },
+  "blocks_result": {
+    "add_status": 201,
+    "add_ok": true,
+    "cart": {
+      "currency_code": "EUR",
+      "currency_symbol": "€",
+      "items": [
+        {
+          "name": "OPF Currency Parent",
+          "key": "c5d6fbb57f137d13cb9c3e730773d389",
+          "quantity": 2,
+          "unit": 25,
+          "line_total": 50,
+          "line_tax": 5,
+          "child": false
+        },
+        {
+          "name": "OPF Currency Alpha",
+          "key": "524d99fb33dfe46ef0bda647ea6214be",
+          "quantity": 2,
+          "unit": 10,
+          "line_total": 20,
+          "line_tax": 2,
+          "child": true
+        },
+        {
+          "name": "OPF Currency Beta",
+          "key": "c73f82eaeab09982a78fa3a643a130d6",
+          "quantity": 2,
+          "unit": 15,
+          "line_total": 30,
+          "line_tax": 3,
+          "child": true
+        },
+        {
+          "name": "OPF Currency Gamma",
+          "key": "01558e54f35e8a1eabbade8b3e727d2c",
+          "quantity": 2,
+          "unit": 0,
+          "line_total": 0,
+          "line_tax": 0,
+          "child": true
+        }
+      ],
+      "totals": {
+        "total_items": 100,
+        "total_items_tax": 10,
+        "total_tax": 10,
+        "total_price": 110
+      }
+    },
+    "checkout": {
+      "status": 200,
+      "ok": true,
+      "order_id": 15107,
+      "payment_status": "success",
+      "body": {
+        "order_id": 15107,
+        "status": "on-hold",
+        "order_key": "wc_order_FnJVtJ4J7GSAM",
+        "order_number": "15107",
+        "customer_note": "",
+        "customer_id": 0,
+        "billing_address": {
+          "first_name": "OPF",
+          "last_name": "Child",
+          "company": "",
+          "address_1": "1 Test Street",
+          "address_2": "",
+          "city": "Testville",
+          "state": "CA",
+          "postcode": "90210",
+          "country": "US",
+          "email": "opf-child-blocks@example.invalid",
+          "phone": "5551234567"
+        },
+        "shipping_address": {
+          "first_name": "OPF",
+          "last_name": "Child",
+          "company": "",
+          "address_1": "1 Test Street",
+          "address_2": "",
+          "city": "Testville",
+          "state": "CA",
+          "postcode": "90210",
+          "country": "US",
+          "phone": "5551234567"
+        },
+        "payment_method": "bacs",
+        "payment_result": {
+          "payment_status": "success",
+          "payment_details": [
+            {
+              "key": "result",
+              "value": "success"
+            },
+            {
+              "key": "redirect",
+              "value": "http://127.0.0.1:8431/opf-currency-checkout/order-received/15107/?key=wc_order_FnJVtJ4J7GSAM"
+            }
+          ],
+          "redirect_url": "http://127.0.0.1:8431/opf-currency-checkout/order-received/15107/?key=wc_order_FnJVtJ4J7GSAM"
+        },
+        "additional_fields": {},
+        "__experimentalCart": null,
+        "extensions": {}
+      }
+    }
+  }
+}

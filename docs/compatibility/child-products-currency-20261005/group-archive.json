@@ -1,0 +1,127 @@
+{
+    "format": "opf-field-groups",
+    "format_version": 1,
+    "exported_at": "2026-10-05T23:06:49+00:00",
+    "scope": {
+        "type": "selection",
+        "ids": [
+            15099
+        ]
+    },
+    "groups": [
+        {
+            "source_id": 15099,
+            "title": "Linked products currency lane",
+            "status": "publish",
+            "menu_order": 0,
+            "language": "",
+            "data": {
+                "schema": 2,
+                "fields": [
+                    {
+                        "id": "linked_cards",
+                        "label": "Included products",
+                        "description": "",
+                        "type": "products",
+                        "required": false,
+                        "width": 100,
+                        "css_class": "",
+                        "placeholder": "",
+                        "choices": [
+                            {
+                                "slug": "child-alpha",
+                                "label": "",
+                                "selected": false,
+                                "disabled": false,
+                                "pricing": {
+                                    "type": "none",
+                                    "amount": 0,
+                                    "formula": "",
+                                    "formula_raw": "",
+                                    "per_unit": true
+                                },
+                                "product_id": 15096,
+                                "pricing_type": "fixed"
+                            },
+                            {
+                                "slug": "child-beta",
+                                "label": "",
+                                "selected": false,
+                                "disabled": false,
+                                "pricing": {
+                                    "type": "none",
+                                    "amount": 0,
+                                    "formula": "",
+                                    "formula_raw": "",
+                                    "per_unit": true
+                                },
+                                "product_id": 15097,
+                                "pricing_type": "fixed"
+                            },
+                            {
+                                "slug": "child-gamma",
+                                "label": "",
+                                "selected": false,
+                                "disabled": false,
+                                "pricing": {
+                                    "type": "none",
+                                    "amount": 0,
+                                    "formula": "",
+                                    "formula_raw": "",
+                                    "per_unit": true
+                                },
+                                "product_id": 15098,
+                                "pricing_type": "none"
+                            }
+                        ],
+                        "pricing": {
+                            "type": "none",
+                            "amount": 0,
+                            "formula": "",
+                            "formula_raw": "",
+                            "per_unit": true
+                        },
+                        "conditionals": [],
+                        "description_presentation": "inline",
+                        "hide_cart": false,
+                        "hide_checkout": false,
+                        "hide_order": false,
+                        "subtype": "card",
+                        "product_selection": "manual",
+                        "qty_method": "parent",
+                        "image_zoom": false,
+                        "items_per_row": 2,
+                        "items_per_row_tablet": 1,
+                        "items_per_row_mobile": 1,
+                        "incl_img": false,
+                        "incl_desc": false,
+                        "slot_1": "price",
+                        "slot_2": "none",
+                        "slot_3": "none"
+                    }
+                ],
+                "rule_groups": [
+                    {
+                        "rules": [
+                            {
+                                "subject": "product",
+                                "operator": "in",
+                                "terms": [
+                                    "15095"
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "mark_required": true,
+                "labels_position": "above"
+            },
+            "warnings": [
+                "product_target_ids_may_not_match"
+            ]
+        }
+    ],
+    "warnings": [
+        "product_target_ids_may_not_match"
+    ]
+}

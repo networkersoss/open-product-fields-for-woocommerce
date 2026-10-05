@@ -1,0 +1,34 @@
+{
+    "clone": "\/tmp\/opf-child-currency-wp\/",
+    "php": "8.5.11",
+    "wordpress": "7.1.2",
+    "woocommerce": "11.1.0",
+    "opf": "0.1.0",
+    "curcy": "2.4.3 (CURCY \u2013 WooCommerce Multi Currency \u2013 Currency Switcher)",
+    "curcy_active": true,
+    "base_currency": "USD",
+    "curcy_config": {
+        "enable": 1,
+        "enable_multi_payment": 1,
+        "currency": [
+            "USD",
+            "EUR"
+        ],
+        "currency_rate": [
+            1,
+            1.25
+        ],
+        "checkout_currency": "USD",
+        "checkout_currency_args": [
+            "USD",
+            "EUR"
+        ],
+        "equivalent_currency": "",
+        "enable_cart_page": 0
+    },
+    "tax": {
+        "calc": "yes",
+        "prices_include_tax": "no",
+        "based_on": "base"
+    }
+}

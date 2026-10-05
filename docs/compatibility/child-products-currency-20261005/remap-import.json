@@ -1,0 +1,84 @@
+{
+    "source_choices": [
+        {
+            "slug": "child-alpha",
+            "product_id": 15096,
+            "pricing_type": "fixed"
+        },
+        {
+            "slug": "child-beta",
+            "product_id": 15097,
+            "pricing_type": "fixed"
+        },
+        {
+            "slug": "child-gamma",
+            "product_id": 15098,
+            "pricing_type": "none"
+        }
+    ],
+    "destination_products": {
+        "child-alpha": 15082,
+        "child-beta": 15083,
+        "child-gamma": 15084
+    },
+    "import": {
+        "mode": "commit",
+        "imported": 1,
+        "skipped": 0,
+        "groups": [
+            {
+                "source_id": 15099,
+                "result": "imported",
+                "opf_id": 15086,
+                "status": "draft",
+                "needs_review": true
+            }
+        ]
+    },
+    "imported_group": {
+        "id": 15086,
+        "status": "draft",
+        "needs_review": [
+            "product_target_ids_may_not_match",
+            "Site-local product, category, or tag targets may need remapping (variation targets included)."
+        ],
+        "choices": [
+            {
+                "slug": "child-alpha",
+                "product_id": 15096,
+                "exists": false
+            },
+            {
+                "slug": "child-beta",
+                "product_id": 15097,
+                "exists": false
+            },
+            {
+                "slug": "child-gamma",
+                "product_id": 15098,
+                "exists": false
+            }
+        ]
+    },
+    "imported_ids_equal_source": true,
+    "imported_ids_equal_destination": false,
+    "remapped": false,
+    "resolved_children_on_destination": [],
+    "wapf": {
+        "available": true,
+        "choices": [
+            {
+                "slug": "child-alpha",
+                "id": 15096
+            },
+            {
+                "slug": "child-beta",
+                "id": 15097
+            },
+            {
+                "slug": "child-gamma",
+                "id": 15098
+            }
+        ]
+    }
+}

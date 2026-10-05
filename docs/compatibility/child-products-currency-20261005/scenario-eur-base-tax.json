@@ -1,0 +1,205 @@
+{
+  "scenario": "eur-base-tax",
+  "base": "http://127.0.0.1:8431",
+  "eur": true,
+  "blocks": false,
+  "checks": [
+    {
+      "label": "CURCY currency switch request served",
+      "pass": true,
+      "extra": null
+    },
+    {
+      "label": "classic product page served",
+      "pass": true,
+      "extra": null
+    },
+    {
+      "label": "product page renders 3 linked child cards",
+      "pass": true,
+      "extra": [
+        {
+          "name": "OPF Currency Alpha",
+          "price": "€10.00",
+          "slug": "child-alpha"
+        },
+        {
+          "name": "OPF Currency Beta",
+          "price": "€15.00",
+          "slug": "child-beta"
+        },
+        {
+          "name": "OPF Currency Gamma",
+          "price": "€6.25",
+          "slug": "child-gamma"
+        }
+      ]
+    },
+    {
+      "label": "product page uses the EUR symbol",
+      "pass": true,
+      "extra": null
+    },
+    {
+      "label": "classic add-to-cart request accepted",
+      "pass": true,
+      "extra": null
+    },
+    {
+      "label": "cart holds parent + 3 native child lines",
+      "pass": true,
+      "extra": [
+        {
+          "name": "OPF Currency Parent",
+          "key": "c5d6fbb57f137d13cb9c3e730773d389",
+          "quantity": 2,
+          "unit": 25,
+          "line_total": 50,
+          "line_tax": 5,
+          "child": false
+        },
+        {
+          "name": "OPF Currency Alpha",
+          "key": "524d99fb33dfe46ef0bda647ea6214be",
+          "quantity": 2,
+          "unit": 10,
+          "line_total": 20,
+          "line_tax": 2,
+          "child": true
+        },
+        {
+          "name": "OPF Currency Beta",
+          "key": "c73f82eaeab09982a78fa3a643a130d6",
+          "quantity": 2,
+          "unit": 15,
+          "line_total": 30,
+          "line_tax": 3,
+          "child": true
+        },
+        {
+          "name": "OPF Currency Gamma",
+          "key": "01558e54f35e8a1eabbade8b3e727d2c",
+          "quantity": 2,
+          "unit": 0,
+          "line_total": 0,
+          "line_tax": 0,
+          "child": true
+        }
+      ]
+    },
+    {
+      "label": "child lines carry the OPF child marker",
+      "pass": true,
+      "extra": null
+    },
+    {
+      "label": "cart currency is EUR",
+      "pass": true,
+      "extra": null
+    },
+    {
+      "label": "classic checkout page served",
+      "pass": true,
+      "extra": null
+    },
+    {
+      "label": "classic checkout nonce present",
+      "pass": true,
+      "extra": null
+    },
+    {
+      "label": "classic checkout succeeds",
+      "pass": true,
+      "extra": {
+        "result": "success",
+        "redirect": "http://127.0.0.1:8431/opf-currency-checkout/order-received/15103/?key=wc_order_vTsLxrTEEaVbj",
+        "order_id": 15103
+      }
+    },
+    {
+      "label": "checkout created an order",
+      "pass": true,
+      "extra": null
+    }
+  ],
+  "product_page": {
+    "url": "http://127.0.0.1:8431/product/opf-currency-parent/",
+    "currency_symbol": "€",
+    "body_has_symbol": true,
+    "body_currency_code": "unmarked",
+    "parent_price": null,
+    "child_cards": [
+      {
+        "name": "OPF Currency Alpha",
+        "price": "€10.00",
+        "slug": "child-alpha"
+      },
+      {
+        "name": "OPF Currency Beta",
+        "price": "€15.00",
+        "slug": "child-beta"
+      },
+      {
+        "name": "OPF Currency Gamma",
+        "price": "€6.25",
+        "slug": "child-gamma"
+      }
+    ]
+  },
+  "cart": {
+    "currency_code": "EUR",
+    "currency_symbol": "€",
+    "items": [
+      {
+        "name": "OPF Currency Parent",
+        "key": "c5d6fbb57f137d13cb9c3e730773d389",
+        "quantity": 2,
+        "unit": 25,
+        "line_total": 50,
+        "line_tax": 5,
+        "child": false
+      },
+      {
+        "name": "OPF Currency Alpha",
+        "key": "524d99fb33dfe46ef0bda647ea6214be",
+        "quantity": 2,
+        "unit": 10,
+        "line_total": 20,
+        "line_tax": 2,
+        "child": true
+      },
+      {
+        "name": "OPF Currency Beta",
+        "key": "c73f82eaeab09982a78fa3a643a130d6",
+        "quantity": 2,
+        "unit": 15,
+        "line_total": 30,
+        "line_tax": 3,
+        "child": true
+      },
+      {
+        "name": "OPF Currency Gamma",
+        "key": "01558e54f35e8a1eabbade8b3e727d2c",
+        "quantity": 2,
+        "unit": 0,
+        "line_total": 0,
+        "line_tax": 0,
+        "child": true
+      }
+    ],
+    "totals": {
+      "total_items": 100,
+      "total_items_tax": 10,
+      "total_tax": 10,
+      "total_price": 110
+    },
+    "field_addon": 50
+  },
+  "order": {
+    "result": "success",
+    "order_id": 15103,
+    "redirect": "http://127.0.0.1:8431/opf-currency-checkout/order-received/15103/?key=wc_order_vTsLxrTEEaVbj",
+    "messages": null
+  },
+  "blocks_result": null
+}

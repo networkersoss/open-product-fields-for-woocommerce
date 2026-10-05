@@ -1,0 +1,50 @@
+{
+  "label": "migrated",
+  "url": "http://127.0.0.1:8090/product/opf-text-swatch-chip/",
+  "generatedAt": "2026-10-05T23:09:37.038Z",
+  "expected": {
+    "border": "2px solid rgb(204, 204, 204)",
+    "background": "rgb(18, 18, 18)",
+    "color": "rgb(255, 255, 255)",
+    "radius": "22px"
+  },
+  "stylesheets": [
+    "http://127.0.0.1:8090/wp-content/plugins/open-product-fields-for-woocommerce/assets/css/opf-frontend.css?ver=0.1.0"
+  ],
+  "chip": {
+    "border": "2px solid rgb(204, 204, 204)",
+    "borderTopWidth": "2px",
+    "borderTopStyle": "solid",
+    "borderTopColor": "rgb(204, 204, 204)",
+    "background": "rgb(18, 18, 18)",
+    "color": "rgb(255, 255, 255)",
+    "inheritedColor": "rgb(17, 17, 17)",
+    "radius": "22px",
+    "classes": "opf-swatch opf-swatch--text opf-single-select",
+    "wrapperClasses": "opf-swatch-wrapper opf-text-swatch-wrapper"
+  },
+  "checkboxControl": {
+    "border": "0px none rgb(17, 17, 17)",
+    "borderTopWidth": "0px",
+    "borderTopStyle": "none",
+    "borderTopColor": "rgb(17, 17, 17)",
+    "background": "rgba(0, 0, 0, 0)",
+    "color": "rgb(17, 17, 17)",
+    "inheritedColor": "rgb(17, 17, 17)",
+    "radius": "0px",
+    "classes": "opf-swatch opf-swatch--text wapf-checkbox",
+    "wrapperClasses": "opf-swatch-wrapper wapf-checkboxes"
+  },
+  "checkedChip": {
+    "border": "2px solid rgb(204, 204, 204)",
+    "borderTopWidth": "2px",
+    "borderTopStyle": "solid",
+    "borderTopColor": "rgb(204, 204, 204)",
+    "background": "rgb(18, 18, 18)",
+    "color": "rgb(255, 255, 255)",
+    "inheritedColor": "rgb(17, 17, 17)",
+    "radius": "22px",
+    "classes": "opf-swatch opf-swatch--text opf-single-select opf-checked",
+    "wrapperClasses": "opf-swatch-wrapper opf-text-swatch-wrapper"
+  }
+}
