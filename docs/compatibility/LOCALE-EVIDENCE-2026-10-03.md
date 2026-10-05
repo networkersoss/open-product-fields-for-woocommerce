@@ -4,6 +4,12 @@ Rows: `WAPF-LOCALE-TRANSLATION`, `WAPF-LOCALE-BUNDLED-STRINGS`, `WAPF-LOCALE-ADM
 
 Worktree: `/tmp/opf-lane-locale` (branch `lane/locale`) · Clone: `/tmp/opf-image-locale-wp` (`http://127.0.0.1:8313`) · Reference: `wp-content/plugins/advanced-product-fields-for-woocommerce-extended` (sw-wapf domain, ships `languages/sw-wapf.pot` ~810 msgids + 23 .mo files)
 
+> **Correction (2026-10-05):** five artifacts cited below never existed in the
+> repository and are unrecoverable — see
+> [Correction — missing artifacts (2026-10-05)](#correction--missing-artifacts-2026-10-05).
+> The WPML and Polylang claims are now re-proven in-tree; see
+> [LOCALE-POLYLANG-WPML-EVIDENCE-2026-10-05.md](LOCALE-POLYLANG-WPML-EVIDENCE-2026-10-05.md).
+
 ## Row outcomes
 
 | Row | Outcome |
@@ -85,3 +91,36 @@ Removed: temp admin user 86, Polylang plugin (`wp plugin uninstall`) + its 4 lef
 - `polylang-proof.php`, `polylang-proof-output.txt`
 - `builder-jed-emitted.json`, `opf-i18n-frontend-es.json`
 - `fill-es.py`, `wrap-builder-i18n.py`, `opf-es_ES.po`, `opf-es_ES.mo`, `opf-builder.js.orig`
+
+## Correction — missing artifacts (2026-10-05)
+
+This doc cites five artifacts that **do not exist in the repository and were never
+committed**; they were staged only in a deleted `/tmp` clone and are unrecoverable:
+
+| Cited artifact | Status |
+|---|---|
+| `wpml-proof.php` | **missing / unrecoverable** |
+| `polylang-proof.php` | **missing / unrecoverable** |
+| `wpml-proof-output.txt` | **missing / unrecoverable** |
+| `polylang-proof-output.txt` | **missing / unrecoverable** |
+| `opf-wpml-stub.php` | **missing / unrecoverable** |
+
+The rest of the artifact list above (`baseline*.php/json`, `gettext-audit.md`,
+`makepot-*.txt`, `opf-final.pot`, `builder-jed-emitted.json`, `opf-i18n-frontend-es.json`,
+`fill-es.py`, `wrap-builder-i18n.py`, `opf-es_ES.*`, `opf-builder.js.orig`) is likewise
+absent from the tree — only the shipped catalogs survive under `languages/`. Treat every
+`/tmp`-staged artifact in this doc as unavailable.
+
+### What the deleted artifacts claimed, and what proves it now
+
+| Claim in this doc | Now covered by |
+|---|---|
+| WPML: package kind, string registration (8 names/types), lifecycle, runtime translation + target remap, ownership filtering, cache freshness | `bin/e2e-wpml-proof.php` + `bin/e2e-wpml-stub.php` (contract stub; WPML is commercial/absent) — **24 PASS / 0 FAIL / 3 SKIP**, staged at `docs/compatibility/locale-proof-20261005/wpml-proof.json` |
+| WpmlIntegration unit contract (native package lifecycle, translated text/targets, import ownership, no admin-language fallback) | `tests/Unit/WpmlIntegrationTest.php`, `tests/Unit/ImporterWpmlOwnershipTest.php` (in-tree, no WordPress) |
+| Polylang: `pll_get_post_types` CPT registration, per-language rendering, `lang`/`!lang` semantics, import language | `tests/Unit/PolylangIntegrationTest.php` (in-tree, self-contained) and `bin/e2e-polylang-proof.php` + `bin/e2e-polylang-proof.sh` on a disposable clone with **real Polylang Pro 3.7.3** — **12 PASS / 0 FAIL**, staged at `docs/compatibility/locale-proof-20261005/polylang-proof.json` |
+| Locale fallback order (`pll_current_language('locale')` → `ICL_LANGUAGE_CODE` → `'default'`) | `tests/Unit/LocaleFallbackTest.php` + `tests/fixtures/locale-fallback-contract.php` |
+
+Two of the reconstructed WPML checks need **real WPML element records** and stay
+permanently unprovable on this host (see the 2026-10-05 evidence doc). Everything else in
+the `WAPF-LOCALE-WPML` and `WAPF-LOCALE-POLYLANG` rows is now reproducible from tracked
+files.

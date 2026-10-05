@@ -1,0 +1,38 @@
+--- environment ---
+date (UTC): 2026-10-05T21:23:06Z
+php: 8.5.11
+wp-cli: WP-CLI 2.11.0
+repository: /tmp/opf-lane-locale
+clone: /tmp/opf-image-locale-proof (port 8321)
+source WordPress: /home/followersya-5hqi7/opf-test/wordpress
+Polylang source: /home/followersya-5hqi7/followersya.com/bedrock/web/app/plugins
+--- build disposable clone ---
+Created owned SQLite clone /tmp/opf-image-locale-proof; activate Extended only in clone, then run guarded fixture.
+--- copy real Polylang (production install untouched) ---
+--- activate Polylang inside the clone ---
+Plugin 'polylang-pro' activated.
+Plugin 'polylang-wc' activated.
+Success: Activated 2 of 2 plugins.
+polylang-pro version: 3.7.3
+polylang-wc version: 2.1.4
+--- ensure Polylang languages exist before the recorded run ---
+languages ready: en,es
+--- run proof ---
+PASS P1 pll_get_post_types adds opf_field_group
+PASS P2 settings-screen list excludes opf_field_group
+PASS P3 stored group languages are readable
+PASS P4 en group renders only under en
+PASS P5 es group renders only under es with its own label
+PASS P6 untranslated group handling (old "renders everywhere" claim corrected) — OPF keeps empty-language entries, but Polylang hides untranslated posts from translated queries
+PASS P7 resolution cache key is scoped per language slug
+PASS P8 a re-save is visible immediately in the es view — save() flushes the per-request resolution cache
+PASS P9 lang (equality) matches only the current locale
+PASS P10 !lang (not_in) matches only the other locale
+PASS P11 Polylang locale is the language source when Polylang is active — ICL_LANGUAGE_CODE / default fallbacks are covered in-tree by LocaleFallbackTest
+PASS P12 imported group keeps the source Polylang language
+
+12 passed, 0 failed
+--- cleanup ---
+deactivated polylang-pro / polylang-wc in clone
+removed disposable clone /tmp/opf-image-locale-proof
+production plugins untouched: /home/followersya-5hqi7/followersya.com/bedrock/web/app/plugins (read-only copy source)

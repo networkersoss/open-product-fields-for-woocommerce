@@ -66,3 +66,13 @@ Remaining proof requires a running WPML/WCML installation: language ownership
 lookup against real records, multilingual global/local product rendering,
 translation editor behavior for native packages, and multilingual cart/order
 behavior. No production import, metadata migration, or deployment was run.
+
+## Reproducibility update (2026-10-05)
+
+This doc cites no deleted artifacts, so it needs no correction. The hook-surface
+behavior above is now re-provable without a running WPML install:
+`bin/e2e-wpml-proof.php` (contract stub `bin/e2e-wpml-stub.php`) reproduces the
+package, translation and ownership checks on a disposable `/tmp` clone and stages
+`docs/compatibility/locale-proof-20261005/wpml-proof.json` — **24 PASS / 0 FAIL /
+3 SKIP**. The three skips need real WPML element records and stay unprovable on
+this host. See `LOCALE-POLYLANG-WPML-EVIDENCE-2026-10-05.md` for the full status.

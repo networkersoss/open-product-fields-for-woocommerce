@@ -1,0 +1,155 @@
+{
+    "row": "WAPF-LOCALE-WPML",
+    "plugin": "WPML String Translation (contract stub — WPML is not installed)",
+    "passed": 24,
+    "failed": 0,
+    "skipped": 3,
+    "checks": [
+        {
+            "name": "W1 wpml_active_string_package_kinds registers open-product-fields",
+            "pass": true,
+            "note": ""
+        },
+        {
+            "name": "W2 save starts a string package with the native group id",
+            "pass": true,
+            "note": ""
+        },
+        {
+            "name": "W3 package title carries the group title and id",
+            "pass": true,
+            "note": ""
+        },
+        {
+            "name": "W4 eight display strings are registered",
+            "pass": true,
+            "note": ""
+        },
+        {
+            "name": "W5 string names\/namespaces are the stable display-string keys",
+            "pass": true,
+            "note": ""
+        },
+        {
+            "name": "W6 string types map LINE\/AREA\/VISUAL to the field content",
+            "pass": true,
+            "note": ""
+        },
+        {
+            "name": "W7 delete-unused fires after registration",
+            "pass": true,
+            "note": ""
+        },
+        {
+            "name": "W8 real WPML string\/element ids",
+            "pass": null,
+            "note": "requires real WPML element records; the contract stub assigns no ids"
+        },
+        {
+            "name": "W9 before_delete_post deletes the package by id and slug",
+            "pass": true,
+            "note": ""
+        },
+        {
+            "name": "W10 non-opf posts never delete a package",
+            "pass": true,
+            "note": ""
+        },
+        {
+            "name": "W11 auto-draft groups register nothing",
+            "pass": true,
+            "note": ""
+        },
+        {
+            "name": "W12 imported groups are never re-registered as the admin language",
+            "pass": true,
+            "note": ""
+        },
+        {
+            "name": "W13 malformed group data registers nothing",
+            "pass": true,
+            "note": ""
+        },
+        {
+            "name": "W14 runtime translation returns es display strings",
+            "pass": true,
+            "note": ""
+        },
+        {
+            "name": "W15 source group is never mutated",
+            "pass": true,
+            "note": ""
+        },
+        {
+            "name": "W16 field ids, choice slugs, pricing and conditionals are untouched",
+            "pass": true,
+            "note": ""
+        },
+        {
+            "name": "W17 wpml_object_id is called with (term, subject, true, language) for product targets only",
+            "pass": true,
+            "note": ""
+        },
+        {
+            "name": "W18 object-id results replace the placement terms",
+            "pass": true,
+            "note": ""
+        },
+        {
+            "name": "W19 real wpml_object_id translation-group mapping",
+            "pass": null,
+            "note": "requires real WPML translation groups; the stub returns fixture ids"
+        },
+        {
+            "name": "W20 empty\/all current language leaves entries unchanged",
+            "pass": true,
+            "note": ""
+        },
+        {
+            "name": "W21 wpml_switch_language is wired to flush the resolution cache",
+            "pass": true,
+            "note": ""
+        },
+        {
+            "name": "W22 a language switch yields fresh translated labels",
+            "pass": true,
+            "note": ""
+        },
+        {
+            "name": "W23 source_language reads WPML element records, never the admin language",
+            "pass": true,
+            "note": ""
+        },
+        {
+            "name": "W24 owned imports render once, in their own language, with original labels",
+            "pass": true,
+            "note": ""
+        },
+        {
+            "name": "W25 imports without ownership are never guessed at",
+            "pass": true,
+            "note": ""
+        },
+        {
+            "name": "W26 real WPML element record for imported ownership",
+            "pass": null,
+            "note": "requires real WPML element records; the stub supplies fixture languages"
+        },
+        {
+            "name": "W27 string names survive field reordering",
+            "pass": true,
+            "note": ""
+        }
+    ],
+    "cleanup": {
+        "removed_meta_for_posts": [
+            90001,
+            90002,
+            90003,
+            90004,
+            90005,
+            90006,
+            90010
+        ]
+    }
+}

@@ -1,0 +1,83 @@
+{
+    "plugin": "polylang-pro",
+    "version": "3.7.3",
+    "languages": [
+        "en",
+        "es"
+    ],
+    "passed": 12,
+    "failed": 0,
+    "checks": [
+        {
+            "name": "P1 pll_get_post_types adds opf_field_group",
+            "pass": true,
+            "note": ""
+        },
+        {
+            "name": "P2 settings-screen list excludes opf_field_group",
+            "pass": true,
+            "note": ""
+        },
+        {
+            "name": "P3 stored group languages are readable",
+            "pass": true,
+            "note": ""
+        },
+        {
+            "name": "P4 en group renders only under en",
+            "pass": true,
+            "note": ""
+        },
+        {
+            "name": "P5 es group renders only under es with its own label",
+            "pass": true,
+            "note": ""
+        },
+        {
+            "name": "P6 untranslated group handling (old \"renders everywhere\" claim corrected)",
+            "pass": true,
+            "note": "OPF keeps empty-language entries, but Polylang hides untranslated posts from translated queries"
+        },
+        {
+            "name": "P7 resolution cache key is scoped per language slug",
+            "pass": true,
+            "note": ""
+        },
+        {
+            "name": "P8 a re-save is visible immediately in the es view",
+            "pass": true,
+            "note": "save() flushes the per-request resolution cache"
+        },
+        {
+            "name": "P9 lang (equality) matches only the current locale",
+            "pass": true,
+            "note": ""
+        },
+        {
+            "name": "P10 !lang (not_in) matches only the other locale",
+            "pass": true,
+            "note": ""
+        },
+        {
+            "name": "P11 Polylang locale is the language source when Polylang is active",
+            "pass": true,
+            "note": "ICL_LANGUAGE_CODE \/ default fallbacks are covered in-tree by LocaleFallbackTest"
+        },
+        {
+            "name": "P12 imported group keeps the source Polylang language",
+            "pass": true,
+            "note": ""
+        }
+    ],
+    "cleanup": {
+        "removed_posts": [
+            "opf_field_group",
+            "wapf_product"
+        ],
+        "removed_options": [
+            "opf_date_format",
+            "opf_show_price_hints",
+            "opf_hint_format"
+        ]
+    }
+}

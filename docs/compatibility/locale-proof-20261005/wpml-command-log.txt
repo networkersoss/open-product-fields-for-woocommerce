@@ -1,0 +1,44 @@
+--- environment ---
+date (UTC): 2026-10-05T21:23:02Z
+php: 8.5.11
+wp-cli: WP-CLI 2.11.0
+repository: /tmp/opf-lane-locale
+clone: /tmp/opf-image-wpml-proof (port 8322)
+source WordPress: /home/followersya-5hqi7/opf-test/wordpress
+WPML: absent (commercial) — contract stub bin/e2e-wpml-stub.php
+--- build disposable clone ---
+python3 bin/clone-content-image-proof.py --wordpress <src> --extended <ext> --opf <repo> --destination /tmp/opf-image-wpml-proof --port 8322
+--- activate Extended in clone ---
+wp --path=/tmp/opf-image-wpml-proof plugin activate advanced-product-fields-for-woocommerce-extended
+--- run proof ---
+env OPF_WPML_PROOF_ALLOW=1 OPF_WPML_PROOF_ARTIFACT_DIR=/tmp/opf-lane-locale/docs/compatibility/locale-proof-20261005 wp --path=/tmp/opf-image-wpml-proof eval-file /tmp/opf-lane-locale/bin/e2e-wpml-proof.php
+
+PASS W1 wpml_active_string_package_kinds registers open-product-fields
+PASS W2 save starts a string package with the native group id
+PASS W3 package title carries the group title and id
+PASS W4 eight display strings are registered
+PASS W5 string names/namespaces are the stable display-string keys
+PASS W6 string types map LINE/AREA/VISUAL to the field content
+PASS W7 delete-unused fires after registration
+SKIP W8 real WPML string/element ids — requires real WPML element records; the contract stub assigns no ids
+PASS W9 before_delete_post deletes the package by id and slug
+PASS W10 non-opf posts never delete a package
+PASS W11 auto-draft groups register nothing
+PASS W12 imported groups are never re-registered as the admin language
+PASS W13 malformed group data registers nothing
+PASS W14 runtime translation returns es display strings
+PASS W15 source group is never mutated
+PASS W16 field ids, choice slugs, pricing and conditionals are untouched
+PASS W17 wpml_object_id is called with (term, subject, true, language) for product targets only
+PASS W18 object-id results replace the placement terms
+SKIP W19 real wpml_object_id translation-group mapping — requires real WPML translation groups; the stub returns fixture ids
+PASS W20 empty/all current language leaves entries unchanged
+PASS W21 wpml_switch_language is wired to flush the resolution cache
+PASS W22 a language switch yields fresh translated labels
+PASS W23 source_language reads WPML element records, never the admin language
+PASS W24 owned imports render once, in their own language, with original labels
+PASS W25 imports without ownership are never guessed at
+SKIP W26 real WPML element record for imported ownership — requires real WPML element records; the stub supplies fixture languages
+PASS W27 string names survive field reordering
+
+24 passed, 0 failed, 3 unprovable without real WPML
