@@ -323,8 +323,20 @@ namespace {
 }
 
 namespace SW_WAPF_PRO\Includes\Models {
+	/** WAPF 3.1.5 includes/models/class-fieldpricing.php. */
+	class FieldPricing {
+		public bool $enabled = false;
+	}
+
+	/** The WAPF 3.1.5 includes/models/class-field.php surface the bridge touches. */
 	class Field {
 		public string $type = 'products';
+		public array $options = [];
+		public FieldPricing $pricing;
+
+		public function __construct() {
+			$this->pricing = new FieldPricing();
+		}
 	}
 }
 
@@ -332,6 +344,7 @@ namespace SW_WAPF_PRO\Includes\Controllers {
 	class Linked_Products_Controller {
 		public int $calls = 0;
 		public int $order_again_calls = 0;
+		public int $container_calls = 0;
 
 		public function validate_cart( $error, $value, \SW_WAPF_PRO\Includes\Models\Field $field, $product_id, $clone_idx, $quantity, $from_cart, $cart_item_data ) {
 			++$this->calls;
@@ -340,6 +353,34 @@ namespace SW_WAPF_PRO\Includes\Controllers {
 
 		public function prepare_order_again_cart_item( $order_item, $field, $clone_idx, $raw_values ) {
 			++$this->order_again_calls;
+		}
+
+		/** WAPF 3.1.5 includes/controllers/class-linked-products-controller.php:1019-1040. */
+		public function maybe_add_pricing_class( $classes, $field ) {
+			++$this->container_calls;
+			if ( 'products' !== $field->type ) {
+				return $classes;
+			}
+			$is_manual = ! isset( $field->options['product_selection'] ) || 'manual' === $field->options['product_selection'];
+			if ( $is_manual ? $field->pricing->enabled : 'none' !== ( $field->options['product_query']['pricing_type'] ?? '' ) ) {
+				$classes[] = 'has-pricing';
+			}
+			return $classes;
+		}
+	}
+
+	/**
+	 * A WAPF validator whose class and method names are not the ones the bridge
+	 * was originally written against. The suspension rule keys on the receiver's
+	 * namespace, so this listener must be suspended too.
+	 */
+	class Future_Validator {
+		public int $calls = 0;
+
+		public function check_field( $error, $value, $field, $product_id, $clone_idx, $quantity, $from_cart, $cart_item_data ) {
+			++$this->calls;
+			$field->type;
+			return $error;
 		}
 	}
 }
@@ -904,6 +945,97 @@ final class WapfHooksBridgeTest extends TestCase {
 		$with_bridge = ob_get_clean();
 
 		$this->assertSame( $without_bridge, $with_bridge );
+	}
+
+	/**
+	 * The `wapf/validate` suspension rule is the receiver's namespace, not a list
+	 * of known class/method pairs: any WAPF listener on the hook is held back for
+	 * the OPF dispatch, whatever its class or method is called.
+	 */
+	public function test_opf_dispatch_suspends_any_wapf_namespaced_validation_listener(): void {
+		$validator = new \SW_WAPF_PRO\Includes\Controllers\Future_Validator();
+		add_filter( 'wapf/validate', [ $validator, 'check_field' ], 10, 8 );
+		add_filter( 'wapf/validate', static function ( $error ) {
+			$error['error']   = true;
+			$error['message'] = 'third-party validation rule';
+			return $error;
+		}, 11, 1 );
+		$order_before = array_keys( $GLOBALS['wp_filter']['wapf/validate']->callbacks[10] );
+
+		$warnings = [];
+		set_error_handler( static function ( $severity, $message ) use ( &$warnings ) {
+			$warnings[] = [ $severity, $message ];
+			return true;
+		} );
+		try {
+			$errors = WapfHooks::validate_field(
+				[ 'id' => 'prints', 'type' => 'image_quantity', 'label' => 'Prints' ],
+				[ 'oak' => 2 ],
+				$GLOBALS['opf_products'][42],
+				1
+			);
+		} finally {
+			restore_error_handler();
+		}
+
+		$this->assertSame( [ 'third-party validation rule' ], $errors, 'Third-party validation behavior is preserved for OPF-only fields.' );
+		$this->assertSame( 0, $validator->calls, 'A WAPF-namespaced validator is suspended even under an unknown class/method name.' );
+		$this->assertSame( [], $warnings, 'No WAPF listener may dereference an OPF array as an object.' );
+		$this->assert_fired( 'wapf/validate' );
+		$validate_args = $this->fired( 'wapf/validate' )[0];
+		$this->assertCount( 8, $validate_args, 'wapf/validate must receive the 8-argument WAPF shape.' );
+		$this->assertSame( [ 'oak' => 2 ], $validate_args[1], 'wapf/validate arg 1 is the submitted value.' );
+		$this->assertSame( [ 'id' => 'prints', 'type' => 'image_quantity', 'label' => 'Prints' ], $validate_args[2], 'Third-party WAPF listeners continue to receive the normalized OPF field array.' );
+		$this->assertSame( 42, $validate_args[3], 'wapf/validate arg 3 is the product id.' );
+
+		$this->assertSame( $order_before, array_keys( $GLOBALS['wp_filter']['wapf/validate']->callbacks[10] ), 'The suspended WAPF listener returns in its original same-priority position.' );
+		apply_filters( 'wapf/validate', [ 'error' => false ], 'x', new \SW_WAPF_PRO\Includes\Models\Field(), 42, 0, 1, false, null );
+		$this->assertSame( 1, $validator->calls, 'WAPF-native validation still invokes its own listener for its own Field object.' );
+	}
+
+	/**
+	 * `wapf/html/field_container_classes`: WAPF registers
+	 * `Linked_Products_Controller::maybe_add_pricing_class()` there and it reads
+	 * `$field->type` (class-linked-products-controller.php:1021), so OPF's array
+	 * field must not reach it.
+	 */
+	public function test_field_container_classes_dispatch_keeps_the_wapf_listener_off_the_opf_field(): void {
+		$controller = new \SW_WAPF_PRO\Includes\Controllers\Linked_Products_Controller();
+		add_filter( 'wapf/html/field_container_classes', [ $controller, 'maybe_add_pricing_class' ], 10, 2 );
+		$order_before = array_keys( $GLOBALS['wp_filter']['wapf/html/field_container_classes']->callbacks[10] );
+		$opf_field    = [ 'id' => 'extras', 'type' => 'products', 'label' => 'Extras' ];
+
+		$warnings = [];
+		set_error_handler( static function ( $severity, $message ) use ( &$warnings ) {
+			$warnings[] = [ $severity, $message ];
+			return true;
+		} );
+		try {
+			$classes = WapfHooks::field_container_classes( [ 'opf-field-container' ], $opf_field );
+		} finally {
+			restore_error_handler();
+		}
+
+		$this->assertSame( [], $warnings, 'The WAPF container-class listener must not read a property off the OPF field array.' );
+		$this->assertSame( 0, $controller->container_calls, 'WAPF\'s native container-class listener is suspended for an OPF field.' );
+		$this->assertSame( [ 'opf-field-container' ], $classes, 'Suspending the native listener leaves OPF\'s own classes untouched.' );
+		$this->assert_fired( 'wapf/html/field_container_classes' );
+		$this->assertSame( $opf_field, $this->fired( 'wapf/html/field_container_classes' )[0][1], 'Third-party listeners still receive the normalized OPF field array.' );
+		$this->assertSame( $order_before, array_keys( $GLOBALS['wp_filter']['wapf/html/field_container_classes']->callbacks[10] ), 'The suspended listener returns in its original same-priority position.' );
+
+		$native_classes = apply_filters( 'wapf/html/field_container_classes', [], $this->wapf_products_field(), null );
+		$this->assertSame( 1, $controller->container_calls, 'WAPF-native rendering still reaches its Field-object listener.' );
+		$this->assertSame( [ 'has-pricing' ], $native_classes, 'The native listener still applies its pricing class to a WAPF Field object.' );
+	}
+
+	/** A WAPF `products` Field with manual selection and pricing enabled. */
+	private function wapf_products_field(): \SW_WAPF_PRO\Includes\Models\Field {
+		$field           = new \SW_WAPF_PRO\Includes\Models\Field();
+		$field->type     = 'products';
+		$field->options  = [ 'product_selection' => 'manual' ];
+		$field->pricing  = new \SW_WAPF_PRO\Includes\Models\FieldPricing();
+		$field->pricing->enabled = true;
+		return $field;
 	}
 }
 

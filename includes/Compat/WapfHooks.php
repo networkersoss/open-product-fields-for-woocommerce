@@ -391,15 +391,10 @@ final class WapfHooks {
 		} else {
 			$product_id = (int) $product;
 		}
-		$err = self::apply_validation_filter_for_opf_field(
-			[ 'error' => false ],
-			$value,
-			$field,
-			$product_id,
-			0,
-			$quantity,
+		$err = self::dispatch_without_native_wapf(
+			'wapf/validate',
 			false,
-			null
+			[ [ 'error' => false ], $value, $field, $product_id, 0, $quantity, false, null ]
 		);
 		if ( is_array( $err ) && ! empty( $err['error'] ) && isset( $err['message'] ) && '' !== (string) $err['message'] ) {
 			return [ (string) $err['message'] ];
@@ -408,18 +403,49 @@ final class WapfHooks {
 	}
 
 	/**
-	 * Dispatch the shared validation hook without passing OPF arrays to WAPF
-	 * validators that require a WAPF Field object. Other WAPF-named third-party
-	 * listeners still receive the OPF field.
+	 * WAPF namespaces. The Free package declares `SW_WAPF\…` and the
+	 * Pro/Extended package `SW_WAPF_PRO\…`; both register their listeners with a
+	 * WAPF `Field` object as the field argument.
+	 */
+	private const NATIVE_WAPF_NAMESPACES = [ 'SW_WAPF_PRO\\', 'SW_WAPF\\' ];
+
+	/**
+	 * Global functions WAPF registers on a bridged hook. WAPF Extended's date
+	 * extension adds `wapfe_validate_cart_data` to `wapf/validate`
+	 * (`extend/date.php:152`) and dereferences its third argument as an object
+	 * (`extend/date.php:157`).
+	 */
+	private const NATIVE_WAPF_FUNCTIONS = [ 'wapfe_validate_cart_data' ];
+
+	/**
+	 * Dispatch a WAPF-named hook without handing WAPF's own listeners an OPF
+	 * field.
 	 *
-	 * The native callback is removed only for this synchronous dispatch and
-	 * restored at its original priority and position before returning.
+	 * WAPF's contract for these hooks is a `Field` object: `Cart::validate_cart_data()`
+	 * passes `$field_group->fields` entries (`includes/classes/class-cart.php:180`),
+	 * and every listener WAPF registers on them dereferences that argument as an
+	 * object — `Linked_Products_Controller::validate_cart()` even declares it as a
+	 * typed parameter (`includes/controllers/class-linked-products-controller.php:455`),
+	 * `wapfe_validate_cart_data()` reads `$field->type` (`extend/date.php:157`) and
+	 * `maybe_add_pricing_class()` reads `$field->type` on
+	 * `wapf/html/field_container_classes`
+	 * (`includes/controllers/class-linked-products-controller.php:1021`). OPF works
+	 * on normalized arrays, so a WAPF-native listener cannot accept its field
+	 * argument: the typed one raises a `TypeError` and the others read a property
+	 * off an array. Third-party WAPF listeners still receive the OPF field in the
+	 * documented WAPF argument shape, and WAPF's own dispatch of the same hook
+	 * still reaches its native listeners.
 	 *
-	 * @param mixed ...$args Filter arguments, beginning with the error array.
+	 * Native listeners are removed only for this synchronous dispatch and
+	 * restored at their original priority and position before returning,
+	 * including when another listener throws.
+	 *
+	 * @param string  $hook_name Bridged WAPF hook.
+	 * @param bool    $is_action Dispatch with do_action() instead of apply_filters().
+	 * @param mixed[] $args      Hook arguments, beginning with the filtered value for filters.
 	 * @return mixed
 	 */
-	private static function apply_validation_filter_for_opf_field( ...$args ) {
-		$hook_name = 'wapf/validate';
+	private static function dispatch_without_native_wapf( string $hook_name, bool $is_action, array $args ) {
 		$registry  = $GLOBALS['wp_filter'][ $hook_name ] ?? null;
 		$callbacks = ( is_object( $registry ) && isset( $registry->callbacks ) && is_array( $registry->callbacks ) )
 			? $registry->callbacks
@@ -427,12 +453,9 @@ final class WapfHooks {
 		$removed = [];
 
 		foreach ( $callbacks as $priority => $priority_callbacks ) {
-			foreach ( $priority_callbacks as $key => $entry ) {
+			foreach ( $priority_callbacks as $entry ) {
 				$callback = $entry['function'] ?? null;
-				if (
-					! self::is_native_wapf_linked_product_validator( $callback )
-					&& ! self::is_native_wapf_extended_date_validator( $callback )
-				) {
+				if ( ! self::is_native_wapf_listener( $callback ) ) {
 					continue;
 				}
 
@@ -440,7 +463,6 @@ final class WapfHooks {
 					'callback'       => $callback,
 					'priority'       => (int) $priority,
 					'accepted_args'  => (int) ( $entry['accepted_args'] ?? 1 ),
-					'key'            => $key,
 					'priority_order' => array_keys( $priority_callbacks ),
 				];
 				remove_filter( $hook_name, $callback, (int) $priority );
@@ -448,7 +470,7 @@ final class WapfHooks {
 		}
 
 		try {
-			return apply_filters( $hook_name, ...$args );
+			return $is_action ? do_action( $hook_name, ...$args ) : apply_filters( $hook_name, ...$args );
 		} finally {
 			foreach ( $removed as $entry ) {
 				add_filter( $hook_name, $entry['callback'], $entry['priority'], $entry['accepted_args'] );
@@ -457,19 +479,25 @@ final class WapfHooks {
 		}
 	}
 
-	/** @param mixed $callback WordPress filter callback. */
-	private static function is_native_wapf_linked_product_validator( $callback ): bool {
-		return is_array( $callback )
-			&& isset( $callback[0], $callback[1] )
-			&& is_object( $callback[0] )
-			&& is_string( $callback[1] )
-			&& is_a( $callback[0], 'SW_WAPF_PRO\\Includes\\Controllers\\Linked_Products_Controller' )
-			&& 'validate_cart' === strtolower( $callback[1] );
-	}
+	/**
+	 * Whether a hook callback is WAPF's own code rather than a third-party
+	 * integration. The receiver's namespace is the discriminator, so a WAPF
+	 * validator under a different class or method name is suspended too.
+	 *
+	 * @param mixed $callback WordPress filter/action callback.
+	 */
+	private static function is_native_wapf_listener( $callback ): bool {
+		if ( is_array( $callback ) && isset( $callback[0], $callback[1] ) && is_object( $callback[0] ) && is_string( $callback[1] ) ) {
+			$class_name = ltrim( get_class( $callback[0] ), '\\' );
+			foreach ( self::NATIVE_WAPF_NAMESPACES as $namespace ) {
+				if ( 0 === strpos( $class_name, $namespace ) ) {
+					return true;
+				}
+			}
+			return false;
+		}
 
-	/** @param mixed $callback WordPress filter callback. */
-	private static function is_native_wapf_extended_date_validator( $callback ): bool {
-		return is_string( $callback ) && 'wapfe_validate_cart_data' === strtolower( ltrim( $callback, '\\' ) );
+		return is_string( $callback ) && in_array( strtolower( ltrim( $callback, '\\' ) ), self::NATIVE_WAPF_FUNCTIONS, true );
 	}
 
 	/**
@@ -479,48 +507,7 @@ final class WapfHooks {
 	 * @param mixed ...$args Action arguments.
 	 */
 	private static function do_order_again_action_for_opf_field( ...$args ): void {
-		$hook_name = 'wapf/order_again/before_cart_item_field';
-		$registry  = $GLOBALS['wp_filter'][ $hook_name ] ?? null;
-		$callbacks = ( is_object( $registry ) && isset( $registry->callbacks ) && is_array( $registry->callbacks ) )
-			? $registry->callbacks
-			: ( is_array( $registry ) ? $registry : [] );
-		$removed = [];
-
-		foreach ( $callbacks as $priority => $priority_callbacks ) {
-			foreach ( $priority_callbacks as $key => $entry ) {
-				$callback = $entry['function'] ?? null;
-				if ( ! self::is_native_wapf_linked_product_order_again_handler( $callback ) ) {
-					continue;
-				}
-
-				$removed[] = [
-					'callback'       => $callback,
-					'priority'       => (int) $priority,
-					'accepted_args'  => (int) ( $entry['accepted_args'] ?? 1 ),
-					'priority_order' => array_keys( $priority_callbacks ),
-				];
-				remove_action( $hook_name, $callback, (int) $priority );
-			}
-		}
-
-		try {
-			do_action( $hook_name, ...$args );
-		} finally {
-			foreach ( $removed as $entry ) {
-				add_action( $hook_name, $entry['callback'], $entry['priority'], $entry['accepted_args'] );
-				self::restore_hook_callback_order( $hook_name, $entry );
-			}
-		}
-	}
-
-	/** @param mixed $callback WAPF linked-products callback. */
-	private static function is_native_wapf_linked_product_order_again_handler( $callback ): bool {
-		return is_array( $callback )
-			&& isset( $callback[0], $callback[1] )
-			&& is_object( $callback[0] )
-			&& is_string( $callback[1] )
-			&& is_a( $callback[0], 'SW_WAPF_PRO\\Includes\\Controllers\\Linked_Products_Controller' )
-			&& 'prepare_order_again_cart_item' === strtolower( $callback[1] );
+		self::dispatch_without_native_wapf( 'wapf/order_again/before_cart_item_field', true, $args );
 	}
 
 	/**
@@ -597,6 +584,11 @@ final class WapfHooks {
 	/**
 	 * `wapf/html/field_container_classes`.
 	 *
+	 * WAPF registers `Linked_Products_Controller::maybe_add_pricing_class()` on
+	 * this hook and it reads `$field->type`
+	 * (`includes/controllers/class-linked-products-controller.php:1021`), so the
+	 * OPF field array must not reach it.
+	 *
 	 * @param string[] $classes Container classes.
 	 * @param array    $field   Field definition.
 	 */
@@ -604,7 +596,7 @@ final class WapfHooks {
 		if ( ! function_exists( 'apply_filters' ) ) {
 			return $classes;
 		}
-		return (array) apply_filters( 'wapf/html/field_container_classes', $classes, $field );
+		return (array) self::dispatch_without_native_wapf( 'wapf/html/field_container_classes', false, [ $classes, $field ] );
 	}
 
 	/**

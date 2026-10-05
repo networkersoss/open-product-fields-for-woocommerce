@@ -1095,6 +1095,12 @@ final class Renderer {
 		$multi = 'checkbox' === $field['type'] || ( 'swatch' === $field['type'] && ! empty( $field['multiple'] ) );
 		$image_swatch = 'swatch' === $field['type'] && 'image' === ( $field['swatch_style'] ?? '' );
 		$color_swatch = 'swatch' === $field['type'] && 'color' === ( $field['swatch_style'] ?? '' );
+		// WAPF renders text swatches as `.wapf-swatch--text` chips and applies
+		// the design corner radius to that element (frontend-themed.min.css).
+		// OPF reuses `.opf-swatch--text` for plain checkbox/radio choices, which
+		// WAPF keeps on `.wapf-checkbox`/`.wapf-radio`, so the chip class alone
+		// cannot carry the rule: the wrapper scopes it to real text swatches.
+		$text_swatch = 'swatch' === $field['type'] && ! $image_swatch && ! $color_swatch;
 
 		$is_card = 'radio' === $field['type'] && isset( $field['card_layout'] ) && '' !== (string) $field['card_layout'];
 		// WAPF styled checkbox/radio contract: WAPF wraps each native control
@@ -1115,6 +1121,9 @@ final class Renderer {
 		}
 		if ( $color_swatch ) {
 			$wrapper_class .= ' opf-color-swatch-wrapper';
+		}
+		if ( $text_swatch ) {
+			$wrapper_class .= ' opf-text-swatch-wrapper';
 		}
 		// WAPF container classes so theme CSS written for WAPF's choice
 		// wrappers applies to OPF's native checkbox/radio groups.
@@ -1151,6 +1160,16 @@ final class Renderer {
 		}
 		if ( $color_swatch ) {
 			$wrapper_attrs .= ' data-color-layout="' . esc_attr( $field['color_layout'] ) . '"';
+		}
+		if ( $text_swatch ) {
+			// WAPF stores the text-swatch corner radius once, in the design
+			// settings (`apf-ts-radius`, class-design-helper.php:521), and the
+			// stylesheet reads it as `var(--apf-ts-radius, 4px)`. An unconfigured
+			// OPF option emits nothing so an imported WAPF radius keeps applying.
+			$text_swatch_radius = \OPF\Service\Admin\Settings::text_swatch_radius();
+			if ( null !== $text_swatch_radius ) {
+				$wrapper_attrs .= ' style="--opf-text-swatch-radius:' . esc_attr( (string) $text_swatch_radius . 'px' ) . '"';
+			}
 		}
 		if ( $multi && in_array( $field['type'], [ 'swatch', 'checkbox' ], true ) ) {
 			if ( isset( $field['min_choices'] ) ) {

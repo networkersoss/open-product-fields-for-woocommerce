@@ -562,6 +562,14 @@
 	gap: 0.4em;
 }
 
+/* WAPF text-swatch chip corner radius: `var(--apf-ts-radius, 4px)` on
+ * `.wapf-swatch--text` (frontend-themed.min.css). Scoped to the text-swatch
+ * wrapper because OPF also puts `.opf-swatch--text` on plain checkbox/radio
+ * choices, which WAPF renders as `.wapf-checkbox`/`.wapf-radio`. */
+.opf-text-swatch-wrapper .opf-swatch--text {
+	border-radius: var(--opf-text-swatch-radius, var(--apf-ts-radius, 4px));
+}
+
 .opf-color-swatch-wrapper .opf-swatch--color > label {
 	display: inline-flex;
 	flex-direction: column;

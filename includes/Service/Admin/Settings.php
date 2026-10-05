@@ -9,6 +9,16 @@ use OPF\Service\LivePreviewFonts;
 defined( 'ABSPATH' ) || exit;
 
 final class Settings {
+	/**
+	 * WAPF Extended's Design > Text Swatches > Corner radius bounds
+	 * (`class-design-helper.php:521-527`: type `unit`, min 0, max 50,
+	 * `start_with` 4px). WAPF's themed stylesheet applies the stored value as
+	 * `border-radius: var(--apf-ts-radius, 4px)`, so 4px is the effective
+	 * default when nothing is configured.
+	 */
+	public const TEXT_SWATCH_RADIUS_DEFAULT = 4;
+	public const TEXT_SWATCH_RADIUS_MAX = 50;
+
 	public static function init(): void {
 		add_filter( 'woocommerce_get_sections_products', [ __CLASS__, 'add_product_fields_section' ] );
 		add_filter( 'woocommerce_get_settings_products', [ __CLASS__, 'product_fields_settings' ], 10, 2 );
@@ -16,7 +26,23 @@ final class Settings {
 		add_filter( 'woocommerce_admin_settings_sanitize_option_opf_date_format', [ __CLASS__, 'sanitize_date_format' ], 10, 3 );
 		add_filter( 'woocommerce_admin_settings_sanitize_option_opf_choice_accent', [ __CLASS__, 'sanitize_color' ], 10, 3 );
 		add_filter( 'woocommerce_admin_settings_sanitize_option_opf_choice_border', [ __CLASS__, 'sanitize_color' ], 10, 3 );
+		add_filter( 'woocommerce_admin_settings_sanitize_option_opf_text_swatch_radius', [ __CLASS__, 'sanitize_text_swatch_radius' ], 10, 3 );
 		add_action( 'admin_enqueue_scripts', [ __CLASS__, 'enqueue_preview_font_settings' ] );
+	}
+
+	/**
+	 * Configured text-swatch corner radius in whole pixels, or null when the
+	 * option was never saved. Null lets the migrated WAPF design variable
+	 * (`--apf-ts-radius`) keep governing the swatch instead of forcing OPF's
+	 * own default over it.
+	 */
+	public static function text_swatch_radius(): ?int {
+		$value = get_option( 'opf_text_swatch_radius', null );
+		return is_numeric( $value ) ? self::clamp_text_swatch_radius( (float) $value ) : null;
+	}
+
+	private static function clamp_text_swatch_radius( float $value ): int {
+		return (int) max( 0, min( self::TEXT_SWATCH_RADIUS_MAX, round( $value ) ) );
 	}
 
 	public static function enqueue_preview_font_settings( string $hook ): void {
@@ -109,6 +135,16 @@ final class Settings {
 				'autoload' => false,
 			],
 			[
+				'title' => __( 'Text swatch corner radius', 'open-product-fields-for-woocommerce' ),
+				'desc' => __( 'Corner rounding in pixels for text swatch choices. 0 renders square corners.', 'open-product-fields-for-woocommerce' ),
+				'desc_tip' => __( 'Matches the corner radius WAPF applies to its text swatch chips. Leave it untouched to keep an imported WAPF corner radius.', 'open-product-fields-for-woocommerce' ),
+				'id' => 'opf_text_swatch_radius',
+				'type' => 'number',
+				'default' => self::TEXT_SWATCH_RADIUS_DEFAULT,
+				'custom_attributes' => [ 'min' => 0, 'max' => self::TEXT_SWATCH_RADIUS_MAX, 'step' => 1 ],
+				'autoload' => false,
+			],
+			[
 				'title' => __( 'Number field plus and minus buttons', 'open-product-fields-for-woocommerce' ),
 				'desc' => __( 'Add accessible increment and decrement buttons beside number fields. The native number input remains the submitted value.', 'open-product-fields-for-woocommerce' ),
 				'id' => 'opf_number_buttons',
@@ -181,6 +217,14 @@ final class Settings {
 			return DateFormat::normalize( $value );
 		}
 		return DateFormat::configured();
+	}
+
+	/** Keep the last valid radius when the settings form posts a non-numeric one. */
+	public static function sanitize_text_swatch_radius( $value, array $option = [], $raw_value = null ) {
+		if ( ! is_numeric( $value ) ) {
+			return self::text_swatch_radius() ?? self::TEXT_SWATCH_RADIUS_DEFAULT;
+		}
+		return self::clamp_text_swatch_radius( (float) $value );
 	}
 
 	/** Accept only valid CSS hex colors from WooCommerce settings. */
