@@ -590,6 +590,26 @@
 	border-radius: var(--opf-text-swatch-radius, var(--apf-ts-radius, 4px));
 }
 
+/* WAPF's hover and selected states for the same chip: the themed stylesheet
+ * applies `color: var(--apf-ts-color-hov, inherit)`,
+ * `border-color: var(--apf-ts-border-color-hov, transparent)` and
+ * `background: var(--apf-ts-bg-hov, transparent)` on `.wapf-swatch--text:hover`,
+ * and the `-sel` variables on `.wapf-swatch--text.wapf-checked` — the class WAPF
+ * puts on a selected chip (class-html.php:597, then toggled per change event).
+ * `.opf-checked` is OPF's equivalent (Renderer.php), so the same scope keeps
+ * plain checkbox/radio choices untouched. */
+.opf-text-swatch-wrapper .opf-swatch--text:hover {
+	color: var(--apf-ts-color-hov, inherit);
+	border-color: var(--apf-ts-border-color-hov, transparent);
+	background: var(--apf-ts-bg-hov, transparent);
+}
+
+.opf-text-swatch-wrapper .opf-swatch--text.opf-checked {
+	border-color: var(--apf-ts-border-color-sel, transparent);
+	background: var(--apf-ts-bg-sel, transparent);
+	color: var(--apf-ts-color-sel, inherit);
+}
+
 .opf-color-swatch-wrapper .opf-swatch--color > label {
 	display: inline-flex;
 	flex-direction: column;

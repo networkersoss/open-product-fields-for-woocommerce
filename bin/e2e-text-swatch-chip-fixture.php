@@ -9,9 +9,13 @@
  * `--apf-ts-*` values come from the migrated `wapf_design_settings` option
  * (`includes/classes/class-design-helper.php:1514,1535-1536`).
  *
- * The fixture renders one OPF text swatch (the chip under test) plus one OPF
- * checkbox group (the regression control: OPF puts `.opf-swatch--text` on plain
- * checkbox choices too, WAPF does not).
+ * The fixture renders one OPF single-select text swatch and one multi-choice text
+ * swatch (both are `.wapf-swatch--text` chips in WAPF:
+ * `views/frontend/fields/text-swatch.php:17` and
+ * `views/frontend/fields/multi-text-swatch.php:18`) plus one OPF checkbox group
+ * and one radio group as the regression controls (OPF puts `.opf-swatch--text`
+ * on plain checkbox/radio choices too, WAPF keeps those on
+ * `.wapf-checkbox`/`.wapf-radio`).
  *
  * Usage: wp --path=<disposable clone> eval-file this-file <phase>
  *   prepare                 create the product + field group, remember the option state
@@ -59,6 +63,21 @@ if ( 'prepare' === $phase ) {
 					'label'        => 'Finish',
 					'type'         => 'swatch',
 					'swatch_style' => 'text',
+					'choices'      => [
+						[ 'slug' => 'matte', 'label' => 'Matte' ],
+						[ 'slug' => 'gloss', 'label' => 'Gloss' ],
+					],
+				],
+				[
+					// Multi-choice text swatch: WAPF renders it as
+					// `views/frontend/fields/multi-text-swatch.php:18` — the same
+					// `.wapf-swatch--text` chip with a checkbox input, so the hover and
+					// selected rules must cover it too (no `wapf-single-select`).
+					'id'           => 'finish_multi',
+					'label'        => 'Finishes',
+					'type'         => 'swatch',
+					'swatch_style' => 'text',
+					'multiple'     => true,
 					'choices'      => [
 						[ 'slug' => 'matte', 'label' => 'Matte' ],
 						[ 'slug' => 'gloss', 'label' => 'Gloss' ],

@@ -1,5 +1,10 @@
 # Text-swatch chip decoration — fix + real-Chromium proof (2026-10-05)
 
+> Follow-up 2026-10-05: the hover and selected states were added afterwards in
+> `TEXT-SWATCH-CHIP-HOVER-SELECTED-EVIDENCE-2026-10-05.md` — the `after` hash
+> below (`080b1410…`) is the base-decoration-only revision and is now HEAD's
+> asset, i.e. the `before` of that follow-up, not the current file.
+
 ## Scope
 
 OPF re-emits WAPF Extended 3.1.5's text-swatch design variables
@@ -177,14 +182,13 @@ radius precedence chain is untouched. No existing test was weakened or removed.
 
 ## What is still open
 
-- **Hover / selected decoration.** WAPF also applies
+- **Hover / selected decoration — closed 2026-10-05.** WAPF also applies
   `--apf-ts-color-hov/-sel`, `--apf-ts-bg-hov/-sel` and
   `--apf-ts-border-color-hov/-sel` (themed stylesheet, `.wapf-swatch--text:hover`
-  and `.wapf-swatch--text.wapf-checked`). OPF's equivalent states are `:hover`
-  and `.opf-checked`, and the variables are already emitted by
-  `WapfDesign::css()`. Out of this fix's scope (the task named the base
-  border/background/colour only); it is the natural next increment on the same
-  row.
+  and `.wapf-swatch--text.wapf-checked`). The same scope now carries
+  `.opf-swatch--text:hover` and `.opf-swatch--text.opf-checked` rules that consume
+  those six variables, proved in real Chromium in
+  `TEXT-SWATCH-CHIP-HOVER-SELECTED-EVIDENCE-2026-10-05.md`.
 - **The no-design-settings chip.** With `wapf_design_settings` empty, WAPF serves
   `frontend-default.min.css`, where `.wapf-swatch--text` has
   `border: 1px solid #ccc` and the checked state is `#353c4e` on `#fff`. OPF now
