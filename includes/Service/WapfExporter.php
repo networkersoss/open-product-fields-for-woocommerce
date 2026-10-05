@@ -52,6 +52,15 @@ final class WapfExporter {
 		if ( in_array( $type, [ 'toggle', 'text', 'textarea', 'email', 'url', 'number' ], true ) ) {
 			$extra[] = 'default';
 		}
+		if ( 'number' === $type ) {
+			// Number constraints are serialized as WAPF `minimum`/`maximum`/
+			// `number_type`; `step` and `number_mode` never reach the payload
+			// under their OPF names.
+			$extra[] = 'min';
+			$extra[] = 'max';
+			$extra[] = 'step';
+			$extra[] = 'number_mode';
+		}
 		return array_merge( self::FIELD_KEYS, $extra );
 	}
 
@@ -262,6 +271,9 @@ final class WapfExporter {
 		if ( in_array( $type, [ 'text', 'textarea', 'email', 'url', 'number' ], true ) && isset( $field['default'] ) ) {
 			$out['default'] = $field['default'];
 		}
+		if ( 'number' === $type ) {
+			$out = array_merge( $out, self::map_number_settings( $field ) );
+		}
 		if ( 'toggle' === $type ) {
 			if ( isset( $field['message'] ) ) {
 				if ( preg_match( '/[<>\r\n]/', $field['message'] ) ) {
@@ -442,6 +454,46 @@ final class WapfExporter {
 		}
 		if ( 'checkbox' === $type && array_key_exists( 'columns', $field ) ) {
 			$out['columns'] = (int) $field['columns'];
+		}
+		return $out;
+	}
+
+	/**
+	 * Serialize OPF number-field constraints back into WAPF's stored option
+	 * keys (the inverse of WapfMapper::map_number_settings):
+	 *
+	 *  - `min`/`max` → `minimum`/`maximum` (WAPF stores both as floats);
+	 *  - integer mode → `number_type` `int`;
+	 *  - decimal mode without a positive step → `number_type` `any`;
+	 *  - decimal mode with a positive step → `number_type` carrying that step,
+	 *    because WAPF 3.1.5 never serializes a `step` key: its renderer writes
+	 *    `number_type` verbatim into the `step` attribute (class-html.php) and
+	 *    only `int`/`any` appear in its admin (class-config.php).
+	 *
+	 * WAPF also re-sanitizes the imported `default` inside `number_type`'s
+	 * value space (class-field-groups.php: `int` unless the type is exactly
+	 * `any`), and its integer fields always increment by 1 because no `step`
+	 * attribute is emitted for `number_type` `int`. A fractional default
+	 * beside a custom step, or a non-unit integer-mode step, therefore lands
+	 * in WAPF's value space rather than being rejected here.
+	 *
+	 * @param array<string,mixed> $field Normalized OPF number field.
+	 * @return array<string,mixed>
+	 */
+	private static function map_number_settings( array $field ): array {
+		$out = [];
+		foreach ( [ 'min' => 'minimum', 'max' => 'maximum' ] as $opf_key => $wapf_key ) {
+			if ( isset( $field[ $opf_key ] ) ) {
+				$out[ $wapf_key ] = (float) $field[ $opf_key ];
+			}
+		}
+		$step = isset( $field['step'] ) ? (float) $field['step'] : 0.0;
+		if ( 'decimal' !== ( $field['number_mode'] ?? 'integer' ) ) {
+			$out['number_type'] = 'int';
+		} elseif ( $step > 0 ) {
+			$out['number_type'] = (string) $step;
+		} else {
+			$out['number_type'] = 'any';
 		}
 		return $out;
 	}

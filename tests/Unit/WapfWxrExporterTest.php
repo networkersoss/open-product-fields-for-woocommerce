@@ -370,6 +370,38 @@ final class WapfWxrExporterTest extends TestCase {
 		$this->assertSame( 'fee', $mapped['group']['variables'][0]['name'] );
 	}
 
+	public function test_wxr_preserves_number_mode_bounds_and_step(): void {
+		$xml = WapfWxrExporter::build_document( [ [
+			'id' => 102,
+			'title' => 'Number constraints',
+			'data' => [ 'schema' => 1, 'fields' => [ [
+				'id' => 'length', 'label' => 'Length', 'type' => 'number',
+				'number_mode' => 'decimal', 'min' => 1, 'max' => 3, 'step' => 0.25, 'default' => '2',
+			] ], 'rule_groups' => [] ],
+		] ], [ 'site_url' => 'https://example.test', 'site_title' => 'Example Store' ] );
+		$document = new \DOMDocument();
+		$this->assertTrue( $document->loadXML( $xml ) );
+		$xpath = new \DOMXPath( $document );
+		$xpath->registerNamespace( 'content', 'http://purl.org/rss/1.0/modules/content/' );
+		$content = $xpath->query( '/rss/channel/item/content:encoded' )->item( 0 )->textContent;
+		$group = unserialize( $content, [ 'allowed_classes' => false ] );
+
+		$field = $group['fields'][0];
+		// WAPF stores the mode and its custom step inside `number_type`.
+		$this->assertSame( '0.25', $field['options']['number_type'] );
+		$this->assertSame( 1.0, $field['options']['minimum'] );
+		$this->assertSame( 3.0, $field['options']['maximum'] );
+		$this->assertSame( '2', $field['options']['default'] );
+		$this->assertArrayNotHasKey( 'step', $field['options'] );
+
+		// The serialized options must survive the OPF import path too.
+		$mapped = \OPF\Engine\WapfMapper::map( $group );
+		$this->assertFalse( $mapped['needs_review'] );
+		$number = $mapped['group']['fields'][0];
+		$this->assertSame( [ 'decimal', 0.25 ], [ $number['number_mode'], $number['step'] ] );
+		$this->assertSame( [ 1.0, 3.0, '2' ], [ $number['min'], $number['max'], $number['default'] ] );
+	}
+
 	public function test_requires_valid_site_url_and_source_group_identity(): void {
 		$this->expectException( \InvalidArgumentException::class );
 		$this->expectExceptionMessage( 'source site URL' );

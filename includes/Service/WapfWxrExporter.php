@@ -95,6 +95,9 @@ final class WapfWxrExporter {
 			// Date-field options serialized by WapfExporter::map_date_settings().
 			'disable_past', 'disable_future', 'min_date', 'max_date',
 			'disabled_dates', 'disable_today_after',
+			// Number mode/step, carried inside WAPF's `number_type`
+			// (WapfExporter::map_number_settings()).
+			'number_type',
 			'hide_cart', 'hide_checkout', 'hide_order',
 			// Linked products (`products` type) and file upload options.
 			'product_selection', 'product_query', 'qty_method', 'display',

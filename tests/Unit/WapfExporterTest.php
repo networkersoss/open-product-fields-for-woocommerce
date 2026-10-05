@@ -169,6 +169,80 @@ final class WapfExporterTest extends TestCase {
 		$this->assertSame( '0', $payload['fields'][0]['disabled_days'] );
 	}
 
+	public function test_number_integer_mode_round_trips_bounds_and_default(): void {
+		$opf = FieldGroup::normalize( [ 'fields' => [ [
+			'id' => 'count', 'label' => 'Count', 'type' => 'number',
+			'number_mode' => 'integer', 'min' => 1, 'max' => 10, 'step' => 1, 'default' => '4',
+		] ] ] );
+
+		$field = WapfExporter::build_payload( $opf )['fields'][0];
+		$this->assertSame( 'int', $field['number_type'] );
+		$this->assertSame( 1.0, $field['minimum'] );
+		$this->assertSame( 10.0, $field['maximum'] );
+		$this->assertSame( '4', $field['default'] );
+		// OPF constraint keys never leak, and WAPF 3.1.5 stores no `step` key.
+		$this->assertArrayNotHasKey( 'min', $field );
+		$this->assertArrayNotHasKey( 'max', $field );
+		$this->assertArrayNotHasKey( 'step', $field );
+		$this->assertArrayNotHasKey( 'number_mode', $field );
+
+		$mapped = $this->round_trip_number_field( $field );
+		$this->assertSame( [ 1.0, 10.0, 'integer', '4' ], [ $mapped['min'], $mapped['max'], $mapped['number_mode'], $mapped['default'] ] );
+	}
+
+	public function test_number_decimal_mode_exports_any_when_no_step_is_configured(): void {
+		$opf = FieldGroup::normalize( [ 'fields' => [ [
+			'id' => 'weight', 'label' => 'Weight', 'type' => 'number',
+			'number_mode' => 'decimal', 'min' => 0.5, 'default' => '2.5',
+		] ] ] );
+
+		$field = WapfExporter::build_payload( $opf )['fields'][0];
+		$this->assertSame( 'any', $field['number_type'] );
+		$this->assertSame( 0.5, $field['minimum'] );
+		$this->assertArrayNotHasKey( 'maximum', $field );
+
+		$mapped = $this->round_trip_number_field( $field );
+		$this->assertSame( [ 'decimal', '2.5' ], [ $mapped['number_mode'], $mapped['default'] ] );
+		$this->assertSame( 0.5, $mapped['min'] );
+	}
+
+	public function test_number_decimal_mode_carries_custom_step_in_number_type(): void {
+		$opf = FieldGroup::normalize( [ 'fields' => [ [
+			'id' => 'length', 'label' => 'Length', 'type' => 'number',
+			'number_mode' => 'decimal', 'min' => 1, 'max' => 3, 'step' => 0.25, 'default' => '2',
+		] ] ] );
+
+		$field = WapfExporter::build_payload( $opf )['fields'][0];
+		// WAPF writes `number_type` verbatim into its `step` attribute.
+		$this->assertSame( '0.25', $field['number_type'] );
+		$this->assertArrayNotHasKey( 'step', $field );
+
+		$mapped = $this->round_trip_number_field( $field );
+		$this->assertSame( [ 'decimal', 0.25 ], [ $mapped['number_mode'], $mapped['step'] ] );
+		$this->assertSame( [ 1.0, 3.0, '2' ], [ $mapped['min'], $mapped['max'], $mapped['default'] ] );
+	}
+
+	public function test_number_export_omits_unset_bounds_and_keeps_decimal_mode(): void {
+		$payload = WapfExporter::build_payload( FieldGroup::normalize( [ 'fields' => [
+			[ 'id' => 'free', 'label' => 'Free', 'type' => 'number' ],
+			[ 'id' => 'floor', 'label' => 'Floor', 'type' => 'number', 'number_mode' => 'decimal', 'min' => 2, 'step' => 0 ],
+		] ] ) );
+
+		$free = $payload['fields'][0];
+		$this->assertSame( 'int', $free['number_type'] );
+		$this->assertArrayNotHasKey( 'minimum', $free );
+		$this->assertArrayNotHasKey( 'maximum', $free );
+		$this->assertSame( 'integer', $this->round_trip_number_field( $free )['number_mode'] );
+
+		// A dropped (non-positive) step leaves a decimal field at `any`.
+		$floor = $payload['fields'][1];
+		$this->assertSame( 'any', $floor['number_type'] );
+		$this->assertSame( 2.0, $floor['minimum'] );
+		$this->assertArrayNotHasKey( 'maximum', $floor );
+		$mapped = $this->round_trip_number_field( $floor );
+		$this->assertSame( [ 'decimal', 2.0 ], [ $mapped['number_mode'], $mapped['min'] ] );
+	}
+
 	public function test_sumqty_image_quantity_formula_round_trips_with_remapped_field_id_and_raw_expression(): void {
 		$source = [ 'fields' => [
 			[ 'id' => 'wapf-image-id-91', 'label' => 'Prints', 'type' => 'image-swatch-qty', 'options' => [ 'choices' => [ [ 'slug' => 'oak', 'label' => 'Oak', 'options' => [ 'min' => 0, 'max' => 8, 'default' => 0 ] ] ] ] ],
@@ -776,5 +850,27 @@ final class WapfExporterTest extends TestCase {
 
 		$this->assertSame( 'fx', $payload['fields'][1]['pricing']['type'] );
 		$this->assertSame( 'lookuptable(cutting;widthf;2)', $payload['fields'][1]['pricing']['amount'] );
+	}
+
+	/**
+	 * Feed an exported number field back through the mapper the way WAPF's
+	 * Tools import stores it: the number options land under `options` and the
+	 * default is sanitized inside `number_type`'s value space (`int` unless
+	 * the type is exactly `any` — class-field-groups.php).
+	 *
+	 * @param array<string,mixed> $field Exported WAPF Tools field.
+	 * @return array<string,mixed> Re-imported OPF field.
+	 */
+	private function round_trip_number_field( array $field ): array {
+		$field['options'] = array_intersect_key( $field, array_flip( [ 'placeholder', 'default', 'minimum', 'maximum', 'number_type' ] ) );
+		if ( isset( $field['options']['default'], $field['options']['number_type'] ) ) {
+			$field['options']['default'] = 'any' === $field['options']['number_type']
+				? floatval( $field['options']['default'] )
+				: intval( $field['options']['default'] );
+		}
+
+		$mapped = WapfMapper::map( [ 'fields' => [ $field ] ] );
+		$this->assertFalse( $mapped['needs_review'] );
+		return $mapped['group']['fields'][0];
 	}
 }
