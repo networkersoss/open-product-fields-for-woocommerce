@@ -60,6 +60,22 @@ test('verbatim [qty] formulas price as WAPF fx regardless of per_unit', () => {
 	assert.equal(context.__choiceOrFieldAddon(normalized, 'a', 10, 3, 0, ''), 31);
 });
 
+test('scalar field normalized formula tracks server per-unit semantics', () => {
+	// Regression for the documented preview mismatch: an imported WAPF scalar
+	// formula whose legacy migration injected per_unit=true must charge the
+	// evaluated result per unit, matching Calculator::field_pricing_addon —
+	// not a flat line adjustment.
+	const def = { type: 'number', pricing: { type: 'formula', formula: 'round(3)', formula_raw: 'round(3)', per_unit: true } };
+	assert.equal(context.__choiceOrFieldAddon(def, '5', 100, 1, 0, '5'), 3);
+	assert.equal(context.__choiceOrFieldAddon(def, '5', 100, 3, 0, '5'), 3); // line adds 9
+	// A native flat scalar formula (explicit per_unit=false, as normalize_pricing
+	// always emits the flag) divides by line quantity: line adds 3 once.
+	const flat = { type: 'number', pricing: { type: 'formula', formula: 'round(3)', formula_raw: 'round(3)', per_unit: false } };
+	assert.equal(context.__choiceOrFieldAddon(flat, '5', 100, 3, 0, '5'), 1);
+	// Empty scalar input contributes nothing on either side.
+	assert.equal(context.__choiceOrFieldAddon(def, '', 100, 3, 0, ''), 0);
+});
+
 test('image_quantity choices price the entered count as the value', () => {
 	// WAPF image-swatch-qty: entered count is $val (nr/nrq/[x] consume it);
 	// fixed stays flat per selected choice, qt per product unit.
