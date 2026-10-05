@@ -13,8 +13,6 @@ final class OrderAgainBasePriceTest extends TestCase {
 		eval( 'namespace OPF\\Service; class FieldGroups { public static function for_product($product) {
 			return [["id" => "g", "group" => new \\OPF\\Engine\\FieldGroup(["fields" => [["id" => "choice", "type" => "select", "choices" => [["slug" => "available", "label" => "Available"]]]]])]];
 		} }' );
-		eval( 'function wp_list_pluck($items, $key) { return array_column($items, $key); }
-		function sanitize_text_field($value) { return trim(strip_tags($value)); }' );
 		eval( 'class WC_Product { public $price = "10"; public function get_price($context = "view") { return $this->price; } }
 		class WC_Order {}
 		class WC_Order_Item_Product {

@@ -18,9 +18,7 @@ final class OrderAgainValidationTest extends TestCase {
 		function add_filter($name, $callback, $priority = 10, $args = 1) { $GLOBALS["opf_hooks"][$name] = $args; }
 		function add_action($name, $callback, $priority = 10, $args = 1) {}
 		function wc_add_notice($message, $type) { $GLOBALS["opf_notices"][] = $message; }
-		function wp_unslash($value) { return $value; }
-		function wp_list_pluck($items, $key) { return array_column($items, $key); }
-		function sanitize_text_field($value) { return trim(strip_tags($value)); }' );
+		function wp_unslash($value) { return $value; }' );
 		eval( 'namespace OPF\\Service;
 		class Renderer { public static function visible_to_viewer() { return true; } }
 		class FieldGroups { public static function for_product($product) { return $GLOBALS["opf_groups"]; } }' );

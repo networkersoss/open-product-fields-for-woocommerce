@@ -2,250 +2,246 @@
 
 namespace OPF\Tests\Unit;
 
-use OPF\Engine\FieldGroup;
-use OPF\Engine\UploadService;
+use OPF\Service\Uploads;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Upload-constraint coverage for the private upload service
+ * (`OPF\Service\Uploads`).
+ *
+ * The optional field keys `min_files`, `max_files`, `min_size_mb`,
+ * `min_width`, `min_height` and `image_editor_*` come from the image-upload
+ * add-on surface: when the normalized schema carries them the server
+ * enforces them at staging time and again when stored bytes are revalidated
+ * against their token. Verification always measures real file bytes, never
+ * client-reported size, dimensions, or MIME claims.
+ */
+#[RunTestsInSeparateProcesses]
+#[PreserveGlobalState( false )]
 final class UploadServiceTest extends TestCase {
-	public function test_upload_constraints_are_normalized_and_enforced(): void {
-		$field = FieldGroup::normalize_field( [ 'id' => 'art', 'type' => 'upload', 'label' => 'Artwork', 'max_files' => 2, 'max_size' => 1000, 'allowed_types' => [ 'png' ] ] );
-		$this->assertSame( 2, $field['max_files'] );
-		$this->assertSame( [ '"Artwork" contains a file larger than the permitted size.' ], UploadService::validate( [ [ 'name' => 'a.png', 'size' => 1001, 'error' => UPLOAD_ERR_OK, 'type' => 'image/png' ] ], $field ) );
-		$this->assertSame( [], UploadService::validate( [ [ 'name' => 'a.png', 'size' => 100, 'error' => UPLOAD_ERR_OK, 'type' => 'image/png' ] ], $field ) );
+	private string $dir;
+	private string $token;
+
+	protected function setUp(): void {
+		if ( ! defined( 'WP_CONTENT_DIR' ) ) define( 'WP_CONTENT_DIR', sys_get_temp_dir() . '/opf-test-content' );
+		if ( ! defined( 'MB_IN_BYTES' ) ) define( 'MB_IN_BYTES', 1048576 );
+		if ( ! defined( 'DAY_IN_SECONDS' ) ) define( 'DAY_IN_SECONDS', 86400 );
+		if ( ! defined( 'OPF_UPLOAD_PRIVATE_DIR' ) ) define( 'OPF_UPLOAD_PRIVATE_DIR', sys_get_temp_dir() . '/opf-uploads-' . uniqid() );
+		eval( 'class WP_Error { public $code; public $message; public $data; public function __construct( $code, $message, $data ) { $this->code = $code; $this->message = $message; $this->data = $data; } public function get_error_code() { return $this->code; } public function get_error_message() { return $this->message; } public function get_error_data() { return $this->data; } }
+		class WC_Order { public $id; public $status; public $total = 10.0; public $customer_id = 0;
+			public function __construct( $id, $status ) { $this->id = $id; $this->status = $status; }
+			public function get_id() { return $this->id; }
+			public function has_status( $s ) { return in_array( $this->status, (array) $s, true ); }
+			public function needs_payment() { return $this->has_status( [ "pending", "failed" ] ) && $this->total > 0; }
+			public function get_customer_id() { return $this->customer_id; } }
+		class OPF_Test_Session { public $customer = "sess-owner"; public $data = [];
+			public function get_customer_id() { return $this->customer; }
+			public function get( $k ) { return $this->data[ $k ] ?? null; }
+			public function set( $k, $v ) { $this->data[ $k ] = $v; }
+			public function set_customer_session_cookie( $b ) {} }
+		function WC() { return $GLOBALS["opf_wc"]; }
+		function wc_get_order( $id ) { return $GLOBALS["opf_orders"][ $id ] ?? false; }
+		function wc_load_cart() {}
+		function wp_salt( $s ) { return "test-salt"; }
+		function is_wp_error( $v ) { return $v instanceof WP_Error; }
+		function update_option( $k, $v, $a = null ) { $GLOBALS["opf_test_options"][ $k ] = $v; return true; }
+		function add_option( $k, $v, $d = "", $a = null ) { $GLOBALS["opf_test_options"][ $k ] = $v; return true; }
+		function delete_option( $k ) { unset( $GLOBALS["opf_test_options"][ $k ] ); return true; }
+		function apply_filters( $n, $v, ...$a ) { return $v; }
+		function wp_max_upload_size() { return 64 * 1048576; }
+		function get_allowed_mime_types() { return [ "png" => "image/png", "jpg|jpeg|jpe" => "image/jpeg", "txt" => "text/plain" ]; }
+		function sanitize_file_name( $n ) { return preg_replace( "/[^A-Za-z0-9._-]/", "_", $n ); }
+		function wp_check_filetype_and_ext( $file, $name, $mimes = null ) {
+			$map = [ "png" => "image/png", "jpg" => "image/jpeg", "jpeg" => "image/jpeg", "jpe" => "image/jpeg", "txt" => "text/plain" ];
+			$ext = strtolower( pathinfo( (string) $name, PATHINFO_EXTENSION ) );
+			return isset( $map[ $ext ] ) ? [ "ext" => $ext, "type" => $map[ $ext ] ] : [ "ext" => false, "type" => false ]; }' );
+
+		$GLOBALS['opf_wc']           = new class() { public $session; };
+		$GLOBALS['opf_wc']->session  = new \OPF_Test_Session();
+		$GLOBALS['opf_orders']       = [];
+		$GLOBALS['opf_test_options'] = [];
+		$this->dir                   = OPF_UPLOAD_PRIVATE_DIR;
+		$this->token                 = str_repeat( 'a', 64 );
+		mkdir( $this->dir, 0700, true );
 	}
 
-	public function test_path_rejects_traversal_and_non_opaque_tokens(): void {
-		$this->assertNull( UploadService::path( '../secret' ) );
-		$this->assertNull( UploadService::path( str_repeat( 'g', 48 ) ) );
+	protected function tearDown(): void {
+		foreach ( glob( $this->dir . '/*' ) ?: [] as $file ) {
+			if ( ! is_link( $file ) && ! is_file( $file ) ) continue;
+			unlink( $file );
+		}
+		foreach ( glob( $this->dir . '/.upload.lock' ) ?: [] as $file ) {
+			unlink( $file );
+		}
+		if ( is_dir( $this->dir ) ) rmdir( $this->dir );
 	}
 
-	public function test_normalize_files_flattens_single_and_multi_inputs(): void {
-		$single = UploadService::normalize_files(
-			[
-				'name'     => 'a.png',
-				'type'     => 'image/png',
-				'tmp_name' => '/tmp/a',
-				'error'    => UPLOAD_ERR_OK,
-				'size'     => 10,
-			]
-		);
-		$this->assertCount( 1, $single );
-		$this->assertSame( 'a.png', $single[0]['name'] );
-		$this->assertSame( UPLOAD_ERR_OK, $single[0]['error'] );
-
-		$multi = UploadService::normalize_files(
-			[
-				'name'     => [ 'a.png', 'b.png' ],
-				'type'     => [ 'image/png', 'image/png' ],
-				'tmp_name' => [ '/tmp/a', '/tmp/b' ],
-				'error'    => [ UPLOAD_ERR_OK, UPLOAD_ERR_NO_FILE ],
-				'size'     => [ 10, 0 ],
-			]
-		);
-		$this->assertCount( 2, $multi );
-		$this->assertSame( 'b.png', $multi[1]['name'] );
+	private function tmp_file( string $contents ): string {
+		$tmp = tempnam( sys_get_temp_dir(), 'opf-upload-check-' );
+		file_put_contents( $tmp, $contents );
+		return $tmp;
 	}
 
-	public function test_normalize_files_descends_into_group_and_field(): void {
-		$files = UploadService::normalize_files(
-			[
-				'name'     => [ '7' => [ 'art' => [ 'one.png', 'two.png' ] ] ],
-				'type'     => [ '7' => [ 'art' => [ 'image/png', 'image/png' ] ] ],
-				'tmp_name' => [ '7' => [ 'art' => [ '/tmp/1', '/tmp/2' ] ] ],
-				'error'    => [ '7' => [ 'art' => [ UPLOAD_ERR_OK, UPLOAD_ERR_OK ] ] ],
-				'size'     => [ '7' => [ 'art' => [ 10, 20 ] ] ],
-			],
-			'7',
-			'art'
-		);
-		$this->assertCount( 2, $files );
-		$this->assertSame( 'two.png', $files[1]['name'] );
-		$this->assertSame( '/tmp/2', $files[1]['tmp_name'] );
-		$this->assertSame( 20, $files[1]['size'] );
-
-		$single = UploadService::normalize_files(
-			[
-				'name'     => [ '7' => [ 'art' => 'one.png' ] ],
-				'type'     => [ '7' => [ 'art' => 'image/png' ] ],
-				'tmp_name' => [ '7' => [ 'art' => '/tmp/1' ] ],
-				'error'    => [ '7' => [ 'art' => UPLOAD_ERR_OK ] ],
-				'size'     => [ '7' => [ 'art' => 10 ] ],
-			],
-			'7',
-			'art'
-		);
-		$this->assertCount( 1, $single );
-		$this->assertSame( '/tmp/1', $single[0]['tmp_name'] );
-
-		$this->assertSame( [], UploadService::normalize_files( [ 'name' => [ '7' => [] ] ], '7', 'art' ) );
-	}
-
-	public function test_attempts_ignores_empty_file_inputs(): void {
-		$files = [
-			[ 'name' => '', 'error' => UPLOAD_ERR_NO_FILE, 'size' => 0, 'tmp_name' => '' ],
-			[ 'name' => 'a.png', 'error' => UPLOAD_ERR_OK, 'size' => 5, 'tmp_name' => '/tmp/a' ],
+	private function store( string $contents, array $overrides = [] ): void {
+		file_put_contents( $this->dir . '/' . $this->token . '.bin', $contents );
+		chmod( $this->dir . '/' . $this->token . '.bin', 0600 );
+		$GLOBALS['opf_test_options'][ 'opf_upload_' . $this->token ] = $overrides + [
+			'name' => 'art.png', 'mime' => 'image/png', 'size' => strlen( $contents ),
+			'owner' => Uploads::owner(), 'product_id' => 7, 'group_id' => 'g', 'field_id' => 'art',
+			'created' => time(), 'order_id' => 0, 'cart' => true,
 		];
-		$this->assertSame( 1, UploadService::attempts( $files ) );
-		$this->assertTrue( UploadService::has_files( $files ) );
-		$this->assertFalse( UploadService::has_files( [ [ 'name' => '', 'error' => UPLOAD_ERR_NO_FILE ] ] ) );
 	}
 
-	public function test_validate_counts_only_real_attempts_and_honors_wildcards(): void {
-		$field = FieldGroup::normalize_field( [ 'id' => 'art', 'type' => 'upload', 'label' => 'Artwork', 'max_files' => 1, 'allowed_types' => [ 'image/*' ] ] );
-		$empty = [ [ 'name' => '', 'error' => UPLOAD_ERR_NO_FILE, 'size' => 0, 'type' => '' ] ];
-		$this->assertSame( [], UploadService::validate( $empty, $field ) );
+	public function test_field_file_count_limits_override_the_php_batch_default(): void {
+		$ini = max( 1, (int) ini_get( 'max_file_uploads' ) );
+		self::assertSame( 1, Uploads::max_files( [ 'multiple' => false ] ) );
+		self::assertSame( $ini, Uploads::max_files( [ 'multiple' => true ] ) );
+		self::assertSame( 3, Uploads::max_files( [ 'multiple' => true, 'max_files' => 3 ] ) );
+		self::assertSame( PHP_INT_MAX, Uploads::max_files( [ 'multiple' => true, 'max_files' => -1 ] ), 'The -1 unlimited sentinel must not cap the field.' );
+	}
 
-		$two = [
-			[ 'name' => 'a.png', 'error' => UPLOAD_ERR_OK, 'size' => 10, 'type' => 'image/png' ],
-			[ 'name' => 'b.png', 'error' => UPLOAD_ERR_OK, 'size' => 10, 'type' => 'image/png' ],
-		];
-		$this->assertSame( [ '"Artwork" allows at most 1 file(s).' ], UploadService::validate( $two, $field ) );
+	public function test_token_records_reject_traversal_and_non_opaque_tokens(): void {
+		self::assertNull( Uploads::record( '../secret' ) );
+		self::assertNull( Uploads::record( str_repeat( 'g', 64 ) ) );
+		self::assertNull( Uploads::record( str_repeat( 'a', 48 ) ) );
+	}
 
-		$this->assertSame(
-			[ '"Artwork" contains a file type that is not allowed.' ],
-			UploadService::validate( [ [ 'name' => 'a.pdf', 'error' => UPLOAD_ERR_OK, 'size' => 10, 'type' => 'application/pdf' ] ], $field )
+	public function test_validate_tokens_enforces_minimum_and_maximum_file_counts(): void {
+		$field = [ 'id' => 'art', 'label' => 'Artwork', 'type' => 'upload', 'min_files' => 2, 'max_files' => 3 ];
+		self::assertSame( [ '"Artwork" requires at least 2 file(s).' ], Uploads::validate_tokens( $field, [], 7, 'g' ) );
+		// Count checks run before token resolution: unknown tokens still hit them.
+		self::assertSame( [ '"Artwork" requires at least 2 file(s).' ], Uploads::validate_tokens( $field, [ $this->token ], 7, 'g' ) );
+		self::assertSame( [ 'Too many uploaded files.' ], Uploads::validate_tokens( $field, [ 'a', 'b', 'c', 'd' ], 7, 'g' ) );
+
+		// A required field keeps its stronger empty-submission message.
+		$required = [ 'id' => 'art', 'label' => 'Artwork', 'type' => 'upload', 'required' => true, 'min_files' => 2 ];
+		self::assertSame( [ '"Artwork" is a required field.' ], Uploads::validate_tokens( $required, [], 7, 'g' ) );
+
+		// The -1 unlimited sentinel skips only the per-field cap: unknown
+		// tokens still fail their own record lookup.
+		$unlimited = [ 'id' => 'art', 'label' => 'Artwork', 'type' => 'upload', 'max_files' => -1 ];
+		self::assertSame(
+			[ 'An uploaded file is unavailable. Please upload it again.' ],
+			Uploads::validate_tokens( $unlimited, array_fill( 0, 25, str_repeat( 'b', 64 ) ), 7, 'g' )
 		);
 	}
 
-	public function test_minimum_file_count_and_unlimited_maximum_are_enforced(): void {
-		$field = FieldGroup::normalize_field( [ 'id' => 'art', 'type' => 'upload', 'label' => 'Artwork', 'min_files' => 2, 'max_files' => -1 ] );
-		$this->assertSame( 2, $field['min_files'] );
-		$this->assertSame( -1, $field['max_files'] );
-		$this->assertSame( [ '"Artwork" requires at least 2 file(s).' ], UploadService::validate( [], $field ) );
-		$many = array_fill( 0, 21, [ 'name' => 'a.txt', 'error' => UPLOAD_ERR_OK, 'size' => 1, 'type' => 'text/plain' ] );
-		$this->assertSame( [], UploadService::validate( $many, $field ) );
-	}
+	public function test_validate_file_reports_upload_errors_size_and_type_limits(): void {
+		$field = [ 'id' => 'art', 'label' => 'Artwork', 'type' => 'upload', 'max_size' => 1, 'accepted_types' => [ 'png' ] ];
 
-	public function test_minimum_image_dimensions_use_verified_temporary_file_bytes(): void {
-		$png = base64_decode( 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==', true );
-		$this->assertNotFalse( $png );
-		$tmp = tempnam( sys_get_temp_dir(), 'opf-image-dimension-' );
-		file_put_contents( $tmp, $png );
-		$field = FieldGroup::normalize_field( [ 'id' => 'art', 'type' => 'upload', 'label' => 'Artwork', 'allowed_types' => [ 'png' ], 'min_width' => 2, 'min_height' => 1 ] );
-		$valid = [ [ 'name' => 'art.png', 'type' => 'image/png', 'size' => strlen( $png ), 'error' => UPLOAD_ERR_OK, 'tmp_name' => $tmp ] ];
-		$this->assertSame( [ '"Artwork" image must be at least 2 pixels wide.' ], UploadService::validate( $valid, $field ) );
-		$field['min_width'] = 1;
-		$this->assertSame( [], UploadService::validate( $valid, $field ) );
-		file_put_contents( $tmp, 'not an image' );
-		$this->assertSame( [ '"Artwork" contains an image that could not be verified.' ], UploadService::validate( $valid, $field ) );
+		$error = Uploads::validate_file( [ 'name' => 'a.png', 'error' => UPLOAD_ERR_PARTIAL, 'size' => 10, 'tmp_name' => '' ], $field );
+		self::assertInstanceOf( \WP_Error::class, $error );
+		self::assertSame( 'opf_upload_file', $error->get_error_code() );
+
+		$oversized = $this->tmp_file( str_repeat( 'x', 12 ) );
+		$error     = Uploads::validate_file( [ 'name' => 'a.png', 'error' => UPLOAD_ERR_OK, 'size' => 12, 'tmp_name' => $oversized ], [ 'max_size' => 0.00001, 'accepted_types' => [ 'png' ] ] );
+		self::assertInstanceOf( \WP_Error::class, $error );
+		self::assertSame( 'opf_upload_size', $error->get_error_code() );
+		unlink( $oversized );
+
+		$tmp = $this->tmp_file( 'x' );
+		foreach ( [ 'a.php', 'a.gif' ] as $name ) {
+			$error = Uploads::validate_file( [ 'name' => $name, 'error' => UPLOAD_ERR_OK, 'size' => 1, 'tmp_name' => $tmp ], $field );
+			self::assertInstanceOf( \WP_Error::class, $error, $name );
+			self::assertSame( 'opf_upload_type', $error->get_error_code(), $name );
+		}
 		unlink( $tmp );
 	}
 
-	public function test_minimum_file_size_uses_temporary_file_bytes_not_reported_size(): void {
-		$tmp = tempnam( sys_get_temp_dir(), 'opf-min-size-' );
-		file_put_contents( $tmp, '12345678' );
-		$field = FieldGroup::normalize_field( [ 'id' => 'art', 'type' => 'upload', 'label' => 'Artwork', 'min_size_mb' => 0.00001 ] );
-		$file = [ [ 'name' => 'art.txt', 'type' => 'text/plain', 'size' => 999999, 'error' => UPLOAD_ERR_OK, 'tmp_name' => $tmp ] ];
-		$this->assertSame( [ '"Artwork" contains a file smaller than the minimum size.' ], UploadService::validate( $file, $field ) );
+	public function test_minimum_file_size_uses_measured_bytes_not_reported_size(): void {
+		$field = [ 'id' => 'art', 'label' => 'Artwork', 'type' => 'upload', 'max_size' => 1, 'min_size_mb' => 0.00001, 'accepted_types' => [ 'txt' ] ];
+		$tmp   = $this->tmp_file( '12345678' );
+
+		// ceil(0.00001 MB) = 11 bytes; the reported size cannot bypass it.
+		$error = Uploads::validate_file( [ 'name' => 'art.txt', 'type' => 'text/plain', 'size' => 999999, 'error' => UPLOAD_ERR_OK, 'tmp_name' => $tmp ], $field );
+		self::assertInstanceOf( \WP_Error::class, $error );
+		self::assertSame( 'opf_upload_min_size', $error->get_error_code() );
+
 		file_put_contents( $tmp, str_repeat( 'x', 12 ) );
-		$file[0]['size'] = 0;
-		$this->assertSame( [], UploadService::validate( $file, $field ) );
+		$checked = Uploads::validate_file( [ 'name' => 'art.txt', 'type' => 'text/plain', 'size' => 0, 'error' => UPLOAD_ERR_OK, 'tmp_name' => $tmp ], $field );
+		self::assertIsArray( $checked );
+		self::assertSame( 12, $checked['size'] );
 		unlink( $tmp );
 	}
 
-	public function test_forced_fixed_crop_ratio_is_validated_from_image_bytes(): void {
-		$source = base64_decode( 'iVBORw0KGgoAAAANSUhEUgAAAAQAAAACCAIAAADwyuo0AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAEklEQVQImWP8ICLCAANMDEgAABtqARyVdUwxAAAAAElFTkSuQmCC', true );
-		$edited = base64_decode( 'iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAC0lEQVQImWNgQAYAAA4AAbGa6gYAAAAASUVORK5CYII=', true );
-		$this->assertNotFalse( $source );
-		$this->assertNotFalse( $edited );
-		$source_path = tempnam( sys_get_temp_dir(), 'opf-aspect-source-' );
-		$edited_path = tempnam( sys_get_temp_dir(), 'opf-aspect-edited-' );
-		file_put_contents( $source_path, $source );
-		file_put_contents( $edited_path, $edited );
-		$field = FieldGroup::normalize_field( [ 'id' => 'art', 'type' => 'upload', 'label' => 'Artwork', 'allowed_types' => [ 'png' ], 'image_editor_mode' => 'forced', 'image_editor_crop' => true, 'image_editor_aspect_ratio' => '1:1' ] );
-		$upload = static fn( string $path ): array => [ [ 'name' => 'art.png', 'type' => 'image/png', 'size' => filesize( $path ), 'error' => UPLOAD_ERR_OK, 'tmp_name' => $path ] ];
-		$this->assertSame( [ '"Artwork" image does not match its required crop aspect ratio.' ], UploadService::validate( $upload( $source_path ), $field ) );
-		$this->assertSame( [], UploadService::validate( $upload( $edited_path ), $field ) );
+	public function test_minimum_image_dimensions_use_verified_file_bytes(): void {
+		$png   = (string) base64_decode( 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==', true );
+		$tmp   = $this->tmp_file( $png );
+		$field = [ 'id' => 'art', 'label' => 'Artwork', 'type' => 'upload', 'max_size' => 1, 'accepted_types' => [ 'png' ], 'min_width' => 2, 'min_height' => 1 ];
+		$file  = [ 'name' => 'art.png', 'type' => 'image/png', 'size' => strlen( $png ), 'error' => UPLOAD_ERR_OK, 'tmp_name' => $tmp ];
 
-		$rounded_path = tempnam( sys_get_temp_dir(), 'opf-aspect-rounded-' );
-		$rounded_image = imagecreatetruecolor( 100, 56 );
-		imagepng( $rounded_image, $rounded_path );
-		imagedestroy( $rounded_image );
+		// The stored image is 1x1: below the configured minimum width.
+		$error = Uploads::validate_file( $file, $field );
+		self::assertInstanceOf( \WP_Error::class, $error );
+		self::assertSame( 'opf_upload_dimensions', $error->get_error_code() );
+
+		$field['min_width'] = 1;
+		self::assertIsArray( Uploads::validate_file( $file, $field ) );
+
+		// A verified non-image file can never satisfy configured dimensions.
+		$not_image = $this->tmp_file( 'plain text' );
+		$error     = Uploads::validate_file( [ 'name' => 'art.txt', 'type' => 'text/plain', 'size' => 10, 'error' => UPLOAD_ERR_OK, 'tmp_name' => $not_image ], [ 'max_size' => 1, 'accepted_types' => [ 'txt' ], 'min_width' => 1 ] );
+		self::assertInstanceOf( \WP_Error::class, $error );
+		self::assertSame( 'opf_upload_image', $error->get_error_code() );
+		unlink( $not_image );
+
+		// A non-image upload fails the content-MIME agreement even earlier.
+		file_put_contents( $tmp, 'not an image' );
+		$error = Uploads::validate_file( $file, $field );
+		self::assertInstanceOf( \WP_Error::class, $error );
+		self::assertSame( 'opf_upload_type', $error->get_error_code() );
+		unlink( $tmp );
+	}
+
+	public function test_forced_fixed_crop_ratio_is_verified_from_image_bytes(): void {
+		$source = (string) base64_decode( 'iVBORw0KGgoAAAANSUhEUgAAAAQAAAACCAIAAADwyuo0AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAEklEQVQImWP8ICLCAANMDEgAABtqARyVdUwxAAAAAElFTkSuQmCC', true );
+		$edited = (string) base64_decode( 'iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAC0lEQVQImWNgQAYAAA4AAbGa6gYAAAAASUVORK5CYII=', true );
+		$source_tmp = $this->tmp_file( $source );
+		$edited_tmp = $this->tmp_file( $edited );
+		$field      = [ 'id' => 'art', 'label' => 'Artwork', 'type' => 'upload', 'max_size' => 1, 'accepted_types' => [ 'png' ], 'image_editor_mode' => 'forced', 'image_editor_crop' => true, 'image_editor_aspect_ratio' => '1:1' ];
+		$upload     = static fn( string $path ): array => [ 'name' => 'art.png', 'type' => 'image/png', 'size' => filesize( $path ), 'error' => UPLOAD_ERR_OK, 'tmp_name' => $path ];
+
+		$error = Uploads::validate_file( $upload( $source_tmp ), $field );
+		self::assertInstanceOf( \WP_Error::class, $error );
+		self::assertSame( 'opf_upload_aspect', $error->get_error_code() );
+		self::assertIsArray( Uploads::validate_file( $upload( $edited_tmp ), $field ) );
+
+		if ( ! function_exists( 'imagecreatetruecolor' ) ) {
+			unlink( $source_tmp );
+			unlink( $edited_tmp );
+			$this->markTestSkipped( 'GD is not available to generate a rounded-ratio image.' );
+		}
+		$rounded_tmp = $this->tmp_file( '' );
+		$image       = imagecreatetruecolor( 100, 56 );
+		imagepng( $image, $rounded_tmp );
 		$field['image_editor_aspect_ratio'] = '16:9';
-		$this->assertSame( [], UploadService::validate( $upload( $rounded_path ), $field ), 'Canvas output rounded to integer pixels must remain within the preset ratio tolerance.' );
-		unlink( $rounded_path );
-		unlink( $source_path );
-		unlink( $edited_path );
+		self::assertIsArray( Uploads::validate_file( $upload( $rounded_tmp ), $field ), 'Canvas output rounded to integer pixels must remain within the preset ratio tolerance.' );
+		unlink( $rounded_tmp );
+		unlink( $source_tmp );
+		unlink( $edited_tmp );
 	}
 
-	public function test_validate_reports_upload_errors_and_accepts_dot_extensions(): void {
-		$field = FieldGroup::normalize_field( [ 'id' => 'art', 'type' => 'upload', 'label' => 'Artwork', 'allowed_types' => [ '.png' ] ] );
-		$this->assertSame(
-			[ '"Artwork" contains an upload error.' ],
-			UploadService::validate( [ [ 'name' => 'a.png', 'error' => UPLOAD_ERR_PARTIAL, 'size' => 10, 'type' => 'image/png' ] ], $field )
+	public function test_stored_tokens_are_revalidated_against_current_field_constraints(): void {
+		$png = (string) base64_decode( 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==', true );
+		$this->store( $png );
+		$field = [ 'id' => 'art', 'label' => 'Artwork', 'type' => 'upload', 'required' => true, 'max_size' => 1, 'accepted_types' => [ 'png' ], 'min_width' => 2 ];
+
+		// An uploaded 1x1 image stops validating once the field requires wider media.
+		self::assertSame(
+			[ 'An uploaded file no longer meets this field’s requirements. Please upload it again.' ],
+			Uploads::validate_tokens( $field, [ $this->token ], 7, 'g' )
 		);
-		$this->assertSame(
-			[],
-			UploadService::validate( [ [ 'name' => 'a.png', 'error' => UPLOAD_ERR_OK, 'size' => 10, 'type' => 'image/png' ] ], $field )
+
+		$field['min_width'] = 1;
+		self::assertSame( [], Uploads::validate_tokens( $field, [ $this->token ], 7, 'g' ) );
+
+		// A tampered size record fails the re-validation too.
+		$GLOBALS['opf_test_options'][ 'opf_upload_' . $this->token ]['size'] += 1;
+		self::assertSame(
+			[ 'An uploaded file no longer meets this field’s requirements. Please upload it again.' ],
+			Uploads::validate_tokens( $field, [ $this->token ], 7, 'g' )
 		);
-	}
-
-	public function test_store_refuses_non_uploads_and_bad_sizes(): void {
-		$field = FieldGroup::normalize_field( [ 'id' => 'art', 'type' => 'upload', 'label' => 'Artwork', 'max_size' => 100, 'allowed_types' => [ 'png' ] ] );
-		$this->assertNull( UploadService::store( [ 'tmp_name' => __FILE__, 'name' => 'a.png', 'size' => 10, 'type' => 'image/png' ], $field ) );
-		$this->assertNull( UploadService::store( [ 'tmp_name' => '', 'name' => 'a.png', 'size' => 10, 'type' => 'image/png' ], $field ) );
-	}
-
-	public function test_viewer_access_rejects_malformed_tokens(): void {
-		$this->assertFalse( UploadService::viewer_can_access( 'nope' ) );
-		$this->assertFalse( UploadService::viewer_can_access( str_repeat( 'g', 48 ) ) );
-	}
-
-	public function test_legacy_copy_failure_keeps_all_public_sources_and_rolls_back_new_copies(): void {
-		$source = sys_get_temp_dir() . '/opf-legacy-' . bin2hex( random_bytes( 8 ) );
-		$target = sys_get_temp_dir() . '/opf-private-' . bin2hex( random_bytes( 8 ) );
-		mkdir( $source, 0700 );
-		mkdir( $target, 0700 ); // Existing target forces the cross-directory copy path.
-
-		$token       = str_repeat( 'a', 48 );
-		$source_file = $source . '/' . $token . '.txt';
-		$target_file = $target . '/' . $token . '.txt';
-		file_put_contents( $source_file, 'legacy customer file' );
-		// This is a valid-looking token name with an unsafe non-file target.
-		// It forces a mid-scan failure after the first source is staged.
-		$linked_file = $source . '/' . str_repeat( 'f', 48 ) . '.png';
-		if ( ! symlink( __FILE__, $linked_file ) ) {
-			$this->remove_test_tree( $source, $target );
-			$this->markTestSkipped( 'Symlinks are not available in this test environment.' );
-		}
-		$valid_entry = basename( $source_file );
-		$linked_entry = basename( $linked_file );
-		$entries = [];
-		$handle = opendir( $source );
-		while ( false !== ( $entry = readdir( $handle ) ) ) {
-			if ( '.' !== $entry && '..' !== $entry ) $entries[] = $entry;
-		}
-		closedir( $handle );
-		if ( array_search( $valid_entry, $entries, true ) > array_search( $linked_entry, $entries, true ) ) {
-			$this->remove_test_tree( $source, $target );
-			$this->markTestSkipped( 'Filesystem returned the failure entry before the source to be staged.' );
-		}
-
-		$checked_property = new \ReflectionProperty( UploadService::class, 'legacy_migration_checked' );
-		$error_property = new \ReflectionProperty( UploadService::class, 'legacy_migration_error_logged' );
-		$was_checked = $checked_property->getValue();
-		$was_logged = $error_property->getValue();
-		$checked_property->setValue( null, false );
-		$error_property->setValue( null, false );
-		try {
-			$migrate = new \ReflectionMethod( UploadService::class, 'migrate_legacy_storage' );
-			$this->assertFalse( $migrate->invoke( null, $source, $target ) );
-			$this->assertFileExists( $source_file, 'The original legacy token must remain after a later scan failure.' );
-			$this->assertFileExists( $linked_file, 'The unverified source entry must remain untouched.' );
-			$this->assertFileDoesNotExist( $target_file, 'A newly staged copy must be rolled back on batch failure.' );
-		} finally {
-			$checked_property->setValue( null, $was_checked );
-			$error_property->setValue( null, $was_logged );
-			$this->remove_test_tree( $source, $target );
-		}
-	}
-
-	private function remove_test_tree( string $source, string $target ): void {
-		foreach ( [ $source, $target ] as $directory ) {
-			foreach ( (array) glob( $directory . '/*' ) as $path ) {
-				if ( is_link( $path ) || is_file( $path ) ) unlink( $path );
-			}
-			rmdir( $directory );
-		}
 	}
 }

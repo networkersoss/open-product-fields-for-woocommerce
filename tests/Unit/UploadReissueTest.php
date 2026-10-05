@@ -41,7 +41,6 @@ final class UploadReissueTest extends TestCase {
 		function wc_load_cart() {}
 		function wp_salt( $s ) { return "test-salt"; }
 		function is_wp_error( $v ) { return $v instanceof WP_Error; }
-		function __( $m, $d = null ) { return $m; }
 		function update_option( $k, $v, $a = null ) { $GLOBALS["opf_test_options"][ $k ] = $v; return true; }
 		function add_option( $k, $v, $d = "", $a = null ) { $GLOBALS["opf_test_options"][ $k ] = $v; return true; }
 		function delete_option( $k ) { unset( $GLOBALS["opf_test_options"][ $k ] ); return true; }

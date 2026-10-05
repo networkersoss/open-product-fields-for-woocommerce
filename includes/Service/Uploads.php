@@ -37,8 +37,16 @@ final class Uploads {
 		return 'yes' === get_option( 'opf_upload_ajax', get_option( 'wapf_upload_ajax', 'no' ) );
 	}
 
-	/** WAPF uses PHP's configured batch limit, with no narrower per-field cap. */
+	/**
+	 * Per-field file count cap. WAPF uses PHP's configured batch limit when the
+	 * field allows multiple files; the image-upload add-on's `max_files` count
+	 * (-1 = unlimited) overrides it when the schema carries the key.
+	 */
 	public static function max_files( array $field ): int {
+		if ( isset( $field['max_files'] ) && is_numeric( $field['max_files'] ) ) {
+			$configured = (int) $field['max_files'];
+			return -1 === $configured ? PHP_INT_MAX : max( 1, $configured );
+		}
 		return empty( $field['multiple'] ) ? 1 : max( 1, (int) ini_get( 'max_file_uploads' ) );
 	}
 
@@ -243,7 +251,28 @@ final class Uploads {
 		if ( ! class_exists( \finfo::class ) ) return self::error( 'opf_upload_validation', 'Secure upload validation is unavailable.', 503 );
 		$mime = ( new \finfo( FILEINFO_MIME_TYPE ) )->file( $file['tmp_name'] );
 		if ( empty( $checked['ext'] ) || empty( $checked['type'] ) || $checked['ext'] !== $ext || $checked['type'] !== $mime ) return self::error( 'opf_upload_type', 'The file content does not match its allowed type.' );
+		$minimum_size = isset( $field['min_size_mb'] ) && is_numeric( $field['min_size_mb'] ) && (float) $field['min_size_mb'] > 0 ? (int) ceil( (float) $field['min_size_mb'] * MB_IN_BYTES ) : 0;
+		if ( $minimum_size && $size < $minimum_size ) return self::error( 'opf_upload_min_size', 'The file is smaller than the minimum size.' );
+		$min_width  = isset( $field['min_width'] ) ? max( 0, (int) $field['min_width'] ) : 0;
+		$min_height = isset( $field['min_height'] ) ? max( 0, (int) $field['min_height'] ) : 0;
+		$aspect     = 'forced' === ( $field['image_editor_mode'] ?? '' ) && ! empty( $field['image_editor_crop'] ) && 'free' !== ( $field['image_editor_aspect_ratio'] ?? 'free' ) ? array_map( 'intval', explode( ':', (string) $field['image_editor_aspect_ratio'] ) ) : [];
+		if ( $min_width || $min_height || $aspect ) {
+			$dimensions = self::image_dimensions( $file['tmp_name'], (string) $mime );
+			if ( null === $dimensions ) return self::error( 'opf_upload_image', 'The image could not be verified.' );
+			if ( $dimensions[0] < $min_width || $dimensions[1] < $min_height ) return self::error( 'opf_upload_dimensions', 'The image does not meet the minimum dimensions.' );
+			// Canvas output rounds each dimension independently: allow half a
+			// pixel on both sides, |w*q - h*p| <= (p + q) / 2.
+			if ( $aspect && ( count( $aspect ) !== 2 || $aspect[0] < 1 || $aspect[1] < 1 || abs( $dimensions[0] * $aspect[1] - $dimensions[1] * $aspect[0] ) > ( $aspect[0] + $aspect[1] ) / 2 ) ) return self::error( 'opf_upload_aspect', 'The image does not match its required crop aspect ratio.' );
+		}
 		return [ 'name' => $name, 'mime' => $mime, 'size' => $size ];
+	}
+
+	/** Measured pixel dimensions once the file's image MIME is verified. */
+	private static function image_dimensions( string $tmp, string $mime ): ?array {
+		if ( 0 !== strpos( $mime, 'image/' ) ) return null;
+		$info = @getimagesize( $tmp ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		if ( ! is_array( $info ) || empty( $info[0] ) || empty( $info[1] ) || strtolower( (string) ( $info['mime'] ?? '' ) ) !== strtolower( $mime ) ) return null;
+		return [ (int) $info[0], (int) $info[1] ];
 	}
 
 	public static function receive( \WP_REST_Request $request ) {
@@ -326,7 +355,12 @@ final class Uploads {
 	}
 
 	public static function validate_tokens( array $field, array $tokens, int $pid, string $gid ): array {
-		if ( ! $tokens ) return ! empty( $field['required'] ) ? [ sprintf( '"%s" is a required field.', $field['label'] ) ] : [];
+		$min_files = isset( $field['min_files'] ) ? max( 0, (int) $field['min_files'] ) : 0;
+		if ( ! $tokens ) {
+			if ( ! empty( $field['required'] ) ) return [ sprintf( '"%s" is a required field.', $field['label'] ) ];
+			return $min_files > 0 ? [ sprintf( '"%s" requires at least %d file(s).', $field['label'], $min_files ) ] : [];
+		}
+		if ( count( $tokens ) < $min_files ) return [ sprintf( '"%s" requires at least %d file(s).', $field['label'], $min_files ) ];
 		if ( count( $tokens ) > self::max_files( $field ) ) return [ 'Too many uploaded files.' ];
 		foreach ( $tokens as $token ) {
 			$record = self::record( $token );
