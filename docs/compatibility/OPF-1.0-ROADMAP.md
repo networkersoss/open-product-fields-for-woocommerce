@@ -31,7 +31,7 @@ Extended plugin as inactive 3.1.5 with no update currently exposed in its
 update registry. The available-source audit is complete; this live-site check
 does not change the audited version boundary.
 
-## Progress now — 2026-10-05 (`master` @ `0f47368`)
+## Progress now — 2026-10-05 (`master` @ `c222b4e`)
 
 The 131 Free/Pro/Extended ledger rows are the 1.0 edition scope, including three
 “All versions” rows. Current recorded status, recounted from the ledger rows on
@@ -40,12 +40,12 @@ this commit:
 | Status | Rows | Meaning for the gate |
 | --- | ---: | --- |
 | Baseline supported | 0 | — |
-| Supported | 113 | Strict supported rows; documented differences are not counted as supported |
+| Supported | 116 | Strict supported rows; documented differences are not counted as supported |
 | Supported with documented difference — owner-accepted | 7 | Each carries an explicit owner decision (D1/D2/D3/D4, 2026-10-05) |
-| Partial | 11 | Material parity or proof remains; see each ledger row for its exact gap and evidence |
+| Partial | 8 | Material parity or proof remains; see each ledger row for its exact gap and evidence |
 | Gap | 0 | — |
 | Needs audit | 0 | — |
-| **Total** | **131** | **G1 complete for available evidence; G2 not met — strict supported: 113/131 (86.3%); accepted parity: 120/131 (91.6%)** |
+| **Total** | **131** | **G1 complete for available evidence; G2 not met — strict supported: 116/131 (88.5%); accepted parity: 123/131 (93.9%)** |
 
 The six `WAPF-ADDON-*` rows are **outside** this 131-row denominator (all six
 `partial`) and are excluded from every count and gate verdict on this page.
@@ -74,15 +74,29 @@ accounting:
   `WAPF-COMPAT-MINIMUM-PLATFORM` (D2, the accepted higher platform floor);
   `WAPF-DEVELOPER-HOOKS` (D3, 40/105 bridged for real, with the five absent
   public registries named in the row).
-- **Demoted:** `WAPF-FIELD-SWATCH-TEXT` from `baseline supported` to `partial` —
-  no corner-radius control and no lifecycle proof exist in this tree.
-- **Still `partial` (11):** `WAPF-FIELD-CHILD-PRODUCTS`,
-  `WAPF-FIELD-IMAGE-QUANTITY-ZOOM`, `WAPF-FIELD-CHILD-PRODUCTS-IMAGE-ZOOM`,
+- **Demoted, then partially closed:** `WAPF-FIELD-SWATCH-TEXT` from
+  `baseline supported` to `partial` on 2026-10-05. The corner-radius control has
+  since landed and is browser-proven (7 Chromium states driving the real
+  WooCommerce save, `tests/Unit/TextSwatchRadiusTest.php`), but the row stays
+  `partial` because WAPF's text-swatch chip border/background/colour
+  (`--apf-ts-border` / `--apf-ts-bg` / `--apf-ts-color`) is still applied by no
+  OPF rule.
+- **Promoted on the 2026-10-05 WAPF 3.1.5 comparative proof:**
+  `WAPF-FIELD-CHILD-PRODUCTS-IMAGE-ZOOM`,
+  `WAPF-FIELD-IMAGE-QUANTITY-ZOOM` and `WAPF-DISPLAY-PRICE-HINTS` — each
+  promoted only because its remaining difference is either OPF offering **more**
+  than 3.1.5 (a builder toggle for product image fields and for image+quantity
+  zoom that installed 3.1.5 never registers) or a storage/scope fact with no
+  rendered or priced divergence. The reasoning is written into each row.
+- **Still `partial` (8):** `WAPF-FIELD-CHILD-PRODUCTS`,
   `WAPF-FIELD-CHECKBOX-COLUMNS`, `WAPF-FIELD-TRUE-FALSE-SWITCH`,
   `WAPF-INTERACTION-IMAGE-CHANGE`, `WAPF-PRICE-FORMULA-ADVANCED`,
-  `WAPF-DISPLAY-PRICE-HINTS`, `WAPF-PRODUCT-SUBSCRIPTION`,
-  `WAPF-LOCALE-WPML`, `WAPF-FIELD-SWATCH-TEXT`. Each ledger row names its own
-  residual.
+  `WAPF-PRODUCT-SUBSCRIPTION`, `WAPF-LOCALE-WPML`, `WAPF-FIELD-SWATCH-TEXT`.
+  Each ledger row names its own residual and what would close it.
+  `WAPF-FIELD-CHECKBOX-COLUMNS` is blocked by a real coexistence defect — with
+  WAPF 3.1.5 active its shipped `.wapf-checkboxes` rule collapses OPF's
+  configured grid to one column; a fix lane is in flight and the row promotes
+  once that fix is verified with WAPF active.
 
 The narrative below is the 2026-10-03/04 record of how the rows reached this
 point. Where a sentence in it states an older status, the table above and the
@@ -139,7 +153,7 @@ real-plugin proof recorded in its row.
 A fresh evidence review removed 15 stale `supported` claims at that point in
 time; later implementation commits advanced rows based on additional evidence.
 See [the supported-row audit](SUPPORTED-ROW-AUDIT-2026-10-01.md).
-At the current `master` tip (`0f47368`), strict progress is **113/131 supported rows (86.3%)**.
+At the current `master` tip (`c222b4e`), strict progress is **116/131 supported rows (88.5%)**.
 The 2026-10-04 child-products query audit and WAPF validation-hook repair add
 evidence and fix a real coactive-plugin fatal, but do not promote the broad
 child-products row; strict progress was unchanged by that audit. The integrated branch now
@@ -305,8 +319,8 @@ WordPress 6.0 cache invalidation, and WooCommerce 7.0 Store API capture — all
 version-bounded in
 [platform-floor audit](WAPF-MINIMUM-PLATFORM-EVIDENCE.md).
 
-Extended-only rows: 28 total; 24 supported, 0 supported with a documented
-difference, 4 partial, and 0 known gaps, matching the capability ledger. All 131
+Extended-only rows: 28 total; 26 supported, 0 supported with a documented
+difference, 2 partial, and 0 known gaps, matching the capability ledger. All 131
 edition rows have a ledger status. The
 available-source audit covers installed Extended 3.1.5, public Free 1.7.1,
 current tier/marketing claims, and every published Extended 3.1.6–3.2.1 and
@@ -409,13 +423,19 @@ decomposed into sized implementation and verification tasks.
    G1 is complete for the available evidence and does not block implementation.
 2. **G2 capability parity:** every edition row supported or has a reviewed,
    explicitly accepted difference; zero baseline-only, partial, gap, or
-   needs-audit rows. Current: **not met** — 113/131 supported, 7 owner-accepted
-   differences, 11 partial, 0 baseline-only/gap/needs-audit. The 6 add-on rows
-   are outside the denominator.
+   needs-audit rows. Current: **not met** — 116/131 supported, 7 owner-accepted
+   differences, 8 partial (`WAPF-FIELD-CHILD-PRODUCTS`,
+   `WAPF-FIELD-CHECKBOX-COLUMNS`, `WAPF-FIELD-TRUE-FALSE-SWITCH`,
+   `WAPF-INTERACTION-IMAGE-CHANGE`, `WAPF-PRICE-FORMULA-ADVANCED`,
+   `WAPF-PRODUCT-SUBSCRIPTION`, `WAPF-LOCALE-WPML`,
+   `WAPF-FIELD-SWATCH-TEXT`), 0 baseline-only/gap/needs-audit edition rows. The 6
+   add-on rows are outside the denominator (all six `partial`), as are the
+   compatibility-matrix tables including the 5 `WAPF-COMPAT-EXCLUDES-*`/
+   `WAPF-COMPAT-DOKAN` rows whose OPF status is `needs audit`.
 3. **G3 commerce proof:** relevant browser, server, cart/Store API,
    checkout/order, stock, restore, tax, and pricing lifecycles verified. Current:
-   **partial** — each of the 11 partial rows names its own open lifecycle path;
-   no aggregate pass claim.
+   **partial** — each of the 8 partial edition rows names its own open lifecycle
+   path or blocker; no aggregate pass claim.
 4. **G4 release readiness:** security, accessibility, compatibility,
    migration/rollback, FOSS source/dependency/asset provenance, aligned version
    metadata, inspected package contents, docs, and publication gates passed.

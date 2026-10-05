@@ -64,6 +64,9 @@ theme, plugin list and active plugins unchanged.
 
 ## Status
 
-`WAPF-DISPLAY-PRICE-HINTS` stays **partial** with all previously named
-residuals open; this run adds only a dated non-interference check on this
-commit for the price-display setting's effect on cart/order price.
+`WAPF-DISPLAY-PRICE-HINTS` was recorded as **partial** at the time of this run;
+this run adds only a dated non-interference check on this commit for the
+price-display setting's effect on cart/order price. It stays a valid evidence
+artifact. Ledger outcome (2026-10-05, later the same day): the row was promoted
+to `supported` on the WAPF 3.1.5 cart/order comparison and the storage/scope
+analysis recorded in its ledger cell.

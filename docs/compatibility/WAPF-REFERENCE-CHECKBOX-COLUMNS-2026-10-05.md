@@ -67,7 +67,9 @@ With WAPF **active**, its shipped CSS
 overrides OPF's `.opf-checkboxes--columns{grid-template-columns:repeat(…)…}` on
 the shared wrapper class, so the storefront grid measured 1 column. The grid
 check therefore runs with WAPF inactive (this row is OPF-only; WAPF 3.1.5 has no
-such control). This CSS interaction is recorded for the coexistence surface.
+such control). This CSS interaction is recorded for the coexistence surface, and the ledger
+now names it as the single blocking defect on
+`WAPF-FIELD-CHECKBOX-COLUMNS` until the fix is verified with WAPF active.
 
 ## Result
 

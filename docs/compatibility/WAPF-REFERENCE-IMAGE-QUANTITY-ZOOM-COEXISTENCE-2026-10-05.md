@@ -91,6 +91,15 @@ validator (and the date validator) and restores it in `finally`.
   OPF's toggle is a superset, and the WAPF 3.2.1 builder serialization contract
   was not independently verified.
 
+## Ledger outcome (2026-10-05)
+
+`WAPF-FIELD-IMAGE-QUANTITY-ZOOM` was promoted to `supported` on this proof: the
+coexistence residual is withdrawn as stale, the one live instance of the same
+defect (`wapf/html/field_container_classes`) is closed by the structural
+native-listener rule in
+[hook-shape coexistence](WAPF-HOOK-SHAPE-COEXISTENCE-2026-10-05.md), and the
+remaining builder-surface item is OPF offering more than the 3.1.5 baseline.
+
 ## Cleanup
 
 `cleanup` deleted the fixture product and group and removed the

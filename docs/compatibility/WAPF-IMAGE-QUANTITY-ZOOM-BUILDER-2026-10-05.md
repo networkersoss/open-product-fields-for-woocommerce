@@ -51,7 +51,10 @@ from this same lane were removed by their own cleanup phases (see the sibling
 
 ## Status
 
-`WAPF-FIELD-IMAGE-QUANTITY-ZOOM` stays **partial**, unchanged. Remaining:
-WAPF Extended 3.2.1 admin contract, and the separate recorded defect where
-WAPF 3.1.5 active beside OPF throws an add-to-cart TypeError from
-`wapf/validate` (not reproducible in this runtime — no WAPF installed).
+`WAPF-FIELD-IMAGE-QUANTITY-ZOOM` was recorded as **partial** at the time of this
+run, on the WAPF Extended 3.2.1 admin contract and the separate add-to-cart
+`TypeError` from `wapf/validate` (not reproducible in this runtime — no WAPF
+installed). Ledger outcome (2026-10-05, later the same day): both residuals were
+withdrawn — the `TypeError` is stale at HEAD and the 3.2.1 contract is bounded by
+owner decision D1 against the installed 3.1.5 baseline — and the row was
+promoted to `supported` in its ledger cell.

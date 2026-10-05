@@ -2,7 +2,7 @@
 
 ## Scope
 
-`WAPF-FIELD-IMAGE-QUANTITY-ZOOM` stays `partial` on a coexistence residual: "with
+`WAPF-FIELD-IMAGE-QUANTITY-ZOOM` was held `partial` on a coexistence residual: "with
 WAPF 3.1.5 active beside OPF, add-to-cart raises a `TypeError` when OPF invokes
 `wapf/validate` with its normalized array field". This run reproduces that
 failure, records the state of the bridge at `ff58b68`, closes the **live**

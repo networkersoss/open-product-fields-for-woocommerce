@@ -72,6 +72,13 @@ Screenshots: `browser-wapf-hover-wide.png`, `browser-opf-hover-wide.png`,
   `image-swatch`/`multi-image-swatch`), so the authoring-surface half cannot be
   compared against 3.1.5 — it is a documented superset on OPF's side, not a gap.
 
+## Ledger outcome (2026-10-05)
+
+`WAPF-FIELD-CHILD-PRODUCTS-IMAGE-ZOOM` was promoted to `supported` on this
+proof: the comparison is closed, and the remaining item (3.1.5 exposes no
+builder control for product image fields) is OPF offering more than the
+baseline, not a divergence.
+
 ## Cleanup
 
 `cleanup` deleted both fixture parents, the child product, both OPF groups and

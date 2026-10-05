@@ -77,6 +77,19 @@ also captures its exact cart markup through the same
   default store currency, not under a live currency-switching plugin; (c)
   legacy import does not remap WAPF's hint-specific order metadata.
 
+## Ledger outcome (2026-10-05)
+
+`WAPF-DISPLAY-PRICE-HINTS` was promoted to `supported` on this proof. The
+cart/order comparison shows no rendered or priced divergence, and the three
+items listed as "remaining" above were judged storage/scope facts rather than
+capability gaps: (a) WAPF stores the pre-rendered hint string in order meta
+while OPF stores raw `_opf_fields` and derives the same string at render time;
+(b) currency conversion is wired — `WoocsIntegration::pricing_hint()` and
+`AeliaIntegration::pricing_hint()` filter `opf_pricing_hint_amount`; and (c)
+the hint settings that exist are migrated by
+`Importer::migrate_price_hint_settings()`, so only pre-existing WAPF **order**
+rows keep their own strings, which is outside the field-group importer.
+
 ## Cleanup
 
 `cleanup` deleted both fixture products, the OPF group, both created orders and
