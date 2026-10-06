@@ -37,3 +37,28 @@ User-facing changes to Open Product Fields for WooCommerce.
   recognized modes and in-range button maxima for later migration work.
 - Repeated fields and sections evaluate child conditions and date-based pricing
   formulas against values from the matching clone in browser totals and carts.
+
+## 0.1.1 — 2026-10-06
+
+### Added
+
+- WAPF Tools JSON exports can be imported from a file, with a dry-run review of
+  every field and group before anything is written (`wp opf import-wapf` and the
+  admin import page).
+- WAPF switch controls survive an export/import round trip for toggle and
+  checkbox fields.
+
+### Fixed
+
+- Image-change rules without a matching image fall back to the selected
+  variation's image instead of leaving the previous variation's image in place.
+- WPML string-package registration is skipped with a warning when String
+  Translation is unavailable, instead of failing on the missing API.
+- Release archives no longer ship the internal `tasks/` planning notes.
+
+### Verified
+
+- Real WooCommerce Subscriptions 9.2.0 lifecycle parity: add-to-cart, renewal,
+  refund, and order-again against a live subscription.
+- WPML string translation proven at runtime on the supported WPML/WCML version
+  sets, including multilingual cart and order flows.

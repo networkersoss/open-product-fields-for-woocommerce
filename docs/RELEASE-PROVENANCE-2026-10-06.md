@@ -11,10 +11,11 @@ repository on 2026-10-06. Absolute artifact paths under `/tmp` are build
 scratch space only; no source file lives there.
 
 - Repository: `open-product-fields-for-woocommerce` (branch `master`)
-- Audited commit: `521ff0c` (`fix(export): round-trip WAPF switch_control for
-  toggle and checkbox fields`)
+- Audited commit: `fd42ab5` (`fix(frontend): resolve image-change fallback to
+  the selected variation image`), plus the 0.1.1 version-metadata and CHANGELOG
+  edits present in the working tree this archive was built from
 - Build host PHP: `8.5.11` (the shipped code declares `Requires PHP: 7.4`)
-- Archive version inspected: **0.1.0** (this is the current baseline, not a 1.0
+- Archive version inspected: **0.1.1** (this is the current baseline, not a 1.0
   release candidate)
 
 ## 1. Reproducible build command
@@ -29,24 +30,24 @@ bash bin/build.sh /tmp/opf-dist/open-product-fields-for-woocommerce
 step). The command is idempotent: it removes the destination, recreates it, and
 rsyncs the plugin with development artifacts excluded.
 
-## 2. Shipped-file inventory (0.1.0 baseline archive)
+## 2. Shipped-file inventory (0.1.1 archive)
 
 | Metric | Value |
 | --- | --- |
-| Total files | **200** |
-| Total bytes (`du -sb`) | **2,587,988** |
+| Total files | **201** |
+| Total bytes (`du -sb`) | **2,608,320** |
 | Top-level entries | 10 (`assets/`, `includes/`, `languages/` + 6 files) |
 
 Files by top-level location:
 
 | Location | Files |
 | --- | --- |
-| `includes/` | 177 (of which 124 are `includes/ThirdParty/Url/`; 53 are plugin-authored) |
+| `includes/` | 178 (of which 124 are `includes/ThirdParty/Url/`; 54 are plugin-authored) |
 | `assets/` | 12 (3 CSS, 7 JS, 2 `index.php` guards) |
 | `languages/` | 5 (`index.php`, `.pot`, `.po`, `.mo`, `es_ES` JSON) |
 | root files | 6 (`LICENSE`, `CHANGELOG.md`, `readme.txt`, `uninstall.php`, `wpml-config.xml`, `open-product-fields-for-woocommerce.php`) |
 
-Files by extension: `.php` 176, `.js` 7, `.css` 3, `LICENSE` 7 (root + 6
+Files by extension: `.php` 177, `.js` 7, `.css` 3, `LICENSE` 7 (root + 6
 third-party), `.md` 1, `.json` 1, `.xml` 1, `.txt` 1, `.pot` 1, `.po` 1, `.mo` 1.
 
 Excluded from the archive (verified absent): `.git/`, `.gitignore`,
@@ -113,13 +114,15 @@ All four surfaces agree on GPL-2.0-or-later.
 
 | Surface | Value |
 | --- | --- |
-| Plugin header `Version:` | `0.1.0` |
-| `OPF_VERSION` constant | `0.1.0` |
-| `readme.txt` `Stable tag:` | `0.1.0` |
+| Plugin header `Version:` | `0.1.1` |
+| `OPF_VERSION` constant | `0.1.1` |
+| `readme.txt` `Stable tag:` | `0.1.1` |
 
-The three version surfaces are aligned at `0.1.0` on the audited commit. (The
-roadmap noted a transient local edit to `0.1.1`; that edit is not present in the
-audited working tree.)
+The three version surfaces are aligned at `0.1.1` on the audited commit.
+`OPF_VERSION` is also the asset version every frontend/backoffice file is
+enqueued with (`includes/Service/Assets.php`), so the changed
+`assets/js/opf-frontend.js` is served as `?ver=0.1.1`. (The 0.1.0 record noted a
+transient local edit to `0.1.1`; that bump is now the shipped version.)
 
 ## 7. SHA-256 archive manifest
 
@@ -128,9 +131,9 @@ per-file SHA-256 list in `sha256sum` format with paths relative to the archive
 root.
 
 - Manifest: [`RELEASE-PROVENANCE-2026-10-06-manifest.sha256`](RELEASE-PROVENANCE-2026-10-06-manifest.sha256)
-  (200 lines, one per shipped file)
+  (201 lines, one per shipped file)
 - Manifest file SHA-256:
-  `7b987a7645ea12c69c730214dd204deeda37368f596801b9196aee29c18a019d`
+  `5953a1f76bbf26d012d3a4ebf7b93b87c58a9f5e5b205ad9aaaac428f4f84ce9`
 - `bin/build.sh` (fixed) SHA-256:
   `28e7b2cc4bd819b951d219a10339519c009a7a650ecfa96bb5170be290718b18`
 
@@ -140,7 +143,7 @@ Verification from a clean checkout:
 bash bin/build.sh /tmp/opf-dist/open-product-fields-for-woocommerce
 cd /tmp/opf-dist/open-product-fields-for-woocommerce
 sha256sum -c /path/to/repo/docs/RELEASE-PROVENANCE-2026-10-06-manifest.sha256
-# -> all 200 files OK
+# -> all 201 files OK
 ```
 
 ## 8. Internal-document exclusion fix
@@ -297,19 +300,19 @@ pattern for that.
 
 ## 10. Remaining G4 blockers after this record
 
-This record closes the packaging/provenance checks for the **0.1.0** baseline:
+This record closes the packaging/provenance checks for the **0.1.1** baseline:
 
 - Reproducible build command: recorded.
 - Shipped-file inventory and checksum manifest: recorded.
 - Bundled third-party components and their licenses: recorded.
 - Runtime dependency audit (no runtime libraries): recorded.
 - GPL-2.0-or-later declaration on all surfaces: recorded.
-- Version metadata aligned (`0.1.0`): verified.
+- Version metadata aligned (`0.1.1`): verified.
 - Internal-doc (`tasks/`) leak into the archive: fixed and verified.
 
 G4 as defined in the roadmap is still **not met**:
 
-1. **No 1.0 release archive exists to inspect.** The archive above is the 0.1.0
+1. **No 1.0 release archive exists to inspect.** The archive above is the 0.1.1
    baseline; a 1.0 package cannot be produced until the version metadata is
    bumped to 1.0 and G2/G3 close, so the "inspected 1.0 archive" gate item
    remains open.
