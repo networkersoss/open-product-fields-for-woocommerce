@@ -1,0 +1,181 @@
+{
+  "engine": "opf",
+  "scenario": "a",
+  "versions": {},
+  "product_id": 15,
+  "page_url": "http://127.0.0.1:8425/qv-shop/",
+  "checks": [
+    {
+      "label": "engine frontend bundle present on the trigger page",
+      "pass": false,
+      "detail": "opf=false wapf=false"
+    },
+    {
+      "label": "modal renders the field group",
+      "pass": true,
+      "detail": "groups=1"
+    },
+    {
+      "label": "modal renders both select fields",
+      "pass": true,
+      "detail": "finish=1 edge=1"
+    },
+    {
+      "label": "modal renders a totals node",
+      "pass": true,
+      "detail": "totals=1"
+    },
+    {
+      "label": "totals node has a value",
+      "pass": false,
+      "detail": "text=\"\""
+    },
+    {
+      "label": "priced choice raises the modal total by the choice price (+15)",
+      "pass": false,
+      "detail": "NaN -> NaN"
+    },
+    {
+      "label": "a second priced choice prices independently (+5)",
+      "pass": false,
+      "detail": "NaN -> NaN"
+    },
+    {
+      "label": "clearing the choice restores the base total",
+      "pass": false,
+      "detail": "NaN -> NaN"
+    },
+    {
+      "label": "rule finish=gold swaps the modal image to rule-a",
+      "pass": false,
+      "detail": "opf-qv-v-small.png -> opf-qv-v-small.png"
+    },
+    {
+      "label": "rule edge=xl swaps the modal image to rule-b",
+      "pass": false,
+      "detail": "-> opf-qv-v-small.png"
+    },
+    {
+      "label": "variation image resolves when no rule matches",
+      "pass": true,
+      "detail": "-> opf-qv-v-large.png"
+    },
+    {
+      "label": "quick-view add-to-cart request carries the field payload",
+      "pass": false,
+      "detail": "no request captured"
+    },
+    {
+      "label": "cart line carries the submitted field values",
+      "pass": true,
+      "detail": "[{\"product\":\"OPF Quick View Product\",\"details\":[\"Finish: Gold (+$15.00) / Edge: None / Extras: Gift (+$2.00)\",\"size: small\"],\"total\":\"$117.00\"}]"
+    },
+    {
+      "label": "cart line prices the chosen options (+15 select, +2 checkbox)",
+      "pass": true,
+      "detail": "total=\"$117.00\" expected=117"
+    },
+    {
+      "label": "cart line lists both the select and the checkbox value",
+      "pass": true,
+      "detail": "[\"Finish: Gold (+$15.00) / Edge: None / Extras: Gift (+$2.00)\",\"size: small\"]"
+    }
+  ],
+  "console_messages": [],
+  "page_errors": [
+    {
+      "message": "t[o].push is not a function",
+      "stack": "TypeError: t[o].push is not a function |     at http://127.0.0.1:8425/wp-content/plugins/woocommerce-quick-view-pro/assets/js/wc-quick-view-pro.js?ver=1.7.17:1:8706 |     at http://127.0.0.1:8425/wp-content/plugins/woocommerce-quick-view-pro/assets/js/wc-quick-view-pro.js?ver=1.7.17:1:8757"
+    }
+  ],
+  "request_failures": [],
+  "add_to_cart_request": null,
+  "add_to_cart_response": null,
+  "non_get_requests": [
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:8425/product/qv-opf-product/",
+      "postData": "------WebKitFormBoundaryeDB4aggwn1uPUxCQ\r\nContent-Disposition: form-data; name=\"attribute_size\"\r\n\r\nsmall\r\n------WebKitFormBoundaryeDB4aggwn1uPUxCQ\r\nContent-Disposition: form-data; name=\"opf[18][finish]\"\r\n\r\ngold\r\n------WebKitFormBoundaryeDB4aggwn1uPUxCQ\r\nContent-Disposition: form-data; name=\"opf[18][edge]\"\r\n\r\nnone\r\n------WebKitFormBoundaryeDB4aggwn1uPUxCQ\r\nContent-Disposition: form-data; name=\"opf["
+    }
+  ],
+  "cart": [
+    {
+      "product": "OPF Quick View Product",
+      "details": [
+        "Finish: Gold (+$15.00) / Edge: None / Extras: Gift (+$2.00)",
+        "size: small"
+      ],
+      "total": "$117.00"
+    }
+  ],
+  "totals_trace": [
+    {
+      "step": "initial (finish=none, edge=none, size=small)",
+      "text": "",
+      "options_text": "",
+      "display": "block",
+      "visibility": "visible",
+      "inline_style": "",
+      "visible": true
+    },
+    {
+      "step": "finish=gold",
+      "text": "",
+      "options_text": "",
+      "display": "block",
+      "visibility": "visible",
+      "inline_style": "",
+      "visible": true
+    },
+    {
+      "step": "finish=silver",
+      "text": "",
+      "options_text": "",
+      "display": "block",
+      "visibility": "visible",
+      "inline_style": "",
+      "visible": true
+    },
+    {
+      "step": "finish=none again",
+      "text": "",
+      "options_text": "",
+      "display": "block",
+      "visibility": "visible",
+      "inline_style": "",
+      "visible": true
+    }
+  ],
+  "image_trace": [
+    {
+      "step": "finish=gold",
+      "image": "opf-qv-v-small.png"
+    },
+    {
+      "step": "finish=none edge=xl",
+      "image": "opf-qv-v-small.png"
+    },
+    {
+      "step": "size=large",
+      "image": "opf-qv-v-large.png"
+    },
+    {
+      "step": "size=small (restored)",
+      "image": "opf-qv-v-small.png"
+    }
+  ],
+  "globals": {
+    "opf_fields": "undefined",
+    "opf_image_rules": "undefined",
+    "opf_config": "undefined",
+    "wapf_global": "undefined",
+    "wapf_config": "undefined",
+    "has_opf_frontend_script": false,
+    "has_wapf_frontend_script": false,
+    "fields_on_page_before_modal": 0
+  },
+  "url_after_add": "http://127.0.0.1:8425/product/qv-opf-product/",
+  "modal_open_after_add": false,
+  "passed": 7,
+  "failed": 8
+}

@@ -1,0 +1,91 @@
+{
+    "utc": "2026-10-06T21:31:49+00:00",
+    "base_url": "http://127.0.0.1:8425",
+    "images": {
+        "main": "http://127.0.0.1:8425/wp-content/uploads/opf-qv-main.png",
+        "vsmall": "http://127.0.0.1:8425/wp-content/uploads/opf-qv-v-small.png",
+        "vlarge": "http://127.0.0.1:8425/wp-content/uploads/opf-qv-v-large.png",
+        "rulea": "http://127.0.0.1:8425/wp-content/uploads/opf-qv-rule-a.png",
+        "ruleb": "http://127.0.0.1:8425/wp-content/uploads/opf-qv-rule-b.png"
+    },
+    "prices": {
+        "base": 100,
+        "gold": 15,
+        "silver": 5,
+        "xl": 3,
+        "gift": 2
+    },
+    "attachment_ids": {
+        "main": 10,
+        "vsmall": 11,
+        "vlarge": 12,
+        "rulea": 13,
+        "ruleb": 14
+    },
+    "coming_soon": "no",
+    "store_pages_only": "no",
+    "products": {
+        "opf": {
+            "engine": "opf",
+            "product": 15,
+            "group": 18,
+            "slug": "qv-opf-product",
+            "fields_root": "[data-opf-fields]",
+            "group_root": "[data-opf-group=\"18\"]",
+            "total_selector": ".opf-product-totals .opf-grand-total",
+            "selector": "[data-opf-field=\"finish\"] select",
+            "edge": "[data-opf-field=\"edge\"] select",
+            "gift": "[data-opf-field=\"extras\"] input[type=\"checkbox\"][value=\"gift\"]",
+            "variations": {
+                "small": {
+                    "variation_id": 16,
+                    "image_id": 11,
+                    "image_url": "http://127.0.0.1:8425/wp-content/uploads/opf-qv-v-small.png"
+                },
+                "large": {
+                    "variation_id": 17,
+                    "image_id": 12,
+                    "image_url": "http://127.0.0.1:8425/wp-content/uploads/opf-qv-v-large.png"
+                }
+            },
+            "url": "http://127.0.0.1:8425/product/qv-opf-product/"
+        },
+        "wapf": {
+            "engine": "wapf",
+            "product": 19,
+            "group": 0,
+            "slug": "qv-wapf-product",
+            "fields_root": ".wapf-wrapper",
+            "group_root": ".wapf-field-group",
+            "total_selector": ".wapf-product-totals .wapf-grand-total",
+            "selector": "select[name=\"wapf[field_finish]\"]",
+            "edge": "select[name=\"wapf[field_edge]\"]",
+            "gift": "input[name=\"wapf[field_extras][]\"][value=\"gift\"]",
+            "variations": {
+                "small": {
+                    "variation_id": 20,
+                    "image_id": 11,
+                    "image_url": "http://127.0.0.1:8425/wp-content/uploads/opf-qv-v-small.png"
+                },
+                "large": {
+                    "variation_id": 21,
+                    "image_id": 12,
+                    "image_url": "http://127.0.0.1:8425/wp-content/uploads/opf-qv-v-large.png"
+                }
+            },
+            "url": "http://127.0.0.1:8425/product/qv-wapf-product/"
+        }
+    },
+    "product_ids": [
+        15,
+        19
+    ],
+    "group_ids": [
+        18
+    ],
+    "page_id": 22,
+    "page_inline_id": 24,
+    "page_url": "http://127.0.0.1:8425/qv-shop/",
+    "shop_url": "http://127.0.0.1:8425/shop/",
+    "page_inline_url": "http://127.0.0.1:8425/qv-shop-inline/"
+}

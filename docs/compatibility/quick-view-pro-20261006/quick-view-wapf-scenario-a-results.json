@@ -1,0 +1,179 @@
+{
+  "engine": "wapf",
+  "scenario": "a",
+  "versions": {},
+  "product_id": 19,
+  "page_url": "http://127.0.0.1:8425/qv-shop/",
+  "checks": [
+    {
+      "label": "engine frontend bundle present on the trigger page",
+      "pass": true,
+      "detail": "opf=false wapf=true"
+    },
+    {
+      "label": "modal renders the field group",
+      "pass": true,
+      "detail": "groups=1"
+    },
+    {
+      "label": "modal renders both select fields",
+      "pass": true,
+      "detail": "finish=1 edge=1"
+    },
+    {
+      "label": "modal renders a totals node",
+      "pass": true,
+      "detail": "totals=1"
+    },
+    {
+      "label": "totals node has a value",
+      "pass": true,
+      "detail": "text=\"$100.00\""
+    },
+    {
+      "label": "priced choice raises the modal total by the choice price (+15)",
+      "pass": true,
+      "detail": "100 -> 115"
+    },
+    {
+      "label": "a second priced choice prices independently (+5)",
+      "pass": true,
+      "detail": "100 -> 105"
+    },
+    {
+      "label": "clearing the choice restores the base total",
+      "pass": true,
+      "detail": "115 -> 100"
+    },
+    {
+      "label": "rule finish=gold swaps the modal image to rule-a",
+      "pass": true,
+      "detail": "opf-qv-v-small.png -> opf-qv-rule-a.png"
+    },
+    {
+      "label": "rule edge=xl swaps the modal image to rule-b",
+      "pass": true,
+      "detail": "-> opf-qv-rule-b.png"
+    },
+    {
+      "label": "variation image resolves when no rule matches",
+      "pass": true,
+      "detail": "-> opf-qv-v-large.png"
+    },
+    {
+      "label": "quick-view add-to-cart request carries the field payload",
+      "pass": true,
+      "detail": "attribute_size=small&wapf[field_finish]=gold&wapf[field_edge]=none&wapf[field_extras][]=0&wapf[field_extras][]=gift&wapf[field_extras][]=0&wapf[field_extras][]=0&wapf[field_extras][]=gift&wapf[field_extras][]=0&wapf_field_groups=p_19&quanti"
+    },
+    {
+      "label": "cart line carries the submitted field values",
+      "pass": true,
+      "detail": "[{\"product\":\"WAPF Quick View Product\",\"details\":[\"Finish: Gold (+$15.00) / Edge: None / Extras: Gift (+$2.00), Gift (+$2.00)\",\"size: small\"],\"total\":\"$119.00\"}]"
+    },
+    {
+      "label": "cart line prices the chosen options (+15 select, +2 checkbox)",
+      "pass": false,
+      "detail": "total=\"$119.00\" expected=117"
+    },
+    {
+      "label": "cart line lists both the select and the checkbox value",
+      "pass": true,
+      "detail": "[\"Finish: Gold (+$15.00) / Edge: None / Extras: Gift (+$2.00), Gift (+$2.00)\",\"size: small\"]"
+    }
+  ],
+  "console_messages": [],
+  "page_errors": [],
+  "request_failures": [],
+  "add_to_cart_request": {
+    "url": "http://127.0.0.1:8425/wp-json/wc-quick-view-pro/v1/cart",
+    "postData": "attribute_size=small&wapf%5Bfield_finish%5D=gold&wapf%5Bfield_edge%5D=none&wapf%5Bfield_extras%5D%5B%5D=0&wapf%5Bfield_extras%5D%5B%5D=gift&wapf%5Bfield_extras%5D%5B%5D=0&wapf%5Bfield_extras%5D%5B%5D=0&wapf%5Bfield_extras%5D%5B%5D=gift&wapf%5Bfield_extras%5D%5B%5D=0&wapf_field_groups=p_19&quantity=1&product_id=19&variation_id=20"
+  },
+  "add_to_cart_response": null,
+  "non_get_requests": [
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:8425/wp-json/wc-quick-view-pro/v1/cart",
+      "postData": "attribute_size=small&wapf%5Bfield_finish%5D=gold&wapf%5Bfield_edge%5D=none&wapf%5Bfield_extras%5D%5B%5D=0&wapf%5Bfield_extras%5D%5B%5D=gift&wapf%5Bfield_extras%5D%5B%5D=0&wapf%5Bfield_extras%5D%5B%5D=0&wapf%5Bfield_extras%5D%5B%5D=gift&wapf%5Bfield_extras%5D%5B%5D=0&wapf_field_groups=p_19&quantity=1&product_id=19&variation_id=20"
+    }
+  ],
+  "cart": [
+    {
+      "product": "WAPF Quick View Product",
+      "details": [
+        "Finish: Gold (+$15.00) / Edge: None / Extras: Gift (+$2.00), Gift (+$2.00)",
+        "size: small"
+      ],
+      "total": "$119.00"
+    }
+  ],
+  "totals_trace": [
+    {
+      "step": "initial (finish=none, edge=none, size=small)",
+      "text": "$100.00",
+      "options_text": "$0.00",
+      "display": "block",
+      "visibility": "visible",
+      "inline_style": "",
+      "visible": true
+    },
+    {
+      "step": "finish=gold",
+      "text": "$115.00",
+      "options_text": "$15.00",
+      "display": "block",
+      "visibility": "visible",
+      "inline_style": "",
+      "visible": true
+    },
+    {
+      "step": "finish=silver",
+      "text": "$105.00",
+      "options_text": "$5.00",
+      "display": "block",
+      "visibility": "visible",
+      "inline_style": "",
+      "visible": true
+    },
+    {
+      "step": "finish=none again",
+      "text": "$100.00",
+      "options_text": "$0.00",
+      "display": "block",
+      "visibility": "visible",
+      "inline_style": "",
+      "visible": true
+    }
+  ],
+  "image_trace": [
+    {
+      "step": "finish=gold",
+      "image": "opf-qv-rule-a.png"
+    },
+    {
+      "step": "finish=none edge=xl",
+      "image": "opf-qv-rule-b.png"
+    },
+    {
+      "step": "size=large",
+      "image": "opf-qv-v-large.png"
+    },
+    {
+      "step": "size=small (restored)",
+      "image": "opf-qv-v-small.png"
+    }
+  ],
+  "globals": {
+    "opf_fields": "undefined",
+    "opf_image_rules": "undefined",
+    "opf_config": "undefined",
+    "wapf_global": "object",
+    "wapf_config": "object",
+    "has_opf_frontend_script": false,
+    "has_wapf_frontend_script": true,
+    "fields_on_page_before_modal": 0
+  },
+  "url_after_add": "http://127.0.0.1:8425/qv-shop/",
+  "modal_open_after_add": false,
+  "passed": 14,
+  "failed": 1
+}
