@@ -73,7 +73,7 @@ final class LivePreview {
 			$ids = array_values( array_unique( array_merge( [ (int) $product->get_image_id() ], array_map( 'absint', $product->get_gallery_image_ids() ) ) ) );
 			foreach ( $ids as $index => $image_id ) {
 				if ( $image_id ) {
-					$gallery_images[] = [ 'id' => $image_id, 'index' => $index, 'label' => get_the_title( $image_id ) ?: sprintf( __( 'Image %d', 'open-product-fields-for-woocommerce' ), $index + 1 ), 'url' => wp_get_attachment_image_url( $image_id, 'woocommerce_single' ) ];
+					$gallery_images[] = [ 'id' => $image_id, 'index' => $index, 'label' => get_the_title( $image_id ) ?: sprintf( /* translators: %d: image position in the product gallery. */ __( 'Image %d', 'open-product-fields-for-woocommerce' ), $index + 1 ), 'url' => wp_get_attachment_image_url( $image_id, 'woocommerce_single' ) ];
 				}
 			}
 		}

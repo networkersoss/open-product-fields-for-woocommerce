@@ -867,7 +867,7 @@ final class Renderer {
 			// Kept as a hidden alias node so WAPF-shaped selectors and styles
 			// keep resolving while the OPF tooltip remains the visible control.
 			$instruction_id = 'opf-' . esc_attr( $gid . '-' . $fid ) . '-instruction';
-			echo '<span class="opf-instruction-tooltip" hidden><button type="button" class="opf-instruction-tooltip__trigger" tabindex="-1" aria-label="' . esc_attr( sprintf( __( 'Instructions for %s', 'open-product-fields-for-woocommerce' ), $field['label'] ) ) . '" aria-describedby="' . $instruction_id . '" aria-expanded="false"><span aria-hidden="true">?</span></button><span class="opf-instruction-tooltip__content" role="tooltip" id="' . $instruction_id . '">' . esc_html( (string) $field['description'] ) . '</span></span>';
+			echo '<span class="opf-instruction-tooltip" hidden><button type="button" class="opf-instruction-tooltip__trigger" tabindex="-1" aria-label="' . esc_attr( sprintf( /* translators: %s: field label. */ __( 'Instructions for %s', 'open-product-fields-for-woocommerce' ), $field['label'] ) ) . '" aria-describedby="' . $instruction_id . '" aria-expanded="false"><span aria-hidden="true">?</span></button><span class="opf-instruction-tooltip__content" role="tooltip" id="' . $instruction_id . '">' . esc_html( (string) $field['description'] ) . '</span></span>';
 		}
 		echo '</div>';
 

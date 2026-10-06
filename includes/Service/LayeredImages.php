@@ -712,7 +712,7 @@ final class LayeredImages {
 		foreach ( $attachments as $attachment ) {
 			$id = (int) $attachment->ID;
 			$size = wp_get_attachment_metadata( $id );
-			$images[] = [ 'id' => $id, 'label' => get_the_title( $id ) ?: sprintf( __( 'Image %d', 'open-product-fields-for-woocommerce' ), $id ), 'width' => (int) ( $size['width'] ?? 0 ), 'height' => (int) ( $size['height'] ?? 0 ), 'mime' => get_post_mime_type( $id ), 'url' => wp_get_attachment_image_url( $id, 'full' ), 'alpha' => self::has_alpha_channel( $id ) ];
+			$images[] = [ 'id' => $id, 'label' => get_the_title( $id ) ?: sprintf( /* translators: %d: attachment ID. */ __( 'Image %d', 'open-product-fields-for-woocommerce' ), $id ), 'width' => (int) ( $size['width'] ?? 0 ), 'height' => (int) ( $size['height'] ?? 0 ), 'mime' => get_post_mime_type( $id ), 'url' => wp_get_attachment_image_url( $id, 'full' ), 'alpha' => self::has_alpha_channel( $id ) ];
 		}
 		return $images;
 	}
