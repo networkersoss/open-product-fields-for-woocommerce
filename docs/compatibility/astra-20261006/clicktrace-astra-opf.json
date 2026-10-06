@@ -1,0 +1,50 @@
+{
+  "label": "opf",
+  "product_url": "http://127.0.0.1:8511/product/opf-astra-compat/",
+  "page_errors": [
+    "Cannot read properties of undefined (reading 'animating')"
+  ],
+  "thumb_clicks": [
+    {
+      "className": "ast-woocommerce-product-gallery__image flex-active-slide",
+      "stack": [
+        "at record (<anonymous>:7:19)",
+        "at HTMLDocument.<anonymous> (<anonymous>:13:4)",
+        "at http://127.0.0.1:8511/wp-content/uploads/astra-addon/astra-addon-6ac56b668a8325-15566280.js?ver=4.13.10:1:22799",
+        "at window.MutationObserver.<anonymous> (<anonymous>:21:12)"
+      ]
+    },
+    {
+      "className": "ast-woocommerce-product-gallery__image flex-active-slide",
+      "stack": [
+        "at record (<anonymous>:7:19)",
+        "at HTMLDocument.<anonymous> (<anonymous>:13:4)",
+        "at http://127.0.0.1:8511/wp-content/uploads/astra-addon/astra-addon-6ac56b668a8325-15566280.js?ver=4.13.10:1:22799",
+        "at window.MutationObserver.<anonymous> (<anonymous>:21:12)"
+      ]
+    }
+  ],
+  "mutated_attributes": [
+    "childList",
+    "src",
+    "alt",
+    "data-large_image",
+    "data-large_image_width",
+    "data-large_image_height",
+    "class",
+    "draggable",
+    "style"
+  ],
+  "mutation_types": [
+    "childList",
+    "src",
+    "alt",
+    "data-large_image",
+    "data-large_image_width",
+    "data-large_image_height",
+    "class",
+    "draggable",
+    "style"
+  ],
+  "recorded_utc": "2026-10-06T21:45:51.783Z"
+}

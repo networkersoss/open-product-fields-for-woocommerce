@@ -1,0 +1,445 @@
+{
+  "engine": "wapf",
+  "versions": {
+    "wordpress": "7.1.3",
+    "woocommerce": "11.1.0",
+    "theme_astra": "4.13.11",
+    "astra_addon": "4.13.10",
+    "opf": "0.1.1",
+    "wapf": "3.1.5",
+    "php": "8.5.11"
+  },
+  "started_utc": "2026-10-06T21:43:27.933Z",
+  "base_url": "http://127.0.0.1:8511",
+  "checks": [
+    {
+      "label": "wapf/single: field group renders on the Astra product page",
+      "pass": true,
+      "detail": "fields=2 labels=[\"Finish\",\"Edge\"]"
+    },
+    {
+      "label": "wapf/single: priced choices carry their price hints",
+      "pass": true,
+      "detail": "[\"Choose an option\",\"None\",\"Gold (+$10.00)\",\"Silver (+$5.00)\"]"
+    },
+    {
+      "label": "wapf/single: totals block present",
+      "pass": true,
+      "detail": "Product total $0.00 Options total $0.00 Grand total $0.00"
+    },
+    {
+      "label": "wapf/single: image rule finish=gold swaps the main image to rule-a",
+      "pass": false,
+      "detail": "opf-astra-main.png"
+    },
+    {
+      "label": "wapf/single: image rule edge=xl swaps the main image to rule-b",
+      "pass": false,
+      "detail": "opf-astra-main.png"
+    },
+    {
+      "label": "wapf/single: clearing the rules restores the original image",
+      "pass": true,
+      "detail": "opf-astra-main.png"
+    },
+    {
+      "label": "wapf/single: selecting a +10.00 choice updates the options total",
+      "pass": true,
+      "detail": "options=$10.00"
+    },
+    {
+      "label": "wapf/single: grand total follows (100.00 base + 10.00)",
+      "pass": true,
+      "detail": "grand=$110.00"
+    },
+    {
+      "label": "wapf/single: add-to-cart from the product page carries the field value",
+      "pass": true,
+      "detail": "items=1 item_data=[{\"key\":\"Finish\",\"value\":\"Gold\",\"display\":\"Gold <span class=\\\"wapf-pricing-hint\\\">(+&#036;10.00)</span>\"},{\"key\":\"Edge\",\"value\":\"None\",\"display\":\"None\"}]"
+    },
+    {
+      "label": "wapf/modal: the Astra shop card exposes a quick-view trigger",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "label": "wapf/modal: quick-view modal opened with the product form",
+      "pass": true,
+      "detail": "fields=2"
+    },
+    {
+      "label": "wapf/modal: field group renders inside the modal",
+      "pass": true,
+      "detail": "fields=2 labels=[\"Finish\",\"Edge\"]"
+    },
+    {
+      "label": "wapf/modal: modal engine global present in the page",
+      "pass": true,
+      "detail": "wapf_config=object window.OPF_FIELDS=undefined window.WAPF=object"
+    },
+    {
+      "label": "wapf/modal: priced choice updates the modal totals",
+      "pass": true,
+      "detail": "options=$10.00 grand=$110.00"
+    },
+    {
+      "label": "wapf/modal: image rule swaps the modal image to rule-a",
+      "pass": true,
+      "detail": "opf-astra-rule-a.png"
+    },
+    {
+      "label": "wapf/modal: add-to-cart from the modal carries the field value",
+      "pass": true,
+      "detail": "items=1 item_data=[{\"key\":\"Finish\",\"value\":\"Gold\",\"display\":\"Gold <span class=\\\"wapf-pricing-hint\\\">(+&#036;10.00)</span>\"},{\"key\":\"Edge\",\"value\":\"None\",\"display\":\"None\"}]"
+    }
+  ],
+  "single": {
+    "initial": {
+      "present": true,
+      "fieldCount": 2,
+      "labels": [
+        "Finish",
+        "Edge"
+      ],
+      "choiceTexts": [
+        "Choose an option",
+        "None",
+        "Gold (+$10.00)",
+        "Silver (+$5.00)"
+      ],
+      "hasWrapper": true,
+      "hasGroup": true,
+      "hasFinish": true,
+      "hasEdge": true,
+      "startedFlag": null,
+      "totalsText": "Product total $0.00 Options total $0.00 Grand total $0.00",
+      "totalsVisible": false,
+      "optionsTotal": "$0.00",
+      "grandTotal": "$0.00",
+      "engineGlobal": "object",
+      "opfFieldsGlobal": "undefined",
+      "wapfClass": "object",
+      "images": {
+        "activeSlide": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png",
+        "postImage": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png",
+        "firstImg": "https://s.w.org/images/core/emoji/17.0.2/svg/1f50d.svg",
+        "visible": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png"
+      }
+    },
+    "baseline": {
+      "activeSlide": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png",
+      "postImage": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png",
+      "firstImg": "https://s.w.org/images/core/emoji/17.0.2/svg/1f50d.svg",
+      "visible": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png"
+    },
+    "ruleA": {
+      "activeSlide": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png",
+      "postImage": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png",
+      "firstImg": "https://s.w.org/images/core/emoji/17.0.2/svg/1f50d.svg",
+      "visible": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png"
+    },
+    "with_variation": {
+      "present": true,
+      "fieldCount": 2,
+      "labels": [
+        "Finish",
+        "Edge"
+      ],
+      "choiceTexts": [
+        "Choose an option",
+        "None",
+        "Gold (+$10.00)",
+        "Silver (+$5.00)"
+      ],
+      "hasWrapper": true,
+      "hasGroup": true,
+      "hasFinish": true,
+      "hasEdge": true,
+      "startedFlag": null,
+      "totalsText": "Product total $100.00 Options total $0.00 Grand total $100.00",
+      "totalsVisible": true,
+      "optionsTotal": "$0.00",
+      "grandTotal": "$100.00",
+      "engineGlobal": "object",
+      "opfFieldsGlobal": "undefined",
+      "wapfClass": "object",
+      "images": {
+        "activeSlide": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png",
+        "postImage": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png",
+        "firstImg": "https://s.w.org/images/core/emoji/17.0.2/svg/1f50d.svg",
+        "visible": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png"
+      }
+    },
+    "priced": {
+      "present": true,
+      "fieldCount": 2,
+      "labels": [
+        "Finish",
+        "Edge"
+      ],
+      "choiceTexts": [
+        "Choose an option",
+        "None",
+        "Gold (+$10.00)",
+        "Silver (+$5.00)"
+      ],
+      "hasWrapper": true,
+      "hasGroup": true,
+      "hasFinish": true,
+      "hasEdge": true,
+      "startedFlag": null,
+      "totalsText": "Product total $100.00 Options total $10.00 Grand total $110.00",
+      "totalsVisible": true,
+      "optionsTotal": "$10.00",
+      "grandTotal": "$110.00",
+      "engineGlobal": "object",
+      "opfFieldsGlobal": "undefined",
+      "wapfClass": "object",
+      "images": {
+        "activeSlide": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png",
+        "postImage": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png",
+        "firstImg": "https://s.w.org/images/core/emoji/17.0.2/svg/1f50d.svg",
+        "visible": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png"
+      }
+    },
+    "cart": {
+      "itemCount": 1,
+      "domRows": 2,
+      "text": "Products in cart PRODUCT DETAILS TOTAL",
+      "html_has_gold": true,
+      "store_api": {
+        "ok": true,
+        "total": "11000",
+        "currency": "USD",
+        "items": [
+          {
+            "name": "WAPF Astra Compat Variable",
+            "quantity": 1,
+            "item_data": [
+              {
+                "key": "Finish",
+                "value": "Gold",
+                "display": "Gold <span class=\"wapf-pricing-hint\">(+&#036;10.00)</span>"
+              },
+              {
+                "key": "Edge",
+                "value": "None",
+                "display": "None"
+              }
+            ],
+            "variation": [
+              {
+                "attribute": "size",
+                "value": "small"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "console": [
+      {
+        "phase": "single",
+        "kind": "requestfailed",
+        "text": "net::ERR_ABORTED http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png",
+        "source": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png",
+        "attributed_to": "media"
+      },
+      {
+        "phase": "single",
+        "kind": "requestfailed",
+        "text": "net::ERR_ABORTED http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png",
+        "source": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png",
+        "attributed_to": "media"
+      }
+    ]
+  },
+  "modal": {
+    "opened": {
+      "present": true,
+      "fieldCount": 2,
+      "labels": [
+        "Finish",
+        "Edge"
+      ],
+      "choiceTexts": [
+        "Choose an option",
+        "None",
+        "Gold (+$10.00)",
+        "Silver (+$5.00)"
+      ],
+      "hasWrapper": true,
+      "hasGroup": true,
+      "hasFinish": true,
+      "hasEdge": true,
+      "startedFlag": null,
+      "totalsText": "Product total $0.00 Options total $0.00 Grand total $0.00",
+      "totalsVisible": false,
+      "optionsTotal": "$0.00",
+      "grandTotal": "$0.00",
+      "engineGlobal": "object",
+      "opfFieldsGlobal": "undefined",
+      "wapfClass": "object",
+      "images": {
+        "activeSlide": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png",
+        "postImage": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png",
+        "firstImg": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png",
+        "visible": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png"
+      }
+    },
+    "with_variation": {
+      "present": true,
+      "fieldCount": 2,
+      "labels": [
+        "Finish",
+        "Edge"
+      ],
+      "choiceTexts": [
+        "Choose an option",
+        "None",
+        "Gold (+$10.00)",
+        "Silver (+$5.00)"
+      ],
+      "hasWrapper": true,
+      "hasGroup": true,
+      "hasFinish": true,
+      "hasEdge": true,
+      "startedFlag": null,
+      "totalsText": "Product total $100.00 Options total $0.00 Grand total $100.00",
+      "totalsVisible": true,
+      "optionsTotal": "$0.00",
+      "grandTotal": "$100.00",
+      "engineGlobal": "object",
+      "opfFieldsGlobal": "undefined",
+      "wapfClass": "object",
+      "images": {
+        "activeSlide": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-v-small.png",
+        "postImage": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-v-small.png",
+        "firstImg": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-v-small.png",
+        "visible": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-v-small.png"
+      }
+    },
+    "priced": {
+      "present": true,
+      "fieldCount": 2,
+      "labels": [
+        "Finish",
+        "Edge"
+      ],
+      "choiceTexts": [
+        "Choose an option",
+        "None",
+        "Gold (+$10.00)",
+        "Silver (+$5.00)"
+      ],
+      "hasWrapper": true,
+      "hasGroup": true,
+      "hasFinish": true,
+      "hasEdge": true,
+      "startedFlag": null,
+      "totalsText": "Product total $100.00 Options total $10.00 Grand total $110.00",
+      "totalsVisible": true,
+      "optionsTotal": "$10.00",
+      "grandTotal": "$110.00",
+      "engineGlobal": "object",
+      "opfFieldsGlobal": "undefined",
+      "wapfClass": "object",
+      "images": {
+        "activeSlide": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-rule-a.png",
+        "postImage": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-rule-a.png",
+        "firstImg": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-rule-a.png",
+        "visible": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-rule-a.png"
+      }
+    },
+    "ruleA": {
+      "activeSlide": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-rule-a.png",
+      "postImage": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-rule-a.png",
+      "firstImg": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-rule-a.png",
+      "visible": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-rule-a.png"
+    },
+    "image_after_idle_6s": {
+      "activeSlide": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-v-small.png",
+      "postImage": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-rule-a.png",
+      "firstImg": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-rule-a.png",
+      "visible": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-v-small.png"
+    },
+    "cart": {
+      "itemCount": 1,
+      "domRows": 2,
+      "text": "Products in cart PRODUCT DETAILS TOTAL",
+      "html_has_gold": true,
+      "store_api": {
+        "ok": true,
+        "total": "11000",
+        "currency": "USD",
+        "items": [
+          {
+            "name": "WAPF Astra Compat Variable",
+            "quantity": 1,
+            "item_data": [
+              {
+                "key": "Finish",
+                "value": "Gold",
+                "display": "Gold <span class=\"wapf-pricing-hint\">(+&#036;10.00)</span>"
+              },
+              {
+                "key": "Edge",
+                "value": "None",
+                "display": "None"
+              }
+            ],
+            "variation": [
+              {
+                "attribute": "size",
+                "value": "small"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "console": [
+      {
+        "phase": "modal",
+        "kind": "requestfailed",
+        "text": "net::ERR_ABORTED http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png",
+        "source": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png",
+        "attributed_to": "media"
+      }
+    ]
+  },
+  "quick_view_ajax": {
+    "status": 200,
+    "length": 20048,
+    "has_opf_markup": false,
+    "has_wapf_markup": true,
+    "has_inline_registry_script": false,
+    "has_script_tag": false,
+    "has_wapf_config": false,
+    "excerpt": "ss=\"woocommerce-variation single_variation\" role=\"alert\" aria-relevant=\"additions\"></div><div class=\"woocommerce-variation-add-to-cart variations_button\"> <div class=\"wapf\" id=\"wapf_100\"><div class=\"wapf-wrapper\"><div class=\"wapf-field-group label-above\" data-group=\"p_100\" data-variables=\"[]\" data-wapf-st=\"rules\" data-wapf-gi=\"{&quot;images&quot;:[{&quot;title&quot;:&quot;OPF Astra rulea&quot;,&quot;caption&quot;:&quot;&quot;,&quot;url&quot;:&quot;http:\\/\\/127.0.0.1:8511\\/wp-content\\/uploads\\/opf-astra-rule-a.png&quot;,&quot;alt&quot;:&quot;OPF Astra rulea&quot;,&quot;src&quot;:&quot;http:\\/\\/127.0.0.1:8511\\/wp-content\\/uploads\\/opf-astra-rule-a.png&quot;,&quot;srcset&quot;:&quot;http:\\/\\/127.0.0.1:8511\\/wp-content\\/uploads\\/opf-astra-rule-a.png 320w, http:\\/\\/127.0.0.1:8511\\/wp-content\\/uploads\\/opf-astra-rule-a-300x300.png 300w, http:\\/\\/127.0.0.1:8511\\/wp-content\\"
+  },
+  "finished_utc": "2026-10-06T21:44:05.895Z",
+  "console_attribution": [
+    {
+      "phase": "single",
+      "kind": "requestfailed",
+      "text": "net::ERR_ABORTED http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png",
+      "source": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png",
+      "attributed_to": "media"
+    },
+    {
+      "phase": "single",
+      "kind": "requestfailed",
+      "text": "net::ERR_ABORTED http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png",
+      "source": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png",
+      "attributed_to": "media"
+    },
+    {
+      "phase": "modal",
+      "kind": "requestfailed",
+      "text": "net::ERR_ABORTED http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png",
+      "source": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png",
+      "attributed_to": "media"
+    }
+  ]
+}

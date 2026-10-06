@@ -1,0 +1,15 @@
+# Static engine-asset evidence on the Astra clone (http://127.0.0.1:8511), 2026-10-06T21:45:07Z
+# Generated with curl + grep -o from the served HTML (see the evidence doc for the exact commands).
+# Counts are string occurrences in the served document.
+
+## engine active: opf
+  http://127.0.0.1:8511/shop/                   opf-frontend=0 OPF_FIELDS=0 wapf-frontend=0 wapf_config=0 ast_quick_view_loader_stop=0 ast-quick-view-trigger=4
+  http://127.0.0.1:8511/product/opf-astra-compat/ opf-frontend=4 OPF_FIELDS=1 wapf-frontend=0 wapf_config=0 ast_quick_view_loader_stop=0 ast-quick-view-trigger=3
+
+## engine active: wapf
+  http://127.0.0.1:8511/shop/                   opf-frontend=0 OPF_FIELDS=0 wapf-frontend=4 wapf_config=1 ast_quick_view_loader_stop=1 ast-quick-view-trigger=4
+  http://127.0.0.1:8511/product/wapf-astra-compat/ opf-frontend=0 OPF_FIELDS=0 wapf-frontend=4 wapf_config=1 ast_quick_view_loader_stop=1 ast-quick-view-trigger=3
+
+## adapter listener sources in the served shop document
+  advanced-product-fields-for-woocommerce-extended/includes/classes/integrations/class-astra.php:
+jQuery(document).on('ast_quick_view_loader_stop', function(){ new WAPF.Frontend(jQuery('#ast-quick-view-modal .product')); });

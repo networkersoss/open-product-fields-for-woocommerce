@@ -1,0 +1,101 @@
+{
+    "utc": "2026-10-06T21:42:50+00:00",
+    "base_url": "http://127.0.0.1:8511",
+    "shop_url": "http://127.0.0.1:8511/shop/",
+    "store_api": {
+        "cart": "http://127.0.0.1:8511/wp-json/wc/store/v1/cart"
+    },
+    "astra_options": {
+        "shop-style": "shop-page-modern-style",
+        "shop-quick-view-enable": "on-image",
+        "single-product-gallery-layout": "horizontal-slider",
+        "enabled_addons": {
+            "woocommerce": "woocommerce",
+            "all": "all"
+        }
+    },
+    "versions": {
+        "wordpress": "7.1.3",
+        "woocommerce": "11.1.0",
+        "theme_astra": "4.13.11",
+        "astra_addon": "4.13.10",
+        "opf": "0.1.1",
+        "wapf": "3.1.5",
+        "php": "8.5.11"
+    },
+    "images": {
+        "main": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png",
+        "vsmall": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-v-small.png",
+        "vlarge": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-v-large.png",
+        "rulea": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-rule-a.png",
+        "ruleb": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-rule-b.png"
+    },
+    "attachment_ids": {
+        "main": 91,
+        "vsmall": 92,
+        "vlarge": 93,
+        "rulea": 94,
+        "ruleb": 95
+    },
+    "options_before": {
+        "astra-settings": {
+            "astra-addon-auto-version": "4.13.10",
+            "is_astra_addon_queue_running": false,
+            "theme-auto-version": "4.13.11",
+            "is_theme_queue_running": false,
+            "shop-quick-view-enable": "on-image"
+        },
+        "_astra_ext_enabled_extensions": {
+            "woocommerce": "woocommerce",
+            "all": "all"
+        },
+        "opf_price_summary_mode": "three_line",
+        "wapf_pricing_summary": "lines",
+        "woocommerce_coming_soon": "no"
+    },
+    "products": {
+        "opf": {
+            "engine": "opf",
+            "product": 96,
+            "group": 99,
+            "url": "http://127.0.0.1:8511/product/opf-astra-compat/",
+            "variations": [
+                {
+                    "variation_id": 97,
+                    "size": "small",
+                    "image_url": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-v-small.png"
+                },
+                {
+                    "variation_id": 98,
+                    "size": "large",
+                    "image_url": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-v-large.png"
+                }
+            ]
+        },
+        "wapf": {
+            "engine": "wapf",
+            "product": 100,
+            "group": 0,
+            "url": "http://127.0.0.1:8511/product/wapf-astra-compat/",
+            "variations": [
+                {
+                    "variation_id": 101,
+                    "size": "small",
+                    "image_url": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-v-small.png"
+                },
+                {
+                    "variation_id": 102,
+                    "size": "large",
+                    "image_url": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-v-large.png"
+                }
+            ]
+        }
+    },
+    "product_ids": [
+        96,
+        100
+    ],
+    "group_ids": [
+        99
+    ]
+}
