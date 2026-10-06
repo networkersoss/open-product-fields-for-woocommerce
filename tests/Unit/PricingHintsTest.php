@@ -255,6 +255,7 @@ namespace OPF\Tests\Unit {
 	use OPF\Service\CartIntegration;
 	use OPF\Service\FieldGroups;
 	use OPF\Service\PricingHints;
+	use OPF\Service\Renderer;
 	use PHPUnit\Framework\Attributes\PreserveGlobalState;
 	use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 	use PHPUnit\Framework\TestCase;
@@ -650,6 +651,73 @@ namespace OPF\Tests\Unit {
 			$this->assertSame( 'Oak: 2', $rows['Prints']['value'] );
 			// choice_addon(fixed 2, per_unit) → per-unit contribution 2.00.
 			$this->assertSame( 'Oak: 2 <span class="opf-pricing-hint">(+&#36;2.00)</span>', $rows['Prints']['display'] );
+		}
+
+		/* ============ store product-price conversion: hint == charged line == */
+
+		/**
+		 * A currency plugin that converts product prices — the general Woo path
+		 * CURCY uses (`woocommerce_product_get_price` → `wmc_get_price()`), which
+		 * is also the path the converted cart line total takes.
+		 */
+		private function currency_plugin( float $rate ): void {
+			add_filter( 'woocommerce_product_get_price', static fn( $price ) => (float) $price * $rate, 10, 2 );
+		}
+
+		public function test_cart_hint_follows_the_store_product_price_conversion(): void {
+			$this->currency_plugin( 1.5 );
+			// Fixed and formula amounts convert with the line the customer pays.
+			$this->assertSame( '(+&#36;3.00)', PricingHints::format( 'fixed', 2.0, $this->product(), 'cart' ) );
+			$this->assertSame( '(+&#36;63.00)', PricingHints::format( 'formula', 42.0, $this->product(), 'cart' ) );
+			// Percent amounts never convert (WAPF adjust_addon_price early return).
+			$this->assertSame( '(+&#36;1.00)', PricingHints::format( 'percent', 1.0, $this->product(), 'cart' ) );
+		}
+
+		public function test_no_currency_plugin_leaves_the_hint_byte_identical(): void {
+			// No listener rewrites the product price: the hint keeps today's value.
+			$this->assertSame( '(+&#36;2.00)', PricingHints::format( 'fixed', 2.0, $this->product(), 'cart' ) );
+			$this->assertSame( '(+&#36;42.00)', PricingHints::format( 'formula', 42.0, $this->product(), 'cart' ) );
+			$this->assertSame( '(+&#36;1.00)', PricingHints::format( 'percent', 1.0, $this->product(), 'cart' ) );
+		}
+
+		public function test_amount_adapter_conversion_is_not_repeated_by_the_store_path(): void {
+			// WOOCS/Aelia convert on `wapf/html/pricing_hint/amount`; the store
+			// price filter is present too. The amount must convert exactly once.
+			$this->currency_plugin( 1.5 );
+			add_filter( 'opf_pricing_hint_amount', static fn( $amount ) => (float) $amount * 1.5, 10, 4 );
+			$this->assertSame( '(+&#36;3.00)', PricingHints::format( 'fixed', 2.0, $this->product(), 'cart' ) );
+		}
+
+		public function test_cart_display_and_order_meta_carry_the_converted_hint(): void {
+			$this->currency_plugin( 1.5 );
+			$this->group( [
+				[ 'id' => 'material', 'label' => 'Material', 'type' => 'select', 'choices' => [
+					[ 'slug' => 'gold', 'label' => 'Gold', 'pricing' => [ 'type' => 'fixed', 'amount' => 2 ] ],
+				] ],
+			] );
+
+			$cart_item = $this->cart_item( [ '77' => [ 'material' => 'gold' ] ] );
+			$rows      = $this->item_display( CartIntegration::display_item_data( [], $cart_item ) );
+			$this->assertSame(
+				'Gold <span class="opf-pricing-hint">(+&#36;3.00)</span>',
+				$rows['Material']['display'],
+				'The displayed cart hint is the converted amount the line charges.'
+			);
+
+			// WAPF stores the converted `pricing_hint` it computed for the cart,
+			// so the persisted order meta carries the converted value too.
+			$order_item = new \WC_Order_Item_Product( $this->product(), 1 );
+			CartIntegration::persist_order_item( $order_item, 'line1', $cart_item, new \WC_Order() );
+			$this->assertSame( 'Gold (+&#36;3.00)', $order_item->meta['Material'] );
+			$this->assertStringContainsString( '"pricing_hint":"(+&#36;3.00)"', $order_item->meta['_opf_fields_snapshot'] );
+		}
+
+		public function test_storefront_hint_uses_the_same_conversion(): void {
+			$this->currency_plugin( 1.5 );
+			$this->assertSame(
+				' <span class="opf-pricing-hint">+ &#36;3.00</span>',
+				Renderer::pricing_hint_html( [ 'type' => 'fixed', 'amount' => 2 ], 10.0, $this->product() )
+			);
 		}
 	}
 }

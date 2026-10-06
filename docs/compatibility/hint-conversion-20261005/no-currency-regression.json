@@ -1,0 +1,173 @@
+{
+  "curcy": "inactive",
+  "currency": "USD",
+  "rows": [
+    {
+      "case": "fixed",
+      "cart_field_display": {
+        "before": "fee: a (+$2.00) engrave: Monogram (+$2.00)",
+        "after": "fee: a (+$2.00) engrave: Monogram (+$2.00)"
+      },
+      "checkout_field_display": {
+        "before": "fee: a (+$2.00) engrave: Monogram (+$2.00)",
+        "after": "fee: a (+$2.00) engrave: Monogram (+$2.00)"
+      },
+      "order_visible_meta": {
+        "before": [
+          "a (+&#36;2.00)",
+          "Monogram (+&#36;2.00)"
+        ],
+        "after": [
+          "a (+&#36;2.00)",
+          "Monogram (+&#36;2.00)"
+        ]
+      },
+      "storefront_spans": {
+        "before": [
+          "+ $2.00",
+          "+ $2.00",
+          "(+ &#36;2)"
+        ],
+        "after": [
+          "+ $2.00",
+          "+ $2.00",
+          "(+ &#36;2)"
+        ]
+      },
+      "cart_item_data": {
+        "before": [
+          "a <span class=\"opf-pricing-hint\">(+&#036;2.00)</span>",
+          "Monogram <span class=\"opf-pricing-hint\">(+&#036;2.00)</span>"
+        ],
+        "after": [
+          "a <span class=\"opf-pricing-hint\">(+&#036;2.00)</span>",
+          "Monogram <span class=\"opf-pricing-hint\">(+&#036;2.00)</span>"
+        ]
+      },
+      "byte_identical": true
+    },
+    {
+      "case": "percent",
+      "cart_field_display": {
+        "before": "fee: a (+$1.00)",
+        "after": "fee: a (+$1.00)"
+      },
+      "checkout_field_display": {
+        "before": "fee: a (+$1.00)",
+        "after": "fee: a (+$1.00)"
+      },
+      "order_visible_meta": {
+        "before": [
+          "a (+&#36;1.00)"
+        ],
+        "after": [
+          "a (+&#36;1.00)"
+        ]
+      },
+      "storefront_spans": {
+        "before": [
+          "+ $1.00"
+        ],
+        "after": [
+          "+ $1.00"
+        ]
+      },
+      "cart_item_data": {
+        "before": [
+          "a <span class=\"opf-pricing-hint\">(+&#036;1.00)</span>"
+        ],
+        "after": [
+          "a <span class=\"opf-pricing-hint\">(+&#036;1.00)</span>"
+        ]
+      },
+      "byte_identical": true
+    },
+    {
+      "case": "minmax",
+      "cart_field_display": {
+        "before": "x: 5 fee: a (+$5.00)",
+        "after": "x: 5 fee: a (+$5.00)"
+      },
+      "checkout_field_display": {
+        "before": "x: 5 fee: a (+$5.00)",
+        "after": "x: 5 fee: a (+$5.00)"
+      },
+      "order_visible_meta": {
+        "before": [
+          "5",
+          "a (+&#36;5.00)"
+        ],
+        "after": [
+          "5",
+          "a (+&#36;5.00)"
+        ]
+      },
+      "storefront_spans": {
+        "before": [],
+        "after": []
+      },
+      "cart_item_data": {
+        "before": [
+          "",
+          "a <span class=\"opf-pricing-hint\">(+&#036;5.00)</span>"
+        ],
+        "after": [
+          "",
+          "a <span class=\"opf-pricing-hint\">(+&#036;5.00)</span>"
+        ]
+      },
+      "byte_identical": true
+    },
+    {
+      "case": "date",
+      "cart_field_display": {
+        "before": "d: 10-03-2026 fee: a (+$42.00)",
+        "after": "d: 10-03-2026 fee: a (+$42.00)"
+      },
+      "checkout_field_display": {
+        "before": "d: 10-03-2026 fee: a (+$42.00)",
+        "after": "d: 10-03-2026 fee: a (+$42.00)"
+      },
+      "order_visible_meta": {
+        "before": [
+          "10-03-2026",
+          "a (+&#36;42.00)"
+        ],
+        "after": [
+          "10-03-2026",
+          "a (+&#36;42.00)"
+        ]
+      },
+      "storefront_spans": {
+        "before": [],
+        "after": []
+      },
+      "cart_item_data": {
+        "before": [
+          "",
+          "a <span class=\"opf-pricing-hint\">(+&#036;42.00)</span>"
+        ],
+        "after": [
+          "",
+          "a <span class=\"opf-pricing-hint\">(+&#036;42.00)</span>"
+        ]
+      },
+      "byte_identical": true
+    }
+  ],
+  "identical": true,
+  "order_totals": {
+    "before": {
+      "currency": "USD",
+      "subtotal": 92,
+      "total": "92.00",
+      "payment_method": "cod"
+    },
+    "after": {
+      "currency": "USD",
+      "subtotal": 92,
+      "total": "92.00",
+      "payment_method": "cod"
+    }
+  }
+}

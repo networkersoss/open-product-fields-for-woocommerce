@@ -1,0 +1,48 @@
+{
+    "owned": [
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+    ],
+    "remaining_products": 0,
+    "restored_options": [
+        "active_plugins",
+        "opf_admin_only",
+        "opf_show_totals",
+        "opf_show_price_hints",
+        "opf_hint_format",
+        "woocommerce_calc_taxes",
+        "woocommerce_enable_guest_checkout",
+        "woocommerce_default_country",
+        "woocommerce_currency",
+        "woocommerce_cod_settings",
+        "woocommerce_cheque_settings",
+        "woocommerce_prices_include_tax",
+        "woocommerce_tax_display_cart",
+        "woocommerce_tax_display_shop",
+        "wapf_datepicker",
+        "wapf_show_pricing_hints",
+        "wapf_hint_format",
+        "woo_multi_currency_params",
+        "woocommerce_currency_pos",
+        "woocommerce_coming_soon",
+        "woocommerce_store_pages_only",
+        "permalink_structure"
+    ],
+    "restored_pages": [
+        7,
+        8
+    ],
+    "curcy_removed": true,
+    "remaining_wc_orders": 0,
+    "active_plugins": {
+        "0": "advanced-product-fields-for-woocommerce-extended/advanced-product-fields-for-woocommerce-extended.php",
+        "1": "open-product-fields-for-woocommerce/open-product-fields-for-woocommerce.php",
+        "3": "woocommerce/woocommerce.php"
+    }
+}

@@ -22,6 +22,11 @@
  *  - `wapf/pricing/price_with_tax`    → `opf_pricing_price_with_tax`
  *  - `wapf/pricing/addon`             → `opf_pricing_addon`
  *
+ * `adjust_addon_price` additionally routes the amount through the store's own
+ * product-price conversion (`convert_via_product_price`) so a currency plugin
+ * that converts the cart line also converts the displayed hint, exactly where
+ * CURCY hangs WAPF's conversion off `wapf/pricing/addon`.
+ *
  * The storefront (product page) hint lives in Renderer::pricing_hint_html —
  * this service only covers the cart/order surface.
  *
@@ -76,17 +81,23 @@ final class PricingHints {
 		$format = function_exists( 'apply_filters' )
 			? (string) apply_filters( 'opf_pricing_hint_format', self::hint_format(), $product, $amount, $type )
 			: self::hint_format();
-		$amount  = function_exists( 'apply_filters' )
+		$raw_amount = $amount;
+		$amount     = function_exists( 'apply_filters' )
 			? apply_filters( 'opf_pricing_hint_amount', $amount, $product, $type, $for_page )
 			: $amount;
-		$ar_sign = empty( $amount ) ? '+' : ( $amount < 0 ? '' : '+' );
+		// A listener that rewrote the amount on `wapf/html/pricing_hint/amount`
+		// already converted it (WOOCS/Aelia do — see convert_via_product_price).
+		$converted = is_numeric( $raw_amount ) && is_numeric( $amount )
+			? (float) $amount !== (float) $raw_amount
+			: $amount !== $raw_amount;
+		$ar_sign   = empty( $amount ) ? '+' : ( $amount < 0 ? '' : '+' );
 
 		if ( 'shop' === $for_page && 'percent' === $type ) {
 			$hint = str_replace( [ '{x}', '+' ], [ ( empty( $amount ) ? 0 : $amount ) . '%', $ar_sign ], $format );
 			return self::filter_hint( $hint, $product, $amount, $type, $field, $option );
 		}
 
-		$price_output = self::format_price( self::adjust_addon_price( $product, empty( $amount ) ? 0 : $amount, $type, $for_page ) );
+		$price_output = self::format_price( self::adjust_addon_price( $product, empty( $amount ) ? 0 : $amount, $type, $for_page, true, $converted ) );
 
 		if ( 'formula' === $type ) {
 			$hint = str_replace( [ '{x}', '+' ], [ '' === $amount ? '...' : $price_output, $ar_sign ], $format );
@@ -143,12 +154,22 @@ final class PricingHints {
 	 *
 	 * @param \WC_Product|int|null $product       Product (or id).
 	 * @param float|int|string     $amount        Amount.
-	 * @param string               $type          OPF pricing type.
-	 * @param string               $for           'shop'|'cart'.
-	 * @param bool                 $maybe_add_tax Whether to tax-adjust.
+	 * OPF's `opf_pricing_addon` is the alias of WAPF's `wapf/pricing/addon`, and
+	 * that is where OPF then routes the amount through the store's own product
+	 * price conversion (`convert_via_product_price`) so the displayed hint
+	 * matches the converted cart line the customer is charged. Percent
+	 * amounts return before either stage, exactly like WAPF.
+	 *
+	 * @param \WC_Product|int|null $product           Product (or id).
+	 * @param float|int|string     $amount            Amount.
+	 * @param string               $type              OPF pricing type.
+	 * @param string               $for               'shop'|'cart'.
+	 * @param bool                 $maybe_add_tax     Whether to tax-adjust.
+	 * @param bool                 $already_converted Amount was converted on
+	 *                                                `opf_pricing_hint_amount`.
 	 * @return float|int|string
 	 */
-	public static function adjust_addon_price( $product, $amount, string $type, string $for = 'shop', bool $maybe_add_tax = true ) {
+	public static function adjust_addon_price( $product, $amount, string $type, string $for = 'shop', bool $maybe_add_tax = true, bool $already_converted = false ) {
 		if ( 0 === $amount || 0.0 === $amount ) {
 			return 0;
 		}
@@ -161,9 +182,54 @@ final class PricingHints {
 			$amount = self::maybe_add_tax( $product, $amount, $for );
 		}
 
-		return function_exists( 'apply_filters' )
+		$amount = function_exists( 'apply_filters' )
 			? apply_filters( 'opf_pricing_addon', $amount, $product, $type, $for )
 			: $amount;
+
+		return self::convert_via_product_price( $amount, $product, $already_converted );
+	}
+
+	/**
+	 * Convert a hint amount through the conversion WooCommerce applies to
+	 * product prices — the path the converted cart line total takes.
+	 *
+	 * WAPF 3.1.5's cart hint is converted by whichever currency integration
+	 * converts product prices: CURCY hooks `wapf/pricing/addon` — the filter
+	 * Helper::adjust_addon_price fires after tax (class-helper.php:451) — and
+	 * converts with `wmc_get_price()`
+	 * (plugins/advanced_product_fields_for_woocommerce_pro.php:31 and :122).
+	 * That is the same conversion the line total receives through
+	 * `woocommerce_product_get_price` (frontend/price.php:213 → :1515 →
+	 * `wmc_get_price()`, includes/functions.php:103). OPF has no such
+	 * integration, so the amount is run through that same product-price filter
+	 * here. With no currency plugin — or none that converts product prices —
+	 * no listener rewrites the value and the hint is byte-identical.
+	 *
+	 * WOOCS and Aelia are the exception: their WAPF integrations convert on
+	 * `wapf/html/pricing_hint/amount` (class-woocs.php:12,
+	 * class-aelia.php:16) — OPF's `opf_pricing_hint_amount`, applied before
+	 * tax. `$already_converted` marks that, so an adapter-converted amount is
+	 * never converted a second time.
+	 *
+	 * @param float|int|string     $amount            Post-`opf_pricing_addon` amount.
+	 * @param \WC_Product|int|null $product           Product whose price filter converts.
+	 * @param bool                 $already_converted Amount already converted upstream.
+	 * @return float|int|string
+	 */
+	public static function convert_via_product_price( $amount, $product, bool $already_converted = false ) {
+		if ( $already_converted || ! function_exists( 'apply_filters' ) ) {
+			return $amount;
+		}
+
+		if ( is_int( $product ) ) {
+			$product = function_exists( 'wc_get_product' ) ? wc_get_product( $product ) : $product;
+		}
+
+		if ( ! $product instanceof \WC_Product ) {
+			return $amount;
+		}
+
+		return apply_filters( 'woocommerce_product_get_price', $amount, $product );
 	}
 
 	/**

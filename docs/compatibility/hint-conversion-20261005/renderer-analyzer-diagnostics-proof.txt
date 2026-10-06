@@ -1,0 +1,70 @@
+Renderer.php analyzer diagnostics: pre-existing, not introduced by this lane
+generated: 2026-10-05T23:38:43Z
+
+sha256 edited   /tmp/opf-lane-hintconv/includes/Service/Renderer.php
+b181e53a003a0338041b1338d037083ac8706949336bf3f17c5209374505621d  /tmp/opf-lane-hintconv/includes/Service/Renderer.php
+sha256 pristine /tmp/opf-lane-formulaadv/includes/Service/Renderer.php
+0ea96d6a18c95a6309cc888268dac38d1f02db2521f8f024552840869176e070  /tmp/opf-lane-formulaadv/includes/Service/Renderer.php
+
+unified diff (pristine -> edited):
+--- /tmp/opf-lane-formulaadv/includes/Service/Renderer.php	2026-10-05 22:48:09.000000000 +0000
++++ /tmp/opf-lane-hintconv/includes/Service/Renderer.php	2026-10-05 23:32:49.166199903 +0000
+@@ -170,9 +170,18 @@
+ 		}
+ 		// WAPF `wapf/html/pricing_hint/amount` parity: currency converters can
+ 		// rewrite the raw amount before tax/display adjustment.
+-		$amount = function_exists( 'apply_filters' ) ? (float) apply_filters( 'opf_pricing_hint_amount', $amount, $product, $type, 'product' ) : $amount;
++		$raw_amount = $amount;
++		$amount     = function_exists( 'apply_filters' ) ? (float) apply_filters( 'opf_pricing_hint_amount', $amount, $product, $type, 'product' ) : $amount;
++		// A listener that rewrote the amount already converted it (WOOCS/Aelia
++		// convert on that filter); `convert_via_product_price` must not repeat it.
++		$converted = (float) $amount !== (float) $raw_amount;
+ 		if ( 'percent' !== $type ) {
+ 			$amount = self::hint_price_with_tax( $product, $amount );
++			// WAPF Helper::adjust_addon_price converts non-percent shop amounts
++			// through the same product-price path the cart line total takes
++			// (see PricingHints::convert_via_product_price); percent hints stay
++			// the raw percent-derived figure, exactly like WAPF.
++			$amount = (float) PricingHints::convert_via_product_price( $amount, $product, $converted );
+ 		}
+ 		$sign = $amount < 0 ? '-' : '+';
+ 		$price_html = function_exists( 'wc_price' ) ? wc_price( abs( $amount ) ) : esc_html( (string) abs( $amount ) );
+
+flagged constructs, located in BOTH files (line:content, byte-identical):
+--- WC_Tax::get_rates
+  pristine: 217:				$tax_rates  = \WC_Tax::get_rates( $product->get_tax_class() ); 
+  edited  : 226:				$tax_rates  = \WC_Tax::get_rates( $product->get_tax_class() ); 
+--- WC_Tax::calc_tax
+  pristine: 204:	 * the product (1 + summed WC_Tax::calc_tax on $1), 1 for non-taxable 218:				$taxes      = \WC_Tax::calc_tax( 1, $tax_rates ); 
+  edited  : 213:	 * the product (1 + summed WC_Tax::calc_tax on $1), 1 for non-taxable 227:				$taxes      = \WC_Tax::calc_tax( 1, $tax_rates ); 
+--- current_user_can
+  pristine: 241:		if ( current_user_can( 'manage_woocommerce' ) ) { 
+  edited  : 250:		if ( current_user_can( 'manage_woocommerce' ) ) { 
+--- OPF_E2E_TOKEN
+  pristine: 238:	 * Admins and E2E tooling (matching OPF_E2E_TOKEN) bypass the gate. 244:		$token = defined( 'OPF_E2E_TOKEN' ) ? (string) OPF_E2E_TOKEN : ''; 
+  edited  : 247:	 * Admins and E2E tooling (matching OPF_E2E_TOKEN) bypass the gate. 253:		$token = defined( 'OPF_E2E_TOKEN' ) ? (string) OPF_E2E_TOKEN : ''; 
+--- sanitize_html_class
+  pristine: 616:	 * sanitize_html_class() with a test-env fallback (the unit bootstrap does 620:		if ( function_exists( 'sanitize_html_class' ) ) { 
+  edited  : 625:	 * sanitize_html_class() with a test-env fallback (the unit bootstrap does 629:		if ( function_exists( 'sanitize_html_class' ) ) { 
+--- get_price_html
+  pristine: 941:				$price           = wp_strip_all_tags( $child->get_price_html() ); 971:			$price_html = $child->get_price_html(); 
+  edited  : 950:				$price           = wp_strip_all_tags( $child->get_price_html() ); 980:			$price_html = $child->get_price_html(); 
+--- get_image( 'woocommerce_thumbnail'
+  pristine: 966:				$image_html = $child->get_image( 'woocommerce_thumbnail', [ 'class' => 'opf-child-product-image', 'alt' => $child_name ] ); 
+  edited  : 975:				$image_html = $child->get_image( 'woocommerce_thumbnail', [ 'class' => 'opf-child-product-image', 'alt' => $child_name ] ); 
+
+php -l edited:
+No syntax errors detected in /tmp/opf-lane-hintconv/includes/Service/Renderer.php
+
+=== the project ships WordPress/WooCommerce stubs for exactly this resolution:
+woocommerce-stubs
+wordpress-stubs
+
+wordpress-stubs present: yes
+woocommerce-stubs present: yes
+class WC_Tax                 declared in woocommerce-stubs: yes
+function get_price_html      declared in woocommerce-stubs: yes
+function get_image           declared in woocommerce-stubs: yes
+function wc_get_product      declared in woocommerce-stubs: yes
+function current_user_can    declared in wordpress-stubs:   yes
+function sanitize_html_class declared in wordpress-stubs:   yes

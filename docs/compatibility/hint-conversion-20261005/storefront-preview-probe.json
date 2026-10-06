@@ -1,0 +1,210 @@
+{
+  "opf": {
+    "currency": "EUR",
+    "cases": {
+      "fixed": {
+        "pills": [
+          {
+            "cls": "opf-pricing-hint",
+            "text": "+ €3.00",
+            "hidden": false,
+            "data": {}
+          },
+          {
+            "cls": "opf-pricing-hint",
+            "text": "+ €3.00",
+            "hidden": false,
+            "data": {}
+          },
+          {
+            "cls": "opf-choice__hint opf-pricing-hint",
+            "text": "(+ &euro;2)",
+            "hidden": false,
+            "data": {
+              "opfFieldHint": "1"
+            }
+          }
+        ],
+        "placeholders": [
+          {
+            "cls": "opf-choice__hint",
+            "text": "(+ &euro;2)",
+            "hidden": false,
+            "data": {
+              "opfChoiceHint": "a"
+            }
+          },
+          {
+            "cls": "opf-choice__hint opf-pricing-hint",
+            "text": "(+ &euro;2)",
+            "hidden": false,
+            "data": {
+              "opfFieldHint": "1"
+            }
+          }
+        ],
+        "price_data": [
+          {
+            "tag": "INPUT",
+            "id": "opf-14-fee-a",
+            "price": "2",
+            "fx": ""
+          },
+          {
+            "tag": "INPUT",
+            "id": "opf-14-engrave",
+            "price": "2",
+            "fx": ""
+          }
+        ],
+        "totals": "Product total €15.00Options total €2.00Grand total €17.00",
+        "totals_price_attr": "15"
+      },
+      "percent": {
+        "pills": [
+          {
+            "cls": "opf-pricing-hint",
+            "text": "+ €1.00",
+            "hidden": false,
+            "data": {}
+          }
+        ],
+        "placeholders": [
+          {
+            "cls": "opf-choice__hint",
+            "text": "(+ &euro;1.5)",
+            "hidden": false,
+            "data": {
+              "opfChoiceHint": "a"
+            }
+          }
+        ],
+        "price_data": [
+          {
+            "tag": "INPUT",
+            "id": "opf-16-fee-a",
+            "price": "10",
+            "fx": ""
+          }
+        ],
+        "totals": "Product total €15.00Options total €1.50Grand total €16.50",
+        "totals_price_attr": "15"
+      },
+      "minmax": {
+        "pills": [],
+        "placeholders": [],
+        "price_data": [
+          {
+            "tag": "OPTION",
+            "id": "",
+            "price": "(max(3;min([field.x];7))*[qty])",
+            "fx": ""
+          }
+        ],
+        "totals": "Product total €15.00Options total €3.00Grand total €18.00",
+        "totals_price_attr": "15"
+      },
+      "date": {
+        "pills": [],
+        "placeholders": [],
+        "price_data": [
+          {
+            "tag": "OPTION",
+            "id": "",
+            "price": "(dow([field.d])*7*[qty])",
+            "fx": ""
+          }
+        ],
+        "totals": "Product total €15.00Options total €0.00Grand total €15.00",
+        "totals_price_attr": "15"
+      }
+    }
+  },
+  "wapf": {
+    "currency": "EUR",
+    "cases": {
+      "fixed": {
+        "pills": [
+          {
+            "cls": "wapf-pricing-hint",
+            "text": "(+€3.00)",
+            "hidden": false,
+            "data": {}
+          },
+          {
+            "cls": "wapf-pricing-hint",
+            "text": "(+€3.00)",
+            "hidden": false,
+            "data": {}
+          }
+        ],
+        "placeholders": [],
+        "price_data": [
+          {
+            "tag": "INPUT",
+            "id": "wapf-13-fee-a",
+            "price": "2",
+            "fx": ""
+          },
+          {
+            "tag": "INPUT",
+            "id": "wapf-13-engrave",
+            "price": "2",
+            "fx": ""
+          }
+        ],
+        "totals": "Product total €15.00 Options total €2.00 Grand total €17.00",
+        "totals_price_attr": "15"
+      },
+      "percent": {
+        "pills": [
+          {
+            "cls": "wapf-pricing-hint",
+            "text": "(+10%)",
+            "hidden": false,
+            "data": {}
+          }
+        ],
+        "placeholders": [],
+        "price_data": [
+          {
+            "tag": "INPUT",
+            "id": "wapf-15-fee-a",
+            "price": "10",
+            "fx": ""
+          }
+        ],
+        "totals": "Product total €15.00 Options total €1.50 Grand total €16.50",
+        "totals_price_attr": "15"
+      },
+      "minmax": {
+        "pills": [],
+        "placeholders": [],
+        "price_data": [
+          {
+            "tag": "OPTION",
+            "id": "",
+            "price": "(max(3;min([field.x];7))*[qty])",
+            "fx": "(+...)"
+          }
+        ],
+        "totals": "Product total €15.00 Options total €3.00 Grand total €18.00",
+        "totals_price_attr": "15"
+      },
+      "date": {
+        "pills": [],
+        "placeholders": [],
+        "price_data": [
+          {
+            "tag": "OPTION",
+            "id": "",
+            "price": "(dow([field.d])*7*[qty])",
+            "fx": "(+...)"
+          }
+        ],
+        "totals": "Product total €15.00 Options total €0.00 Grand total €15.00",
+        "totals_price_attr": "15"
+      }
+    }
+  }
+}

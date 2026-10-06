@@ -1,0 +1,771 @@
+{
+  "utc": "2026-10-05T23:50:03.043Z",
+  "clone": {
+    "base": "http://127.0.0.1:8292",
+    "clone": "/tmp/opf-lane-hintconv-wp/",
+    "database": "/tmp/opf-lane-hintconv-wp/wp-content/database/.ht.sqlite",
+    "wordpress": "7.1.2",
+    "woocommerce": "11.1.0",
+    "php": "8.5.11",
+    "extended": "3.1.5",
+    "curcy": "2.4.3",
+    "opf": "0.1.0",
+    "eur_rate": 1.5,
+    "taxes": "off"
+  },
+  "legs": {
+    "opf": {
+      "leg": "opf",
+      "provider": "opf",
+      "curcy": true,
+      "currency": "EUR",
+      "cases": {
+        "fixed": {
+          "product": 13,
+          "group": 14,
+          "http_status": 200,
+          "kind": "fixed choice + fixed scalar",
+          "addon_base": 4,
+          "unit_eur": 21,
+          "storefront_hints": {
+            "scope": "form.cart",
+            "spans": [
+              "+ €3.30",
+              "+ €3.30",
+              "(+ &euro;2)"
+            ],
+            "options": [],
+            "rows": [],
+            "items": []
+          },
+          "preview_totals": "Product total €16.50 Options total €4.40 Grand total €20.90",
+          "cart_line": {
+            "quantity": 1,
+            "unit_price": "2310",
+            "unit_currency": "EUR",
+            "line_total": "2100",
+            "item_data": [
+              {
+                "display": "a <span class=\"opf-pricing-hint\">(+&euro;3.30)</span>"
+              },
+              {
+                "display": "Monogram <span class=\"opf-pricing-hint\">(+&euro;3.30)</span>"
+              }
+            ]
+          },
+          "cart_unit_ok": false
+        },
+        "percent": {
+          "product": 15,
+          "group": 16,
+          "http_status": 200,
+          "kind": "percent choice",
+          "addon_base": 1,
+          "unit_eur": 16.5,
+          "storefront_hints": {
+            "scope": "form.cart",
+            "spans": [
+              "+ €1.00"
+            ],
+            "options": [],
+            "rows": [],
+            "items": []
+          },
+          "preview_totals": "Product total €16.50 Options total €1.65 Grand total €18.15",
+          "cart_line": {
+            "quantity": 1,
+            "unit_price": "1815",
+            "unit_currency": "EUR",
+            "line_total": "1650",
+            "item_data": [
+              {
+                "display": "a <span class=\"opf-pricing-hint\">(+&euro;1.00)</span>"
+              }
+            ]
+          },
+          "cart_unit_ok": false
+        },
+        "minmax": {
+          "product": 17,
+          "group": 18,
+          "http_status": 200,
+          "kind": "formula min/max choice",
+          "addon_base": 5,
+          "unit_eur": 22.5,
+          "storefront_hints": {
+            "scope": "form.cart",
+            "spans": [],
+            "options": [
+              "a (+ &euro;3)"
+            ],
+            "rows": [],
+            "items": []
+          },
+          "preview_totals": "Product total €16.50 Options total €5.50 Grand total €22.00",
+          "cart_line": {
+            "quantity": 1,
+            "unit_price": "2475",
+            "unit_currency": "EUR",
+            "line_total": "2250",
+            "item_data": [
+              {
+                "display": ""
+              },
+              {
+                "display": "a <span class=\"opf-pricing-hint\">(+&euro;8.25)</span>"
+              }
+            ]
+          },
+          "cart_unit_ok": false
+        },
+        "date": {
+          "product": 19,
+          "group": 20,
+          "http_status": 200,
+          "kind": "formula date choice",
+          "addon_base": 42,
+          "unit_eur": 78,
+          "storefront_hints": {
+            "scope": "form.cart",
+            "spans": [],
+            "options": [],
+            "rows": [],
+            "items": []
+          },
+          "preview_totals": "Product total €16.50 Options total €46.20 Grand total €62.70",
+          "cart_line": {
+            "quantity": 1,
+            "unit_price": "8580",
+            "unit_currency": "EUR",
+            "line_total": "7800",
+            "item_data": [
+              {
+                "display": ""
+              },
+              {
+                "display": "a <span class=\"opf-pricing-hint\">(+&euro;69.30)</span>"
+              }
+            ]
+          },
+          "cart_unit_ok": false
+        }
+      },
+      "pageErrors": [],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "cookie": [
+        {
+          "name": "wmc_current_currency",
+          "value": "EUR"
+        },
+        {
+          "name": "wmc_current_currency_old",
+          "value": "EUR"
+        }
+      ],
+      "logged_in": true,
+      "cart_totals": {
+        "currency": "EUR",
+        "total": "15180",
+        "tax": "1380"
+      },
+      "cart_page": {
+        "scope": ".woocommerce-cart-form",
+        "spans": [
+          "(+€3.30)",
+          "(+€3.30)",
+          "(+€1.00)",
+          "(+€8.25)",
+          "(+€69.30)"
+        ],
+        "options": [],
+        "rows": [
+          "fee: a (+€3.30) engrave: Monogram (+€3.30)",
+          "fee: a (+€1.00)",
+          "x: 5 fee: a (+€8.25)",
+          "d: 10-03-2026 fee: a (+€69.30)"
+        ],
+        "items": [
+          "Remove item Thumbnail image Product Price Quantity Subtotal",
+          "× Disposable HintConv fixed fee: a (+€3.30) engrave: Monogram (+€3.30) €23.10 Disposable HintConv fixed quantity €23.10 (incl. tax)",
+          "× Disposable HintConv percent fee: a (+€1.00) €18.15 Disposable HintConv percent quantity €18.15 (incl. tax)",
+          "× Disposable HintConv minmax x: 5 fee: a (+€8.25) €24.75 Disposable HintConv minmax quantity €24.75 (incl. tax)",
+          "× Disposable HintConv date d: 10-03-2026 fee: a (+€69.30) €85.80 Disposable HintConv date quantity €85.80 (incl. tax)",
+          "Coupon: Apply coupon Update cart"
+        ]
+      },
+      "cart_page_url": "http://127.0.0.1:8292/cart/",
+      "checkout_page": {
+        "scope": "#order_review",
+        "spans": [
+          "(+€3.30)",
+          "(+€3.30)",
+          "(+€1.00)",
+          "(+€8.25)",
+          "(+€69.30)"
+        ],
+        "options": [],
+        "rows": [
+          "fee: a (+€3.30) engrave: Monogram (+€3.30)",
+          "fee: a (+€1.00)",
+          "x: 5 fee: a (+€8.25)",
+          "d: 10-03-2026 fee: a (+€69.30)"
+        ],
+        "items": [
+          "Product Subtotal",
+          "Disposable HintConv fixed × 1 fee: a (+€3.30) engrave: Monogram (+€3.30) €23.10 (incl. tax)",
+          "Disposable HintConv percent × 1 fee: a (+€1.00) €18.15 (incl. tax)",
+          "Disposable HintConv minmax × 1 x: 5 fee: a (+€8.25) €24.75 (incl. tax)",
+          "Disposable HintConv date × 1 d: 10-03-2026 fee: a (+€69.30) €85.80 (incl. tax)",
+          "Subtotal €151.80 (incl. tax)",
+          "Total €151.80 (includes €13.80 VAT 10)"
+        ]
+      },
+      "checkout_rendered": "Product\tSubtotal\nDisposable HintConv fixed  × 1\nfee:\n\na (+€3.30)\n\nengrave:\n\nMonogram (+€3.30)\n\n\t€23.10 (incl. tax)\nDisposable HintConv percent  × 1\nfee:\n\na (+€1.00)\n\n\t€18.15 (incl. tax)\nDisposable HintConv minmax  × 1\nx:\n\n5\n\nfee:\n\na (+€8.25)\n\n\t€24.75 (incl. tax)\nDisposable HintConv date  × 1\nd:\n\n10-03-2026\n\nfee:\n\na (+€69.30)\n\n\t€85.80 (incl. tax)\nSubtotal\t€151.80 (incl. tax)\nTotal\t€151.80 (includes €13.80 VAT 10)\n Cheque (proof)\n\nPlease send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.\n\n Cash on delivery (proof)\n\nYour personal data will be used to proce",
+      "payment_method": "cod",
+      "checkout_result": "success",
+      "order_id": 33,
+      "order": {
+        "id": 33,
+        "currency": "EUR",
+        "subtotal": 138,
+        "total": "151.80",
+        "payment_method": "cod",
+        "lines": [
+          {
+            "product_id": 13,
+            "total": "21",
+            "total_tax": "2.1",
+            "meta": {
+              "fee": "a (+&euro;3.30)",
+              "engrave": "Monogram (+&euro;3.30)",
+              "_opf_fields": "{\"14\":{\"fee\":\"a\",\"engrave\":\"Monogram\"}}",
+              "_opf_cart_item_key": "e7e77b6e01e85b4e786e29fe856efc23",
+              "_opf_fields_snapshot": "[{\"group_id\":\"14\",\"id\":\"fee\",\"label\":\"fee\",\"value\":\"a\",\"type\":\"radio\",\"values\":[{\"label\":\"a\",\"slug\":\"a\",\"pricing_hint\":\"(+&euro;3.30)\"}]},{\"group_id\":\"14\",\"id\":\"engrave\",\"label\":\"engrave\",\"value\":\"Monogram\",\"type\":\"text\",\"values\":[{\"label\":\"Monogram\",\"slug\":\"\",\"pricing_hint\":\"(+&euro;3.30)\"}]}]"
+            }
+          },
+          {
+            "product_id": 15,
+            "total": "16.5",
+            "total_tax": "1.65",
+            "meta": {
+              "fee": "a (+&euro;1.00)",
+              "_opf_fields": "{\"16\":{\"fee\":\"a\"}}",
+              "_opf_cart_item_key": "8bd64cf0420e260da638cb07ff0dbdc2",
+              "_opf_fields_snapshot": "[{\"group_id\":\"16\",\"id\":\"fee\",\"label\":\"fee\",\"value\":\"a\",\"type\":\"radio\",\"values\":[{\"label\":\"a\",\"slug\":\"a\",\"pricing_hint\":\"(+&euro;1.00)\"}]}]"
+            }
+          },
+          {
+            "product_id": 17,
+            "total": "22.5",
+            "total_tax": "2.25",
+            "meta": {
+              "x": "5",
+              "fee": "a (+&euro;8.25)",
+              "_opf_fields": "{\"18\":{\"x\":\"5\",\"fee\":\"a\"}}",
+              "_opf_cart_item_key": "d1368f2ec623670d3e898b7c9e47750d",
+              "_opf_fields_snapshot": "[{\"group_id\":\"18\",\"id\":\"x\",\"label\":\"x\",\"value\":\"5\",\"type\":\"text\",\"values\":[{\"label\":\"5\",\"slug\":\"\",\"pricing_hint\":\"\"}]},{\"group_id\":\"18\",\"id\":\"fee\",\"label\":\"fee\",\"value\":\"a\",\"type\":\"select\",\"values\":[{\"label\":\"a\",\"slug\":\"a\",\"pricing_hint\":\"(+&euro;8.25)\"}]}]"
+            }
+          },
+          {
+            "product_id": 19,
+            "total": "78",
+            "total_tax": "7.8",
+            "meta": {
+              "d": "10-03-2026",
+              "fee": "a (+&euro;69.30)",
+              "_opf_fields": "{\"20\":{\"d\":\"2026-10-03\",\"fee\":\"a\"}}",
+              "_opf_cart_item_key": "d9a3b71d89f6e8f8b01bac358c646965",
+              "_opf_fields_snapshot": "[{\"group_id\":\"20\",\"id\":\"d\",\"label\":\"d\",\"value\":\"2026-10-03\",\"type\":\"date\",\"values\":[{\"label\":\"10-03-2026\",\"slug\":\"\",\"pricing_hint\":\"\"}]},{\"group_id\":\"20\",\"id\":\"fee\",\"label\":\"fee\",\"value\":\"a\",\"type\":\"select\",\"values\":[{\"label\":\"a\",\"slug\":\"a\",\"pricing_hint\":\"(+&euro;69.30)\"}]}]"
+            }
+          }
+        ]
+      },
+      "order_hints": {
+        "fixed": {
+          "visible_meta": [
+            "a (+&euro;3.30)",
+            "Monogram (+&euro;3.30)"
+          ],
+          "structured": "[{\"group_id\":\"14\",\"id\":\"fee\",\"label\":\"fee\",\"value\":\"a\",\"type\":\"radio\",\"values\":[{\"label\":\"a\",\"slug\":\"a\",\"pricing_hint\":\"(+&euro;3.30)\"}]},{\"group_id\":\"14\",\"id\":\"engrave\",\"label\":\"engrave\",\"value\":\"Monogram\",\"type\":\"text\",\"values\":[{\"label\":\"Monogram\",\"slug\":\"\",\"pricing_hint\":\"(+&euro;3.30)\"}]}]"
+        },
+        "percent": {
+          "visible_meta": [
+            "a (+&euro;1.00)"
+          ],
+          "structured": "[{\"group_id\":\"16\",\"id\":\"fee\",\"label\":\"fee\",\"value\":\"a\",\"type\":\"radio\",\"values\":[{\"label\":\"a\",\"slug\":\"a\",\"pricing_hint\":\"(+&euro;1.00)\"}]}]"
+        },
+        "minmax": {
+          "visible_meta": [
+            "5",
+            "a (+&euro;8.25)"
+          ],
+          "structured": "[{\"group_id\":\"18\",\"id\":\"x\",\"label\":\"x\",\"value\":\"5\",\"type\":\"text\",\"values\":[{\"label\":\"5\",\"slug\":\"\",\"pricing_hint\":\"\"}]},{\"group_id\":\"18\",\"id\":\"fee\",\"label\":\"fee\",\"value\":\"a\",\"type\":\"select\",\"values\":[{\"label\":\"a\",\"slug\":\"a\",\"pricing_hint\":\"(+&euro;8.25)\"}]}]"
+        },
+        "date": {
+          "visible_meta": [
+            "10-03-2026",
+            "a (+&euro;69.30)"
+          ],
+          "structured": "[{\"group_id\":\"20\",\"id\":\"d\",\"label\":\"d\",\"value\":\"2026-10-03\",\"type\":\"date\",\"values\":[{\"label\":\"10-03-2026\",\"slug\":\"\",\"pricing_hint\":\"\"}]},{\"group_id\":\"20\",\"id\":\"fee\",\"label\":\"fee\",\"value\":\"a\",\"type\":\"select\",\"values\":[{\"label\":\"a\",\"slug\":\"a\",\"pricing_hint\":\"(+&euro;69.30)\"}]}]"
+        }
+      },
+      "order_totals": {
+        "currency": "EUR",
+        "subtotal": 138,
+        "total": "151.80",
+        "payment_method": "cod"
+      },
+      "units_ok": true
+    },
+    "wapf": {
+      "leg": "wapf",
+      "provider": "wapf",
+      "curcy": true,
+      "currency": "EUR",
+      "cases": {
+        "fixed": {
+          "product": 13,
+          "group": 14,
+          "http_status": 200,
+          "kind": "fixed choice + fixed scalar",
+          "addon_base": 4,
+          "unit_eur": 21,
+          "storefront_hints": {
+            "scope": "form.cart",
+            "spans": [
+              "(+€3.30)",
+              "(+€3.30)"
+            ],
+            "options": [],
+            "rows": [],
+            "items": []
+          },
+          "preview_totals": "Product total €16.50 Options total €4.40 Grand total €20.90",
+          "cart_line": {
+            "quantity": 1,
+            "unit_price": "2310",
+            "unit_currency": "EUR",
+            "line_total": "2100",
+            "item_data": []
+          },
+          "cart_unit_ok": false
+        },
+        "percent": {
+          "product": 15,
+          "group": 16,
+          "http_status": 200,
+          "kind": "percent choice",
+          "addon_base": 1,
+          "unit_eur": 16.5,
+          "storefront_hints": {
+            "scope": "form.cart",
+            "spans": [
+              "(+10%)"
+            ],
+            "options": [],
+            "rows": [],
+            "items": []
+          },
+          "preview_totals": "Product total €16.50 Options total €1.65 Grand total €18.15",
+          "cart_line": {
+            "quantity": 1,
+            "unit_price": "1815",
+            "unit_currency": "EUR",
+            "line_total": "1650",
+            "item_data": []
+          },
+          "cart_unit_ok": false
+        },
+        "minmax": {
+          "product": 17,
+          "group": 18,
+          "http_status": 200,
+          "kind": "formula min/max choice",
+          "addon_base": 5,
+          "unit_eur": 22.5,
+          "storefront_hints": {
+            "scope": "form.cart",
+            "spans": [],
+            "options": [
+              "a (+€3.30)"
+            ],
+            "rows": [],
+            "items": []
+          },
+          "preview_totals": "Product total €16.50 Options total €5.50 Grand total €22.00",
+          "cart_line": {
+            "quantity": 1,
+            "unit_price": "2475",
+            "unit_currency": "EUR",
+            "line_total": "2250",
+            "item_data": []
+          },
+          "cart_unit_ok": false
+        },
+        "date": {
+          "product": 19,
+          "group": 20,
+          "http_status": 200,
+          "kind": "formula date choice",
+          "addon_base": 42,
+          "unit_eur": 78,
+          "storefront_hints": {
+            "scope": "form.cart",
+            "spans": [],
+            "options": [
+              "a (€0.00)"
+            ],
+            "rows": [],
+            "items": []
+          },
+          "preview_totals": "Product total €16.50 Options total €46.20 Grand total €62.70",
+          "cart_line": {
+            "quantity": 1,
+            "unit_price": "8580",
+            "unit_currency": "EUR",
+            "line_total": "7800",
+            "item_data": []
+          },
+          "cart_unit_ok": false
+        }
+      },
+      "pageErrors": [],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "cookie": [
+        {
+          "name": "wmc_current_currency",
+          "value": "EUR"
+        },
+        {
+          "name": "wmc_current_currency_old",
+          "value": "EUR"
+        }
+      ],
+      "logged_in": true,
+      "cart_totals": {
+        "currency": "EUR",
+        "total": "15180",
+        "tax": "1380"
+      },
+      "cart_page": {
+        "scope": ".woocommerce-cart-form",
+        "spans": [
+          "(+€3.30)",
+          "(+€3.30)",
+          "(+€1.00)",
+          "(+€8.25)",
+          "(+€69.30)"
+        ],
+        "options": [],
+        "rows": [
+          "fee: a (+€3.30) engrave: Monogram (+€3.30)",
+          "fee: a (+€1.00)",
+          "x: 5 fee: a (+€8.25)",
+          "d: 10-03-2026 fee: a (+€69.30)"
+        ],
+        "items": [
+          "Remove item Thumbnail image Product Price Quantity Subtotal",
+          "× Disposable HintConv fixed fee: a (+€3.30) engrave: Monogram (+€3.30) €23.10 Disposable HintConv fixed quantity €23.10 (incl. tax)",
+          "× Disposable HintConv percent fee: a (+€1.00) €18.15 Disposable HintConv percent quantity €18.15 (incl. tax)",
+          "× Disposable HintConv minmax x: 5 fee: a (+€8.25) €24.75 Disposable HintConv minmax quantity €24.75 (incl. tax)",
+          "× Disposable HintConv date d: 10-03-2026 fee: a (+€69.30) €85.80 Disposable HintConv date quantity €85.80 (incl. tax)",
+          "Coupon: Apply coupon Update cart"
+        ]
+      },
+      "cart_page_url": "http://127.0.0.1:8292/cart/",
+      "checkout_page": {
+        "scope": "#order_review",
+        "spans": [
+          "(+€3.30)",
+          "(+€3.30)",
+          "(+€1.00)",
+          "(+€8.25)",
+          "(+€69.30)"
+        ],
+        "options": [],
+        "rows": [
+          "fee: a (+€3.30) engrave: Monogram (+€3.30)",
+          "fee: a (+€1.00)",
+          "x: 5 fee: a (+€8.25)",
+          "d: 10-03-2026 fee: a (+€69.30)"
+        ],
+        "items": [
+          "Product Subtotal",
+          "Disposable HintConv fixed × 1 fee: a (+€3.30) engrave: Monogram (+€3.30) €23.10 (incl. tax)",
+          "Disposable HintConv percent × 1 fee: a (+€1.00) €18.15 (incl. tax)",
+          "Disposable HintConv minmax × 1 x: 5 fee: a (+€8.25) €24.75 (incl. tax)",
+          "Disposable HintConv date × 1 d: 10-03-2026 fee: a (+€69.30) €85.80 (incl. tax)",
+          "Subtotal €151.80 (incl. tax)",
+          "Total €151.80 (includes €13.80 VAT 10)"
+        ]
+      },
+      "checkout_rendered": "Product\tSubtotal\nDisposable HintConv fixed  × 1\nfee:\n\na (+€3.30)\n\nengrave:\n\nMonogram (+€3.30)\n\n\t€23.10 (incl. tax)\nDisposable HintConv percent  × 1\nfee:\n\na (+€1.00)\n\n\t€18.15 (incl. tax)\nDisposable HintConv minmax  × 1\nx:\n\n5\n\nfee:\n\na (+€8.25)\n\n\t€24.75 (incl. tax)\nDisposable HintConv date  × 1\nd:\n\n10-03-2026\n\nfee:\n\na (+€69.30)\n\n\t€85.80 (incl. tax)\nSubtotal\t€151.80 (incl. tax)\nTotal\t€151.80 (includes €13.80 VAT 10)\n Cheque (proof)\n\nPlease send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.\n\n Cash on delivery (proof)\n\nYour personal data will be used to proce",
+      "payment_method": "cheque",
+      "checkout_result": "success",
+      "order_id": 34,
+      "order": {
+        "id": 34,
+        "currency": "EUR",
+        "subtotal": 138,
+        "total": "151.80",
+        "payment_method": "cheque",
+        "lines": [
+          {
+            "product_id": 13,
+            "total": "21",
+            "total_tax": "2.1",
+            "meta": {
+              "fee": "a (+&euro;3.30)",
+              "engrave": "Monogram (+&euro;3.30)",
+              "_wapf_meta": {
+                "version": "3.1.5",
+                "fields": {
+                  "fee": {
+                    "id": "fee",
+                    "type": "radio",
+                    "label": "fee",
+                    "value": "a (+&euro;3.30)",
+                    "values": [
+                      {
+                        "label": "a",
+                        "price": 2,
+                        "price_type": "fixed",
+                        "slug": "a",
+                        "calc_price": 2,
+                        "pricing_hint": "(+&euro;3.30)"
+                      }
+                    ]
+                  },
+                  "engrave": {
+                    "id": "engrave",
+                    "type": "text",
+                    "label": "engrave",
+                    "value": "Monogram (+&euro;3.30)",
+                    "values": [
+                      {
+                        "label": "Monogram",
+                        "price": 2,
+                        "price_type": "fixed",
+                        "calc_price": 2,
+                        "pricing_hint": "(+&euro;3.30)"
+                      }
+                    ]
+                  }
+                },
+                "settings": {
+                  "fee": [
+                    {
+                      "field": "fee",
+                      "hide": false
+                    }
+                  ],
+                  "engrave": [
+                    {
+                      "field": "engrave",
+                      "hide": false
+                    }
+                  ]
+                },
+                "cart_item_key": "38773e99ab29185e824d44482f5fa97f"
+              }
+            }
+          },
+          {
+            "product_id": 15,
+            "total": "16.5",
+            "total_tax": "1.65",
+            "meta": {
+              "fee": "a (+&euro;1.00)",
+              "_wapf_meta": {
+                "version": "3.1.5",
+                "fields": {
+                  "fee": {
+                    "id": "fee",
+                    "type": "radio",
+                    "label": "fee",
+                    "value": "a (+&euro;1.00)",
+                    "values": [
+                      {
+                        "label": "a",
+                        "price": 10,
+                        "price_type": "p",
+                        "slug": "a",
+                        "calc_price": 1,
+                        "pricing_hint": "(+&euro;1.00)"
+                      }
+                    ]
+                  }
+                },
+                "settings": {
+                  "fee": [
+                    {
+                      "field": "fee",
+                      "hide": false
+                    }
+                  ]
+                },
+                "cart_item_key": "c5443de5f5957769e4055e54efe62363"
+              }
+            }
+          },
+          {
+            "product_id": 17,
+            "total": "22.5",
+            "total_tax": "2.25",
+            "meta": {
+              "x": "5",
+              "fee": "a (+&euro;8.25)",
+              "_wapf_meta": {
+                "version": "3.1.5",
+                "fields": {
+                  "x": {
+                    "id": "x",
+                    "type": "text",
+                    "label": "x",
+                    "value": "5",
+                    "values": [
+                      {
+                        "label": "5",
+                        "price": 0,
+                        "price_type": "none"
+                      }
+                    ]
+                  },
+                  "fee": {
+                    "id": "fee",
+                    "type": "select",
+                    "label": "fee",
+                    "value": "a (+&euro;8.25)",
+                    "values": [
+                      {
+                        "label": "a",
+                        "price": "(max(3;min([field.x];7))*[qty])",
+                        "price_type": "fx",
+                        "slug": "a",
+                        "calc_price": 5,
+                        "pricing_hint": "(+&euro;8.25)"
+                      }
+                    ]
+                  }
+                },
+                "settings": {
+                  "x": [
+                    {
+                      "field": "x",
+                      "hide": false
+                    }
+                  ],
+                  "fee": [
+                    {
+                      "field": "fee",
+                      "hide": false
+                    }
+                  ]
+                },
+                "cart_item_key": "0682162da1d85a5384df4c54b9f43085"
+              }
+            }
+          },
+          {
+            "product_id": 19,
+            "total": "78",
+            "total_tax": "7.8",
+            "meta": {
+              "d": "10-03-2026",
+              "fee": "a (+&euro;69.30)",
+              "_wapf_meta": {
+                "version": "3.1.5",
+                "fields": {
+                  "d": {
+                    "id": "d",
+                    "type": "date",
+                    "label": "d",
+                    "value": "10-03-2026",
+                    "values": [
+                      {
+                        "label": "10-03-2026",
+                        "price": 0,
+                        "price_type": "none"
+                      }
+                    ]
+                  },
+                  "fee": {
+                    "id": "fee",
+                    "type": "select",
+                    "label": "fee",
+                    "value": "a (+&euro;69.30)",
+                    "values": [
+                      {
+                        "label": "a",
+                        "price": "(dow([field.d])*7*[qty])",
+                        "price_type": "fx",
+                        "slug": "a",
+                        "calc_price": 42,
+                        "pricing_hint": "(+&euro;69.30)"
+                      }
+                    ]
+                  }
+                },
+                "settings": {
+                  "d": [
+                    {
+                      "field": "d",
+                      "hide": false
+                    }
+                  ],
+                  "fee": [
+                    {
+                      "field": "fee",
+                      "hide": false
+                    }
+                  ]
+                },
+                "cart_item_key": "4cc8385d340438e2882b578d4bc6386b"
+              }
+            }
+          }
+        ]
+      },
+      "order_hints": {
+        "fixed": {
+          "visible_meta": [
+            "a (+&euro;3.30)",
+            "Monogram (+&euro;3.30)"
+          ],
+          "structured": "{\"version\":\"3.1.5\",\"fields\":{\"fee\":{\"id\":\"fee\",\"type\":\"radio\",\"label\":\"fee\",\"value\":\"a (+&euro;3.30)\",\"values\":[{\"label\":\"a\",\"price\":2,\"price_type\":\"fixed\",\"slug\":\"a\",\"calc_price\":2,\"pricing_hint\":\"(+&euro;3.30)\"}]},\"engrave\":{\"id\":\"engrave\",\"type\":\"text\",\"label\":\"engrave\",\"value\":\"Monogram (+&euro;3.30)\",\"values\":[{\"label\":\"Monogram\",\"price\":2,\"price_type\":\"fixed\",\"calc_price\":2,\"pricing_hint\":\"(+&euro;3.30)\"}]}},\"settings\":{\"fee\":[{\"field\":\"fee\",\"hide\":false}],\"engrave\":[{\"field\":\"engrave\",\"hide\":false}]},\"cart_item_key\":\"38773e99ab29185e824d44482f5fa97f\"}"
+        },
+        "percent": {
+          "visible_meta": [
+            "a (+&euro;1.00)"
+          ],
+          "structured": "{\"version\":\"3.1.5\",\"fields\":{\"fee\":{\"id\":\"fee\",\"type\":\"radio\",\"label\":\"fee\",\"value\":\"a (+&euro;1.00)\",\"values\":[{\"label\":\"a\",\"price\":10,\"price_type\":\"p\",\"slug\":\"a\",\"calc_price\":1,\"pricing_hint\":\"(+&euro;1.00)\"}]}},\"settings\":{\"fee\":[{\"field\":\"fee\",\"hide\":false}]},\"cart_item_key\":\"c5443de5f5957769e4055e54efe62363\"}"
+        },
+        "minmax": {
+          "visible_meta": [
+            "5",
+            "a (+&euro;8.25)"
+          ],
+          "structured": "{\"version\":\"3.1.5\",\"fields\":{\"x\":{\"id\":\"x\",\"type\":\"text\",\"label\":\"x\",\"value\":\"5\",\"values\":[{\"label\":\"5\",\"price\":0,\"price_type\":\"none\"}]},\"fee\":{\"id\":\"fee\",\"type\":\"select\",\"label\":\"fee\",\"value\":\"a (+&euro;8.25)\",\"values\":[{\"label\":\"a\",\"price\":\"(max(3;min([field.x];7))*[qty])\",\"price_type\":\"fx\",\"slug\":\"a\",\"calc_price\":5,\"pricing_hint\":\"(+&euro;8.25)\"}]}},\"settings\":{\"x\":[{\"field\":\"x\",\"hide\":false}],\"fee\":[{\"field\":\"fee\",\"hide\":false}]},\"cart_item_key\":\"0682162da1d85a5384df4c54b9f43085\"}"
+        },
+        "date": {
+          "visible_meta": [
+            "10-03-2026",
+            "a (+&euro;69.30)"
+          ],
+          "structured": "{\"version\":\"3.1.5\",\"fields\":{\"d\":{\"id\":\"d\",\"type\":\"date\",\"label\":\"d\",\"value\":\"10-03-2026\",\"values\":[{\"label\":\"10-03-2026\",\"price\":0,\"price_type\":\"none\"}]},\"fee\":{\"id\":\"fee\",\"type\":\"select\",\"label\":\"fee\",\"value\":\"a (+&euro;69.30)\",\"values\":[{\"label\":\"a\",\"price\":\"(dow([field.d])*7*[qty])\",\"price_type\":\"fx\",\"slug\":\"a\",\"calc_price\":42,\"pricing_hint\":\"(+&euro;69.30)\"}]}},\"settings\":{\"d\":[{\"field\":\"d\",\"hide\":false}],\"fee\":[{\"field\":\"fee\",\"hide\":false}]},\"cart_item_key\":\"4cc8385d340438e2882b578d4bc6386b\"}"
+        }
+      },
+      "order_totals": {
+        "currency": "EUR",
+        "subtotal": 138,
+        "total": "151.80",
+        "payment_method": "cheque"
+      },
+      "units_ok": true
+    }
+  }
+}

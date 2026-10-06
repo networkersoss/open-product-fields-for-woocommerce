@@ -1,0 +1,256 @@
+{
+  "currencies": {
+    "base": "USD",
+    "current": "EUR",
+    "curcy_rate": 1.5,
+    "base_product_price_usd": 10,
+    "quantity": 1,
+    "taxes": "off"
+  },
+  "orders": {
+    "opf": 29,
+    "wapf": 30
+  },
+  "order_totals": {
+    "opf": {
+      "currency": "EUR",
+      "subtotal": 138,
+      "total": "138.00",
+      "payment_method": "cod"
+    },
+    "wapf": {
+      "currency": "EUR",
+      "subtotal": 138,
+      "total": "138.00",
+      "payment_method": "cheque"
+    }
+  },
+  "cart_totals": {
+    "opf": {
+      "currency": "EUR",
+      "total": "13800",
+      "tax": "0"
+    },
+    "wapf": {
+      "currency": "EUR",
+      "total": "13800",
+      "tax": "0"
+    }
+  },
+  "rows": [
+    {
+      "case": "fixed",
+      "kind": "fixed choice + fixed scalar",
+      "addon_base_usd": 4,
+      "line_unit_eur": 21,
+      "storefront": {
+        "opf": {
+          "spans": [
+            "+ \u20ac3.00",
+            "+ \u20ac3.00",
+            "(+ &euro;2)"
+          ],
+          "options": []
+        },
+        "wapf": {
+          "spans": [
+            "(+\u20ac3.00)",
+            "(+\u20ac3.00)"
+          ],
+          "options": []
+        }
+      },
+      "cart_field_display": {
+        "opf": "fee: a (+\u20ac3.00) engrave: Monogram (+\u20ac3.00)",
+        "wapf": "fee: a (+\u20ac3.00) engrave: Monogram (+\u20ac3.00)"
+      },
+      "checkout_field_display": {
+        "opf": "fee: a (+\u20ac3.00) engrave: Monogram (+\u20ac3.00)",
+        "wapf": "fee: a (+\u20ac3.00) engrave: Monogram (+\u20ac3.00)"
+      },
+      "cart_item_data": {
+        "opf": [
+          "a <span class=\"opf-pricing-hint\">(+&euro;3.00)</span>",
+          "Monogram <span class=\"opf-pricing-hint\">(+&euro;3.00)</span>"
+        ],
+        "wapf": []
+      },
+      "order_visible_meta": {
+        "opf": [
+          "a (+&euro;3.00)",
+          "Monogram (+&euro;3.00)"
+        ],
+        "wapf": [
+          "a (+&euro;3.00)",
+          "Monogram (+&euro;3.00)"
+        ]
+      },
+      "cart_line_eur": {
+        "opf": "2100",
+        "wapf": "2100"
+      },
+      "cart_display_match": true,
+      "checkout_display_match": true,
+      "order_meta_match": true,
+      "cart_line_match": true
+    },
+    {
+      "case": "percent",
+      "kind": "percent choice",
+      "addon_base_usd": 1,
+      "line_unit_eur": 16.5,
+      "storefront": {
+        "opf": {
+          "spans": [
+            "+ \u20ac1.00"
+          ],
+          "options": []
+        },
+        "wapf": {
+          "spans": [
+            "(+10%)"
+          ],
+          "options": []
+        }
+      },
+      "cart_field_display": {
+        "opf": "fee: a (+\u20ac1.00)",
+        "wapf": "fee: a (+\u20ac1.00)"
+      },
+      "checkout_field_display": {
+        "opf": "fee: a (+\u20ac1.00)",
+        "wapf": "fee: a (+\u20ac1.00)"
+      },
+      "cart_item_data": {
+        "opf": [
+          "a <span class=\"opf-pricing-hint\">(+&euro;1.00)</span>"
+        ],
+        "wapf": []
+      },
+      "order_visible_meta": {
+        "opf": [
+          "a (+&euro;1.00)"
+        ],
+        "wapf": [
+          "a (+&euro;1.00)"
+        ]
+      },
+      "cart_line_eur": {
+        "opf": "1650",
+        "wapf": "1650"
+      },
+      "cart_display_match": true,
+      "checkout_display_match": true,
+      "order_meta_match": true,
+      "cart_line_match": true
+    },
+    {
+      "case": "minmax",
+      "kind": "formula min/max choice",
+      "addon_base_usd": 5,
+      "line_unit_eur": 22.5,
+      "storefront": {
+        "opf": {
+          "spans": [],
+          "options": [
+            "a (+ &euro;3)"
+          ]
+        },
+        "wapf": {
+          "spans": [],
+          "options": [
+            "a (+\u20ac3.00)"
+          ]
+        }
+      },
+      "cart_field_display": {
+        "opf": "x: 5 fee: a (+\u20ac7.50)",
+        "wapf": "x: 5 fee: a (+\u20ac7.50)"
+      },
+      "checkout_field_display": {
+        "opf": "x: 5 fee: a (+\u20ac7.50)",
+        "wapf": "x: 5 fee: a (+\u20ac7.50)"
+      },
+      "cart_item_data": {
+        "opf": [
+          "",
+          "a <span class=\"opf-pricing-hint\">(+&euro;7.50)</span>"
+        ],
+        "wapf": []
+      },
+      "order_visible_meta": {
+        "opf": [
+          "5",
+          "a (+&euro;7.50)"
+        ],
+        "wapf": [
+          "5",
+          "a (+&euro;7.50)"
+        ]
+      },
+      "cart_line_eur": {
+        "opf": "2250",
+        "wapf": "2250"
+      },
+      "cart_display_match": true,
+      "checkout_display_match": true,
+      "order_meta_match": true,
+      "cart_line_match": true
+    },
+    {
+      "case": "date",
+      "kind": "formula date choice",
+      "addon_base_usd": 42,
+      "line_unit_eur": 78,
+      "storefront": {
+        "opf": {
+          "spans": [],
+          "options": []
+        },
+        "wapf": {
+          "spans": [],
+          "options": [
+            "a (\u20ac0.00)"
+          ]
+        }
+      },
+      "cart_field_display": {
+        "opf": "d: 10-03-2026 fee: a (+\u20ac63.00)",
+        "wapf": "d: 10-03-2026 fee: a (+\u20ac63.00)"
+      },
+      "checkout_field_display": {
+        "opf": "d: 10-03-2026 fee: a (+\u20ac63.00)",
+        "wapf": "d: 10-03-2026 fee: a (+\u20ac63.00)"
+      },
+      "cart_item_data": {
+        "opf": [
+          "",
+          "a <span class=\"opf-pricing-hint\">(+&euro;63.00)</span>"
+        ],
+        "wapf": []
+      },
+      "order_visible_meta": {
+        "opf": [
+          "10-03-2026",
+          "a (+&euro;63.00)"
+        ],
+        "wapf": [
+          "10-03-2026",
+          "a (+&euro;63.00)"
+        ]
+      },
+      "cart_line_eur": {
+        "opf": "7800",
+        "wapf": "7800"
+      },
+      "cart_display_match": true,
+      "checkout_display_match": true,
+      "order_meta_match": true,
+      "cart_line_match": true
+    }
+  ],
+  "all_cart_display_match": true,
+  "all_checkout_display_match": true,
+  "all_order_meta_match": true,
+  "all_cart_line_match": true
+}

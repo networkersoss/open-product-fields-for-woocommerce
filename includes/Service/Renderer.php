@@ -170,9 +170,18 @@ final class Renderer {
 		}
 		// WAPF `wapf/html/pricing_hint/amount` parity: currency converters can
 		// rewrite the raw amount before tax/display adjustment.
-		$amount = function_exists( 'apply_filters' ) ? (float) apply_filters( 'opf_pricing_hint_amount', $amount, $product, $type, 'product' ) : $amount;
+		$raw_amount = $amount;
+		$amount     = function_exists( 'apply_filters' ) ? (float) apply_filters( 'opf_pricing_hint_amount', $amount, $product, $type, 'product' ) : $amount;
+		// A listener that rewrote the amount already converted it (WOOCS/Aelia
+		// convert on that filter); `convert_via_product_price` must not repeat it.
+		$converted = (float) $amount !== (float) $raw_amount;
 		if ( 'percent' !== $type ) {
 			$amount = self::hint_price_with_tax( $product, $amount );
+			// WAPF Helper::adjust_addon_price converts non-percent shop amounts
+			// through the same product-price path the cart line total takes
+			// (see PricingHints::convert_via_product_price); percent hints stay
+			// the raw percent-derived figure, exactly like WAPF.
+			$amount = (float) PricingHints::convert_via_product_price( $amount, $product, $converted );
 		}
 		$sign = $amount < 0 ? '-' : '+';
 		$price_html = function_exists( 'wc_price' ) ? wc_price( abs( $amount ) ) : esc_html( (string) abs( $amount ) );

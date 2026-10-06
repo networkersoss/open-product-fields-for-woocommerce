@@ -1,0 +1,141 @@
+{
+  "lane": "hintconv",
+  "date": "2026-10-05",
+  "reference": {
+    "engine": "WAPF Extended 3.1.5 (advanced-product-fields-for-woocommerce-extended)",
+    "path": "/home/followersya-5hqi7/followersya.com/bedrock/web/app/plugins/advanced-product-fields-for-woocommerce-extended",
+    "namespace": "SW_WAPF_PRO",
+    "note": "WAPF Extended 3.1.5 IS SW_WAPF_PRO\\WAPF, which is what CURCY's WAPF-Pro integration gates on."
+  },
+  "wapf_315_hint_contract": [
+    {
+      "what": "cart hint string is computed once per cart value with for_page='cart' and stored on the cart field values",
+      "file": "includes/classes/class-cart.php",
+      "lines": "62, 66",
+      "code": "$cart_item['wapf'][$field_idx]['values'][$idx]['pricing_hint'] = Helper::format_pricing_hint( $value['price_type'], $price, $product, 'cart' )"
+    },
+    {
+      "what": "format_pricing_hint entry point",
+      "file": "includes/classes/class-helper.php",
+      "lines": "491",
+      "code": "public static function format_pricing_hint( $type, $amount, $product, $for_page = 'shop', $field = null, $option = null )"
+    },
+    {
+      "what": "amount filter (the hook WOOCS/Aelia integrations convert on); runs BEFORE tax",
+      "file": "includes/classes/class-helper.php",
+      "lines": "494",
+      "code": "$amount = apply_filters( 'wapf/html/pricing_hint/amount', $amount, $product, $type, $for_page );"
+    },
+    {
+      "what": "shop+percent branch renders the percent verbatim (no tax, no conversion)",
+      "file": "includes/classes/class-helper.php",
+      "lines": "497-498"
+    },
+    {
+      "what": "money output goes through adjust_addon_price",
+      "file": "includes/classes/class-helper.php",
+      "lines": "500",
+      "code": "$price_output = self::format_price( self::adjust_addon_price( $product, empty($amount) ? 0 : $amount, $type, $for_page ) );"
+    },
+    {
+      "what": "adjust_addon_price: percent early-returns (never tax-adjusted, never converted)",
+      "file": "includes/classes/class-helper.php",
+      "lines": "443"
+    },
+    {
+      "what": "adjust_addon_price: tax first",
+      "file": "includes/classes/class-helper.php",
+      "lines": "447-449"
+    },
+    {
+      "what": "adjust_addon_price: the conversion hook CURCY hangs off, AFTER tax",
+      "file": "includes/classes/class-helper.php",
+      "lines": "451",
+      "code": "return apply_filters( 'wapf/pricing/addon', $amount, $product, $type, $for );"
+    },
+    {
+      "what": "storefront static per-choice hint (shop context)",
+      "file": "includes/classes/class-html.php",
+      "lines": "823-829",
+      "code": "Helper::format_pricing_hint( $option['pricing_type'], ..., $product, 'shop', $field, $option )"
+    },
+    {
+      "what": "storefront static field-level hint (shop context)",
+      "file": "includes/classes/class-html.php",
+      "lines": "834-840"
+    },
+    {
+      "what": "WAPF's own WOOCS integration converts on the AMOUNT filter (before tax)",
+      "file": "includes/classes/integrations/class-woocs.php",
+      "lines": "12"
+    },
+    {
+      "what": "WAPF's own Aelia integration converts on the AMOUNT filter (before tax)",
+      "file": "includes/classes/integrations/class-aelia.php",
+      "lines": "16"
+    }
+  ],
+  "curcy_243_path": {
+    "path": "/home/followersya-5hqi7/followersya.com/bedrock/web/app/plugins/woocommerce-multi-currency",
+    "converts_hint_via": [
+      {
+        "what": "CURCY's WAPF integration is gated on WAPF being ACTIVE (WAPF Extended 3.1.5 is SW_WAPF_PRO\\WAPF)",
+        "file": "plugins/advanced_product_fields_for_woocommerce_pro.php",
+        "lines": "13-14",
+        "code": "if ( is_plugin_active( 'advanced-product-fields-for-woocommerce-pro/...' ) || class_exists( '\\SW_WAPF_PRO\\WAPF' ) ) {"
+      },
+      {
+        "what": "so with OPF active and WAPF inactive, no conversion listener exists for the hint",
+        "file": "plugins/advanced_product_fields_for_woocommerce_pro.php",
+        "lines": "31",
+        "code": "add_filter( 'wapf/pricing/addon', array( $this, 'convert_product_price' ), 10, 2 );"
+      },
+      {
+        "what": "the listener that converts WAPF's hint",
+        "file": "plugins/advanced_product_fields_for_woocommerce_pro.php",
+        "lines": "124-128",
+        "code": "public function convert_product_price( $price, $product ) { if ( ! $this->is_default_currency() ) { return wmc_get_price( $price ); } return $price; }"
+      },
+      {
+        "what": "CURCY also ships (commented out) an amount-filter conversion - NOT registered",
+        "file": "plugins/advanced_product_fields_for_woocommerce_pro.php",
+        "lines": "33"
+      }
+    ],
+    "converts_product_price_via": [
+      {
+        "what": "registration on the Woo product price filter (the general path)",
+        "file": "frontend/price.php",
+        "lines": "163, 213 (variations: 169, 217)"
+      },
+      {
+        "what": "callback",
+        "file": "frontend/price.php",
+        "lines": "1515"
+      },
+      {
+        "what": "conversion call inside the callback",
+        "file": "frontend/price.php",
+        "lines": "1589, 1613, 1617, 1627, 1634, 1647, 1652, 1655",
+        "code": "wmc_get_price( $price )"
+      },
+      {
+        "what": "the converter itself (rate multiply + wmc_get_price filter)",
+        "file": "includes/functions.php",
+        "lines": "103"
+      }
+    ]
+  },
+  "opf_after_fix": [
+    {
+      "what": "the store price filter is now also applied to the hint amount, at WAPF's wapf/pricing/addon position (after tax)",
+      "file": "includes/Service/PricingHints.php",
+      "symbol": "PricingHints::adjust_addon_price -> PricingHints::convert_via_product_price"
+    },
+    {
+      "what": "storefront static hint uses the same helper",
+      "file": "includes/Service/Renderer.php",
+      "symbol": "Renderer::pricing_hint_html"
+    }
+  ]
+}

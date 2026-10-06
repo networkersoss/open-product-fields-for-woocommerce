@@ -1,0 +1,117 @@
+{
+  "curcy": "active, EUR rate 1.5",
+  "before": "pristine HEAD includes/Service/{PricingHints,Renderer}.php",
+  "after": "this lane's fix",
+  "rows": [
+    {
+      "case": "fixed",
+      "cart_field_display": {
+        "before": "fee: a (+\u20ac2.00) engrave: Monogram (+\u20ac2.00)",
+        "after": "fee: a (+\u20ac3.00) engrave: Monogram (+\u20ac3.00)"
+      },
+      "checkout_field_display": {
+        "before": "fee: a (+\u20ac2.00) engrave: Monogram (+\u20ac2.00)",
+        "after": "fee: a (+\u20ac3.00) engrave: Monogram (+\u20ac3.00)"
+      },
+      "order_visible_meta": {
+        "before": [
+          "a (+&euro;2.00)",
+          "Monogram (+&euro;2.00)"
+        ],
+        "after": [
+          "a (+&euro;3.00)",
+          "Monogram (+&euro;3.00)"
+        ]
+      },
+      "storefront_spans": {
+        "before": [
+          "+ \u20ac2.00",
+          "+ \u20ac2.00",
+          "(+ &euro;2)"
+        ],
+        "after": [
+          "+ \u20ac3.00",
+          "+ \u20ac3.00",
+          "(+ &euro;2)"
+        ]
+      }
+    },
+    {
+      "case": "percent",
+      "cart_field_display": {
+        "before": "fee: a (+\u20ac1.00)",
+        "after": "fee: a (+\u20ac1.00)"
+      },
+      "checkout_field_display": {
+        "before": "fee: a (+\u20ac1.00)",
+        "after": "fee: a (+\u20ac1.00)"
+      },
+      "order_visible_meta": {
+        "before": [
+          "a (+&euro;1.00)"
+        ],
+        "after": [
+          "a (+&euro;1.00)"
+        ]
+      },
+      "storefront_spans": {
+        "before": [
+          "+ \u20ac1.00"
+        ],
+        "after": [
+          "+ \u20ac1.00"
+        ]
+      }
+    },
+    {
+      "case": "minmax",
+      "cart_field_display": {
+        "before": "x: 5 fee: a (+\u20ac5.00)",
+        "after": "x: 5 fee: a (+\u20ac7.50)"
+      },
+      "checkout_field_display": {
+        "before": "x: 5 fee: a (+\u20ac5.00)",
+        "after": "x: 5 fee: a (+\u20ac7.50)"
+      },
+      "order_visible_meta": {
+        "before": [
+          "5",
+          "a (+&euro;5.00)"
+        ],
+        "after": [
+          "5",
+          "a (+&euro;7.50)"
+        ]
+      },
+      "storefront_spans": {
+        "before": [],
+        "after": []
+      }
+    },
+    {
+      "case": "date",
+      "cart_field_display": {
+        "before": "d: 10-03-2026 fee: a (+\u20ac42.00)",
+        "after": "d: 10-03-2026 fee: a (+\u20ac63.00)"
+      },
+      "checkout_field_display": {
+        "before": "d: 10-03-2026 fee: a (+\u20ac42.00)",
+        "after": "d: 10-03-2026 fee: a (+\u20ac63.00)"
+      },
+      "order_visible_meta": {
+        "before": [
+          "10-03-2026",
+          "a (+&euro;42.00)"
+        ],
+        "after": [
+          "10-03-2026",
+          "a (+&euro;63.00)"
+        ]
+      },
+      "storefront_spans": {
+        "before": [],
+        "after": []
+      }
+    }
+  ]
+}
