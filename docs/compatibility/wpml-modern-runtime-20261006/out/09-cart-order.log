@@ -1,0 +1,13 @@
+current_language=es es_product=11 cart_item_key='dec56d20a901ed5cd23013551bbf2964'
+cart_item_data={"14":{"gift":"red","note":"Hola","extra":["card"]}}
+cart_totals={"total":"25.00","subtotal":"25"}
+cart_line_name="Tarjeta Regalo" line_total=25
+cart_line_display="Envoltorio de regalo: Rojo <span class=\"opf-pricing-hint\">(+&#036;5.00)<\/span>\nNota: Hola\nExtras: Tarjeta\n"
+cart_line_display_html="<dl class=\"variation\">\n\t\t\t<dt class=\"variation-Envoltorioderegalo\">Envoltorio de regalo:<\/dt>\n\t\t<dd class=\"variation-Envoltorioderegalo\"><p>Rojo <span class=\"opf-pricing-hint\">(+&#036;5.00)<\/span><\/p>\n<\/dd>\n\t\t\t<dt class=\"variation-Nota\">Nota:<\/dt>\n\t\t<dd class=\"variation-Nota\"><p>Hola<\/p>\n<\/dd>\n\t\t\t<dt class=\"variation-Extras\">Extras:<\/dt>\n\t\t<dd class=\"variation-Extras\"><p>Tarjeta<\/p>\n<\/dd>\n\t<\/dl>\n"
+order_id=17 status=pending total=25.00
+order_item product=11 name=Tarjeta Regalo opf_fields="{\"14\":{\"gift\":\"red\",\"note\":\"Hola\",\"extra\":[\"card\"]}}"
+order_item_visible_meta={"Envoltorio de regalo":"Rojo (+&#36;5.00)","Nota":"Hola","Extras":"Tarjeta"}
+order_language=NULL
+order_wpml_language_meta="es"
+order_meta_lang_rows=[]
+order_lang_meta_rows=["wpml_language"]

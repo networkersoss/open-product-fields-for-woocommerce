@@ -1,0 +1,12 @@
+OPF upload UI builder + preview checks passed (17)
+✔ tests/js/opf-uploads-ui.test.cjs (53.777996ms)
+OPF variation conditional checks passed (11)
+✔ tests/js/opf-variation-conditional.test.cjs (61.907169ms)
+ℹ tests 132
+ℹ suites 0
+ℹ pass 132
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 303.59435

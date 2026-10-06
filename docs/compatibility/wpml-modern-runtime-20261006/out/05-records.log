@@ -1,0 +1,49 @@
+group_post_id=14
+
+-- icl_string_packages --
+ID=1 kind_slug=open-product-fields kind=Open Product Fields name=14 title=Gift options (#14)
+package_rows=1
+opf_package_id=1 opf_package_context=open-product-fields-14
+
+-- icl_strings of the OPF package --
+id=27 name=field:gift:label type=LINE status=0 context=open-product-fields-14 package=1 value=Gift wrap
+id=28 name=field:gift:description type=AREA status=0 context=open-product-fields-14 package=1 value=Choose wrapping
+id=29 name=field:gift:placeholder type=LINE status=0 context=open-product-fields-14 package=1 value=Select an option
+id=30 name=field:gift:choice:red type=LINE status=0 context=open-product-fields-14 package=1 value=Red
+id=31 name=field:gift:choice:blue type=LINE status=0 context=open-product-fields-14 package=1 value=Blue
+id=32 name=field:note:label type=LINE status=0 context=open-product-fields-14 package=1 value=Note
+id=33 name=field:note:placeholder type=LINE status=0 context=open-product-fields-14 package=1 value=Add a note
+id=34 name=field:info:content type=VISUAL status=0 context=open-product-fields-14 package=1 value=<b>Information</b>
+id=35 name=field:extra:label type=LINE status=0 context=open-product-fields-14 package=1 value=Extras
+id=36 name=field:extra:choice:card type=LINE status=0 context=open-product-fields-14 package=1 value=Card
+id=37 name=field:extra:repeat:add type=LINE status=0 context=open-product-fields-14 package=1 value=Add another
+id=38 name=field:extra:repeat:del type=LINE status=0 context=open-product-fields-14 package=1 value=Remove
+id=39 name=field:extra:repeat:label type=LINE status=0 context=open-product-fields-14 package=1 value=Copy {n}
+opf_string_count=13
+strings_with_opf_package_context=13
+
+-- icl_string_translations for the OPF package --
+opf_translation_count=0
+
+-- icl_translations rows for the fixture elements --
+element_id=10 type=tax_product_visibility language=en source= trid=28
+element_id=10 type=post_product language=en source= trid=57
+element_id=11 type=tax_product_visibility language=en source= trid=29
+element_id=11 type=post_product language=es source=en trid=57
+element_id=12 type=tax_product_visibility language=en source= trid=30
+element_id=12 type=post_product language=en source= trid=58
+element_id=13 type=tax_product_visibility language=en source= trid=31
+element_id=13 type=post_product language=es source=en trid=58
+
+-- wpml_object_id remaps (the rule terms OPF must remap) --
+product 10 -> es = 11
+product 11 -> en = 10
+cat 17 -> es = 18
+tag 19 -> es = 20
+unrelated product 12 -> es = 13
+
+-- OPF runtime placement (what the storefront will render) --
+[en] product=10 groups=1 14:Gift options:Gift wrap
+[es] product=11 groups=1 14:Gift options:Gift wrap
+[en] product=12 groups=0 
+[es] product=13 groups=0 

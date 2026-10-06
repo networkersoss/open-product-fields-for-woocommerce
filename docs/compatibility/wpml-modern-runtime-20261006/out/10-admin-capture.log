@@ -1,0 +1,24 @@
+group_id=14 context=open-product-fields-14
+login_form=200
+login_post=302
+admin_warmup=200 http://127.0.0.1:8096/wp-admin/
+st_domains=200 http://127.0.0.1:8096/wp-admin/admin.php?page=tm/menu/main.php&tab=strings
+st_package_editor=200 http://127.0.0.1:8096/wp-admin/admin.php?page=tm/menu/main.php&tab=strings&context=open-product-fields-14&show_results=all&lang=es
+admin_dashboard=200 http://127.0.0.1:8096/wp-admin/
+opf_group_editor=200 http://127.0.0.1:8096/wp-admin/post.php?post=14&action=edit
+--- package editor evidence ---
+open-product-fields-14 (13)
+open-product-fields-14 (13)
+html_bytes=210318
+contains open-product-fields-14   True
+contains Gift wrap                True
+contains Envoltorio de regalo     True
+contains Red                      True
+contains Rojo                     True
+contains Choose wrapping          True
+contains Elige el envoltorio      True
+has_spanish_input=True
+--- D1 guard notice check (must be absent) ---
+guard notice absent in 12-admin-dashboard.html
+guard notice absent in 11-st-package-editor.html
+guard notice absent in 10-st-domain-list.html

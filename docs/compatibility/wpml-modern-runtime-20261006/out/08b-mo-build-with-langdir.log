@@ -1,0 +1,12 @@
+WP_LANG_DIR=/var/www/html/wp-content/languages
+filesystem=WP_Filesystem_Direct
+subdir=/var/www/html/wp-content/languages/wpml
+subdir_exists=true
+parent_exists=true parent_writable=true
+WPML_ST_SYNC_TRANSLATION_FILES=undefined
+useFileSynchronization=false
+handles(open-product-fields-14)=true
+manager->add(open-product-fields-14, es_ES)='/var/www/html/wp-content/languages/wpml/open-product-fields-14-es_ES.mo'
+mo_path=/var/www/html/wp-content/languages/wpml/open-product-fields-14-es_ES.mo mo_exists=true
+db_rows_for_mo(es, partial)=13
+wpml_translate_string(es)=Envoltorio de regalo

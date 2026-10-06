@@ -1,0 +1,9 @@
+WPML core 5.1.0      /home/followersya-5hqi7/ops/scratchpad/20261006-opf-gpl-sources/sitepress-5.1.0/sitepress-multilingual-cms
+                     sitepress.php md5 7c0d7fa24effb565048ec165aa2a57ce
+WPML String Trans. 5.1.0  /home/followersya-5hqi7/ops/scratchpad/20261006-opf-gpl-sources/wpml-string-translation_v5.1.0-x/wpml-string-translation
+                     plugin.php    md5 508b81f2cb2c921f9555daab3b0095ba
+WCML 5.6.1           /home/followersya-5hqi7/ops/scratchpad/20261006-opf-gpl-sources/woocommerce-multilingual_v5.6.1-x/woocommerce-multilingual
+                     wpml-woocommerce.php md5 b3b4a4a46844b5794dec64afe192ecf3
+OPF export           commit 85ede306da1ae4a3046ef10b16be1140b0f0e6f4 (git archive HEAD, plugin version 0.1.1)
+WP/WC/PHP image      wordpress:php8.2-apache -> WP 6.5.7, PHP 8.2.34, WooCommerce 9.0.2
+DB                   mariadb:10.11 (10.11.19-MariaDB)

@@ -1,0 +1,7 @@
+name	status	version
+open-product-fields-for-woocommerce	active	0.1.1
+woocommerce	active	9.0.2
+woocommerce-multilingual	active	5.6.1
+sitepress-multilingual-cms	active	5.1.0
+wpml-string-translation	active	5.1.0
+zz-opf-wpml-probe	must-use	

@@ -1,0 +1,52 @@
+package_row_id=1 factory_id=1 context=open-product-fields-14
+string_id=27 name=field:gift:label written=4
+string_id=28 name=field:gift:description written=5
+string_id=29 name=field:gift:placeholder written=6
+string_id=30 name=field:gift:choice:red written=7
+string_id=31 name=field:gift:choice:blue written=8
+string_id=32 name=field:note:label written=9
+string_id=33 name=field:note:placeholder written=10
+string_id=34 name=field:info:content written=11
+string_id=35 name=field:extra:label written=12
+string_id=36 name=field:extra:choice:card written=13
+string_id=37 name=field:extra:repeat:add written=14
+string_id=38 name=field:extra:repeat:del written=15
+string_id=39 name=field:extra:repeat:label written=16
+
+-- read back through the runtime filter OPF uses (wpml_translate_string) --
+[en] current=en
+   field:gift:label => Gift wrap
+   field:gift:description => Choose wrapping
+   field:gift:placeholder => Select an option
+   field:gift:choice:red => Red
+   field:gift:choice:blue => Blue
+   field:note:label => Note
+   field:note:placeholder => Add a note
+   field:info:content => <b>Information</b>
+   field:extra:label => Extras
+   field:extra:choice:card => Card
+   field:extra:repeat:add => Add another
+   field:extra:repeat:del => Remove
+   field:extra:repeat:label => Copy {n}
+[es] current=es
+   field:gift:label => Gift wrap
+   field:gift:description => Choose wrapping
+   field:gift:placeholder => Select an option
+   field:gift:choice:red => Red
+   field:gift:choice:blue => Blue
+   field:note:label => Note
+   field:note:placeholder => Add a note
+   field:info:content => <b>Information</b>
+   field:extra:label => Extras
+   field:extra:choice:card => Card
+   field:extra:repeat:add => Add another
+   field:extra:repeat:del => Remove
+   field:extra:repeat:label => Copy {n}
+
+-- OPF group data after translation (through opf_groups_for_product) --
+[en] group=14 label=Gift wrap description=Choose wrapping choices=["Red","Blue"] ids=["red","blue"] pricing=[{"type":"fixed","amount":5,"formula":"","formula_raw":"","per_unit":false},{"type":"fixed","amount":0,"formula":"","formula_raw":"","per_unit":false}]
+[en] field_ids=["gift","note","info","extra"] repeat={"enabled":true,"mode":"button","max":10000,"add":"Add another","del":"Remove","label":"Copy {n}"}
+[en] rule_terms=[{"subject":"product","operator":"in","terms":["10"]},{"subject":"product_cat","operator":"in","terms":["17"]},{"subject":"product_tag","operator":"in","terms":["19"]}]
+[es] group=14 label=Gift wrap description=Choose wrapping choices=["Red","Blue"] ids=["red","blue"] pricing=[{"type":"fixed","amount":5,"formula":"","formula_raw":"","per_unit":false},{"type":"fixed","amount":0,"formula":"","formula_raw":"","per_unit":false}]
+[es] field_ids=["gift","note","info","extra"] repeat={"enabled":true,"mode":"button","max":10000,"add":"Add another","del":"Remove","label":"Copy {n}"}
+[es] rule_terms=[{"subject":"product","operator":"in","terms":["11"]},{"subject":"product_cat","operator":"in","terms":["18"]},{"subject":"product_tag","operator":"in","terms":["20"]}]

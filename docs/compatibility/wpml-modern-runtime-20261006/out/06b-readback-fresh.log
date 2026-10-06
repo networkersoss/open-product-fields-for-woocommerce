@@ -1,0 +1,29 @@
+-- icl_string_translations rows --
+Notice: Function wpdb::prepare was called incorrectly. The query argument of wpdb::prepare() must have a placeholder. Please see <a>Debugging in WordPress</a> for more information. (This message was added in version 3.9.0.) in /var/www/html/wp-includes/functions.php on line 6078
+{"id":"4","string_id":"27","language":"es","status":"10","value":"Envoltorio de regalo","name":"field:gift:label","string_status":"10"}
+{"id":"5","string_id":"28","language":"es","status":"10","value":"Elige el envoltorio","name":"field:gift:description","string_status":"10"}
+{"id":"6","string_id":"29","language":"es","status":"10","value":"Selecciona una opci\u00f3n","name":"field:gift:placeholder","string_status":"10"}
+{"id":"7","string_id":"30","language":"es","status":"10","value":"Rojo","name":"field:gift:choice:red","string_status":"10"}
+{"id":"8","string_id":"31","language":"es","status":"10","value":"Azul","name":"field:gift:choice:blue","string_status":"10"}
+{"id":"9","string_id":"32","language":"es","status":"10","value":"Nota","name":"field:note:label","string_status":"10"}
+{"id":"10","string_id":"33","language":"es","status":"10","value":"A\u00f1ade una nota","name":"field:note:placeholder","string_status":"10"}
+{"id":"11","string_id":"34","language":"es","status":"10","value":"<b>Informaci\u00f3n<\/b>","name":"field:info:content","string_status":"10"}
+{"id":"12","string_id":"35","language":"es","status":"10","value":"Extras","name":"field:extra:label","string_status":"10"}
+{"id":"13","string_id":"36","language":"es","status":"10","value":"Tarjeta","name":"field:extra:choice:card","string_status":"10"}
+{"id":"14","string_id":"37","language":"es","status":"10","value":"A\u00f1adir otro","name":"field:extra:repeat:add","string_status":"10"}
+{"id":"15","string_id":"38","language":"es","status":"10","value":"Quitar","name":"field:extra:repeat:del","string_status":"10"}
+{"id":"16","string_id":"39","language":"es","status":"10","value":"Copia {n}","name":"field:extra:repeat:label","string_status":"10"}
+
+-- wpml_translate_string, fresh process, per language --
+[en] field:gift:label => Gift wrap
+[en] field:gift:choice:red => Red
+[en] field:extra:repeat:add => Add another
+[en] current=en
+[es] field:gift:label => Envoltorio de regalo
+[es] field:gift:choice:red => Rojo
+[es] field:extra:repeat:add => Añadir otro
+[es] current=es
+
+-- OPF runtime group, fresh process --
+[en] label=Gift wrap choices=["Red","Blue"]
+[es] label=Envoltorio de regalo choices=["Rojo","Azul"]

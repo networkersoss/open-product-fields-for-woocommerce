@@ -1,0 +1,11 @@
+
+-- active languages --
+en	English	en_US
+es	Spanish	es_ES
+default_language=en
+current via filter=en
+icl_languages active=en,es
+setup_complete=1
+language_negotiation_type=1
+permalink_structure=
+permalink_structure=set

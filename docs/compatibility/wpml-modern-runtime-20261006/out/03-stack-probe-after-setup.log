@@ -1,0 +1,26 @@
+wp=6.5.7 php=8.2.34
+ICL_SITEPRESS_VERSION=5.1.0
+WPML_ST_VERSION=5.1.0
+WCML_VERSION=5.6.1
+WPML_TM_VERSION=2.11.0
+StringTranslation_object=WPML_String_Translation
+woocommerce_wpml_object=woocommerce_wpml
+class WPML_ST_Outdated_Stand_In defined=no
+did_action(wpml_loaded)=1
+did_action(wcml_loaded)=1
+isStOutdated=false
+class_exists WPML_Package_Translation=yes WPML_ST_Package_Factory=yes WPML_Package=yes
+setup_complete=1
+active_languages=en,es
+action(wpml_register_string)=true
+action(wpml_start_string_package_registration)=true
+action(wpml_delete_unused_package_strings)=true
+action(wpml_delete_package)=true
+filter(wpml_translate_string)=true
+filter(wpml_st_get_string_package)=true
+filter(wpml_active_string_package_kinds)=true
+filter(wpml_object_id)=true
+icl_string_packages table=MISSING rows=0
+icl_strings rows=26
+OPF strings_api_available=true
+action wpml_register_string handlers=1:closure,10:WPML_Package_Translation::register_string_action

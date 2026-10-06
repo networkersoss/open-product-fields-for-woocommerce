@@ -1,0 +1,7 @@
+total 24
+drwxr-xr-x 2 root     root     4096 Oct  6 21:30 .
+drwxr-xr-x 4 www-data www-data 4096 Oct  6 21:30 ..
+-rw-r--r-- 1 root     root      616 Oct  6 21:30 open-product-fields-14-es_ES.json
+-rw-r--r-- 1 root     root      887 Oct  6 21:30 open-product-fields-14-es_ES.l10n.php
+-rw-r--r-- 1 root     root     1189 Oct  6 21:30 open-product-fields-14-es_ES.mo
+-rw-r--r-- 1 root     root      334 Oct  6 21:30 wordpress-es_ES.json

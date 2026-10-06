@@ -1,0 +1,6 @@
+order_id=17
+wcml_get_order_language='es'
+wpml_language_meta="es"
+postmeta_rows=[{"meta_key":"wpml_language","meta_value":"es"}]
+item_language_by_item_id='es'
+order_total=25.00

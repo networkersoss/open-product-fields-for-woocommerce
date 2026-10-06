@@ -1,0 +1,53 @@
+{
+    "sku_unique_after_link": true,
+    "es_sku": "opf-wpml-gift",
+    "en_product_id": 10,
+    "es_product_id": 11,
+    "en_other_id": 12,
+    "es_other_id": 13,
+    "en_language": "en",
+    "es_language": "es",
+    "trid": "57",
+    "cat_id": 17,
+    "es_cat_id": 18,
+    "tag_id": 19,
+    "es_tag_id": 20,
+    "es_product_remap": 11,
+    "es_other_remap": 13,
+    "es_cat_remap": 18,
+    "es_tag_remap": 20,
+    "es_product_cats": [
+        17
+    ],
+    "es_product_tags": [
+        19
+    ],
+    "en_product_cats": [
+        17
+    ],
+    "es_product_price": "20",
+    "group_id": 14,
+    "stored_rule_terms": [
+        {
+            "subject": "product",
+            "operator": "in",
+            "terms": [
+                "10"
+            ]
+        },
+        {
+            "subject": "product_cat",
+            "operator": "in",
+            "terms": [
+                "17"
+            ]
+        },
+        {
+            "subject": "product_tag",
+            "operator": "in",
+            "terms": [
+                "19"
+            ]
+        }
+    ]
+}

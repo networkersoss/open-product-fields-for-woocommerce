@@ -1,0 +1,29 @@
+ids={"sku_unique_after_link":true,"es_sku":"opf-wpml-gift","en_product_id":10,"es_product_id":11,"en_other_id":12,"es_other_id":13,"en_language":"en","es_language":"es","trid":"57","cat_id":17,"es_cat_id":18,"tag_id":19,"es_tag_id":20,"es_product_remap":11,"es_other_remap":13,"es_cat_remap":18,"es_tag_remap":20,"es_product_cats":[17],"es_product_tags":[19],"en_product_cats":[17],"es_product_price":"20","group_id":14,"stored_rule_terms":[{"subject":"product","operator":"in","terms":["10"]},{"subject":"product_cat","operator":"in","terms":["17"]},{"subject":"product_tag","operator":"in","terms":["19"]}]}
+group_id=14
+en=200 http://127.0.0.1:8096/product/gift-card/
+es=200 http://127.0.0.1:8096/es/producto/tarjeta-regalo/
+en_other=200 http://127.0.0.1:8096/product/plain-mug/
+es_other=200 http://127.0.0.1:8096/es/producto/taza-lisa/
+bytes en=118662 es=142794 en_other=113073 es_other=135550
+PASS R1  EN product page renders the OPF group
+PASS R2  EN field label is the source string
+PASS R3  EN choice labels are the source strings
+PASS R4  ES product page is served
+PASS R5  ES page is the Spanish product
+PASS R6  ES page renders the OPF group (language-specific targeting resolved)
+PASS R7  ES field label is the WPML package translation
+PASS R8  ES choice labels are the package translations
+PASS R9  ES description translated
+PASS R9b select empty option follows the request language
+PASS R10 ES VISUAL content translated
+PASS R11 ES repeat labels translated
+PASS R12 ES page does not leak the English field label
+PASS R13 EN page does not leak the Spanish field label
+PASS R14 field ids and choice slugs survive translation
+PASS R15 ES choice pricing unchanged (5.00 fixed on slug red)
+PASS R16 EN page keeps the EN product context
+PASS R17 unrelated product EN page has no OPF group
+PASS R18 unrelated product ES page has no OPF group
+PASS R19 unrelated product ES page is the ES product
+PASS R20 ES page shows the translated option text with the fixed price
+FAILURES=0

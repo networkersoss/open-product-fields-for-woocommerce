@@ -1,0 +1,2359 @@
+<!DOCTYPE html>
+<html class="wp-toolbar"
+	lang="en-US">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Edit Field Group &#8220;Gift options&#8221; &lsaquo; OPF WPML 5.1.0 Runtime &#8212; WordPress</title>
+<script type="text/javascript">
+addLoadEvent = function(func){if(typeof jQuery!=='undefined')jQuery(function(){func();});else if(typeof wpOnload!=='function'){wpOnload=func;}else{var oldonload=wpOnload;wpOnload=function(){oldonload();func();}}};
+var ajaxurl = '/wp-admin/admin-ajax.php',
+	pagenow = 'opf_field_group',
+	typenow = 'opf_field_group',
+	adminpage = 'post-php',
+	thousandsSeparator = ',',
+	decimalPoint = '.',
+	isRtl = 0;
+</script>
+<link rel='stylesheet' href='http://127.0.0.1:8096/wp-admin/load-styles.php?c=0&amp;dir=ltr&amp;load%5Bchunk_0%5D=dashicons,wp-pointer,admin-bar,common,forms,admin-menu,dashboard,list-tables,edit,revisions,media,themes,about,nav-menus,widgets&amp;load%5Bchunk_1%5D=,site-icon,l10n,buttons,wp-auth-check,wp-jquery-ui-dialog,media-views&amp;ver=6.5.7' media='all' />
+<style>
+@media print { #wpadminbar { display:none; } }
+</style>
+<link rel='stylesheet' id='wcml_admin-css' href='http://127.0.0.1:8096/wp-content/plugins/woocommerce-multilingual/res/css/admin.css?ver=5.6.1' media='all' />
+<link rel='stylesheet' id='thickbox-css' href='http://127.0.0.1:8096/wp-includes/js/thickbox/thickbox.css?ver=6.5.7' media='all' />
+<link rel='stylesheet' id='wpml-media-setup-ui-css' href='http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/dist/css/media-setup/styles.css?ver=510000' media='all' />
+<link rel='stylesheet' id='wpml-ate-jobs-sync-ui-css' href='http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/dist/css/ate-jobs-sync/styles.css?ver=510000' media='all' />
+<link rel='stylesheet' id='wpml-select-2-css' href='http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/lib/select2/select2.css?ver=510000' media='all' />
+<link rel='stylesheet' id='wpml-notices-site-key-ui-css' href='http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/dist/css/notices-site-key/styles.css?ver=510000' media='all' />
+<link rel='stylesheet' id='wpml-tm-styles-css' href='http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/res/css/style.css?ver=510000' media='all' />
+<link rel='stylesheet' id='wpml-postEditTranslationEditor-ui-css' href='http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/dist/css/postEditTranslationEditor/styles.css?ver=510000' media='all' />
+<link rel='stylesheet' id='wpml-theme-plugin-localization-scan-css' href='http://127.0.0.1:8096/wp-content/plugins/wpml-string-translation/res/css/theme-plugin-localization.css?ver=5.1.0' media='all' />
+<link rel='stylesheet' id='mediaelement-css' href='http://127.0.0.1:8096/wp-includes/js/mediaelement/mediaelementplayer-legacy.min.css?ver=4.2.17' media='all' />
+<link rel='stylesheet' id='wp-mediaelement-css' href='http://127.0.0.1:8096/wp-includes/js/mediaelement/wp-mediaelement.min.css?ver=6.5.7' media='all' />
+<link rel='stylesheet' id='imgareaselect-css' href='http://127.0.0.1:8096/wp-includes/js/imgareaselect/imgareaselect.css?ver=0.9.8' media='all' />
+<link rel='stylesheet' id='opf-builder-css' href='http://127.0.0.1:8096/wp-content/plugins/open-product-fields-for-woocommerce/assets/css/opf-builder.css?ver=0.1.1' media='all' />
+<link rel='stylesheet' id='woocommerce_admin_styles-css' href='http://127.0.0.1:8096/wp-content/plugins/woocommerce/assets/css/admin.css?ver=9.0.2' media='all' />
+<link rel='stylesheet' id='woocommerce_admin_menu_styles-css' href='http://127.0.0.1:8096/wp-content/plugins/woocommerce/assets/css/menu.css?ver=9.0.2' media='all' />
+<style id='wp-emoji-styles-inline-css'>
+
+	img.wp-smiley, img.emoji {
+		display: inline !important;
+		border: none !important;
+		box-shadow: none !important;
+		height: 1em !important;
+		width: 1em !important;
+		margin: 0 0.07em !important;
+		vertical-align: -0.1em !important;
+		background: none !important;
+		padding: 0 !important;
+	}
+</style>
+<link rel='stylesheet' id='sitepress-style-css' href='http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/res/css/style.css?ver=510000' media='all' />
+<link rel='stylesheet' id='otgs-dialogs-css' href='http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/res/css/otgs-dialogs.css?ver=510000' media='all' />
+<link rel='stylesheet' id='wpml-dialog-css' href='http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/res/css/dialog.css?ver=510000' media='all' />
+<link rel='stylesheet' id='otgs-icons-css' href='http://127.0.0.1:8096/wp-content/plugins/woocommerce-multilingual/vendor/otgs/installer/../../otgs/icons/css/otgs-icons.css?ver=108' media='all' />
+<link rel='stylesheet' id='wpml-wizard-css' href='http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/res/css/wpml-wizard.css?ver=510000' media='all' />
+<link rel='stylesheet' id='otgs-notices-css' href='http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/res/css/otgs-notices.css?ver=510000' media='all' />
+<link rel='stylesheet' id='otgsSwitcher-css' href='http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/vendor/otgs/ui/dist/css/otgsSwitcher.css?ver=6.5.7' media='all' />
+<style id='wp-fonts-local'>
+@font-face{font-family:Inter;font-style:normal;font-weight:300 900;font-display:fallback;src:url('http://127.0.0.1:8096/wp-content/themes/twentytwentyfour/assets/fonts/inter/Inter-VariableFont_slnt,wght.woff2') format('woff2');font-stretch:normal;}
+@font-face{font-family:Cardo;font-style:normal;font-weight:400;font-display:fallback;src:url('http://127.0.0.1:8096/wp-content/themes/twentytwentyfour/assets/fonts/cardo/cardo_normal_400.woff2') format('woff2');}
+@font-face{font-family:Cardo;font-style:italic;font-weight:400;font-display:fallback;src:url('http://127.0.0.1:8096/wp-content/themes/twentytwentyfour/assets/fonts/cardo/cardo_italic_400.woff2') format('woff2');}
+@font-face{font-family:Cardo;font-style:normal;font-weight:700;font-display:fallback;src:url('http://127.0.0.1:8096/wp-content/themes/twentytwentyfour/assets/fonts/cardo/cardo_normal_700.woff2') format('woff2');}
+</style>
+	<script>
+		if ( typeof performance !== 'undefined' && performance.navigation && performance.navigation.type === 2 ) {
+			document.location.reload( true );
+		}
+	</script>
+	<script>
+window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"concatemoji":"http:\/\/127.0.0.1:8096\/wp-includes\/js\/wp-emoji-release.min.js?ver=6.5.7"}};
+/*! This file is auto-generated */
+!function(i,n){var o,s,e;function c(e){try{var t={supportTests:e,timestamp:(new Date).valueOf()};sessionStorage.setItem(o,JSON.stringify(t))}catch(e){}}function p(e,t,n){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);var t=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data),r=(e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(n,0,0),new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data));return t.every(function(e,t){return e===r[t]})}function u(e,t,n){switch(t){case"flag":return n(e,"\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f","\ud83c\udff3\ufe0f\u200b\u26a7\ufe0f")?!1:!n(e,"\ud83c\uddfa\ud83c\uddf3","\ud83c\uddfa\u200b\ud83c\uddf3")&&!n(e,"\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f","\ud83c\udff4\u200b\udb40\udc67\u200b\udb40\udc62\u200b\udb40\udc65\u200b\udb40\udc6e\u200b\udb40\udc67\u200b\udb40\udc7f");case"emoji":return!n(e,"\ud83d\udc26\u200d\u2b1b","\ud83d\udc26\u200b\u2b1b")}return!1}function f(e,t,n){var r="undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?new OffscreenCanvas(300,150):i.createElement("canvas"),a=r.getContext("2d",{willReadFrequently:!0}),o=(a.textBaseline="top",a.font="600 32px Arial",{});return e.forEach(function(e){o[e]=t(a,e,n)}),o}function t(e){var t=i.createElement("script");t.src=e,t.defer=!0,i.head.appendChild(t)}"undefined"!=typeof Promise&&(o="wpEmojiSettingsSupports",s=["flag","emoji"],n.supports={everything:!0,everythingExceptFlag:!0},e=new Promise(function(e){i.addEventListener("DOMContentLoaded",e,{once:!0})}),new Promise(function(t){var n=function(){try{var e=JSON.parse(sessionStorage.getItem(o));if("object"==typeof e&&"number"==typeof e.timestamp&&(new Date).valueOf()<e.timestamp+604800&&"object"==typeof e.supportTests)return e.supportTests}catch(e){}return null}();if(!n){if("undefined"!=typeof Worker&&"undefined"!=typeof OffscreenCanvas&&"undefined"!=typeof URL&&URL.createObjectURL&&"undefined"!=typeof Blob)try{var e="postMessage("+f.toString()+"("+[JSON.stringify(s),u.toString(),p.toString()].join(",")+"));",r=new Blob([e],{type:"text/javascript"}),a=new Worker(URL.createObjectURL(r),{name:"wpTestEmojiSupports"});return void(a.onmessage=function(e){c(n=e.data),a.terminate(),t(n)})}catch(e){}c(n=f(s,u,p))}t(n)}).then(function(e){for(var t in e)n.supports[t]=e[t],n.supports.everything=n.supports.everything&&n.supports[t],"flag"!==t&&(n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&n.supports[t]);n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&!n.supports.flag,n.DOMReady=!1,n.readyCallback=function(){n.DOMReady=!0}}).then(function(){return e}).then(function(){var e;n.supports.everything||(n.readyCallback(),(e=n.source||{}).concatemoji?t(e.concatemoji):e.wpemoji&&e.twemoji&&(t(e.twemoji),t(e.wpemoji)))}))}((window,document),window._wpemojiSettings);
+</script>
+        <script type="text/javascript">
+            // <![CDATA[
+            var icl_ajx_url = 'http://127.0.0.1:8096/wp-admin/admin.php?page=sitepress-multilingual-cms%2Fmenu%2Flanguages.php',
+                                icl_ajx_saved = 'Data saved',
+                icl_ajx_error = 'Error: data not saved',
+                                icl_ajx_domains_not_validated = "Not saved. These domains did not validate: %s",
+                                icl_ajx_domains_duplicate = "Not saved. Two languages point at the same domain: %s",
+                                icl_default_mark = 'default',
+                icl_this_lang = 'es',
+                icl_ajxloaderimg_src = 'http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/res/img/ajax-loader.gif',
+                                icl_cat_adder_msg = 'To add categories that already exist in other languages go to the <a href="http://127.0.0.1:8096/wp-admin/edit-tags.php?taxonomy=category">category management page</a>',
+								icl_choose_text = 'Choose',
+								icl_enabled_text = 'Enabled';
+            // ]]>
+
+			                addLoadEvent(function () {
+                    jQuery.ajax({
+                                    type : "POST",
+                                    url  : ajaxurl,
+                                    data : "action=wpml_health_check&_health_nonce=1d4731c0b3",
+                                    error: function (msg) {
+                                        var icl_initial_language = jQuery('#icl_initial_language');
+                                        if (icl_initial_language.length) {
+                                            icl_initial_language.find('input').attr('disabled', 'disabled');
+                                        }
+                                                                                jQuery('.wrap').prepend('<div class="error"><p>WPML can\'t run normally. There is an installation or server configuration problem. <a href="#" onclick="jQuery(this).parent().next().slideToggle()">Show details</a></p><p style="display:none">AJAX Error: ' + msg.statusText + ' [' + msg.status + ']<br />URL:' + icl_ajx_url + '</p></div>');
+                                    }
+                                });
+                });
+                        </script>
+		<script type="text/javascript">
+wpml_background_tasks = {"endpoints":[{"endpoint":"WPML\\TM\\Settings\\ProcessExistingMediaInPosts","nonce":"b765929e17"},{"endpoint":"WPML\\BackgroundTask\\BackgroundTaskLoader","nonce":"f2cc712ae3"}],"tasks":[{"isPaused":false,"progressTotal":10,"progressDone":0,"payload":[],"taskId":1,"taskStatus":0,"isCompleted":false,"description":"Processing media in posts.","taskType":"WPML\\TM\\Settings\\ProcessExistingMediaInPosts","isDisplayed":true,"hasLock":true}]}</script>
+<script id="wpml-vendor-js-extra">
+var wpmlOutboundLinks = {"source":"wpml-plugin","version":"5.1.0"};
+</script>
+<script src='http://127.0.0.1:8096/wp-admin/load-scripts.php?c=0&amp;load%5Bchunk_0%5D=jquery-core,jquery-migrate,wp-polyfill-inert,regenerator-runtime,wp-polyfill,wp-hooks&amp;ver=6.5.7'></script>
+<script src="http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/dist/js/vendor/app.js?ver=510000" id="wpml-vendor-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/dist/i18n.min.js?ver=5e580eb46a90c2b997e6" id="wp-i18n-js"></script>
+<script id="wp-i18n-js-after">
+wp.i18n.setLocaleData( { 'text direction\u0004ltr': [ 'ltr' ] } );
+</script>
+<script id="wpml-media-setup-ui-js-extra">
+var media_setup = {"endpoints":{"prepareForTranslation":{"endpoint":"WPML\\Media\\Translate\\Endpoint\\PrepareForTranslation","nonce":"11c74f40f2"},"translateExistingMedia":{"endpoint":"WPML\\Media\\Translate\\Endpoint\\TranslateExistingMedia","nonce":"2991af12c0"},"duplicateFeaturedImages":{"endpoint":"WPML\\Media\\Translate\\Endpoint\\DuplicateFeaturedImages","nonce":"1ab945ebcc"},"finishMediaTranslation":{"endpoint":"WPML\\Media\\Translate\\Endpoint\\FinishMediaTranslation","nonce":"70e8d56fa4"},"prepareForSetup":{"endpoint":"WPML\\Media\\Setup\\Endpoint\\PrepareSetup","nonce":"15ea08f698"},"performSetup":{"endpoint":"WPML\\Media\\Setup\\Endpoint\\PerformSetup","nonce":"f640e8b3e5"}}};
+</script>
+<script src="http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/dist/js/media-setup/app.js?ver=510000" id="wpml-media-setup-ui-js"></script>
+<script id="wpml-ate-jobs-sync-ui-js-extra">
+var ate_jobs_sync = {"endpoints":{"auto-translate":{"endpoint":"WPML\\TM\\ATE\\AutoTranslate\\Endpoint\\AutoTranslate","nonce":"96b8df7aa7"},"translation-action":{"endpoint":"WPML\\TM\\ATE\\AutoTranslate\\Endpoint\\TranslationAction","nonce":"8bb2ba3850"},"translate-everything":{"endpoint":"WPML\\TM\\ATE\\TranslateEverything","nonce":"56b5d596bf"},"getCredits":{"endpoint":"WPML\\TM\\ATE\\AutoTranslate\\Endpoint\\GetCredits","nonce":"128a85d7e6"},"getAccountBalances":{"endpoint":"WPML\\TM\\ATE\\AutoTranslate\\Endpoint\\GetAccountBalances","nonce":"56e15aa5aa"},"resume":{"endpoint":"WPML\\TM\\ATE\\AutoTranslate\\Endpoint\\Resume","nonce":"8f28dd6d3a"},"enableATE":{"endpoint":"WPML\\TM\\ATE\\AutoTranslate\\Endpoint\\EnableATE","nonce":"c40b2fec01"},"getATEJobsToSync":{"endpoint":"WPML\\TM\\ATE\\AutoTranslate\\Endpoint\\GetATEJobsToSync","nonce":"219599d86b"},"syncLock":{"endpoint":"WPML\\TM\\ATE\\AutoTranslate\\Endpoint\\SyncLock","nonce":"d97a69d82b"},"untranslatedCount":{"endpoint":"WPML\\Posts\\UntranslatedCount","nonce":"253875225f"},"getJobsCount":{"endpoint":"WPML\\TM\\ATE\\AutoTranslate\\Endpoint\\GetJobsCount","nonce":"ffb782a910"},"getJobsInfo":{"endpoint":"WPML\\TM\\ATE\\AutoTranslate\\Endpoint\\GetJobsInfo","nonce":"61bb5bc38c"},"languages":{"endpoint":"WPML\\TM\\ATE\\AutoTranslate\\Endpoint\\Languages","nonce":"551a7970a0"},"pullPing":{"endpoint":"WPML\\TM\\ATE\\PullDelivery\\AjaxPing","nonce":"ed0593e5a1"},"assignToTranslation":{"endpoint":"WPML\\TM\\ATE\\Retranslation\\Endpoint","nonce":"7d4ec9d104"},"retranslationInfo":{"endpoint":"WPML\\TM\\ATE\\Retranslation\\InfoEndpoint","nonce":"67a922a0db"},"invalidateLangMappingCache":{"endpoint":"WPML\\TM\\ATE\\LanguageMapping\\InvalidateCacheEndpoint","nonce":"ad6c47d99a"}},"urls":{"editor":"admin.php?page=tm%2Fmenu%2Fmain.php&tab=tasks&return_url=http%3A%2F%2F127.0.0.1%3A8096%2Fwp-admin%2Fpost.php%3Fpost%3D14%26action%3Dedit%26lang%3Des%26referer%3Date%26wpml_version%3D5.1.0&lang=es&job_id=###","ateams":"http:\/\/127.0.0.1:8096\/wp-admin\/admin.php?page=wpml-ai-translation-billing","automaticSettings":"http:\/\/127.0.0.1:8096\/wp-admin\/admin.php?page=tm\/menu\/settings","ateConsole":"https:\/\/ams.wpml.org\/mini_app\/main.js","translationQueue":"http:\/\/127.0.0.1:8096\/wp-admin\/admin.php?page=tm%2Fmenu%2Fmain.php&tab=tasks&status=30","currentUrl":"http:\/\/127.0.0.1:8096\/wp-admin\/post.php?post=14&action=edit","editLanguages":"http:\/\/127.0.0.1:8096\/wp-admin\/admin.php?page=tm\/menu\/settings&section=languages","translationDashboard":"http:\/\/127.0.0.1:8096\/wp-admin\/admin.php?page=tm\/menu\/main.php&sm=dashboard"},"jobIdPlaceHolder":"###","languages":[],"isTranslationManager":"1","isTranslatorOrHigher":"1","canRetryAteJobs":"1","shouldTranslateEverything":"","isAutomaticTranslations":"","notEnoughCreditPopup":"<div class=\"wpml-not-enough-credit-popup\"><p>MESSAGE_TEXT<\/p><button class=\"wpml-antd-button wpml-antd-button-primary\" onclick=\"BUTTON_ACTION\">BUTTON_TEXT<\/button><\/div>","ateConsole":{"host":"https:\/\/ams.wpml.org","wpml_host":"http:\/\/127.0.0.1:8096","return_url":"http:\/\/127.0.0.1:8096\/wp-admin\/post.php?post=14&action=edit","secret_key":null,"shared_key":null,"site_key":"","website_uuid":"31363363-3266-5130-b033-343066633535","ui_language":"en","restNonce":"e96af11d9b","container":"#wpml-ate-console-container","wpml_home":"http:\/\/127.0.0.1:8096","languages":{"en":{"code":"en","english_name":"English","native_name":"English","default_locale":"en_US","encode_url":"0","tag":"en","flag_url":"http:\/\/127.0.0.1:8096\/wp-content\/plugins\/sitepress-multilingual-cms\/res\/flags\/en.svg","display_name":"English"},"es":{"code":"es","english_name":"Spanish","native_name":"Espa\u00f1ol","default_locale":"es_ES","encode_url":"0","tag":"es","flag_url":"http:\/\/127.0.0.1:8096\/wp-content\/plugins\/sitepress-multilingual-cms\/res\/flags\/es.svg","display_name":"Spanish"}},"dependencies":{"sitepress-multilingual-cms":{"version":"5.1.0","host_contract":2}},"host_contract":2,"wpml_links":{"buy_words":"https:\/\/app.wpml.org\/account\/words\/buy?utm_source=wpml-plugin&utm_medium=ui&utm_campaign=billing-page&wpv=5.1.0","words_page":"https:\/\/app.wpml.org\/account\/words?manage_credits=1&utm_source=wpml-plugin&utm_medium=ui&utm_campaign=billing-page&wpv=5.1.0","account":"https:\/\/app.wpml.org\/account?utm_source=wpml-plugin&utm_medium=ui&utm_campaign=billing-page&wpv=5.1.0","pricing":"https:\/\/wpml.org\/documentation\/automatic-translation\/automatic-translation-pricing\/?utm_source=wpml-plugin&utm_medium=ui&utm_campaign=billing-page&wpv=5.1.0"}},"isAteActive":"","editorMode":"0","shouldCheckForRetranslation":"","ateCallbacks":[],"pullDelivery":{"enabled":true,"restUrl":"http:\/\/127.0.0.1:8096\/es\/wp-json\/wpml\/tm\/v1\/ate\/pull\/ping","restNonce":"e96af11d9b","heartbeatKey":"wpml_pull_delivery","minPing":30,"snapshot":{"mode":"push_ok","pendingCount":0,"stillInProgress":0,"lastReceivedAt":0,"lastRunAt":0,"nextCheckIn":null,"oldestPendingAt":0,"isStale":false,"offersPickUp":false,"showsDeliveryLine":false,"serverTime":1791322285,"clientRestricted":false,"spendCap":null,"lastAppliedJobs":[],"jobErrorRevision":0}},"settings":{"numberOfParallelDownloads":2,"downloadBatchSize":5}};
+var WPML_TM_SETTINGS = {"hasATEEnabled":"","restUrl":"http:\/\/127.0.0.1:8096\/es\/wp-json","restNonce":"e96af11d9b","syncJobStatesNonce":"93f6609906","batchSyncMaxAttempts":"5","ate":{"hasTranslators":false,"currentStatus":"non-active","statuses":{"non-active":{"type":"error","message":{"status":"Advanced Translation Editor is not active yet","text":"Request activation to receive an email with directions to activate the service."},"button":"Request activation"},"enabled":{"type":"info","message":{"status":"Advanced Translation Editor is being activated","text":""},"button":""},"active":{"type":"success","message":{"status":"Advanced Translation Editor is enabled and active","text":""},"button":"Advanced Translation Editor is active"},"active-not-all-subscribed":{"type":"success","message":{"status":"WPML's Advanced Translation Editor is enabled, but not all your translators can use it.","text":""},"button":"Advanced Translation Editor is active"}}},"currentUser":{"data":{"ID":"1","user_login":"admin","user_nicename":"admin","user_email":"admin@example.test","user_url":"http:\/\/127.0.0.1:8096","user_registered":"2026-10-06 21:30:27","user_activation_key":"","user_status":"0","display_name":"admin"},"ID":1,"caps":{"administrator":true,"wpml_manage_translation_management":true,"wpml_manage_languages":true,"wpml_manage_theme_and_plugin_localization":true,"wpml_manage_support":true,"wpml_manage_woocommerce_multilingual":true,"wpml_operate_woocommerce_multilingual":true,"wpml_manage_media_translation":true,"wpml_manage_navigation":true,"wpml_manage_sticky_links":true,"wpml_manage_string_translation":true,"wpml_manage_translation_analytics":true,"wpml_manage_wp_menus_sync":true,"wpml_manage_taxonomy_translation":true,"wpml_manage_translation_options":true},"cap_key":"wp_capabilities","roles":["administrator"],"allcaps":{"switch_themes":true,"edit_themes":true,"activate_plugins":true,"edit_plugins":true,"edit_users":true,"edit_files":true,"manage_options":true,"moderate_comments":true,"manage_categories":true,"manage_links":true,"upload_files":true,"import":true,"unfiltered_html":true,"edit_posts":true,"edit_others_posts":true,"edit_published_posts":true,"publish_posts":true,"edit_pages":true,"read":true,"level_10":true,"level_9":true,"level_8":true,"level_7":true,"level_6":true,"level_5":true,"level_4":true,"level_3":true,"level_2":true,"level_1":true,"level_0":true,"edit_others_pages":true,"edit_published_pages":true,"publish_pages":true,"delete_pages":true,"delete_others_pages":true,"delete_published_pages":true,"delete_posts":true,"delete_others_posts":true,"delete_published_posts":true,"delete_private_posts":true,"edit_private_posts":true,"read_private_posts":true,"delete_private_pages":true,"edit_private_pages":true,"read_private_pages":true,"delete_users":true,"create_users":true,"unfiltered_upload":true,"edit_dashboard":true,"update_plugins":true,"delete_plugins":true,"install_plugins":true,"update_themes":true,"install_themes":true,"update_core":true,"list_users":true,"remove_users":true,"promote_users":true,"edit_theme_options":true,"delete_themes":true,"export":true,"manage_woocommerce":true,"view_woocommerce_reports":true,"edit_product":true,"read_product":true,"delete_product":true,"edit_products":true,"edit_others_products":true,"publish_products":true,"read_private_products":true,"delete_products":true,"delete_private_products":true,"delete_published_products":true,"delete_others_products":true,"edit_private_products":true,"edit_published_products":true,"manage_product_terms":true,"edit_product_terms":true,"delete_product_terms":true,"assign_product_terms":true,"edit_shop_order":true,"read_shop_order":true,"delete_shop_order":true,"edit_shop_orders":true,"edit_others_shop_orders":true,"publish_shop_orders":true,"read_private_shop_orders":true,"delete_shop_orders":true,"delete_private_shop_orders":true,"delete_published_shop_orders":true,"delete_others_shop_orders":true,"edit_private_shop_orders":true,"edit_published_shop_orders":true,"manage_shop_order_terms":true,"edit_shop_order_terms":true,"delete_shop_order_terms":true,"assign_shop_order_terms":true,"edit_shop_coupon":true,"read_shop_coupon":true,"delete_shop_coupon":true,"edit_shop_coupons":true,"edit_others_shop_coupons":true,"publish_shop_coupons":true,"read_private_shop_coupons":true,"delete_shop_coupons":true,"delete_private_shop_coupons":true,"delete_published_shop_coupons":true,"delete_others_shop_coupons":true,"edit_private_shop_coupons":true,"edit_published_shop_coupons":true,"manage_shop_coupon_terms":true,"edit_shop_coupon_terms":true,"delete_shop_coupon_terms":true,"assign_shop_coupon_terms":true,"wpml_manage_translation_management":true,"wpml_manage_languages":true,"wpml_manage_theme_and_plugin_localization":true,"wpml_manage_support":true,"wpml_manage_woocommerce_multilingual":true,"wpml_operate_woocommerce_multilingual":true,"wpml_manage_media_translation":true,"wpml_manage_navigation":true,"wpml_manage_sticky_links":true,"wpml_manage_string_translation":true,"wpml_manage_translation_analytics":true,"wpml_manage_wp_menus_sync":true,"wpml_manage_taxonomy_translation":true,"wpml_manage_translation_options":true,"manage_translations":true,"administrator":true},"filter":null}};
+var wpmlMinimumRequirements = {"supportPageUrl":"http:\/\/127.0.0.1:8096\/wp-admin\/admin.php?page=sitepress-multilingual-cms\/menu\/support.php","items":[{"id":4,"isValid":false,"title":"WordPress REST API","messages":[{"type":"p","message":"The WordPress REST API must be enabled for WPML to work correctly."},{"type":"alert","message":"The REST API test endpoint <strong>http:\/\/127.0.0.1:8096\/wp-json\/wpml\/v1\/rest\/status?test_get_parameter=1&cachebuster=1791322262<\/strong> is not responding correctly."},{"type":"p","message":"<strong>Common causes:<\/strong>"},{"type":"p","message":"\u2022 A security or firewall plugin is blocking REST API requests<br>\u2022 The REST API has been disabled via the <code>rest_enabled<\/code> filter<br>\u2022 Server configuration (Apache\/Nginx) is interfering with query parameters<br>\u2022 Custom rewrite rules are conflicting with WordPress routing"},{"type":"alert","message":"<strong>Troubleshooting:<\/strong> Try accessing <a href=\"http:\/\/127.0.0.1:8096\/wp-json\/wpml\/v1\/rest\/status?test_get_parameter=1&cachebuster=1791322262\" target=\"_blank\">the test endpoint<\/a> directly in your browser. It should return a JSON response with <code>\"status\":\"valid\"<\/code> and <code>\"get_parameters\":\"valid\"<\/code>."}]}]};
+</script>
+<script src="http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/dist/js/ate-jobs-sync/app.js?ver=510000" id="wpml-ate-jobs-sync-ui-js"></script>
+<script id="utils-js-extra">
+var userSettings = {"url":"\/","uid":"1","time":"1791322285","secure":""};
+</script>
+<script src="http://127.0.0.1:8096/wp-includes/js/utils.min.js?ver=6.5.7" id="utils-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/dist/dom-ready.min.js?ver=f77871ff7694fffea381" id="wp-dom-ready-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/dist/a11y.min.js?ver=d90eebea464f6c09bfd5" id="wp-a11y-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/jquery/ui/core.min.js?ver=1.13.2" id="jquery-ui-core-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/jquery/ui/mouse.min.js?ver=1.13.2" id="jquery-ui-mouse-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/jquery/ui/menu.min.js?ver=1.13.2" id="jquery-ui-menu-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/jquery/ui/autocomplete.min.js?ver=1.13.2" id="jquery-ui-autocomplete-js"></script>
+<script id="sitepress-post-edit-tags-js-extra">
+var icl_post_edit_messages = {"switch_language_title":"You are about to change the language of {post_name}.","switch_language_alert":"All categories and tags will be translated if possible.","connection_loss_alert":"The following terms do not have a translation in the chosen language and will be disconnected from this post:","loading":"Loading Language Data for {post_name}","switch_language_message":"Please make sure that you've saved all the changes. We will have to reload the page.","switch_language_confirm":"Do you want to continue?","_nonce":"125ec751ee","empty_post_title":"(No title for this post yet)","ok_button_label":"OK","cancel_button_label":"Cancel","_get_default_lang_nonce":"fe666873b0"};
+</script>
+<script src="http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/res/js/post-edit-terms.js?ver=510000" id="sitepress-post-edit-tags-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/jquery/ui/resizable.min.js?ver=1.13.2" id="jquery-ui-resizable-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/jquery/ui/draggable.min.js?ver=1.13.2" id="jquery-ui-draggable-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/jquery/ui/controlgroup.min.js?ver=1.13.2" id="jquery-ui-controlgroup-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/jquery/ui/checkboxradio.min.js?ver=1.13.2" id="jquery-ui-checkboxradio-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/jquery/ui/button.min.js?ver=1.13.2" id="jquery-ui-button-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/jquery/ui/dialog.min.js?ver=1.13.2" id="jquery-ui-dialog-js"></script>
+<script src="http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/dist/js/domPurify/app.js?ver=510000" id="wpml-purify-js"></script>
+<script id="sitepress-scripts-js-extra">
+var wpml_core_strings = {"dialogCloseText":"Close"};
+</script>
+<script src="http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/res/js/scripts.js?ver=510000" id="sitepress-scripts-js"></script>
+<script id="sitepress-js-extra">
+var icl_vars = {"restUrl":"http:\/\/127.0.0.1:8096\/es\/wp-json","restNonce":"e96af11d9b","loadLanguageJs":"1","current_language":"es","icl_home":"http:\/\/127.0.0.1:8096\/es\/","ajax_url":"http:\/\/127.0.0.1:8096\/es\/wp-admin\/admin-ajax.php","url_type":"1"};
+</script>
+<script src="http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/res/js/sitepress.js?ver=510000" id="sitepress-js"></script>
+<script id="wpml-notices-site-key-ui-js-extra">
+var wpml_site_key_notice = {"nonce":"7533d13ead","siteUrl":"http:\/\/127.0.0.1:8096"};
+</script>
+<script src="http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/dist/js/notices-site-key/app.js?ver=510000" id="wpml-notices-site-key-ui-js"></script>
+<script src="http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/res/js/scripts-tm.js?ver=510000" id="wpml-tm-scripts-js"></script>
+<script id="wpml-postEditTranslationEditor-ui-js-extra">
+var wpml_translation_post_editor = {"endpoints":{"setEditorMode":{"endpoint":"WPML\\TM\\PostEditScreen\\Endpoints\\SetEditorMode","nonce":"5d603a91ee"}},"urls":{"tmdashboard":"http:\/\/127.0.0.1:8096\/wp-admin\/admin.php?page=tm%2Fmenu%2Fmain.php"},"nonces":{"captureTranslationEditorData":"51a36e11b8"},"trackingMode":"disabled"};
+</script>
+<script src="http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/dist/js/postEditTranslationEditor/app.js?ver=510000" id="wpml-postEditTranslationEditor-ui-js"></script>
+<script id="wpml-theme-plugin-localization-scan-js-extra">
+var wpml_active_plugins_themes = {"plugin":["open-product-fields-for-woocommerce\/open-product-fields-for-woocommerce.php","woocommerce\/woocommerce.php","woocommerce-multilingual\/wpml-woocommerce.php","sitepress-multilingual-cms\/sitepress.php","wpml-string-translation\/plugin.php"],"theme":["twentytwentyfour"]};
+</script>
+<script src="http://127.0.0.1:8096/wp-content/plugins/wpml-string-translation/res/js/theme-plugin-localization/theme-plugin-localization.js?ver=5.1.0" id="wpml-theme-plugin-localization-scan-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/plupload/moxie.min.js?ver=1.3.5" id="moxiejs-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/plupload/plupload.min.js?ver=2.1.9" id="plupload-js"></script>
+<!--[if lt IE 8]>
+<script src="http://127.0.0.1:8096/wp-includes/js/json2.min.js?ver=2015-05-03" id="json2-js"></script>
+<![endif]-->
+<script src="http://127.0.0.1:8096/wp-content/plugins/woocommerce/assets/js/selectWoo/selectWoo.full.min.js?ver=1.0.6" id="selectWoo-js"></script>
+<script id="wc-enhanced-select-js-extra">
+var wc_enhanced_select_params = {"i18n_no_matches":"No matches found","i18n_ajax_error":"Loading failed","i18n_input_too_short_1":"Please enter 1 or more characters","i18n_input_too_short_n":"Please enter %qty% or more characters","i18n_input_too_long_1":"Please delete 1 character","i18n_input_too_long_n":"Please delete %qty% characters","i18n_selection_too_long_1":"You can only select 1 item","i18n_selection_too_long_n":"You can only select %qty% items","i18n_load_more":"Loading more results\u2026","i18n_searching":"Searching\u2026","ajax_url":"http:\/\/127.0.0.1:8096\/wp-admin\/admin-ajax.php","search_products_nonce":"312b8611cd","search_customers_nonce":"76c644a1d6","search_categories_nonce":"0285babe08","search_taxonomy_terms_nonce":"7d4abb20ce","search_product_attributes_nonce":"17f918fdfd","search_pages_nonce":"30fa2300c5"};
+</script>
+<script src="http://127.0.0.1:8096/wp-content/plugins/woocommerce/assets/js/admin/wc-enhanced-select.min.js?ver=9.0.2" id="wc-enhanced-select-js"></script>
+<script src="http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/res/js/post-edit-alert.js?ver=510000" id="wpml-tm-post-edit-alert-js"></script>
+<script src="http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/vendor/otgs/installer/res/js/save-components-setting.js?ver=5.1.0" id="otgs-installer-components-save-setting-js"></script>
+<script id="sitepress-post-edit-js-extra">
+var icl_duplicate_data = {"icl_duplicate_message":"You are updating a duplicate post.\nTo not lose your changes, WPML will set this post to be translated independently.\n","icl_duplicate_fail":"Unable to remove relationship!"};
+</script>
+<script src="http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/res/js/post-edit.js?ver=510000" id="sitepress-post-edit-js"></script>
+<style id="wpml-add-ons-group-style">#adminmenu .wp-submenu li:has(a[href$="page=wpml-add-ons-group"]){background:#2c3339;}#adminmenu .wp-submenu a[href$="page=wpml-add-ons-group"]{pointer-events:none;cursor:default;text-transform:uppercase;font-size:10px;font-weight:600;letter-spacing:.04em;color:#fff;margin-top:6px;}</style>		<script type="text/javascript">
+			var wpml_xliff_ajax_nonce = '700ee1e8a0';
+			var wpml_xliff_upload_nonce = '344c149623';
+		</script>
+		<script type="text/javascript">var _wpColorScheme = {"icons":{"base":"#a7aaad","focus":"#72aee6","current":"#fff"}};</script>
+	<link id="wp-admin-canonical" rel="canonical" href="http://127.0.0.1:8096/wp-admin/post.php?post=14&#038;action=edit" />
+	<script>
+		if ( window.history.replaceState ) {
+			window.history.replaceState( null, null, document.getElementById( 'wp-admin-canonical' ).href + window.location.hash );
+		}
+	</script>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body class="wp-admin wp-core-ui no-js theme-twentytwentyfour  wc-wp-version-gte-53 wc-wp-version-gte-55 post-php auto-fold admin-bar post-type-opf_field_group branch-6-5 version-6-5-7 admin-color-fresh locale-en-us no-customize-support no-svg">
+<script type="text/javascript">
+	document.body.className = document.body.className.replace('no-js','js');
+</script>
+
+<script>
+		(function() {
+			var request, b = document.body, c = 'className', cs = 'customize-support', rcs = new RegExp('(^|\\s+)(no-)?'+cs+'(\\s+|$)');
+
+				request = true;
+	
+			b[c] = b[c].replace( rcs, ' ' );
+			// The customizer requires postMessage and CORS (if the site is cross domain).
+			b[c] += ( window.postMessage && request ? ' ' : ' no-' ) + cs;
+		}());
+	
+</script>
+
+<div id="wpwrap">
+
+<div id="adminmenumain" role="navigation" aria-label="Main menu">
+<a href="#wpbody-content" class="screen-reader-shortcut">Skip to main content</a>
+<a href="#wp-toolbar" class="screen-reader-shortcut">Skip to toolbar</a>
+<div id="adminmenuback"></div>
+<div id="adminmenuwrap">
+<ul id="adminmenu">
+
+
+	<li class="wp-first-item wp-has-submenu wp-not-current-submenu menu-top menu-top-first menu-icon-dashboard menu-top-first menu-top-last" id="menu-dashboard">
+	<a href='index.php' class="wp-first-item wp-has-submenu wp-not-current-submenu menu-top menu-top-first menu-icon-dashboard menu-top-first menu-top-last" aria-haspopup="true"><div class="wp-menu-arrow"><div></div></div><div class='wp-menu-image dashicons-before dashicons-dashboard' aria-hidden='true'><br /></div><div class='wp-menu-name'>Dashboard</div></a>
+	<ul class='wp-submenu wp-submenu-wrap'><li class='wp-submenu-head' aria-hidden='true'>Dashboard</li><li class="wp-first-item"><a href='index.php' class="wp-first-item">Home</a></li><li><a href='update-core.php'>Updates <span class="update-plugins count-1"><span class="update-count">1</span></span></a></li></ul></li>
+	<li class="wp-not-current-submenu wp-menu-separator" aria-hidden="true"><div class="separator"></div></li>
+	<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-post open-if-no-js menu-top-first" id="menu-posts">
+	<a href='edit.php' class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-post open-if-no-js menu-top-first" aria-haspopup="true"><div class="wp-menu-arrow"><div></div></div><div class='wp-menu-image dashicons-before dashicons-admin-post' aria-hidden='true'><br /></div><div class='wp-menu-name'>Posts</div></a>
+	<ul class='wp-submenu wp-submenu-wrap'><li class='wp-submenu-head' aria-hidden='true'>Posts</li><li class="wp-first-item"><a href='edit.php' class="wp-first-item">All Posts</a></li><li><a href='post-new.php'>Add New Post</a></li><li><a href='edit-tags.php?taxonomy=category'>Categories</a></li><li><a href='edit-tags.php?taxonomy=post_tag'>Tags</a></li></ul></li>
+	<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-media" id="menu-media">
+	<a href='upload.php' class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-media" aria-haspopup="true"><div class="wp-menu-arrow"><div></div></div><div class='wp-menu-image dashicons-before dashicons-admin-media' aria-hidden='true'><br /></div><div class='wp-menu-name'>Media</div></a>
+	<ul class='wp-submenu wp-submenu-wrap'><li class='wp-submenu-head' aria-hidden='true'>Media</li><li class="wp-first-item"><a href='upload.php' class="wp-first-item">Library</a></li><li><a href='media-new.php'>Add New Media File</a></li></ul></li>
+	<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-page" id="menu-pages">
+	<a href='edit.php?post_type=page' class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-page" aria-haspopup="true"><div class="wp-menu-arrow"><div></div></div><div class='wp-menu-image dashicons-before dashicons-admin-page' aria-hidden='true'><br /></div><div class='wp-menu-name'>Pages</div></a>
+	<ul class='wp-submenu wp-submenu-wrap'><li class='wp-submenu-head' aria-hidden='true'>Pages</li><li class="wp-first-item"><a href='edit.php?post_type=page' class="wp-first-item">All Pages</a></li><li><a href='post-new.php?post_type=page'>Add New Page</a></li></ul></li>
+	<li class="wp-not-current-submenu menu-top menu-icon-comments menu-top-last" id="menu-comments">
+	<a href='edit-comments.php' class="wp-not-current-submenu menu-top menu-icon-comments menu-top-last" ><div class="wp-menu-arrow"><div></div></div><div class='wp-menu-image dashicons-before dashicons-admin-comments' aria-hidden='true'><br /></div><div class='wp-menu-name'>Comments <span class="awaiting-mod count-0"><span class="pending-count" aria-hidden="true">0</span><span class="comments-in-moderation-text screen-reader-text">0 Comments in moderation</span></span></div></a></li>
+	<li class="wp-not-current-submenu wp-menu-separator woocommerce" aria-hidden="true"><div class="separator"></div></li>
+	<li class="wp-has-submenu wp-has-current-submenu wp-menu-open menu-top toplevel_page_woocommerce menu-top-first" id="toplevel_page_woocommerce"><a href='admin.php?page=wc-admin' class="wp-has-submenu wp-has-current-submenu wp-menu-open menu-top toplevel_page_woocommerce menu-top-first" ><div class="wp-menu-arrow"><div></div></div><div class='wp-menu-image svg' style="background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDI0IDEwMjQiPjxwYXRoIGZpbGw9IiNhMmFhYjIiIGQ9Ik02MTIuMTkyIDQyNi4zMzZjMC02Ljg5Ni0zLjEzNi01MS42LTI4LTUxLjYtMzcuMzYgMC00Ni43MDQgNzIuMjU2LTQ2LjcwNCA4Mi42MjQgMCAzLjQwOCAzLjE1MiA1OC40OTYgMjguMDMyIDU4LjQ5NiAzNC4xOTItLjAzMiA0Ni42NzItNzIuMjg4IDQ2LjY3Mi04OS41MnptMjAyLjE5MiAwYzAtNi44OTYtMy4xNTItNTEuNi0yOC4wMzItNTEuNi0zNy4yOCAwLTQ2LjYwOCA3Mi4yNTYtNDYuNjA4IDgyLjYyNCAwIDMuNDA4IDMuMDcyIDU4LjQ5NiAyNy45NTIgNTguNDk2IDM0LjE5Mi0uMDMyIDQ2LjY4OC03Mi4yODggNDYuNjg4LTg5LjUyek0xNDEuMjk2Ljc2OGMtNjguMjI0IDAtMTIzLjUwNCA1NS40ODgtMTIzLjUwNCAxMjMuOTJ2NjUwLjcyYzAgNjguNDMyIDU1LjI5NiAxMjMuOTIgMTIzLjUwNCAxMjMuOTJoMzM5LjgwOGwxMjMuNTA0IDEyMy45MzZWODk5LjMyOGgyNzguMDQ4YzY4LjIyNCAwIDEyMy41Mi01NS40NzIgMTIzLjUyLTEyMy45MnYtNjUwLjcyYzAtNjguNDMyLTU1LjI5Ni0xMjMuOTItMTIzLjUyLTEyMy45MmgtNzQxLjM2em01MjYuODY0IDQyMi4xNmMwIDU1LjA4OC0zMS4wODggMTU0Ljg4LTEwMi42NCAxNTQuODgtNi4yMDggMC0xOC40OTYtMy42MTYtMjUuNDI0LTYuMDE2LTMyLjUxMi0xMS4xNjgtNTAuMTkyLTQ5LjY5Ni01Mi4zNTItNjYuMjU2IDAgMC0zLjA3Mi0xNy43OTItMy4wNzItNDAuNzUyIDAtMjIuOTkyIDMuMDcyLTQ1LjMyOCAzLjA3Mi00NS4zMjggMTUuNTUyLTc1LjcyOCA0My41NTItMTA2LjczNiA5Ni40NDgtMTA2LjczNiA1OS4wNzItLjAzMiA4My45NjggNTguNTI4IDgzLjk2OCAxMTAuMjA4ek00ODYuNDk2IDMwMi40YzAgMy4zOTItNDMuNTUyIDE0MS4xNjgtNDMuNTUyIDIxMy40MjR2NzUuNzEyYy0yLjU5MiAxMi4wOC00LjE2IDI0LjE0NC0yMS44MjQgMjQuMTQ0LTQ2LjYwOCAwLTg4Ljg4LTE1MS40NzItOTIuMDE2LTE2MS44NC02LjIwOCA2Ljg5Ni02Mi4yNCAxNjEuODQtOTYuNDQ4IDE2MS44NC0yNC44NjQgMC00My41NTItMTEzLjY0OC00Ni42MDgtMTIzLjkzNkMxNzYuNzA0IDQzNi42NzIgMTYwIDMzNC4yMjQgMTYwIDMyNy4zMjhjMC0yMC42NzIgMS4xNTItMzguNzM2IDI2LjA0OC0zOC43MzYgNi4yMDggMCAyMS42IDYuMDY0IDIzLjcxMiAxNy4xNjggMTEuNjQ4IDYyLjAzMiAxNi42ODggMTIwLjUxMiAyOS4xNjggMTg1Ljk2OCAxLjg1NiAyLjkyOCAxLjUwNCA3LjAwOCA0LjU2IDEwLjQzMiAzLjE1Mi0xMC4yODggNjYuOTI4LTE2OC43ODQgOTQuOTYtMTY4Ljc4NCAyMi41NDQgMCAzMC40IDQ0LjU5MiAzMy41MzYgNjEuODI0IDYuMjA4IDIwLjY1NiAxMy4wODggNTUuMjE2IDIyLjQxNiA4Mi43NTIgMC0xMy43NzYgMTIuNDgtMjAzLjEyIDY1LjM5Mi0yMDMuMTIgMTguNTkyLjAzMiAyNi43MDQgNi45MjggMjYuNzA0IDI3LjU2OHpNODcwLjMyIDQyMi45MjhjMCA1NS4wODgtMzEuMDg4IDE1NC44OC0xMDIuNjQgMTU0Ljg4LTYuMTkyIDAtMTguNDQ4LTMuNjE2LTI1LjQyNC02LjAxNi0zMi40MzItMTEuMTY4LTUwLjE3Ni00OS42OTYtNTIuMjg4LTY2LjI1NiAwIDAtMy44ODgtMTcuOTItMy44ODgtNDAuODk2czMuODg4LTQ1LjE4NCAzLjg4OC00NS4xODRjMTUuNTUyLTc1LjcyOCA0My40ODgtMTA2LjczNiA5Ni4zODQtMTA2LjczNiA1OS4xMDQtLjAzMiA4My45NjggNTguNTI4IDgzLjk2OCAxMTAuMjA4eiIvPjwvc3ZnPg==')" aria-hidden='true'><br /></div><div class='wp-menu-name'>WooCommerce<span class="wcml-menu-warn"><i class="otgs-ico-warning"></i></span></div></a>
+	<ul class='wp-submenu wp-submenu-wrap'><li class='wp-submenu-head' aria-hidden='true'>WooCommerce<span class="wcml-menu-warn"><i class="otgs-ico-warning"></i></span></li><li class="wp-first-item"><a href='admin.php?page=wc-admin' class="wp-first-item">Home <span class="awaiting-mod update-plugins remaining-tasks-badge woocommerce-task-list-remaining-tasks-badge"><span class="count-5">5</span></span></a></li><li><a href='edit.php?post_type=shop_order'>Orders</a></li><li class="current"><a href='edit.php?post_type=opf_field_group' class="current" aria-current="page">Field Groups</a></li><li><a href='admin.php?page=wc-admin&#038;path=/customers'>Customers</a></li><li><a href='admin.php?page=wc-reports'>Reports</a></li><li><a href='admin.php?page=wc-settings'>Settings</a></li><li><a href='admin.php?page=wc-status'>Status</a></li><li><a href='admin.php?page=wc-admin&#038;path=/extensions'>Extensions<span class="update-plugins count-0"><span class="update-count">0</span></span></a></li><li class="hide-if-js"><a href='admin.php?page=wc-addons' class="hide-if-js"></a></li><li><a href='admin.php?page=wpml-wcml'>WCML<span class="wcml-menu-warn"><i class="otgs-ico-warning"></i></span></a></li></ul></li>
+	<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-product" id="menu-posts-product">
+	<a href='edit.php?post_type=product' class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-product" aria-haspopup="true"><div class="wp-menu-arrow"><div></div></div><div class='wp-menu-image dashicons-before dashicons-archive' aria-hidden='true'><br /></div><div class='wp-menu-name'>Products</div></a>
+	<ul class='wp-submenu wp-submenu-wrap'><li class='wp-submenu-head' aria-hidden='true'>Products</li><li class="wp-first-item"><a href='edit.php?post_type=product' class="wp-first-item">All Products</a></li><li><a href='post-new.php?post_type=product'>Add New</a></li><li><a href='edit-tags.php?taxonomy=product_cat&amp;post_type=product'>Categories</a></li><li><a href='edit-tags.php?taxonomy=product_tag&amp;post_type=product'>Tags</a></li><li><a href='edit.php?post_type=product&#038;page=product_attributes'>Attributes</a></li><li><a href='edit.php?post_type=product&#038;page=product-reviews'>Reviews</a></li></ul></li>
+	<li class="wp-not-current-submenu menu-top toplevel_page_wc-admin&amp;path=/wc-pay-welcome-page" id="toplevel_page_wc-admin-path--wc-pay-welcome-page">
+	<a href='admin.php?page=wc-admin&path=/wc-pay-welcome-page' class="wp-not-current-submenu menu-top toplevel_page_wc-admin&amp;path=/wc-pay-welcome-page" ><div class="wp-menu-arrow"><div></div></div><div class='wp-menu-image svg' style="background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4NTIiIGhlaWdodD0iNjg0Ij48cGF0aCBmaWxsPSIjYTJhYWIyIiBkPSJNODIgODZ2NTEyaDY4NFY4NlptMCA1OThjLTQ4IDAtODQtMzgtODQtODZWODZDLTIgMzggMzQgMCA4MiAwaDY4NGM0OCAwIDg0IDM4IDg0IDg2djUxMmMwIDQ4LTM2IDg2LTg0IDg2em0zODQtNTU2djQ0aDg2djg0SDM4MnY0NGgxMjhjMjQgMCA0MiAxOCA0MiA0MnYxMjhjMCAyNC0xOCA0Mi00MiA0MmgtNDR2NDRoLTg0di00NGgtODZ2LTg0aDE3MHYtNDRIMzM4Yy0yNCAwLTQyLTE4LTQyLTQyVjIxNGMwLTI0IDE4LTQyIDQyLTQyaDQ0di00NHoiLz48L3N2Zz4=')" aria-hidden='true'><br /></div><div class='wp-menu-name'>Payments <span class="wcpay-menu-badge awaiting-mod count-1"><span class="plugin-count">1</span></span></div></a></li>
+	<li class="wp-has-submenu wp-not-current-submenu menu-top toplevel_page_wc-admin&amp;path=/analytics/overview" id="toplevel_page_wc-admin-path--analytics-overview"><a href='admin.php?page=wc-admin&path=/analytics/overview' class="wp-has-submenu wp-not-current-submenu menu-top toplevel_page_wc-admin&amp;path=/analytics/overview" aria-haspopup="true"><div class="wp-menu-arrow"><div></div></div><div class='wp-menu-image dashicons-before dashicons-chart-bar' aria-hidden='true'><br /></div><div class='wp-menu-name'>Analytics</div></a>
+	<ul class='wp-submenu wp-submenu-wrap'><li class='wp-submenu-head' aria-hidden='true'>Analytics</li><li class="wp-first-item"><a href='admin.php?page=wc-admin&#038;path=/analytics/overview' class="wp-first-item">Overview</a></li><li><a href='admin.php?page=wc-admin&#038;path=/analytics/products'>Products</a></li><li><a href='admin.php?page=wc-admin&#038;path=/analytics/revenue'>Revenue</a></li><li><a href='admin.php?page=wc-admin&#038;path=/analytics/orders'>Orders</a></li><li><a href='admin.php?page=wc-admin&#038;path=/analytics/variations'>Variations</a></li><li><a href='admin.php?page=wc-admin&#038;path=/analytics/categories'>Categories</a></li><li><a href='admin.php?page=wc-admin&#038;path=/analytics/coupons'>Coupons</a></li><li><a href='admin.php?page=wc-admin&#038;path=/analytics/taxes'>Taxes</a></li><li><a href='admin.php?page=wc-admin&#038;path=/analytics/downloads'>Downloads</a></li><li><a href='admin.php?page=wc-admin&#038;path=/analytics/stock'>Stock</a></li><li><a href='admin.php?page=wc-admin&#038;path=/analytics/settings'>Settings</a></li></ul></li>
+	<li class="wp-has-submenu wp-not-current-submenu menu-top toplevel_page_woocommerce-marketing menu-top-last" id="toplevel_page_woocommerce-marketing">
+	<a href='admin.php?page=wc-admin&path=/marketing' class="wp-has-submenu wp-not-current-submenu menu-top toplevel_page_woocommerce-marketing menu-top-last" aria-haspopup="true"><div class="wp-menu-arrow"><div></div></div><div class='wp-menu-image dashicons-before dashicons-megaphone' aria-hidden='true'><br /></div><div class='wp-menu-name'>Marketing</div></a>
+	<ul class='wp-submenu wp-submenu-wrap'><li class='wp-submenu-head' aria-hidden='true'>Marketing</li><li class="wp-first-item"><a href='admin.php?page=wc-admin&path=/marketing' class="wp-first-item">Overview</a></li><li><a href='edit.php?post_type=shop_coupon'>Coupons</a></li></ul></li>
+	<li class="wp-not-current-submenu wp-menu-separator" aria-hidden="true"><div class="separator"></div></li>
+	<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-appearance menu-top-first" id="menu-appearance">
+	<a href='themes.php' class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-appearance menu-top-first" aria-haspopup="true"><div class="wp-menu-arrow"><div></div></div><div class='wp-menu-image dashicons-before dashicons-admin-appearance' aria-hidden='true'><br /></div><div class='wp-menu-name'>Appearance</div></a>
+	<ul class='wp-submenu wp-submenu-wrap'><li class='wp-submenu-head' aria-hidden='true'>Appearance</li><li class="wp-first-item"><a href='themes.php' class="wp-first-item">Themes <span class="update-plugins count-0"><span class="theme-count">0</span></span></a></li><li><a href='site-editor.php'>Editor</a></li></ul></li>
+	<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-plugins" id="menu-plugins">
+	<a href='plugins.php' class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-plugins" aria-haspopup="true"><div class="wp-menu-arrow"><div></div></div><div class='wp-menu-image dashicons-before dashicons-admin-plugins' aria-hidden='true'><br /></div><div class='wp-menu-name'>Plugins <span class="update-plugins count-0"><span class="plugin-count">0</span></span></div></a>
+	<ul class='wp-submenu wp-submenu-wrap'><li class='wp-submenu-head' aria-hidden='true'>Plugins <span class="update-plugins count-0"><span class="plugin-count">0</span></span></li><li class="wp-first-item"><a href='plugins.php' class="wp-first-item">Installed Plugins</a></li><li><a href='plugin-install.php'>Add New Plugin</a></li></ul></li>
+	<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-users" id="menu-users">
+	<a href='users.php' class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-users" aria-haspopup="true"><div class="wp-menu-arrow"><div></div></div><div class='wp-menu-image dashicons-before dashicons-admin-users' aria-hidden='true'><br /></div><div class='wp-menu-name'>Users</div></a>
+	<ul class='wp-submenu wp-submenu-wrap'><li class='wp-submenu-head' aria-hidden='true'>Users</li><li class="wp-first-item"><a href='users.php' class="wp-first-item">All Users</a></li><li><a href='user-new.php'>Add New User</a></li><li><a href='profile.php'>Profile</a></li></ul></li>
+	<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-tools" id="menu-tools">
+	<a href='tools.php' class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-tools" aria-haspopup="true"><div class="wp-menu-arrow"><div></div></div><div class='wp-menu-image dashicons-before dashicons-admin-tools' aria-hidden='true'><br /></div><div class='wp-menu-name'>Tools</div></a>
+	<ul class='wp-submenu wp-submenu-wrap'><li class='wp-submenu-head' aria-hidden='true'>Tools</li><li class="wp-first-item"><a href='tools.php' class="wp-first-item">Available Tools</a></li><li><a href='import.php'>Import</a></li><li><a href='export.php'>Export</a></li><li><a href='site-health.php'>Site Health <span class="menu-counter site-health-counter count-0"><span class="count">0</span></span></a></li><li><a href='export-personal-data.php'>Export Personal Data</a></li><li><a href='erase-personal-data.php'>Erase Personal Data</a></li><li><a href='tools.php?page=action-scheduler'>Scheduled Actions</a></li><li><a href='tools.php?page=opf-import'>Import WAPF Fields</a></li><li><a href='theme-editor.php'>Theme File Editor</a></li><li><a href='plugin-editor.php'>Plugin File Editor</a></li></ul></li>
+	<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-settings menu-top-last" id="menu-settings">
+	<a href='options-general.php' class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-settings menu-top-last" aria-haspopup="true"><div class="wp-menu-arrow"><div></div></div><div class='wp-menu-image dashicons-before dashicons-admin-settings' aria-hidden='true'><br /></div><div class='wp-menu-name'>Settings</div></a>
+	<ul class='wp-submenu wp-submenu-wrap'><li class='wp-submenu-head' aria-hidden='true'>Settings</li><li class="wp-first-item"><a href='options-general.php' class="wp-first-item">General</a></li><li><a href='options-writing.php'>Writing</a></li><li><a href='options-reading.php'>Reading</a></li><li><a href='options-discussion.php'>Discussion</a></li><li><a href='options-media.php'>Media</a></li><li><a href='options-permalink.php'>Permalinks</a></li><li><a href='options-privacy.php'>Privacy</a></li></ul></li>
+	<li class="wp-not-current-submenu wp-menu-separator" aria-hidden="true"><div class="separator"></div></li>
+	<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-generic toplevel_page_tm/menu/main menu-top-first menu-top-last" id="toplevel_page_tm-menu-main"><a href='admin.php?page=tm/menu/main.php' class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-generic toplevel_page_tm/menu/main menu-top-first menu-top-last" aria-haspopup="true"><div class="wp-menu-arrow"><div></div></div><div class='wp-menu-image dashicons-before dashicons-admin-generic' aria-hidden='true'><br /></div><div class='wp-menu-name'>WPML</div></a>
+	<ul class='wp-submenu wp-submenu-wrap'><li class='wp-submenu-head' aria-hidden='true'>WPML</li><li class="wp-first-item"><a href='admin.php?page=tm/menu/main.php' class="wp-first-item">Translations</a></li><li><a href='admin.php?page=tm/menu/settings'>Settings</a></li><li><a href='admin.php?page=sitepress-multilingual-cms/menu/support.php'>Support</a></li><li><a href='admin.php?page=wpml-activate-update'>Activate &#038; Update</a></li></ul></li><li id="collapse-menu" class="hide-if-no-js"><button type="button" id="collapse-button" aria-label="Collapse Main menu" aria-expanded="true"><span class="collapse-button-icon" aria-hidden="true"></span><span class="collapse-button-label">Collapse menu</span></button></li></ul>
+</div>
+</div>
+<div id="wpcontent">
+
+		<div id="wpadminbar" class="nojq nojs">
+						<div class="quicklinks" id="wp-toolbar" role="navigation" aria-label="Toolbar">
+				<ul role='menu' id='wp-admin-bar-root-default' class="ab-top-menu"><li id='wp-admin-bar-menu-toggle'><a class='ab-item' role="menuitem" href='#'><span class="ab-icon" aria-hidden="true"></span><span class="screen-reader-text">Menu</span></a></li><li id='wp-admin-bar-wp-logo' class="menupop"><a class='ab-item' role="menuitem" aria-expanded="false" href='http://127.0.0.1:8096/wp-admin/about.php'><span class="ab-icon" aria-hidden="true"></span><span class="screen-reader-text">About WordPress</span></a><div class="ab-sub-wrapper"><ul role='menu' aria-label='About WordPress' id='wp-admin-bar-wp-logo-default' class="ab-submenu"><li id='wp-admin-bar-about'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8096/wp-admin/about.php'>About WordPress</a></li><li id='wp-admin-bar-contribute'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8096/wp-admin/contribute.php'>Get Involved</a></li></ul><ul role='menu' aria-label='About WordPress' id='wp-admin-bar-wp-logo-external' class="ab-sub-secondary ab-submenu"><li id='wp-admin-bar-wporg'><a class='ab-item' role="menuitem" href='https://wordpress.org/'>WordPress.org</a></li><li id='wp-admin-bar-documentation'><a class='ab-item' role="menuitem" href='https://wordpress.org/documentation/'>Documentation</a></li><li id='wp-admin-bar-learn'><a class='ab-item' role="menuitem" href='https://learn.wordpress.org/'>Learn WordPress</a></li><li id='wp-admin-bar-support-forums'><a class='ab-item' role="menuitem" href='https://wordpress.org/support/forums/'>Support</a></li><li id='wp-admin-bar-feedback'><a class='ab-item' role="menuitem" href='https://wordpress.org/support/forum/requests-and-feedback'>Feedback</a></li></ul></div></li><li id='wp-admin-bar-site-name' class="menupop"><a class='ab-item' role="menuitem" aria-expanded="false" href='http://127.0.0.1:8096/'>OPF WPML 5.1.0 Runtime</a><div class="ab-sub-wrapper"><ul role='menu' aria-label='OPF WPML 5.1.0 Runtime' id='wp-admin-bar-site-name-default' class="ab-submenu"><li id='wp-admin-bar-view-site'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8096/'>Visit Site</a></li><li id='wp-admin-bar-view-store'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8096/shop/'>Visit Store</a></li></ul></div></li><li id='wp-admin-bar-updates'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8096/wp-admin/update-core.php'><span class="ab-icon" aria-hidden="true"></span><span class="ab-label" aria-hidden="true">1</span><span class="screen-reader-text updates-available-text">1 update available</span></a></li><li id='wp-admin-bar-comments'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8096/wp-admin/edit-comments.php'><span class="ab-icon" aria-hidden="true"></span><span class="ab-label awaiting-mod pending-count count-0" aria-hidden="true">0</span><span class="screen-reader-text comments-in-moderation-text">0 Comments in moderation</span></a></li><li id='wp-admin-bar-new-content' class="menupop"><a class='ab-item' role="menuitem" aria-expanded="false" href='http://127.0.0.1:8096/wp-admin/post-new.php'><span class="ab-icon" aria-hidden="true"></span><span class="ab-label">New</span></a><div class="ab-sub-wrapper"><ul role='menu' aria-label='New' id='wp-admin-bar-new-content-default' class="ab-submenu"><li id='wp-admin-bar-new-post'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8096/wp-admin/post-new.php'>Post</a></li><li id='wp-admin-bar-new-media'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8096/wp-admin/media-new.php'>Media</a></li><li id='wp-admin-bar-new-page'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8096/wp-admin/post-new.php?post_type=page'>Page</a></li><li id='wp-admin-bar-new-product'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8096/wp-admin/post-new.php?post_type=product'>Product</a></li><li id='wp-admin-bar-new-shop_order'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8096/wp-admin/post-new.php?post_type=shop_order'>Order</a></li><li id='wp-admin-bar-new-shop_coupon'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8096/wp-admin/post-new.php?post_type=shop_coupon'>Coupon</a></li><li id='wp-admin-bar-new-opf_field_group'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8096/wp-admin/post-new.php?post_type=opf_field_group'>Field Group</a></li><li id='wp-admin-bar-new-user'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8096/wp-admin/user-new.php'>User</a></li></ul></div></li><li id='wp-admin-bar-ate-status-bar' class="menupop wpml-status-bar-hidden"><div class="ab-item ab-empty-item" role="menuitem" aria-expanded="false"><i id="wpml-status-bar-icon" class="otgs-ico otgs-ico-wpml" aria-hidden="true"></i><span class="screen-reader-text" id="wpml-ate-status-bar-label">WPML automatic translation</span><span id="wp-admin-bar-ate-status-bar-badge"></span></div><div class="ab-sub-wrapper"><ul role='menu' id='wp-admin-bar-ate-status-bar-default' class="ab-submenu"><li id='wp-admin-bar-ate-status-bar-content'><div class="ab-item ab-empty-item" role="menuitem"></div><div id="wpml-ate-status-bar-content"></div></li></ul></div></li><li id='wp-admin-bar-WPML_ALS' class="menupop"><div class="ab-item ab-empty-item" role="menuitem" aria-expanded="false"><span title="Showing content in: Spanish"><img class="icl_als_iclflag" width="18" height="12" src="http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/res/flags/es.svg" />&nbsp;Spanish</span>&nbsp;<i  class="otgs-ico-help js-otgs-popover-tooltip" data-tippy-zIndex="999999" title="This language selector determines which content to display. You can choose items in a specific language or in all languages. To change the language of the WordPress Admin interface, go to your profile." ></i></div><div class="ab-sub-wrapper"><ul role='menu' id='wp-admin-bar-WPML_ALS-default' class="ab-submenu"><li id='wp-admin-bar-WPML_ALS_en'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8096/wp-admin/post-new.php?post_type=opf_field_group&#038;source_lang=es&#038;lang=en&#038;admin_bar=1' title='Show content in: English'><img class="icl_als_iclflag" width="18" height="12" src="http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/res/flags/en.svg" />&nbsp;English</a></li><li id='wp-admin-bar-WPML_ALS_all'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8096/wp-admin/post.php?post=14&#038;action=edit&#038;lang=all' title='Show content in: All languages'><i class="otgs-ico-wpml" aria-hidden="true"></i>&nbsp;All languages</a></li></ul></div></li></ul><ul role='menu' id='wp-admin-bar-top-secondary' class="ab-top-secondary ab-top-menu"><li id='wp-admin-bar-my-account' class="menupop with-avatar"><a class='ab-item' role="menuitem" aria-expanded="false" href='http://127.0.0.1:8096/wp-admin/profile.php'>Howdy, <span class="display-name">admin</span><img alt='' src='http://2.gravatar.com/avatar/51965088c5db83c3fd307f308d25198a?s=26&#038;d=mm&#038;r=g' srcset='http://2.gravatar.com/avatar/51965088c5db83c3fd307f308d25198a?s=52&#038;d=mm&#038;r=g 2x' class='avatar avatar-26 photo' height='26' width='26' loading='lazy' decoding='async'/></a><div class="ab-sub-wrapper"><ul role='menu' aria-label='Howdy, admin' id='wp-admin-bar-user-actions' class="ab-submenu"><li id='wp-admin-bar-user-info'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8096/wp-admin/profile.php'><img alt='' src='http://2.gravatar.com/avatar/51965088c5db83c3fd307f308d25198a?s=64&#038;d=mm&#038;r=g' srcset='http://2.gravatar.com/avatar/51965088c5db83c3fd307f308d25198a?s=128&#038;d=mm&#038;r=g 2x' class='avatar avatar-64 photo' height='64' width='64' loading='lazy' decoding='async'/><span class='display-name'>admin</span><span class='display-name edit-profile'>Edit Profile</span></a></li><li id='wp-admin-bar-logout'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8096/wp-login.php?action=logout&#038;_wpnonce=a25bb1031c'>Log Out</a></li></ul></div></li></ul>			</div>
+		</div>
+
+		<div id="wpml-ate-console-container"></div>
+<div id="wpbody" role="main">
+
+<div id="wpbody-content">
+		<div id="screen-meta" class="metabox-prefs">
+
+			<div id="contextual-help-wrap" class="hidden no-sidebar" tabindex="-1" aria-label="Contextual Help Tab">
+				<div id="contextual-help-back"></div>
+				<div id="contextual-help-columns">
+					<div class="contextual-help-tabs">
+						<ul>
+												</ul>
+					</div>
+
+					
+					<div class="contextual-help-tabs-wrap">
+											</div>
+				</div>
+			</div>
+		<div id="screen-options-wrap" class="hidden" tabindex="-1" aria-label="Screen Options Tab">
+<form id='adv-settings' method='post'>
+		<fieldset class="metabox-prefs">
+		<legend>Screen elements</legend>
+		<p>
+			Some screen elements can be shown or hidden by using the checkboxes.			Expand or collapse the elements by clicking on their headings, and arrange them by dragging their headings or by clicking on the up and down arrows.		</p>
+		<div class="metabox-prefs-container">
+		<label for="opf-placement-hide"><input class="hide-postbox-tog" name="opf-placement-hide" type="checkbox" id="opf-placement-hide" value="opf-placement"  checked='checked' />Placement</label><label for="opf-builder-hide"><input class="hide-postbox-tog" name="opf-builder-hide" type="checkbox" id="opf-builder-hide" value="opf-builder"  checked='checked' />Fields</label><label for="slugdiv-hide"><input class="hide-postbox-tog" name="slugdiv-hide" type="checkbox" id="slugdiv-hide" value="slugdiv"  />Slug</label>		</div>
+		</fieldset>
+				<fieldset class='columns-prefs'>
+		<legend class="screen-layout">Layout</legend>
+					<label class="columns-prefs-1">
+			<input type='radio' name='screen_columns' value='1'  />
+			1 column			</label>
+					<label class="columns-prefs-2">
+			<input type='radio' name='screen_columns' value='2'  checked='checked' />
+			2 columns			</label>
+				</fieldset>
+		<fieldset class="editor-expand hidden"><legend>Additional settings</legend><label for="editor-expand-toggle"><input type="checkbox" id="editor-expand-toggle" checked='checked' />Enable full-height editor and distraction-free functionality.</label></fieldset>
+<input type="hidden" id="screenoptionnonce" name="screenoptionnonce" value="35de13679a" />
+</form>
+</div>		</div>
+				<div id="screen-meta-links">
+					<div id="screen-options-link-wrap" class="hide-if-no-js screen-meta-toggle">
+			<button type="button" id="show-settings-link" class="button show-settings" aria-controls="screen-options-wrap" aria-expanded="false">Screen Options</button>
+			</div>
+					</div>
+		<div class="notice notice-warning update-nag inline"><a href="https://wordpress.org/documentation/wordpress-version/version-7-1-3/">WordPress 7.1.3</a> is available! <a href="http://127.0.0.1:8096/wp-admin/update-core.php" aria-label="Please update WordPress now">Please update now</a>.</div><div class="error notice-error is-dismissible notice otgs-notice" data-id="wpml-site-key-notice-regular" data-group="wpml-site-key-notices" data-nonce="6520edf90f"><p><div id="wpml-site-key-notice-wpml-site-key-notice-translation" class="wpml-site-key-notice-container" data-notice-id="wpml-site-key-notice-translation" style="margin-top: 5px"><h2>A New Site Key Is Required</h2><p>To continue using WPML features like automatic translation and plugin updates, please register your site again. Don&#039;t worry, your existing content and translations are safe.</p><form class="wpml-register-form"><label for="wpml_site_key">Site key:</label><div class="wpml-register-form__input"><input type="text" size="20" name="wpml_site_key" id="wpml_site_key" class="" placeholder="Enter your site key here" value=""><button type="submit" class="button-secondary" disabled="">Register</button></div></form><div class="wpml-notice-help"><a href="https://app.wpml.org/account/sites?add=http://127.0.0.1:8096&amp;utm_source=wpml-plugin&amp;utm_medium=notice&amp;utm_campaign=account&amp;wpv=5.1.0" target="_blank" rel="noopener noreferrer">Get a key for this site</a></div></div></p><button type="button" class="otgs-notice-dismiss notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>
+<div class="wrap">
+<h1 class="wp-heading-inline">
+Edit Field Group</h1>
+
+ <a href="http://127.0.0.1:8096/wp-admin/post-new.php?post_type=opf_field_group" class="page-title-action">Add New Post</a>
+<hr class="wp-header-end">
+
+<div id="lost-connection-notice" class="notice error hidden"><p><span class="spinner"></span> <strong>Connection lost.</strong> Saving has been disabled until you are reconnected. <span class="hide-if-no-sessionstorage">This post is being backed up in your browser, just in case.</span></p></div><form name="post" action="post.php" method="post" id="post"
+>
+<input type="hidden" id="_wpnonce" name="_wpnonce" value="c979223108" /><input type="hidden" name="_wp_http_referer" value="/wp-admin/post.php?post=14&#038;action=edit" /><input type="hidden" id="user-id" name="user_ID" value="1" />
+<input type="hidden" id="hiddenaction" name="action" value="editpost" />
+<input type="hidden" id="originalaction" name="originalaction" value="editpost" />
+<input type="hidden" id="post_author" name="post_author" value="0" />
+<input type="hidden" id="post_type" name="post_type" value="opf_field_group" />
+<input type="hidden" id="original_post_status" name="original_post_status" value="publish" />
+<input type="hidden" id="referredby" name="referredby" value="" />
+<input type="hidden" id="active_post_lock" value="1791322285:1" />
+	<input type="hidden" name="_wp_original_http_referer" value="" /><input type='hidden' id='post_ID' name='post_ID' value='14' /><input type="hidden" id="meta-box-order-nonce" name="meta-box-order-nonce" value="dc687d2008" /><input type="hidden" id="closedpostboxesnonce" name="closedpostboxesnonce" value="c4a00a8fbe" />
+<input type="hidden" id="original_post_title" name="original_post_title" value="Gift options" />
+<div id="poststuff">
+<div id="post-body" class="metabox-holder columns-2">
+<div id="post-body-content">
+
+<div id="titlediv">
+<div id="titlewrap">
+		<label class="screen-reader-text" id="title-prompt-text" for="title">Add title</label>
+	<input type="text" name="post_title" size="30" value="Gift options" id="title" spellcheck="true" autocomplete="off" />
+</div>
+	<div class="inside">
+	</div>
+	<input type="hidden" id="samplepermalinknonce" name="samplepermalinknonce" value="2c78a415b3" /></div><!-- /titlediv -->
+	</div><!-- /post-body-content -->
+
+<div id="postbox-container-1" class="postbox-container">
+<div id="side-sortables" class="meta-box-sortables"><div id="opf-placement" class="postbox " >
+<div class="postbox-header"><h2 class="hndle">Placement</h2>
+<div class="handle-actions hide-if-no-js"><button type="button" class="handle-order-higher" aria-disabled="false" aria-describedby="opf-placement-handle-order-higher-description"><span class="screen-reader-text">Move up</span><span class="order-higher-indicator" aria-hidden="true"></span></button><span class="hidden" id="opf-placement-handle-order-higher-description">Move Placement box up</span><button type="button" class="handle-order-lower" aria-disabled="false" aria-describedby="opf-placement-handle-order-lower-description"><span class="screen-reader-text">Move down</span><span class="order-lower-indicator" aria-hidden="true"></span></button><span class="hidden" id="opf-placement-handle-order-lower-description">Move Placement box down</span><button type="button" class="handlediv" aria-expanded="true"><span class="screen-reader-text">Toggle panel: Placement</span><span class="toggle-indicator" aria-hidden="true"></span></button></div></div><div class="inside">
+		<p class="description">Leave product and customer conditions empty to show this group everywhere.</p>
+					<p><label for="opf-placement-products-picker"><strong>Include products</strong></label></p>
+			<select id="opf-placement-products-picker" class="wc-product-search" multiple="multiple" style="width:100%" data-placeholder="Search for a product…" data-action="woocommerce_json_search_products">
+							</select>
+					<p><label for="opf-placement-excluded-products-picker"><strong>Exclude products</strong></label></p>
+			<select id="opf-placement-excluded-products-picker" class="wc-product-search" multiple="multiple" style="width:100%" data-placeholder="Search for a product…" data-action="woocommerce_json_search_products">
+							</select>
+				<p><label for="opf-placement-products"><strong>Include product IDs</strong></label></p>
+		<input type="text" id="opf-placement-products" class="widefat" inputmode="numeric" pattern="\s*[1-9][0-9]*(\s*,\s*[1-9][0-9]*)*\s*" value="">
+		<p><label for="opf-placement-excluded-products"><strong>Exclude product IDs</strong></label></p>
+		<input type="text" id="opf-placement-excluded-products" class="widefat" inputmode="numeric" pattern="\s*[1-9][0-9]*(\s*,\s*[1-9][0-9]*)*\s*" value="">
+		<p class="description">Search by product name or ID, or enter comma-separated IDs directly. Include matches any listed product; exclude removes every listed product. For variations, use the parent product.</p>
+					<p><label for="opf-placement-variations-picker"><strong>Show on variations</strong></label></p>
+			<select id="opf-placement-variations-picker" class="wc-product-search" multiple="multiple" style="width:100%" data-placeholder="Search for a variation…" data-action="woocommerce_json_search_products_and_variations">
+							</select>
+					<p><label for="opf-placement-excluded-variations-picker"><strong>Hide on variations</strong></label></p>
+			<select id="opf-placement-excluded-variations-picker" class="wc-product-search" multiple="multiple" style="width:100%" data-placeholder="Search for a variation…" data-action="woocommerce_json_search_products_and_variations">
+							</select>
+				<p><label for="opf-placement-variations"><strong>Include variation IDs</strong></label></p>
+		<input type="text" id="opf-placement-variations" class="widefat" inputmode="numeric" pattern="\s*[1-9][0-9]*(\s*,\s*[1-9][0-9]*)*\s*" value="">
+		<p><label for="opf-placement-excluded-variations"><strong>Exclude variation IDs</strong></label></p>
+		<input type="text" id="opf-placement-excluded-variations" class="widefat" inputmode="numeric" pattern="\s*[1-9][0-9]*(\s*,\s*[1-9][0-9]*)*\s*" value="">
+		<p class="description">Variation rules gate the fields while the shopper picks options: included variations show this group&#039;s fields, excluded ones hide them. The group still needs a matching product/category rule (or no rules) to render.</p>
+		<p><strong>Show only on variations with attribute</strong></p>
+		<select multiple size="5" id="opf-placement-variation-attributes" style="width:100%">
+					</select>
+		<p><strong>Hide on products offering attribute values</strong></p>
+		<select multiple size="5" id="opf-placement-excluded-variation-attributes" style="width:100%">
+					</select>
+		<p class="description">Attribute rules use attr|value pairs; “any value” matches every filled choice of that attribute on the selected variation. Excluded pairs keep the whole group off products that offer them.</p>
+		<p><strong>Product categories</strong></p>
+		<select multiple size="8" id="opf-placement-cats" style="width:100%">
+							<option value="18" >
+					Regalos				</option>
+					</select>
+		<p><strong>Product tags</strong></p>
+		<select multiple size="8" id="opf-placement-tags" style="width:100%">
+							<option value="20" >
+					hecho a mano				</option>
+					</select>
+		<p><strong>Exclude categories</strong></p>
+		<select multiple size="5" id="opf-placement-excluded-cats" style="width:100%">
+							<option value="18" >
+					Regalos				</option>
+					</select>
+		<p><strong>Exclude tags</strong></p>
+		<select multiple size="5" id="opf-placement-excluded-tags" style="width:100%">
+							<option value="20" >
+					hecho a mano				</option>
+					</select>
+		<p><strong>Product types</strong></p>
+		<select multiple size="4" id="opf-placement-types" style="width:100%">
+							<option value="simple" >
+					Simple product				</option>
+							<option value="grouped" >
+					Grouped product				</option>
+							<option value="external" >
+					External/Affiliate product				</option>
+							<option value="variable" >
+					Variable product				</option>
+					</select>
+		<p><strong>Exclude product types</strong></p>
+		<select multiple size="4" id="opf-placement-excluded-types" style="width:100%">
+							<option value="simple" >
+					Simple product				</option>
+							<option value="grouped" >
+					Grouped product				</option>
+							<option value="external" >
+					External/Affiliate product				</option>
+							<option value="variable" >
+					Variable product				</option>
+					</select>
+		<p><strong>Attribute values</strong></p>
+		<select multiple size="5" id="opf-placement-attributes" style="width:100%">
+					</select>
+		<p><strong>Exclude attribute values</strong></p>
+		<select multiple size="5" id="opf-placement-excluded-attributes" style="width:100%">
+					</select>
+		<p><strong>Customer login</strong></p>
+		<select id="opf-placement-auth" style="width:100%">
+			<option value=""  selected='selected'>Any visitor</option>
+			<option value="logged_in" >Logged in</option>
+			<option value="logged_out" >Not logged in</option>
+		</select>
+		<p><strong>Require every selected user role</strong></p>
+		<select multiple size="5" id="opf-placement-roles" style="width:100%">
+							<option value="administrator" >Administrator</option>
+							<option value="editor" >Editor</option>
+							<option value="author" >Author</option>
+							<option value="contributor" >Contributor</option>
+							<option value="subscriber" >Subscriber</option>
+							<option value="customer" >Customer</option>
+							<option value="shop_manager" >Shop manager</option>
+					</select>
+		<p><strong>Exclude every selected user role</strong></p>
+		<select multiple size="5" id="opf-placement-excluded-roles" style="width:100%">
+							<option value="administrator" >Administrator</option>
+							<option value="editor" >Editor</option>
+							<option value="author" >Author</option>
+							<option value="contributor" >Contributor</option>
+							<option value="subscriber" >Subscriber</option>
+							<option value="customer" >Customer</option>
+							<option value="shop_manager" >Shop manager</option>
+					</select>
+					<p><strong>Current language</strong></p>
+			<select id="opf-placement-language-operator" style="width:100%">
+				<option value="in"  selected='selected'>Is</option>
+				<option value="not_in" >Is not</option>
+			</select>
+			<select id="opf-placement-language" style="width:100%">
+				<option value="">Any language</option>
+													<option value="en" >English</option>
+									<option value="es" >Español</option>
+							</select>
+				<p class="description">Placement changes are saved together with the fields.</p>
+		</div>
+</div>
+<div id="submitdiv" class="postbox " >
+<div class="postbox-header"><h2 class="hndle">Publish</h2>
+<div class="handle-actions hide-if-no-js"><button type="button" class="handle-order-higher" aria-disabled="false" aria-describedby="submitdiv-handle-order-higher-description"><span class="screen-reader-text">Move up</span><span class="order-higher-indicator" aria-hidden="true"></span></button><span class="hidden" id="submitdiv-handle-order-higher-description">Move Publish box up</span><button type="button" class="handle-order-lower" aria-disabled="false" aria-describedby="submitdiv-handle-order-lower-description"><span class="screen-reader-text">Move down</span><span class="order-lower-indicator" aria-hidden="true"></span></button><span class="hidden" id="submitdiv-handle-order-lower-description">Move Publish box down</span><button type="button" class="handlediv" aria-expanded="true"><span class="screen-reader-text">Toggle panel: Publish</span><span class="toggle-indicator" aria-hidden="true"></span></button></div></div><div class="inside">
+<div class="submitbox" id="submitpost">
+
+<div id="minor-publishing">
+
+		<div style="display:none;">
+		<p class="submit"><input type="submit" name="save" id="save" class="button" value="Save"  /></p>	</div>
+
+	<div id="minor-publishing-actions">
+		<div id="save-action">
+					</div>
+
+				<div class="clear"></div>
+	</div>
+
+	<div id="misc-publishing-actions">
+		<div class="misc-pub-section misc-pub-post-status">
+			Status:			<span id="post-status-display">
+				Published			</span>
+
+							<a href="#post_status"  class="edit-post-status hide-if-no-js" role="button"><span aria-hidden="true">Edit</span> <span class="screen-reader-text">
+					Edit status				</span></a>
+
+				<div id="post-status-select" class="hide-if-js">
+					<input type="hidden" name="hidden_post_status" id="hidden_post_status" value="publish" />
+					<label for="post_status" class="screen-reader-text">
+						Set status					</label>
+					<select name="post_status" id="post_status">
+													<option selected='selected' value='publish'>Published</option>
+													<option value='pending'>Pending Review</option>
+													<option value='draft'>Draft</option>
+											</select>
+					<a href="#post_status" class="save-post-status hide-if-no-js button">OK</a>
+					<a href="#post_status" class="cancel-post-status hide-if-no-js button-cancel">Cancel</a>
+				</div>
+						</div>
+
+		<div class="misc-pub-section misc-pub-visibility" id="visibility">
+			Visibility:			<span id="post-visibility-display">
+				Public			</span>
+
+							<a href="#visibility" class="edit-visibility hide-if-no-js" role="button"><span aria-hidden="true">Edit</span> <span class="screen-reader-text">
+					Edit visibility				</span></a>
+
+				<div id="post-visibility-select" class="hide-if-js">
+					<input type="hidden" name="hidden_post_password" id="hidden-post-password" value="" />
+					
+					<input type="hidden" name="hidden_post_visibility" id="hidden-post-visibility" value="public" />
+					<input type="radio" name="visibility" id="visibility-radio-public" value="public"  checked='checked' /> <label for="visibility-radio-public" class="selectit">Public</label><br />
+
+					
+					<input type="radio" name="visibility" id="visibility-radio-password" value="password"  /> <label for="visibility-radio-password" class="selectit">Password protected</label><br />
+					<span id="password-span"><label for="post_password">Password:</label> <input type="text" name="post_password" id="post_password" value=""  maxlength="255" /><br /></span>
+
+					<input type="radio" name="visibility" id="visibility-radio-private" value="private"  /> <label for="visibility-radio-private" class="selectit">Private</label><br />
+
+					<p>
+						<a href="#visibility" class="save-post-visibility hide-if-no-js button">OK</a>
+						<a href="#visibility" class="cancel-post-visibility hide-if-no-js button-cancel">Cancel</a>
+					</p>
+				</div>
+					</div>
+
+					<div class="misc-pub-section curtime misc-pub-curtime">
+				<span id="timestamp">
+					Published on: <b>Oct 6, 2026 at 21:30</b>				</span>
+				<a href="#edit_timestamp" class="edit-timestamp hide-if-no-js" role="button">
+					<span aria-hidden="true">Edit</span>
+					<span class="screen-reader-text">
+						Edit date and time					</span>
+				</a>
+				<fieldset id="timestampdiv" class="hide-if-js">
+					<legend class="screen-reader-text">
+						Date and time					</legend>
+					<div class="timestamp-wrap"><label><span class="screen-reader-text">Month</span><select class="form-required" id="mm" name="mm">
+			<option value="01" data-text="Jan" >01-Jan</option>
+			<option value="02" data-text="Feb" >02-Feb</option>
+			<option value="03" data-text="Mar" >03-Mar</option>
+			<option value="04" data-text="Apr" >04-Apr</option>
+			<option value="05" data-text="May" >05-May</option>
+			<option value="06" data-text="Jun" >06-Jun</option>
+			<option value="07" data-text="Jul" >07-Jul</option>
+			<option value="08" data-text="Aug" >08-Aug</option>
+			<option value="09" data-text="Sep" >09-Sep</option>
+			<option value="10" data-text="Oct"  selected='selected'>10-Oct</option>
+			<option value="11" data-text="Nov" >11-Nov</option>
+			<option value="12" data-text="Dec" >12-Dec</option>
+</select></label> <label><span class="screen-reader-text">Day</span><input type="text" id="jj" name="jj" value="06" size="2" maxlength="2" autocomplete="off" class="form-required" /></label>, <label><span class="screen-reader-text">Year</span><input type="text" id="aa" name="aa" value="2026" size="4" maxlength="4" autocomplete="off" class="form-required" /></label> at <label><span class="screen-reader-text">Hour</span><input type="text" id="hh" name="hh" value="21" size="2" maxlength="2" autocomplete="off" class="form-required" /></label>:<label><span class="screen-reader-text">Minute</span><input type="text" id="mn" name="mn" value="30" size="2" maxlength="2" autocomplete="off" class="form-required" /></label></div><input type="hidden" id="ss" name="ss" value="46" />
+
+<input type="hidden" id="hidden_mm" name="hidden_mm" value="10" />
+<input type="hidden" id="cur_mm" name="cur_mm" value="10" />
+<input type="hidden" id="hidden_jj" name="hidden_jj" value="06" />
+<input type="hidden" id="cur_jj" name="cur_jj" value="06" />
+<input type="hidden" id="hidden_aa" name="hidden_aa" value="2026" />
+<input type="hidden" id="cur_aa" name="cur_aa" value="2026" />
+<input type="hidden" id="hidden_hh" name="hidden_hh" value="21" />
+<input type="hidden" id="cur_hh" name="cur_hh" value="21" />
+<input type="hidden" id="hidden_mn" name="hidden_mn" value="30" />
+<input type="hidden" id="cur_mn" name="cur_mn" value="31" />
+
+<p>
+<a href="#edit_timestamp" class="save-timestamp hide-if-no-js button">OK</a>
+<a href="#edit_timestamp" class="cancel-timestamp hide-if-no-js button-cancel">Cancel</a>
+</p>
+					</fieldset>
+			</div>
+				</div>
+	<div class="clear"></div>
+</div>
+
+<div id="major-publishing-actions">
+				<p id="icl_minor_change_box" style="float:left;padding:0;margin:3px;display:none">
+				<label><input type="checkbox" name="icl_minor_edit" value="1" style="min-width:15px;"/>&nbsp;
+					Minor edit - don&#039;t update translation				</label>
+				<br clear="all"/>
+			</p>
+				<div id="delete-action">
+					<a class="submitdelete deletion" href="http://127.0.0.1:8096/wp-admin/post.php?post=14&amp;action=trash&amp;_wpnonce=9ff12f8363">Move to Trash</a>
+				</div>
+
+	<div id="publishing-action">
+		<span class="spinner"></span>
+					<input name="original_publish" type="hidden" id="original_publish" value="Update" />
+			<input type="submit" name="save" id="publish" class="button button-primary button-large" value="Update"  />				</div>
+	<div class="clear"></div>
+</div>
+
+</div>
+	</div>
+</div>
+</div></div>
+<div id="postbox-container-2" class="postbox-container">
+<div id="normal-sortables" class="meta-box-sortables"><div id="opf-builder" class="postbox " >
+<div class="postbox-header"><h2 class="hndle">Fields</h2>
+<div class="handle-actions hide-if-no-js"><button type="button" class="handle-order-higher" aria-disabled="false" aria-describedby="opf-builder-handle-order-higher-description"><span class="screen-reader-text">Move up</span><span class="order-higher-indicator" aria-hidden="true"></span></button><span class="hidden" id="opf-builder-handle-order-higher-description">Move Fields box up</span><button type="button" class="handle-order-lower" aria-disabled="false" aria-describedby="opf-builder-handle-order-lower-description"><span class="screen-reader-text">Move down</span><span class="order-lower-indicator" aria-hidden="true"></span></button><span class="hidden" id="opf-builder-handle-order-lower-description">Move Fields box down</span><button type="button" class="handlediv" aria-expanded="true"><span class="screen-reader-text">Toggle panel: Fields</span><span class="toggle-indicator" aria-hidden="true"></span></button></div></div><div class="inside">
+		<div id="opf-builder-app"
+			data-post-id="14"
+			data-model="{&quot;schema&quot;:2,&quot;fields&quot;:[],&quot;rule_groups&quot;:[],&quot;mark_required&quot;:true,&quot;labels_position&quot;:&quot;above&quot;}"
+			data-product-cats="[{&quot;id&quot;:18,&quot;name&quot;:&quot;Regalos&quot;}]"
+			data-nonce="e96af11d9b"
+			data-rest="http://127.0.0.1:8096/es/wp-json/opf/v1/groups"
+			data-preview-rest="http://127.0.0.1:8096/es/wp-json/opf/v1/preview">
+			<noscript>The field builder requires JavaScript.</noscript>
+		</div>
+		</div>
+</div>
+<div id="slugdiv" class="postbox  hide-if-js" >
+<div class="postbox-header"><h2 class="hndle">Slug</h2>
+<div class="handle-actions hide-if-no-js"><button type="button" class="handle-order-higher" aria-disabled="false" aria-describedby="slugdiv-handle-order-higher-description"><span class="screen-reader-text">Move up</span><span class="order-higher-indicator" aria-hidden="true"></span></button><span class="hidden" id="slugdiv-handle-order-higher-description">Move Slug box up</span><button type="button" class="handle-order-lower" aria-disabled="false" aria-describedby="slugdiv-handle-order-lower-description"><span class="screen-reader-text">Move down</span><span class="order-lower-indicator" aria-hidden="true"></span></button><span class="hidden" id="slugdiv-handle-order-lower-description">Move Slug box down</span><button type="button" class="handlediv" aria-expanded="true"><span class="screen-reader-text">Toggle panel: Slug</span><span class="toggle-indicator" aria-hidden="true"></span></button></div></div><div class="inside">
+<label class="screen-reader-text" for="post_name">
+	Slug</label><input name="post_name" type="text" class="large-text" id="post_name" value="gift-options" />
+	</div>
+</div>
+</div><div id="advanced-sortables" class="meta-box-sortables"></div></div>
+</div><!-- /post-body -->
+<br class="clear" />
+</div><!-- /poststuff -->
+</form>
+</div>
+
+
+
+<div class="clear"></div></div><!-- wpbody-content -->
+<div class="clear"></div></div><!-- wpbody -->
+<div class="clear"></div></div><!-- wpcontent -->
+
+<div id="wpfooter" role="contentinfo">
+		<p id="footer-left" class="alignleft">
+		<span id="footer-thankyou">Thank you for creating with <a href="https://wordpress.org/">WordPress</a>.</span>	</p>
+	<p id="footer-upgrade" class="alignright">
+		<strong><a href="http://127.0.0.1:8096/wp-admin/update-core.php">Get Version 7.1.3</a></strong>	</p>
+	<div class="clear"></div>
+</div>
+			<script type="text/javascript">
+							jQuery(document).ready(function () {
+								addLoadEvent(function () {
+														var menu_id = '0';
+									var location_menu_id = jQuery('#locations-' + menu_id);
+									if (location_menu_id.length > 0) {
+										location_menu_id.find('option').first().html('not translated in current language');
+										location_menu_id.css('font-style', 'italic');
+										location_menu_id.change(function () {
+											if (jQuery(this).val() != 0) {
+												jQuery(this).css('font-style', 'normal');
+											} else {
+												jQuery(this).css('font-style', 'italic')
+											}
+										});
+									}
+													});
+							});
+			</script>
+			<div id="local-storage-notice" class="notice is-dismissible hidden"><p class="local-restore">The backup of this post in your browser is different from the version below.<button type="button" class="button restore-backup">Restore the backup</button></p><p class="help">This will replace the current editor content with the last backup version. You can use undo and redo in the editor to get the old content back or to return to the restored version.</p></div>
+		<script type="text/html" id="tmpl-media-frame">
+		<div class="media-frame-title" id="media-frame-title"></div>
+		<h2 class="media-frame-menu-heading">Actions</h2>
+		<button type="button" class="button button-link media-frame-menu-toggle" aria-expanded="false">
+			Menu			<span class="dashicons dashicons-arrow-down" aria-hidden="true"></span>
+		</button>
+		<div class="media-frame-menu"></div>
+		<div class="media-frame-tab-panel">
+			<div class="media-frame-router"></div>
+			<div class="media-frame-content"></div>
+		</div>
+		<h2 class="media-frame-actions-heading screen-reader-text">
+		Selected media actions		</h2>
+		<div class="media-frame-toolbar"></div>
+		<div class="media-frame-uploader"></div>
+	</script>
+
+		<script type="text/html" id="tmpl-media-modal">
+		<div tabindex="0" class="media-modal wp-core-ui" role="dialog" aria-labelledby="media-frame-title">
+			<# if ( data.hasCloseButton ) { #>
+				<button type="button" class="media-modal-close"><span class="media-modal-icon"><span class="screen-reader-text">
+					Close dialog				</span></span></button>
+			<# } #>
+			<div class="media-modal-content" role="document"></div>
+		</div>
+		<div class="media-modal-backdrop"></div>
+	</script>
+
+		<script type="text/html" id="tmpl-uploader-window">
+		<div class="uploader-window-content">
+			<div class="uploader-editor-title">Drop files to upload</div>
+		</div>
+	</script>
+
+		<script type="text/html" id="tmpl-uploader-editor">
+		<div class="uploader-editor-content">
+			<div class="uploader-editor-title">Drop files to upload</div>
+		</div>
+	</script>
+
+		<script type="text/html" id="tmpl-uploader-inline">
+		<# var messageClass = data.message ? 'has-upload-message' : 'no-upload-message'; #>
+		<# if ( data.canClose ) { #>
+		<button class="close dashicons dashicons-no"><span class="screen-reader-text">
+			Close uploader		</span></button>
+		<# } #>
+		<div class="uploader-inline-content {{ messageClass }}">
+		<# if ( data.message ) { #>
+			<h2 class="upload-message">{{ data.message }}</h2>
+		<# } #>
+					<div class="upload-ui">
+				<h2 class="upload-instructions drop-instructions">Drop files to upload</h2>
+				<p class="upload-instructions drop-instructions">or</p>
+				<button type="button" class="browser button button-hero" aria-labelledby="post-upload-info">Select Files</button>
+			</div>
+
+			<div class="upload-inline-status"></div>
+
+			<div class="post-upload-ui" id="post-upload-info">
+				
+				<p class="max-upload-size">
+				Maximum upload file size: 2 MB.				</p>
+
+				<# if ( data.suggestedWidth && data.suggestedHeight ) { #>
+					<p class="suggested-dimensions">
+						Suggested image dimensions: {{data.suggestedWidth}} by {{data.suggestedHeight}} pixels.					</p>
+				<# } #>
+
+							</div>
+				</div>
+	</script>
+
+		<script type="text/html" id="tmpl-media-library-view-switcher">
+		<a href="http://127.0.0.1:8096/wp-admin/upload.php?mode=list" class="view-list">
+			<span class="screen-reader-text">
+				List view			</span>
+		</a>
+		<a href="http://127.0.0.1:8096/wp-admin/upload.php?mode=grid" class="view-grid current" aria-current="page">
+			<span class="screen-reader-text">
+				Grid view			</span>
+		</a>
+	</script>
+
+		<script type="text/html" id="tmpl-uploader-status">
+		<h2>Uploading</h2>
+
+		<div class="media-progress-bar"><div></div></div>
+		<div class="upload-details">
+			<span class="upload-count">
+				<span class="upload-index"></span> / <span class="upload-total"></span>
+			</span>
+			<span class="upload-detail-separator">&ndash;</span>
+			<span class="upload-filename"></span>
+		</div>
+		<div class="upload-errors"></div>
+		<button type="button" class="button upload-dismiss-errors">Dismiss errors</button>
+	</script>
+
+		<script type="text/html" id="tmpl-uploader-status-error">
+		<span class="upload-error-filename">{{{ data.filename }}}</span>
+		<span class="upload-error-message">{{ data.message }}</span>
+	</script>
+
+		<script type="text/html" id="tmpl-edit-attachment-frame">
+		<div class="edit-media-header">
+			<button class="left dashicons"<# if ( ! data.hasPrevious ) { #> disabled<# } #>><span class="screen-reader-text">Edit previous media item</span></button>
+			<button class="right dashicons"<# if ( ! data.hasNext ) { #> disabled<# } #>><span class="screen-reader-text">Edit next media item</span></button>
+			<button type="button" class="media-modal-close"><span class="media-modal-icon"><span class="screen-reader-text">Close dialog</span></span></button>
+		</div>
+		<div class="media-frame-title"></div>
+		<div class="media-frame-content"></div>
+	</script>
+
+		<script type="text/html" id="tmpl-attachment-details-two-column">
+		<div class="attachment-media-view {{ data.orientation }}">
+						<h2 class="screen-reader-text">Attachment Preview</h2>
+			<div class="thumbnail thumbnail-{{ data.type }}">
+				<# if ( data.uploading ) { #>
+					<div class="media-progress-bar"><div></div></div>
+				<# } else if ( data.sizes && data.sizes.full ) { #>
+					<img class="details-image" src="{{ data.sizes.full.url }}" draggable="false" alt="" />
+				<# } else if ( data.sizes && data.sizes.large ) { #>
+					<img class="details-image" src="{{ data.sizes.large.url }}" draggable="false" alt="" />
+				<# } else if ( -1 === jQuery.inArray( data.type, [ 'audio', 'video' ] ) ) { #>
+					<img class="details-image icon" src="{{ data.icon }}" draggable="false" alt="" />
+				<# } #>
+
+				<# if ( 'audio' === data.type ) { #>
+				<div class="wp-media-wrapper wp-audio">
+					<audio style="visibility: hidden" controls class="wp-audio-shortcode" width="100%" preload="none">
+						<source type="{{ data.mime }}" src="{{ data.url }}" />
+					</audio>
+				</div>
+				<# } else if ( 'video' === data.type ) {
+					var w_rule = '';
+					if ( data.width ) {
+						w_rule = 'width: ' + data.width + 'px;';
+					} else if ( wp.media.view.settings.contentWidth ) {
+						w_rule = 'width: ' + wp.media.view.settings.contentWidth + 'px;';
+					}
+				#>
+				<div style="{{ w_rule }}" class="wp-media-wrapper wp-video">
+					<video controls="controls" class="wp-video-shortcode" preload="metadata"
+						<# if ( data.width ) { #>width="{{ data.width }}"<# } #>
+						<# if ( data.height ) { #>height="{{ data.height }}"<# } #>
+						<# if ( data.image && data.image.src !== data.icon ) { #>poster="{{ data.image.src }}"<# } #>>
+						<source type="{{ data.mime }}" src="{{ data.url }}" />
+					</video>
+				</div>
+				<# } #>
+
+				<div class="attachment-actions">
+					<# if ( 'image' === data.type && ! data.uploading && data.sizes && data.can.save ) { #>
+					<button type="button" class="button edit-attachment">Edit Image</button>
+					<# } else if ( 'pdf' === data.subtype && data.sizes ) { #>
+					<p>Document Preview</p>
+					<# } #>
+				</div>
+			</div>
+		</div>
+		<div class="attachment-info">
+			<span class="settings-save-status" role="status">
+				<span class="spinner"></span>
+				<span class="saved">Saved.</span>
+			</span>
+			<div class="details">
+				<h2 class="screen-reader-text">
+					Details				</h2>
+				<div class="uploaded"><strong>Uploaded on:</strong> {{ data.dateFormatted }}</div>
+				<div class="uploaded-by">
+					<strong>Uploaded by:</strong>
+						<# if ( data.authorLink ) { #>
+							<a href="{{ data.authorLink }}">{{ data.authorName }}</a>
+						<# } else { #>
+							{{ data.authorName }}
+						<# } #>
+				</div>
+				<# if ( data.uploadedToTitle ) { #>
+					<div class="uploaded-to">
+						<strong>Uploaded to:</strong>
+						<# if ( data.uploadedToLink ) { #>
+							<a href="{{ data.uploadedToLink }}">{{ data.uploadedToTitle }}</a>
+						<# } else { #>
+							{{ data.uploadedToTitle }}
+						<# } #>
+					</div>
+				<# } #>
+				<div class="filename"><strong>File name:</strong> {{ data.filename }}</div>
+				<div class="file-type"><strong>File type:</strong> {{ data.mime }}</div>
+				<div class="file-size"><strong>File size:</strong> {{ data.filesizeHumanReadable }}</div>
+				<# if ( 'image' === data.type && ! data.uploading ) { #>
+					<# if ( data.width && data.height ) { #>
+						<div class="dimensions"><strong>Dimensions:</strong>
+							{{ data.width }} by {{ data.height }} pixels						</div>
+					<# } #>
+
+					<# if ( data.originalImageURL && data.originalImageName ) { #>
+						<div class="word-wrap-break-word">
+							<strong>Original image:</strong>
+							<a href="{{ data.originalImageURL }}">{{data.originalImageName}}</a>
+						</div>
+					<# } #>
+				<# } #>
+
+				<# if ( data.fileLength && data.fileLengthHumanReadable ) { #>
+					<div class="file-length"><strong>Length:</strong>
+						<span aria-hidden="true">{{ data.fileLength }}</span>
+						<span class="screen-reader-text">{{ data.fileLengthHumanReadable }}</span>
+					</div>
+				<# } #>
+
+				<# if ( 'audio' === data.type && data.meta.bitrate ) { #>
+					<div class="bitrate">
+						<strong>Bitrate:</strong> {{ Math.round( data.meta.bitrate / 1000 ) }}kb/s
+						<# if ( data.meta.bitrate_mode ) { #>
+						{{ ' ' + data.meta.bitrate_mode.toUpperCase() }}
+						<# } #>
+					</div>
+				<# } #>
+
+				<# if ( data.mediaStates ) { #>
+					<div class="media-states"><strong>Used as:</strong> {{ data.mediaStates }}</div>
+				<# } #>
+
+				<div class="compat-meta">
+					<# if ( data.compat && data.compat.meta ) { #>
+						{{{ data.compat.meta }}}
+					<# } #>
+				</div>
+			</div>
+
+			<div class="settings">
+				<# var maybeReadOnly = data.can.save || data.allowLocalEdits ? '' : 'readonly'; #>
+				<# if ( 'image' === data.type ) { #>
+					<span class="setting alt-text has-description" data-setting="alt">
+						<label for="attachment-details-two-column-alt-text" class="name">Alternative Text</label>
+						<textarea id="attachment-details-two-column-alt-text" aria-describedby="alt-text-description" {{ maybeReadOnly }}>{{ data.alt }}</textarea>
+					</span>
+					<p class="description" id="alt-text-description"><a href="https://www.w3.org/WAI/tutorials/images/decision-tree" target="_blank" rel="noopener">Learn how to describe the purpose of the image<span class="screen-reader-text"> (opens in a new tab)</span></a>. Leave empty if the image is purely decorative.</p>
+				<# } #>
+								<span class="setting" data-setting="title">
+					<label for="attachment-details-two-column-title" class="name">Title</label>
+					<input type="text" id="attachment-details-two-column-title" value="{{ data.title }}" {{ maybeReadOnly }} />
+				</span>
+								<# if ( 'audio' === data.type ) { #>
+								<span class="setting" data-setting="artist">
+					<label for="attachment-details-two-column-artist" class="name">Artist</label>
+					<input type="text" id="attachment-details-two-column-artist" value="{{ data.artist || data.meta.artist || '' }}" />
+				</span>
+								<span class="setting" data-setting="album">
+					<label for="attachment-details-two-column-album" class="name">Album</label>
+					<input type="text" id="attachment-details-two-column-album" value="{{ data.album || data.meta.album || '' }}" />
+				</span>
+								<# } #>
+				<span class="setting" data-setting="caption">
+					<label for="attachment-details-two-column-caption" class="name">Caption</label>
+					<textarea id="attachment-details-two-column-caption" {{ maybeReadOnly }}>{{ data.caption }}</textarea>
+				</span>
+				<span class="setting" data-setting="description">
+					<label for="attachment-details-two-column-description" class="name">Description</label>
+					<textarea id="attachment-details-two-column-description" {{ maybeReadOnly }}>{{ data.description }}</textarea>
+				</span>
+				<span class="setting" data-setting="url">
+					<label for="attachment-details-two-column-copy-link" class="name">File URL:</label>
+					<input type="text" class="attachment-details-copy-link" id="attachment-details-two-column-copy-link" value="{{ data.url }}" readonly />
+					<span class="copy-to-clipboard-container">
+						<button type="button" class="button button-small copy-attachment-url" data-clipboard-target="#attachment-details-two-column-copy-link">Copy URL to clipboard</button>
+						<span class="success hidden" aria-hidden="true">Copied!</span>
+					</span>
+				</span>
+				<div class="attachment-compat"></div>
+			</div>
+
+			<div class="actions">
+				<# if ( data.link ) { #>
+										<a class="view-attachment" href="{{ data.link }}">View media file</a>
+				<# } #>
+				<# if ( data.can.save ) { #>
+					<# if ( data.link ) { #>
+						<span class="links-separator">|</span>
+					<# } #>
+					<a href="{{ data.editLink }}">Edit more details</a>
+				<# } #>
+				<# if ( data.can.save && data.link ) { #>
+					<span class="links-separator">|</span>
+					<a href="{{ data.url }}" download>Download file</a>
+				<# } #>
+				<# if ( ! data.uploading && data.can.remove ) { #>
+					<# if ( data.link || data.can.save ) { #>
+						<span class="links-separator">|</span>
+					<# } #>
+											<button type="button" class="button-link delete-attachment">Delete permanently</button>
+									<# } #>
+			</div>
+		</div>
+	</script>
+
+		<script type="text/html" id="tmpl-attachment">
+		<div class="attachment-preview js--select-attachment type-{{ data.type }} subtype-{{ data.subtype }} {{ data.orientation }}">
+			<div class="thumbnail">
+				<# if ( data.uploading ) { #>
+					<div class="media-progress-bar"><div style="width: {{ data.percent }}%"></div></div>
+				<# } else if ( 'image' === data.type && data.size && data.size.url ) { #>
+					<div class="centered">
+						<img src="{{ data.size.url }}" draggable="false" alt="" />
+					</div>
+				<# } else { #>
+					<div class="centered">
+						<# if ( data.image && data.image.src && data.image.src !== data.icon ) { #>
+							<img src="{{ data.image.src }}" class="thumbnail" draggable="false" alt="" />
+						<# } else if ( data.sizes && data.sizes.medium ) { #>
+							<img src="{{ data.sizes.medium.url }}" class="thumbnail" draggable="false" alt="" />
+						<# } else { #>
+							<img src="{{ data.icon }}" class="icon" draggable="false" alt="" />
+						<# } #>
+					</div>
+					<div class="filename">
+						<div>{{ data.filename }}</div>
+					</div>
+				<# } #>
+			</div>
+			<# if ( data.buttons.close ) { #>
+				<button type="button" class="button-link attachment-close media-modal-icon"><span class="screen-reader-text">
+					Remove				</span></button>
+			<# } #>
+		</div>
+		<# if ( data.buttons.check ) { #>
+			<button type="button" class="check" tabindex="-1"><span class="media-modal-icon"></span><span class="screen-reader-text">
+				Deselect			</span></button>
+		<# } #>
+		<#
+		var maybeReadOnly = data.can.save || data.allowLocalEdits ? '' : 'readonly';
+		if ( data.describe ) {
+			if ( 'image' === data.type ) { #>
+				<input type="text" value="{{ data.caption }}" class="describe" data-setting="caption"
+					aria-label="Caption"
+					placeholder="Caption&hellip;" {{ maybeReadOnly }} />
+			<# } else { #>
+				<input type="text" value="{{ data.title }}" class="describe" data-setting="title"
+					<# if ( 'video' === data.type ) { #>
+						aria-label="Video title"
+						placeholder="Video title&hellip;"
+					<# } else if ( 'audio' === data.type ) { #>
+						aria-label="Audio title"
+						placeholder="Audio title&hellip;"
+					<# } else { #>
+						aria-label="Media title"
+						placeholder="Media title&hellip;"
+					<# } #> {{ maybeReadOnly }} />
+			<# }
+		} #>
+	</script>
+
+		<script type="text/html" id="tmpl-attachment-details">
+		<h2>
+			Attachment Details			<span class="settings-save-status" role="status">
+				<span class="spinner"></span>
+				<span class="saved">Saved.</span>
+			</span>
+		</h2>
+		<div class="attachment-info">
+
+			<# if ( 'audio' === data.type ) { #>
+				<div class="wp-media-wrapper wp-audio">
+					<audio style="visibility: hidden" controls class="wp-audio-shortcode" width="100%" preload="none">
+						<source type="{{ data.mime }}" src="{{ data.url }}" />
+					</audio>
+				</div>
+			<# } else if ( 'video' === data.type ) {
+				var w_rule = '';
+				if ( data.width ) {
+					w_rule = 'width: ' + data.width + 'px;';
+				} else if ( wp.media.view.settings.contentWidth ) {
+					w_rule = 'width: ' + wp.media.view.settings.contentWidth + 'px;';
+				}
+			#>
+				<div style="{{ w_rule }}" class="wp-media-wrapper wp-video">
+					<video controls="controls" class="wp-video-shortcode" preload="metadata"
+						<# if ( data.width ) { #>width="{{ data.width }}"<# } #>
+						<# if ( data.height ) { #>height="{{ data.height }}"<# } #>
+						<# if ( data.image && data.image.src !== data.icon ) { #>poster="{{ data.image.src }}"<# } #>>
+						<source type="{{ data.mime }}" src="{{ data.url }}" />
+					</video>
+				</div>
+			<# } else { #>
+				<div class="thumbnail thumbnail-{{ data.type }}">
+					<# if ( data.uploading ) { #>
+						<div class="media-progress-bar"><div></div></div>
+					<# } else if ( 'image' === data.type && data.size && data.size.url ) { #>
+						<img src="{{ data.size.url }}" draggable="false" alt="" />
+					<# } else { #>
+						<img src="{{ data.icon }}" class="icon" draggable="false" alt="" />
+					<# } #>
+				</div>
+			<# } #>
+
+			<div class="details">
+				<div class="filename">{{ data.filename }}</div>
+				<div class="uploaded">{{ data.dateFormatted }}</div>
+
+				<div class="file-size">{{ data.filesizeHumanReadable }}</div>
+				<# if ( 'image' === data.type && ! data.uploading ) { #>
+					<# if ( data.width && data.height ) { #>
+						<div class="dimensions">
+							{{ data.width }} by {{ data.height }} pixels						</div>
+					<# } #>
+
+					<# if ( data.originalImageURL && data.originalImageName ) { #>
+						<div class="word-wrap-break-word">
+							Original image:							<a href="{{ data.originalImageURL }}">{{data.originalImageName}}</a>
+						</div>
+					<# } #>
+
+					<# if ( data.can.save && data.sizes ) { #>
+						<a class="edit-attachment" href="{{ data.editLink }}&amp;image-editor" target="_blank">Edit Image</a>
+					<# } #>
+				<# } #>
+
+				<# if ( data.fileLength && data.fileLengthHumanReadable ) { #>
+					<div class="file-length">Length:						<span aria-hidden="true">{{ data.fileLength }}</span>
+						<span class="screen-reader-text">{{ data.fileLengthHumanReadable }}</span>
+					</div>
+				<# } #>
+
+				<# if ( data.mediaStates ) { #>
+					<div class="media-states"><strong>Used as:</strong> {{ data.mediaStates }}</div>
+				<# } #>
+
+				<# if ( ! data.uploading && data.can.remove ) { #>
+											<button type="button" class="button-link delete-attachment">Delete permanently</button>
+									<# } #>
+
+				<div class="compat-meta">
+					<# if ( data.compat && data.compat.meta ) { #>
+						{{{ data.compat.meta }}}
+					<# } #>
+				</div>
+			</div>
+		</div>
+		<# var maybeReadOnly = data.can.save || data.allowLocalEdits ? '' : 'readonly'; #>
+		<# if ( 'image' === data.type ) { #>
+			<span class="setting alt-text has-description" data-setting="alt">
+				<label for="attachment-details-alt-text" class="name">Alt Text</label>
+				<textarea id="attachment-details-alt-text" aria-describedby="alt-text-description" {{ maybeReadOnly }}>{{ data.alt }}</textarea>
+			</span>
+			<p class="description" id="alt-text-description"><a href="https://www.w3.org/WAI/tutorials/images/decision-tree" target="_blank" rel="noopener">Learn how to describe the purpose of the image<span class="screen-reader-text"> (opens in a new tab)</span></a>. Leave empty if the image is purely decorative.</p>
+		<# } #>
+				<span class="setting" data-setting="title">
+			<label for="attachment-details-title" class="name">Title</label>
+			<input type="text" id="attachment-details-title" value="{{ data.title }}" {{ maybeReadOnly }} />
+		</span>
+				<# if ( 'audio' === data.type ) { #>
+				<span class="setting" data-setting="artist">
+			<label for="attachment-details-artist" class="name">Artist</label>
+			<input type="text" id="attachment-details-artist" value="{{ data.artist || data.meta.artist || '' }}" />
+		</span>
+				<span class="setting" data-setting="album">
+			<label for="attachment-details-album" class="name">Album</label>
+			<input type="text" id="attachment-details-album" value="{{ data.album || data.meta.album || '' }}" />
+		</span>
+				<# } #>
+		<span class="setting" data-setting="caption">
+			<label for="attachment-details-caption" class="name">Caption</label>
+			<textarea id="attachment-details-caption" {{ maybeReadOnly }}>{{ data.caption }}</textarea>
+		</span>
+		<span class="setting" data-setting="description">
+			<label for="attachment-details-description" class="name">Description</label>
+			<textarea id="attachment-details-description" {{ maybeReadOnly }}>{{ data.description }}</textarea>
+		</span>
+		<span class="setting" data-setting="url">
+			<label for="attachment-details-copy-link" class="name">File URL:</label>
+			<input type="text" class="attachment-details-copy-link" id="attachment-details-copy-link" value="{{ data.url }}" readonly />
+			<div class="copy-to-clipboard-container">
+				<button type="button" class="button button-small copy-attachment-url" data-clipboard-target="#attachment-details-copy-link">Copy URL to clipboard</button>
+				<span class="success hidden" aria-hidden="true">Copied!</span>
+			</div>
+		</span>
+	</script>
+
+		<script type="text/html" id="tmpl-media-selection">
+		<div class="selection-info">
+			<span class="count"></span>
+			<# if ( data.editable ) { #>
+				<button type="button" class="button-link edit-selection">Edit Selection</button>
+			<# } #>
+			<# if ( data.clearable ) { #>
+				<button type="button" class="button-link clear-selection">Clear</button>
+			<# } #>
+		</div>
+		<div class="selection-view"></div>
+	</script>
+
+		<script type="text/html" id="tmpl-attachment-display-settings">
+		<h2>Attachment Display Settings</h2>
+
+		<# if ( 'image' === data.type ) { #>
+			<span class="setting align">
+				<label for="attachment-display-settings-alignment" class="name">Alignment</label>
+				<select id="attachment-display-settings-alignment" class="alignment"
+					data-setting="align"
+					<# if ( data.userSettings ) { #>
+						data-user-setting="align"
+					<# } #>>
+
+					<option value="left">
+						Left					</option>
+					<option value="center">
+						Center					</option>
+					<option value="right">
+						Right					</option>
+					<option value="none" selected>
+						None					</option>
+				</select>
+			</span>
+		<# } #>
+
+		<span class="setting">
+			<label for="attachment-display-settings-link-to" class="name">
+				<# if ( data.model.canEmbed ) { #>
+					Embed or Link				<# } else { #>
+					Link To				<# } #>
+			</label>
+			<select id="attachment-display-settings-link-to" class="link-to"
+				data-setting="link"
+				<# if ( data.userSettings && ! data.model.canEmbed ) { #>
+					data-user-setting="urlbutton"
+				<# } #>>
+
+			<# if ( data.model.canEmbed ) { #>
+				<option value="embed" selected>
+					Embed Media Player				</option>
+				<option value="file">
+			<# } else { #>
+				<option value="none" selected>
+					None				</option>
+				<option value="file">
+			<# } #>
+				<# if ( data.model.canEmbed ) { #>
+					Link to Media File				<# } else { #>
+					Media File				<# } #>
+				</option>
+				<option value="post">
+				<# if ( data.model.canEmbed ) { #>
+					Link to Attachment Page				<# } else { #>
+					Attachment Page				<# } #>
+				</option>
+			<# if ( 'image' === data.type ) { #>
+				<option value="custom">
+					Custom URL				</option>
+			<# } #>
+			</select>
+		</span>
+		<span class="setting">
+			<label for="attachment-display-settings-link-to-custom" class="name">URL</label>
+			<input type="text" id="attachment-display-settings-link-to-custom" class="link-to-custom" data-setting="linkUrl" />
+		</span>
+
+		<# if ( 'undefined' !== typeof data.sizes ) { #>
+			<span class="setting">
+				<label for="attachment-display-settings-size" class="name">Size</label>
+				<select id="attachment-display-settings-size" class="size" name="size"
+					data-setting="size"
+					<# if ( data.userSettings ) { #>
+						data-user-setting="imgsize"
+					<# } #>>
+											<#
+						var size = data.sizes['thumbnail'];
+						if ( size ) { #>
+							<option value="thumbnail" >
+								Thumbnail &ndash; {{ size.width }} &times; {{ size.height }}
+							</option>
+						<# } #>
+											<#
+						var size = data.sizes['medium'];
+						if ( size ) { #>
+							<option value="medium" >
+								Medium &ndash; {{ size.width }} &times; {{ size.height }}
+							</option>
+						<# } #>
+											<#
+						var size = data.sizes['large'];
+						if ( size ) { #>
+							<option value="large" >
+								Large &ndash; {{ size.width }} &times; {{ size.height }}
+							</option>
+						<# } #>
+											<#
+						var size = data.sizes['full'];
+						if ( size ) { #>
+							<option value="full"  selected='selected'>
+								Full Size &ndash; {{ size.width }} &times; {{ size.height }}
+							</option>
+						<# } #>
+									</select>
+			</span>
+		<# } #>
+	</script>
+
+		<script type="text/html" id="tmpl-gallery-settings">
+		<h2>Gallery Settings</h2>
+
+		<span class="setting">
+			<label for="gallery-settings-link-to" class="name">Link To</label>
+			<select id="gallery-settings-link-to" class="link-to"
+				data-setting="link"
+				<# if ( data.userSettings ) { #>
+					data-user-setting="urlbutton"
+				<# } #>>
+
+				<option value="post" <# if ( ! wp.media.galleryDefaults.link || 'post' === wp.media.galleryDefaults.link ) {
+					#>selected="selected"<# }
+				#>>
+					Attachment Page				</option>
+				<option value="file" <# if ( 'file' === wp.media.galleryDefaults.link ) { #>selected="selected"<# } #>>
+					Media File				</option>
+				<option value="none" <# if ( 'none' === wp.media.galleryDefaults.link ) { #>selected="selected"<# } #>>
+					None				</option>
+			</select>
+		</span>
+
+		<span class="setting">
+			<label for="gallery-settings-columns" class="name select-label-inline">Columns</label>
+			<select id="gallery-settings-columns" class="columns" name="columns"
+				data-setting="columns">
+									<option value="1" <#
+						if ( 1 == wp.media.galleryDefaults.columns ) { #>selected="selected"<# }
+					#>>
+						1					</option>
+									<option value="2" <#
+						if ( 2 == wp.media.galleryDefaults.columns ) { #>selected="selected"<# }
+					#>>
+						2					</option>
+									<option value="3" <#
+						if ( 3 == wp.media.galleryDefaults.columns ) { #>selected="selected"<# }
+					#>>
+						3					</option>
+									<option value="4" <#
+						if ( 4 == wp.media.galleryDefaults.columns ) { #>selected="selected"<# }
+					#>>
+						4					</option>
+									<option value="5" <#
+						if ( 5 == wp.media.galleryDefaults.columns ) { #>selected="selected"<# }
+					#>>
+						5					</option>
+									<option value="6" <#
+						if ( 6 == wp.media.galleryDefaults.columns ) { #>selected="selected"<# }
+					#>>
+						6					</option>
+									<option value="7" <#
+						if ( 7 == wp.media.galleryDefaults.columns ) { #>selected="selected"<# }
+					#>>
+						7					</option>
+									<option value="8" <#
+						if ( 8 == wp.media.galleryDefaults.columns ) { #>selected="selected"<# }
+					#>>
+						8					</option>
+									<option value="9" <#
+						if ( 9 == wp.media.galleryDefaults.columns ) { #>selected="selected"<# }
+					#>>
+						9					</option>
+							</select>
+		</span>
+
+		<span class="setting">
+			<input type="checkbox" id="gallery-settings-random-order" data-setting="_orderbyRandom" />
+			<label for="gallery-settings-random-order" class="checkbox-label-inline">Random Order</label>
+		</span>
+
+		<span class="setting size">
+			<label for="gallery-settings-size" class="name">Size</label>
+			<select id="gallery-settings-size" class="size" name="size"
+				data-setting="size"
+				<# if ( data.userSettings ) { #>
+					data-user-setting="imgsize"
+				<# } #>
+				>
+									<option value="thumbnail">
+						Thumbnail					</option>
+									<option value="medium">
+						Medium					</option>
+									<option value="large">
+						Large					</option>
+									<option value="full">
+						Full Size					</option>
+							</select>
+		</span>
+	</script>
+
+		<script type="text/html" id="tmpl-playlist-settings">
+		<h2>Playlist Settings</h2>
+
+		<# var emptyModel = _.isEmpty( data.model ),
+			isVideo = 'video' === data.controller.get('library').props.get('type'); #>
+
+		<span class="setting">
+			<input type="checkbox" id="playlist-settings-show-list" data-setting="tracklist" <# if ( emptyModel ) { #>
+				checked="checked"
+			<# } #> />
+			<label for="playlist-settings-show-list" class="checkbox-label-inline">
+				<# if ( isVideo ) { #>
+				Show Video List				<# } else { #>
+				Show Tracklist				<# } #>
+			</label>
+		</span>
+
+		<# if ( ! isVideo ) { #>
+		<span class="setting">
+			<input type="checkbox" id="playlist-settings-show-artist" data-setting="artists" <# if ( emptyModel ) { #>
+				checked="checked"
+			<# } #> />
+			<label for="playlist-settings-show-artist" class="checkbox-label-inline">
+				Show Artist Name in Tracklist			</label>
+		</span>
+		<# } #>
+
+		<span class="setting">
+			<input type="checkbox" id="playlist-settings-show-images" data-setting="images" <# if ( emptyModel ) { #>
+				checked="checked"
+			<# } #> />
+			<label for="playlist-settings-show-images" class="checkbox-label-inline">
+				Show Images			</label>
+		</span>
+	</script>
+
+		<script type="text/html" id="tmpl-embed-link-settings">
+		<span class="setting link-text">
+			<label for="embed-link-settings-link-text" class="name">Link Text</label>
+			<input type="text" id="embed-link-settings-link-text" class="alignment" data-setting="linkText" />
+		</span>
+		<div class="embed-container" style="display: none;">
+			<div class="embed-preview"></div>
+		</div>
+	</script>
+
+		<script type="text/html" id="tmpl-embed-image-settings">
+		<div class="wp-clearfix">
+			<div class="thumbnail">
+				<img src="{{ data.model.url }}" draggable="false" alt="" />
+			</div>
+		</div>
+
+		<span class="setting alt-text has-description">
+			<label for="embed-image-settings-alt-text" class="name">Alternative Text</label>
+			<textarea id="embed-image-settings-alt-text" data-setting="alt" aria-describedby="alt-text-description"></textarea>
+		</span>
+		<p class="description" id="alt-text-description"><a href="https://www.w3.org/WAI/tutorials/images/decision-tree" target="_blank" rel="noopener">Learn how to describe the purpose of the image<span class="screen-reader-text"> (opens in a new tab)</span></a>. Leave empty if the image is purely decorative.</p>
+
+					<span class="setting caption">
+				<label for="embed-image-settings-caption" class="name">Caption</label>
+				<textarea id="embed-image-settings-caption" data-setting="caption"></textarea>
+			</span>
+		
+		<fieldset class="setting-group">
+			<legend class="name">Align</legend>
+			<span class="setting align">
+				<span class="button-group button-large" data-setting="align">
+					<button class="button" value="left">
+						Left					</button>
+					<button class="button" value="center">
+						Center					</button>
+					<button class="button" value="right">
+						Right					</button>
+					<button class="button active" value="none">
+						None					</button>
+				</span>
+			</span>
+		</fieldset>
+
+		<fieldset class="setting-group">
+			<legend class="name">Link To</legend>
+			<span class="setting link-to">
+				<span class="button-group button-large" data-setting="link">
+					<button class="button" value="file">
+						Image URL					</button>
+					<button class="button" value="custom">
+						Custom URL					</button>
+					<button class="button active" value="none">
+						None					</button>
+				</span>
+			</span>
+			<span class="setting">
+				<label for="embed-image-settings-link-to-custom" class="name">URL</label>
+				<input type="text" id="embed-image-settings-link-to-custom" class="link-to-custom" data-setting="linkUrl" />
+			</span>
+		</fieldset>
+	</script>
+
+		<script type="text/html" id="tmpl-image-details">
+		<div class="media-embed">
+			<div class="embed-media-settings">
+				<div class="column-settings">
+					<span class="setting alt-text has-description">
+						<label for="image-details-alt-text" class="name">Alternative Text</label>
+						<textarea id="image-details-alt-text" data-setting="alt" aria-describedby="alt-text-description">{{ data.model.alt }}</textarea>
+					</span>
+					<p class="description" id="alt-text-description"><a href="https://www.w3.org/WAI/tutorials/images/decision-tree" target="_blank" rel="noopener">Learn how to describe the purpose of the image<span class="screen-reader-text"> (opens in a new tab)</span></a>. Leave empty if the image is purely decorative.</p>
+
+											<span class="setting caption">
+							<label for="image-details-caption" class="name">Caption</label>
+							<textarea id="image-details-caption" data-setting="caption">{{ data.model.caption }}</textarea>
+						</span>
+					
+					<h2>Display Settings</h2>
+					<fieldset class="setting-group">
+						<legend class="legend-inline">Align</legend>
+						<span class="setting align">
+							<span class="button-group button-large" data-setting="align">
+								<button class="button" value="left">
+									Left								</button>
+								<button class="button" value="center">
+									Center								</button>
+								<button class="button" value="right">
+									Right								</button>
+								<button class="button active" value="none">
+									None								</button>
+							</span>
+						</span>
+					</fieldset>
+
+					<# if ( data.attachment ) { #>
+						<# if ( 'undefined' !== typeof data.attachment.sizes ) { #>
+							<span class="setting size">
+								<label for="image-details-size" class="name">Size</label>
+								<select id="image-details-size" class="size" name="size"
+									data-setting="size"
+									<# if ( data.userSettings ) { #>
+										data-user-setting="imgsize"
+									<# } #>>
+																			<#
+										var size = data.sizes['thumbnail'];
+										if ( size ) { #>
+											<option value="thumbnail">
+												Thumbnail &ndash; {{ size.width }} &times; {{ size.height }}
+											</option>
+										<# } #>
+																			<#
+										var size = data.sizes['medium'];
+										if ( size ) { #>
+											<option value="medium">
+												Medium &ndash; {{ size.width }} &times; {{ size.height }}
+											</option>
+										<# } #>
+																			<#
+										var size = data.sizes['large'];
+										if ( size ) { #>
+											<option value="large">
+												Large &ndash; {{ size.width }} &times; {{ size.height }}
+											</option>
+										<# } #>
+																			<#
+										var size = data.sizes['full'];
+										if ( size ) { #>
+											<option value="full">
+												Full Size &ndash; {{ size.width }} &times; {{ size.height }}
+											</option>
+										<# } #>
+																		<option value="custom">
+										Custom Size									</option>
+								</select>
+							</span>
+						<# } #>
+							<div class="custom-size wp-clearfix<# if ( data.model.size !== 'custom' ) { #> hidden<# } #>">
+								<span class="custom-size-setting">
+									<label for="image-details-size-width">Width</label>
+									<input type="number" id="image-details-size-width" aria-describedby="image-size-desc" data-setting="customWidth" step="1" value="{{ data.model.customWidth }}" />
+								</span>
+								<span class="sep" aria-hidden="true">&times;</span>
+								<span class="custom-size-setting">
+									<label for="image-details-size-height">Height</label>
+									<input type="number" id="image-details-size-height" aria-describedby="image-size-desc" data-setting="customHeight" step="1" value="{{ data.model.customHeight }}" />
+								</span>
+								<p id="image-size-desc" class="description">Image size in pixels</p>
+							</div>
+					<# } #>
+
+					<span class="setting link-to">
+						<label for="image-details-link-to" class="name">Link To</label>
+						<select id="image-details-link-to" data-setting="link">
+						<# if ( data.attachment ) { #>
+							<option value="file">
+								Media File							</option>
+							<option value="post">
+								Attachment Page							</option>
+						<# } else { #>
+							<option value="file">
+								Image URL							</option>
+						<# } #>
+							<option value="custom">
+								Custom URL							</option>
+							<option value="none">
+								None							</option>
+						</select>
+					</span>
+					<span class="setting">
+						<label for="image-details-link-to-custom" class="name">URL</label>
+						<input type="text" id="image-details-link-to-custom" class="link-to-custom" data-setting="linkUrl" />
+					</span>
+
+					<div class="advanced-section">
+						<h2><button type="button" class="button-link advanced-toggle">Advanced Options</button></h2>
+						<div class="advanced-settings hidden">
+							<div class="advanced-image">
+								<span class="setting title-text">
+									<label for="image-details-title-attribute" class="name">Image Title Attribute</label>
+									<input type="text" id="image-details-title-attribute" data-setting="title" value="{{ data.model.title }}" />
+								</span>
+								<span class="setting extra-classes">
+									<label for="image-details-css-class" class="name">Image CSS Class</label>
+									<input type="text" id="image-details-css-class" data-setting="extraClasses" value="{{ data.model.extraClasses }}" />
+								</span>
+							</div>
+							<div class="advanced-link">
+								<span class="setting link-target">
+									<input type="checkbox" id="image-details-link-target" data-setting="linkTargetBlank" value="_blank" <# if ( data.model.linkTargetBlank ) { #>checked="checked"<# } #>>
+									<label for="image-details-link-target" class="checkbox-label">Open link in a new tab</label>
+								</span>
+								<span class="setting link-rel">
+									<label for="image-details-link-rel" class="name">Link Rel</label>
+									<input type="text" id="image-details-link-rel" data-setting="linkRel" value="{{ data.model.linkRel }}" />
+								</span>
+								<span class="setting link-class-name">
+									<label for="image-details-link-css-class" class="name">Link CSS Class</label>
+									<input type="text" id="image-details-link-css-class" data-setting="linkClassName" value="{{ data.model.linkClassName }}" />
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="column-image">
+					<div class="image">
+						<img src="{{ data.model.url }}" draggable="false" alt="" />
+						<# if ( data.attachment && window.imageEdit ) { #>
+							<div class="actions">
+								<input type="button" class="edit-attachment button" value="Edit Original" />
+								<input type="button" class="replace-attachment button" value="Replace" />
+							</div>
+						<# } #>
+					</div>
+				</div>
+			</div>
+		</div>
+	</script>
+
+		<script type="text/html" id="tmpl-image-editor">
+		<div id="media-head-{{ data.id }}"></div>
+		<div id="image-editor-{{ data.id }}"></div>
+	</script>
+
+		<script type="text/html" id="tmpl-audio-details">
+		<# var ext, html5types = {
+			mp3: wp.media.view.settings.embedMimes.mp3,
+			ogg: wp.media.view.settings.embedMimes.ogg
+		}; #>
+
+				<div class="media-embed media-embed-details">
+			<div class="embed-media-settings embed-audio-settings">
+				<audio style="visibility: hidden"
+	controls
+	class="wp-audio-shortcode"
+	width="{{ _.isUndefined( data.model.width ) ? 400 : data.model.width }}"
+	preload="{{ _.isUndefined( data.model.preload ) ? 'none' : data.model.preload }}"
+	<#
+		if ( ! _.isUndefined( data.model.autoplay ) && data.model.autoplay ) {
+		#> autoplay<#
+	}
+		if ( ! _.isUndefined( data.model.loop ) && data.model.loop ) {
+		#> loop<#
+	}
+	#>
+>
+	<# if ( ! _.isEmpty( data.model.src ) ) { #>
+	<source src="{{ data.model.src }}" type="{{ wp.media.view.settings.embedMimes[ data.model.src.split('.').pop() ] }}" />
+	<# } #>
+
+		<# if ( ! _.isEmpty( data.model.mp3 ) ) { #>
+	<source src="{{ data.model.mp3 }}" type="{{ wp.media.view.settings.embedMimes[ 'mp3' ] }}" />
+	<# } #>
+			<# if ( ! _.isEmpty( data.model.ogg ) ) { #>
+	<source src="{{ data.model.ogg }}" type="{{ wp.media.view.settings.embedMimes[ 'ogg' ] }}" />
+	<# } #>
+			<# if ( ! _.isEmpty( data.model.flac ) ) { #>
+	<source src="{{ data.model.flac }}" type="{{ wp.media.view.settings.embedMimes[ 'flac' ] }}" />
+	<# } #>
+			<# if ( ! _.isEmpty( data.model.m4a ) ) { #>
+	<source src="{{ data.model.m4a }}" type="{{ wp.media.view.settings.embedMimes[ 'm4a' ] }}" />
+	<# } #>
+			<# if ( ! _.isEmpty( data.model.wav ) ) { #>
+	<source src="{{ data.model.wav }}" type="{{ wp.media.view.settings.embedMimes[ 'wav' ] }}" />
+	<# } #>
+		</audio>
+	
+				<# if ( ! _.isEmpty( data.model.src ) ) {
+					ext = data.model.src.split('.').pop();
+					if ( html5types[ ext ] ) {
+						delete html5types[ ext ];
+					}
+				#>
+				<span class="setting">
+					<label for="audio-details-source" class="name">URL</label>
+					<input type="text" id="audio-details-source" readonly data-setting="src" value="{{ data.model.src }}" />
+					<button type="button" class="button-link remove-setting">Remove audio source</button>
+				</span>
+				<# } #>
+								<# if ( ! _.isEmpty( data.model.mp3 ) ) {
+					if ( ! _.isUndefined( html5types.mp3 ) ) {
+						delete html5types.mp3;
+					}
+				#>
+				<span class="setting">
+					<label for="audio-details-mp3-source" class="name">MP3</label>
+					<input type="text" id="audio-details-mp3-source" readonly data-setting="mp3" value="{{ data.model.mp3 }}" />
+					<button type="button" class="button-link remove-setting">Remove audio source</button>
+				</span>
+				<# } #>
+								<# if ( ! _.isEmpty( data.model.ogg ) ) {
+					if ( ! _.isUndefined( html5types.ogg ) ) {
+						delete html5types.ogg;
+					}
+				#>
+				<span class="setting">
+					<label for="audio-details-ogg-source" class="name">OGG</label>
+					<input type="text" id="audio-details-ogg-source" readonly data-setting="ogg" value="{{ data.model.ogg }}" />
+					<button type="button" class="button-link remove-setting">Remove audio source</button>
+				</span>
+				<# } #>
+								<# if ( ! _.isEmpty( data.model.flac ) ) {
+					if ( ! _.isUndefined( html5types.flac ) ) {
+						delete html5types.flac;
+					}
+				#>
+				<span class="setting">
+					<label for="audio-details-flac-source" class="name">FLAC</label>
+					<input type="text" id="audio-details-flac-source" readonly data-setting="flac" value="{{ data.model.flac }}" />
+					<button type="button" class="button-link remove-setting">Remove audio source</button>
+				</span>
+				<# } #>
+								<# if ( ! _.isEmpty( data.model.m4a ) ) {
+					if ( ! _.isUndefined( html5types.m4a ) ) {
+						delete html5types.m4a;
+					}
+				#>
+				<span class="setting">
+					<label for="audio-details-m4a-source" class="name">M4A</label>
+					<input type="text" id="audio-details-m4a-source" readonly data-setting="m4a" value="{{ data.model.m4a }}" />
+					<button type="button" class="button-link remove-setting">Remove audio source</button>
+				</span>
+				<# } #>
+								<# if ( ! _.isEmpty( data.model.wav ) ) {
+					if ( ! _.isUndefined( html5types.wav ) ) {
+						delete html5types.wav;
+					}
+				#>
+				<span class="setting">
+					<label for="audio-details-wav-source" class="name">WAV</label>
+					<input type="text" id="audio-details-wav-source" readonly data-setting="wav" value="{{ data.model.wav }}" />
+					<button type="button" class="button-link remove-setting">Remove audio source</button>
+				</span>
+				<# } #>
+				
+				<# if ( ! _.isEmpty( html5types ) ) { #>
+				<fieldset class="setting-group">
+					<legend class="name">Add alternate sources for maximum HTML5 playback</legend>
+					<span class="setting">
+						<span class="button-large">
+						<# _.each( html5types, function (mime, type) { #>
+							<button class="button add-media-source" data-mime="{{ mime }}">{{ type }}</button>
+						<# } ) #>
+						</span>
+					</span>
+				</fieldset>
+				<# } #>
+
+				<fieldset class="setting-group">
+					<legend class="name">Preload</legend>
+					<span class="setting preload">
+						<span class="button-group button-large" data-setting="preload">
+							<button class="button" value="auto">Auto</button>
+							<button class="button" value="metadata">Metadata</button>
+							<button class="button active" value="none">None</button>
+						</span>
+					</span>
+				</fieldset>
+
+				<span class="setting-group">
+					<span class="setting checkbox-setting autoplay">
+						<input type="checkbox" id="audio-details-autoplay" data-setting="autoplay" />
+						<label for="audio-details-autoplay" class="checkbox-label">Autoplay</label>
+					</span>
+
+					<span class="setting checkbox-setting">
+						<input type="checkbox" id="audio-details-loop" data-setting="loop" />
+						<label for="audio-details-loop" class="checkbox-label">Loop</label>
+					</span>
+				</span>
+			</div>
+		</div>
+	</script>
+
+		<script type="text/html" id="tmpl-video-details">
+		<# var ext, html5types = {
+			mp4: wp.media.view.settings.embedMimes.mp4,
+			ogv: wp.media.view.settings.embedMimes.ogv,
+			webm: wp.media.view.settings.embedMimes.webm
+		}; #>
+
+				<div class="media-embed media-embed-details">
+			<div class="embed-media-settings embed-video-settings">
+				<div class="wp-video-holder">
+				<#
+				var w = ! data.model.width || data.model.width > 640 ? 640 : data.model.width,
+					h = ! data.model.height ? 360 : data.model.height;
+
+				if ( data.model.width && w !== data.model.width ) {
+					h = Math.ceil( ( h * w ) / data.model.width );
+				}
+				#>
+
+				<#  var w_rule = '', classes = [],
+		w, h, settings = wp.media.view.settings,
+		isYouTube = isVimeo = false;
+
+	if ( ! _.isEmpty( data.model.src ) ) {
+		isYouTube = data.model.src.match(/youtube|youtu\.be/);
+		isVimeo = -1 !== data.model.src.indexOf('vimeo');
+	}
+
+	if ( settings.contentWidth && data.model.width >= settings.contentWidth ) {
+		w = settings.contentWidth;
+	} else {
+		w = data.model.width;
+	}
+
+	if ( w !== data.model.width ) {
+		h = Math.ceil( ( data.model.height * w ) / data.model.width );
+	} else {
+		h = data.model.height;
+	}
+
+	if ( w ) {
+		w_rule = 'width: ' + w + 'px; ';
+	}
+
+	if ( isYouTube ) {
+		classes.push( 'youtube-video' );
+	}
+
+	if ( isVimeo ) {
+		classes.push( 'vimeo-video' );
+	}
+
+#>
+<div style="{{ w_rule }}" class="wp-video">
+<video controls
+	class="wp-video-shortcode {{ classes.join( ' ' ) }}"
+	<# if ( w ) { #>width="{{ w }}"<# } #>
+	<# if ( h ) { #>height="{{ h }}"<# } #>
+			<#
+		if ( ! _.isUndefined( data.model.poster ) && data.model.poster ) {
+			#> poster="{{ data.model.poster }}"<#
+		} #>
+			preload			="{{ _.isUndefined( data.model.preload ) ? 'metadata' : data.model.preload }}"
+				<#
+		if ( ! _.isUndefined( data.model.autoplay ) && data.model.autoplay ) {
+		#> autoplay<#
+	}
+		if ( ! _.isUndefined( data.model.loop ) && data.model.loop ) {
+		#> loop<#
+	}
+	#>
+>
+	<# if ( ! _.isEmpty( data.model.src ) ) {
+		if ( isYouTube ) { #>
+		<source src="{{ data.model.src }}" type="video/youtube" />
+		<# } else if ( isVimeo ) { #>
+		<source src="{{ data.model.src }}" type="video/vimeo" />
+		<# } else { #>
+		<source src="{{ data.model.src }}" type="{{ settings.embedMimes[ data.model.src.split('.').pop() ] }}" />
+		<# }
+	} #>
+
+		<# if ( data.model.mp4 ) { #>
+	<source src="{{ data.model.mp4 }}" type="{{ settings.embedMimes[ 'mp4' ] }}" />
+	<# } #>
+		<# if ( data.model.m4v ) { #>
+	<source src="{{ data.model.m4v }}" type="{{ settings.embedMimes[ 'm4v' ] }}" />
+	<# } #>
+		<# if ( data.model.webm ) { #>
+	<source src="{{ data.model.webm }}" type="{{ settings.embedMimes[ 'webm' ] }}" />
+	<# } #>
+		<# if ( data.model.ogv ) { #>
+	<source src="{{ data.model.ogv }}" type="{{ settings.embedMimes[ 'ogv' ] }}" />
+	<# } #>
+		<# if ( data.model.flv ) { #>
+	<source src="{{ data.model.flv }}" type="{{ settings.embedMimes[ 'flv' ] }}" />
+	<# } #>
+		{{{ data.model.content }}}
+</video>
+</div>
+	
+				<# if ( ! _.isEmpty( data.model.src ) ) {
+					ext = data.model.src.split('.').pop();
+					if ( html5types[ ext ] ) {
+						delete html5types[ ext ];
+					}
+				#>
+				<span class="setting">
+					<label for="video-details-source" class="name">URL</label>
+					<input type="text" id="video-details-source" readonly data-setting="src" value="{{ data.model.src }}" />
+					<button type="button" class="button-link remove-setting">Remove video source</button>
+				</span>
+				<# } #>
+								<# if ( ! _.isEmpty( data.model.mp4 ) ) {
+					if ( ! _.isUndefined( html5types.mp4 ) ) {
+						delete html5types.mp4;
+					}
+				#>
+				<span class="setting">
+					<label for="video-details-mp4-source" class="name">MP4</label>
+					<input type="text" id="video-details-mp4-source" readonly data-setting="mp4" value="{{ data.model.mp4 }}" />
+					<button type="button" class="button-link remove-setting">Remove video source</button>
+				</span>
+				<# } #>
+								<# if ( ! _.isEmpty( data.model.m4v ) ) {
+					if ( ! _.isUndefined( html5types.m4v ) ) {
+						delete html5types.m4v;
+					}
+				#>
+				<span class="setting">
+					<label for="video-details-m4v-source" class="name">M4V</label>
+					<input type="text" id="video-details-m4v-source" readonly data-setting="m4v" value="{{ data.model.m4v }}" />
+					<button type="button" class="button-link remove-setting">Remove video source</button>
+				</span>
+				<# } #>
+								<# if ( ! _.isEmpty( data.model.webm ) ) {
+					if ( ! _.isUndefined( html5types.webm ) ) {
+						delete html5types.webm;
+					}
+				#>
+				<span class="setting">
+					<label for="video-details-webm-source" class="name">WEBM</label>
+					<input type="text" id="video-details-webm-source" readonly data-setting="webm" value="{{ data.model.webm }}" />
+					<button type="button" class="button-link remove-setting">Remove video source</button>
+				</span>
+				<# } #>
+								<# if ( ! _.isEmpty( data.model.ogv ) ) {
+					if ( ! _.isUndefined( html5types.ogv ) ) {
+						delete html5types.ogv;
+					}
+				#>
+				<span class="setting">
+					<label for="video-details-ogv-source" class="name">OGV</label>
+					<input type="text" id="video-details-ogv-source" readonly data-setting="ogv" value="{{ data.model.ogv }}" />
+					<button type="button" class="button-link remove-setting">Remove video source</button>
+				</span>
+				<# } #>
+								<# if ( ! _.isEmpty( data.model.flv ) ) {
+					if ( ! _.isUndefined( html5types.flv ) ) {
+						delete html5types.flv;
+					}
+				#>
+				<span class="setting">
+					<label for="video-details-flv-source" class="name">FLV</label>
+					<input type="text" id="video-details-flv-source" readonly data-setting="flv" value="{{ data.model.flv }}" />
+					<button type="button" class="button-link remove-setting">Remove video source</button>
+				</span>
+				<# } #>
+								</div>
+
+				<# if ( ! _.isEmpty( html5types ) ) { #>
+				<fieldset class="setting-group">
+					<legend class="name">Add alternate sources for maximum HTML5 playback</legend>
+					<span class="setting">
+						<span class="button-large">
+						<# _.each( html5types, function (mime, type) { #>
+							<button class="button add-media-source" data-mime="{{ mime }}">{{ type }}</button>
+						<# } ) #>
+						</span>
+					</span>
+				</fieldset>
+				<# } #>
+
+				<# if ( ! _.isEmpty( data.model.poster ) ) { #>
+				<span class="setting">
+					<label for="video-details-poster-image" class="name">Poster Image</label>
+					<input type="text" id="video-details-poster-image" readonly data-setting="poster" value="{{ data.model.poster }}" />
+					<button type="button" class="button-link remove-setting">Remove poster image</button>
+				</span>
+				<# } #>
+
+				<fieldset class="setting-group">
+					<legend class="name">Preload</legend>
+					<span class="setting preload">
+						<span class="button-group button-large" data-setting="preload">
+							<button class="button" value="auto">Auto</button>
+							<button class="button" value="metadata">Metadata</button>
+							<button class="button active" value="none">None</button>
+						</span>
+					</span>
+				</fieldset>
+
+				<span class="setting-group">
+					<span class="setting checkbox-setting autoplay">
+						<input type="checkbox" id="video-details-autoplay" data-setting="autoplay" />
+						<label for="video-details-autoplay" class="checkbox-label">Autoplay</label>
+					</span>
+
+					<span class="setting checkbox-setting">
+						<input type="checkbox" id="video-details-loop" data-setting="loop" />
+						<label for="video-details-loop" class="checkbox-label">Loop</label>
+					</span>
+				</span>
+
+				<span class="setting" data-setting="content">
+					<#
+					var content = '';
+					if ( ! _.isEmpty( data.model.content ) ) {
+						var tracks = jQuery( data.model.content ).filter( 'track' );
+						_.each( tracks.toArray(), function( track, index ) {
+							content += track.outerHTML; #>
+						<label for="video-details-track-{{ index }}" class="name">Tracks (subtitles, captions, descriptions, chapters, or metadata)</label>
+						<input class="content-track" type="text" id="video-details-track-{{ index }}" aria-describedby="video-details-track-desc-{{ index }}" value="{{ track.outerHTML }}" />
+						<span class="description" id="video-details-track-desc-{{ index }}">
+						The srclang, label, and kind values can be edited to set the video track language and kind.						</span>
+						<button type="button" class="button-link remove-setting remove-track">Remove video track</button><br />
+						<# } ); #>
+					<# } else { #>
+					<span class="name">Tracks (subtitles, captions, descriptions, chapters, or metadata)</span><br />
+					<em>There are no associated subtitles.</em>
+					<# } #>
+					<textarea class="hidden content-setting">{{ content }}</textarea>
+				</span>
+			</div>
+		</div>
+	</script>
+
+		<script type="text/html" id="tmpl-editor-gallery">
+		<# if ( data.attachments.length ) { #>
+			<div class="gallery gallery-columns-{{ data.columns }}">
+				<# _.each( data.attachments, function( attachment, index ) { #>
+					<dl class="gallery-item">
+						<dt class="gallery-icon">
+							<# if ( attachment.thumbnail ) { #>
+								<img src="{{ attachment.thumbnail.url }}" width="{{ attachment.thumbnail.width }}" height="{{ attachment.thumbnail.height }}" alt="{{ attachment.alt }}" />
+							<# } else { #>
+								<img src="{{ attachment.url }}" alt="{{ attachment.alt }}" />
+							<# } #>
+						</dt>
+						<# if ( attachment.caption ) { #>
+							<dd class="wp-caption-text gallery-caption">
+								{{{ data.verifyHTML( attachment.caption ) }}}
+							</dd>
+						<# } #>
+					</dl>
+					<# if ( index % data.columns === data.columns - 1 ) { #>
+						<br style="clear: both;" />
+					<# } #>
+				<# } ); #>
+			</div>
+		<# } else { #>
+			<div class="wpview-error">
+				<div class="dashicons dashicons-format-gallery"></div><p>No items found.</p>
+			</div>
+		<# } #>
+	</script>
+
+		<script type="text/html" id="tmpl-crop-content">
+		<img class="crop-image" src="{{ data.url }}" alt="Image crop area preview. Requires mouse interaction." />
+		<div class="upload-errors"></div>
+	</script>
+
+		<script type="text/html" id="tmpl-site-icon-preview">
+		<h2>Preview</h2>
+		<strong aria-hidden="true">As a browser icon</strong>
+		<div class="favicon-preview">
+			<img src="http://127.0.0.1:8096/wp-admin/images/browser.png" class="browser-preview" width="182" height="" alt="" />
+
+			<div class="favicon">
+				<img id="preview-favicon" src="{{ data.url }}" alt="Preview as a browser icon" />
+			</div>
+			<span class="browser-title" aria-hidden="true"><# print( 'OPF WPML 5.1.0 Runtime' ) #></span>
+		</div>
+
+		<strong aria-hidden="true">As an app icon</strong>
+		<div class="app-icon-preview">
+			<img id="preview-app-icon" src="{{ data.url }}" alt="Preview as an app icon" />
+		</div>
+	</script>
+
+			<!-- WooCommerce Tracks -->
+		<script type="text/javascript">
+			window.wcTracks = window.wcTracks || {};
+			window.wcTracks.isEnabled = false;
+			window._tkq = window._tkq || [];
+
+						window.wcTracks.validateEvent = function( eventName, props = {} ) {
+				let isValid = true;
+				if ( ! /^(([a-z0-9]+)_){1}([a-z0-9_]+)$/.test( eventName ) ) {
+					if ( true ) {
+						/* eslint-disable no-console */
+						console.error(
+							`A valid event name must be specified. The event name: "${ eventName }" is not valid.`
+						);
+						/* eslint-enable no-console */
+					}
+					isValid = false;
+				}
+				for ( const prop of Object.keys( props ) ) {
+					if ( ! /^[a-z_][a-z0-9_]*$/.test( prop ) ) {
+						if ( true ) {
+							/* eslint-disable no-console */
+							console.error(
+								`A valid prop name must be specified. The property name: "${ prop }" is not valid.`
+							);
+							/* eslint-enable no-console */
+						}
+						isValid = false;
+					}
+				}
+				return isValid;
+			}
+			window.wcTracks.recordEvent = function( name, properties ) {
+				if ( ! window.wcTracks.isEnabled ) {
+					return;
+				}
+
+				const eventName = 'wcadmin_' + name;
+				let eventProperties = properties || {};
+				eventProperties = { ...eventProperties, ...{"_via_ua":"curl\/7.81.0","_via_ip":"172.26.0.1","_lg":"","_dr":"","_dl":"http:\/\/127.0.0.1:8096\/wp-admin\/post.php?post=14&action=edit","url":"http:\/\/127.0.0.1:8096\/es\/","blog_lang":"en_US","blog_id":false,"store_id":"9d5a4254-b6e1-4b11-8765-9e6e0a37b2ef","products_count":"4","wc_version":"9.0.2"} };
+				if ( window.wp && window.wp.hooks && window.wp.hooks.applyFilters ) {
+					eventProperties = window.wp.hooks.applyFilters( 'woocommerce_tracks_client_event_properties', eventProperties, eventName );
+					delete( eventProperties._ui );
+					delete( eventProperties._ut );
+				}
+
+				if ( ! window.wcTracks.validateEvent( eventName, eventProperties ) ) {
+					return;
+				}
+				window._tkq.push( [ 'recordEvent', eventName, eventProperties ] );
+			}
+		</script>
+				<script type="text/javascript">
+			window.wcTracks.enable = function( callback ) {
+				window.wcTracks.isEnabled = true;
+
+				var scriptUrl = 'https://stats.wp.com/w.js';
+				var existingScript = document.querySelector( `script[src="${ scriptUrl }"]` );
+				if ( existingScript ) {
+					return;
+				}
+
+				var script = document.createElement('script');
+				script.src = scriptUrl;
+				document.body.append(script);
+
+				// Callback after scripts have loaded.
+				script.onload = function() {
+					if ( 'function' === typeof callback ) {
+						callback( true );
+					}
+				}
+
+				// Callback triggered if the script fails to load.
+				script.onerror = function() {
+					if ( 'function' === typeof callback ) {
+						callback( false );
+					}
+				}
+			}
+		</script>
+			<div id="wp-auth-check-wrap" class="hidden">
+	<div id="wp-auth-check-bg"></div>
+	<div id="wp-auth-check">
+	<button type="button" class="wp-auth-check-close button-link"><span class="screen-reader-text">
+		Close dialog	</span></button>
+			<div id="wp-auth-check-form" class="loading" data-src="http://127.0.0.1:8096/wp-login.php?interim-login=1&#038;wp_lang=en_US"></div>
+			<div class="wp-auth-fallback">
+		<p><b class="wp-auth-fallback-expired" tabindex="0">Session expired</b></p>
+		<p><a href="http://127.0.0.1:8096/wp-login.php" target="_blank">Please log in again.</a>
+		The login page will open in a new tab. After logging in you can close it and return to this page.</p>
+	</div>
+	</div>
+	</div>
+	<link rel='stylesheet' id='sitepress-post-edit-css' href='http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/res/css/post-edit.css?ver=510000' media='all' />
+<link rel='stylesheet' id='otgsPopoverTooltip-css' href='http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/vendor/otgs/ui/dist/css/otgsPopoverTooltip.css?ver=6.5.7' media='all' />
+
+<script>
+/* <![CDATA[ */
+var thickboxL10n = {"next":"Next >","prev":"< Prev","image":"Image","of":"of","close":"Close","noiframes":"This feature requires inline frames. You have iframes disabled or your browser does not support them.","loadingAnimation":"http:\/\/127.0.0.1:8096\/wp-includes\/js\/thickbox\/loadingAnimation.gif"};/* ]]> */
+</script>
+<script src='http://127.0.0.1:8096/wp-admin/load-scripts.php?c=0&amp;load%5Bchunk_0%5D=thickbox,hoverIntent&amp;ver=6.5.7'></script>
+<script src="http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/vendor/otgs/installer/res/js/dismiss-nag.js?ver=5.1.0" id="installer-dismiss-nag-js"></script>
+<script src="http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/vendor/otgs/installer/res/js/install_recommended_plugin.js?ver=5.1.0" id="install-recommended_plugin-js"></script>
+<script src="http://127.0.0.1:8096/wp-admin/js/common.min.js?ver=6.5.7" id="common-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/hoverintent-js.min.js?ver=2.2.1" id="hoverintent-js-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/admin-bar.min.js?ver=6.5.7" id="admin-bar-js"></script>
+<script id="heartbeat-js-extra">
+var heartbeatSettings = {"nonce":"bc90ba591c"};
+</script>
+<script src="http://127.0.0.1:8096/wp-includes/js/heartbeat.min.js?ver=6.5.7" id="heartbeat-js"></script>
+<script id="autosave-js-extra">
+var autosaveL10n = {"autosaveInterval":"60","blog_id":"1"};
+</script>
+<script src="http://127.0.0.1:8096/wp-includes/js/autosave.min.js?ver=6.5.7" id="autosave-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/jquery/suggest.min.js?ver=1.1-20110113" id="suggest-js"></script>
+<script id="wp-ajax-response-js-extra">
+var wpAjax = {"noPerm":"Sorry, you are not allowed to do that.","broken":"Something went wrong."};
+</script>
+<script src="http://127.0.0.1:8096/wp-includes/js/wp-ajax-response.min.js?ver=6.5.7" id="wp-ajax-response-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/jquery/jquery.color.min.js?ver=2.2.0" id="jquery-color-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/wp-lists.min.js?ver=6.5.7" id="wp-lists-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/jquery/ui/sortable.min.js?ver=1.13.2" id="jquery-ui-sortable-js"></script>
+<script src="http://127.0.0.1:8096/wp-admin/js/postbox.min.js?ver=6.5.7" id="postbox-js"></script>
+<script src="http://127.0.0.1:8096/wp-admin/js/tags-suggest.min.js?ver=6.5.7" id="tags-suggest-js"></script>
+<script src="http://127.0.0.1:8096/wp-admin/js/tags-box.min.js?ver=6.5.7" id="tags-box-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/underscore.min.js?ver=1.13.4" id="underscore-js"></script>
+<script id="word-count-js-extra">
+var wordCountL10n = {"type":"words","shortcodes":["wp_caption","caption","gallery","playlist","audio","video","embed","wpml_language_form_field","wpml_language_switcher","wpml_language_selector_widget","wpml_language_selector_footer","wpml-string","currency_switcher","product","product_page","product_category","product_categories","add_to_cart","add_to_cart_url","products","recent_products","sale_products","best_selling_products","top_rated_products","featured_products","product_attribute","related_products","shop_messages","woocommerce_order_tracking","woocommerce_cart","woocommerce_checkout","woocommerce_my_account","woocommerce_messages"]};
+</script>
+<script src="http://127.0.0.1:8096/wp-admin/js/word-count.min.js?ver=6.5.7" id="word-count-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/wp-sanitize.min.js?ver=6.5.7" id="wp-sanitize-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/clipboard.min.js?ver=2.0.11" id="clipboard-js"></script>
+<script src="http://127.0.0.1:8096/wp-admin/js/post.min.js?ver=6.5.7" id="post-js"></script>
+<script src="http://127.0.0.1:8096/wp-admin/js/svg-painter.js?ver=6.5.7" id="svg-painter-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/wp-auth-check.min.js?ver=6.5.7" id="wp-auth-check-js"></script>
+<script src="http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/dist/js/wpml-meta-box/wpml-meta-box.js?ver=510000" id="wpml-meta-box-js"></script>
+<script id="wpml-media-screen-commands-js-extra">
+var wpmlMediaScreenCommands = {"ajaxUrl":"http:\/\/127.0.0.1:8096\/wp-admin\/admin-ajax.php","commands":[{"action":"wpml_media_prepare_translation_editor_media","nonce":"ed74e72661","args":{"post":"14"}}]};
+</script>
+<script src="http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/res/js/media/screen-commands.js?ver=510000" id="wpml-media-screen-commands-js"></script>
+<script id="wpml-proxy-auto-enable-js-before">
+var wpmlProxyAutoEnableConfig = {"allowedDomains":["ate.wpml.org","ams.wpml.org"]};
+</script>
+<script src="http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/wpml/src/../public/js/wpml-proxy-auto-enable.js?ver=510000" id="wpml-proxy-auto-enable-js"></script>
+<script src="http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/wpml/src/../public/js/node-modules.js?ver=510000" id="wpml-node-modules-js"></script>
+<script id="check-posthog-should-record-js-before">
+var checkPostHogShouldRecord = {"route":"http:\/\/127.0.0.1:8096\/es\/wp-json\/wpml\/v1\/wpml-ph-make-external-request","nonce":"e96af11d9b"};
+</script>
+<script src="http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/wpml/src/../public/js/check-posthog-should-record.js?ver=510000" id="check-posthog-should-record-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/shortcode.min.js?ver=6.5.7" id="shortcode-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/backbone.min.js?ver=1.5.0" id="backbone-js"></script>
+<script id="wp-util-js-extra">
+var _wpUtilSettings = {"ajax":{"url":"\/wp-admin\/admin-ajax.php"}};
+</script>
+<script src="http://127.0.0.1:8096/wp-includes/js/wp-util.min.js?ver=6.5.7" id="wp-util-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/wp-backbone.min.js?ver=6.5.7" id="wp-backbone-js"></script>
+<script id="media-models-js-extra">
+var _wpMediaModelsL10n = {"settings":{"ajaxurl":"\/wp-admin\/admin-ajax.php","post":{"id":0}}};
+</script>
+<script src="http://127.0.0.1:8096/wp-includes/js/media-models.min.js?ver=6.5.7" id="media-models-js"></script>
+<script id="wp-plupload-js-extra">
+var pluploadL10n = {"queue_limit_exceeded":"You have attempted to queue too many files.","file_exceeds_size_limit":"%s exceeds the maximum upload size for this site.","zero_byte_file":"This file is empty. Please try another.","invalid_filetype":"Sorry, you are not allowed to upload this file type.","not_an_image":"This file is not an image. Please try another.","image_memory_exceeded":"Memory exceeded. Please try another smaller file.","image_dimensions_exceeded":"This is larger than the maximum size. Please try another.","default_error":"An error occurred in the upload. Please try again later.","missing_upload_url":"There was a configuration error. Please contact the server administrator.","upload_limit_exceeded":"You may only upload 1 file.","http_error":"Unexpected response from the server. The file may have been uploaded successfully. Check in the Media Library or reload the page.","http_error_image":"The server cannot process the image. This can happen if the server is busy or does not have enough resources to complete the task. Uploading a smaller image may help. Suggested maximum size is 2560 pixels.","upload_failed":"Upload failed.","big_upload_failed":"Please try uploading this file with the %1$sbrowser uploader%2$s.","big_upload_queued":"%s exceeds the maximum upload size for the multi-file uploader when used in your browser.","io_error":"IO error.","security_error":"Security error.","file_cancelled":"File canceled.","upload_stopped":"Upload stopped.","dismiss":"Dismiss","crunching":"Crunching\u2026","deleted":"moved to the Trash.","error_uploading":"\u201c%s\u201d has failed to upload.","unsupported_image":"This image cannot be displayed in a web browser. For best results convert it to JPEG before uploading.","noneditable_image":"This image cannot be processed by the web server. Convert it to JPEG or PNG before uploading.","file_url_copied":"The file URL has been copied to your clipboard"};
+var _wpPluploadSettings = {"defaults":{"file_data_name":"async-upload","url":"\/wp-admin\/async-upload.php","filters":{"max_file_size":"2097152b","mime_types":[{"extensions":"jpg,jpeg,jpe,gif,png,bmp,tiff,tif,webp,avif,ico,heic,asf,asx,wmv,wmx,wm,avi,divx,flv,mov,qt,mpeg,mpg,mpe,mp4,m4v,ogv,webm,mkv,3gp,3gpp,3g2,3gp2,txt,asc,c,cc,h,srt,csv,tsv,ics,rtx,css,htm,html,vtt,dfxp,mp3,m4a,m4b,aac,ra,ram,wav,ogg,oga,flac,mid,midi,wma,wax,mka,rtf,js,pdf,class,tar,zip,gz,gzip,rar,7z,psd,xcf,doc,pot,pps,ppt,wri,xla,xls,xlt,xlw,mdb,mpp,docx,docm,dotx,dotm,xlsx,xlsm,xlsb,xltx,xltm,xlam,pptx,pptm,ppsx,ppsm,potx,potm,ppam,sldx,sldm,onetoc,onetoc2,onetmp,onepkg,oxps,xps,odt,odp,ods,odg,odc,odb,odf,wp,wpd,key,numbers,pages"}]},"heic_upload_error":true,"multipart_params":{"action":"upload-attachment","_wpnonce":"67b45dc0f5"}},"browser":{"mobile":false,"supported":true},"limitExceeded":false};
+</script>
+<script src="http://127.0.0.1:8096/wp-includes/js/plupload/wp-plupload.min.js?ver=6.5.7" id="wp-plupload-js"></script>
+<script id="mediaelement-core-js-before">
+var mejsL10n = {"language":"en","strings":{"mejs.download-file":"Download File","mejs.install-flash":"You are using a browser that does not have Flash player enabled or installed. Please turn on your Flash player plugin or download the latest version from https:\/\/get.adobe.com\/flashplayer\/","mejs.fullscreen":"Fullscreen","mejs.play":"Play","mejs.pause":"Pause","mejs.time-slider":"Time Slider","mejs.time-help-text":"Use Left\/Right Arrow keys to advance one second, Up\/Down arrows to advance ten seconds.","mejs.live-broadcast":"Live Broadcast","mejs.volume-help-text":"Use Up\/Down Arrow keys to increase or decrease volume.","mejs.unmute":"Unmute","mejs.mute":"Mute","mejs.volume-slider":"Volume Slider","mejs.video-player":"Video Player","mejs.audio-player":"Audio Player","mejs.captions-subtitles":"Captions\/Subtitles","mejs.captions-chapters":"Chapters","mejs.none":"None","mejs.afrikaans":"Afrikaans","mejs.albanian":"Albanian","mejs.arabic":"Arabic","mejs.belarusian":"Belarusian","mejs.bulgarian":"Bulgarian","mejs.catalan":"Catalan","mejs.chinese":"Chinese","mejs.chinese-simplified":"Chinese (Simplified)","mejs.chinese-traditional":"Chinese (Traditional)","mejs.croatian":"Croatian","mejs.czech":"Czech","mejs.danish":"Danish","mejs.dutch":"Dutch","mejs.english":"English","mejs.estonian":"Estonian","mejs.filipino":"Filipino","mejs.finnish":"Finnish","mejs.french":"French","mejs.galician":"Galician","mejs.german":"German","mejs.greek":"Greek","mejs.haitian-creole":"Haitian Creole","mejs.hebrew":"Hebrew","mejs.hindi":"Hindi","mejs.hungarian":"Hungarian","mejs.icelandic":"Icelandic","mejs.indonesian":"Indonesian","mejs.irish":"Irish","mejs.italian":"Italian","mejs.japanese":"Japanese","mejs.korean":"Korean","mejs.latvian":"Latvian","mejs.lithuanian":"Lithuanian","mejs.macedonian":"Macedonian","mejs.malay":"Malay","mejs.maltese":"Maltese","mejs.norwegian":"Norwegian","mejs.persian":"Persian","mejs.polish":"Polish","mejs.portuguese":"Portuguese","mejs.romanian":"Romanian","mejs.russian":"Russian","mejs.serbian":"Serbian","mejs.slovak":"Slovak","mejs.slovenian":"Slovenian","mejs.spanish":"Spanish","mejs.swahili":"Swahili","mejs.swedish":"Swedish","mejs.tagalog":"Tagalog","mejs.thai":"Thai","mejs.turkish":"Turkish","mejs.ukrainian":"Ukrainian","mejs.vietnamese":"Vietnamese","mejs.welsh":"Welsh","mejs.yiddish":"Yiddish"}};
+</script>
+<script src="http://127.0.0.1:8096/wp-includes/js/mediaelement/mediaelement-and-player.min.js?ver=4.2.17" id="mediaelement-core-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/mediaelement/mediaelement-migrate.min.js?ver=6.5.7" id="mediaelement-migrate-js"></script>
+<script id="mediaelement-js-extra">
+var _wpmejsSettings = {"pluginPath":"\/wp-includes\/js\/mediaelement\/","classPrefix":"mejs-","stretching":"responsive","audioShortcodeLibrary":"mediaelement","videoShortcodeLibrary":"mediaelement"};
+</script>
+<script src="http://127.0.0.1:8096/wp-includes/js/mediaelement/wp-mediaelement.min.js?ver=6.5.7" id="wp-mediaelement-js"></script>
+<script id="wp-api-request-js-extra">
+var wpApiSettings = {"root":"http:\/\/127.0.0.1:8096\/es\/wp-json\/","nonce":"e96af11d9b","versionString":"wp\/v2\/"};
+</script>
+<script src="http://127.0.0.1:8096/wp-includes/js/api-request.min.js?ver=6.5.7" id="wp-api-request-js"></script>
+<script id="media-views-js-extra">
+var _wpMediaViewsL10n = {"mediaFrameDefaultTitle":"Media","url":"URL","addMedia":"Add media","search":"Search","select":"Select","cancel":"Cancel","update":"Update","replace":"Replace","remove":"Remove","back":"Back","selected":"%d selected","dragInfo":"Drag and drop to reorder media files.","uploadFilesTitle":"Upload files","uploadImagesTitle":"Upload images","mediaLibraryTitle":"Media Library","insertMediaTitle":"Add media","createNewGallery":"Create a new gallery","createNewPlaylist":"Create a new playlist","createNewVideoPlaylist":"Create a new video playlist","returnToLibrary":"\u2190 Go to library","allMediaItems":"All media items","allDates":"All dates","noItemsFound":"No items found.","insertIntoPost":"Insert into post","unattached":"Unattached","mine":"Mine","trash":"Trash","uploadedToThisPost":"Uploaded to this post","warnDelete":"You are about to permanently delete this item from your site.\nThis action cannot be undone.\n 'Cancel' to stop, 'OK' to delete.","warnBulkDelete":"You are about to permanently delete these items from your site.\nThis action cannot be undone.\n 'Cancel' to stop, 'OK' to delete.","warnBulkTrash":"You are about to trash these items.\n  'Cancel' to stop, 'OK' to delete.","bulkSelect":"Bulk select","trashSelected":"Move to Trash","restoreSelected":"Restore from Trash","deletePermanently":"Delete permanently","errorDeleting":"Error in deleting the attachment.","apply":"Apply","filterByDate":"Filter by date","filterByType":"Filter by type","searchLabel":"Search","searchMediaLabel":"Search media","searchMediaPlaceholder":"Search media items...","mediaFound":"Number of media items found: %d","noMedia":"No media items found.","noMediaTryNewSearch":"No media items found. Try a different search.","attachmentDetails":"Attachment details","insertFromUrlTitle":"Insert from URL","setFeaturedImageTitle":"Featured image","setFeaturedImage":"Set featured image","createGalleryTitle":"Create gallery","editGalleryTitle":"Edit gallery","cancelGalleryTitle":"\u2190 Cancel gallery","insertGallery":"Insert gallery","updateGallery":"Update gallery","addToGallery":"Add to gallery","addToGalleryTitle":"Add to gallery","reverseOrder":"Reverse order","imageDetailsTitle":"Image details","imageReplaceTitle":"Replace image","imageDetailsCancel":"Cancel edit","editImage":"Edit image","chooseImage":"Choose image","selectAndCrop":"Select and crop","skipCropping":"Skip cropping","cropImage":"Crop image","cropYourImage":"Crop your image","cropping":"Cropping\u2026","suggestedDimensions":"Suggested image dimensions: %1$s by %2$s pixels.","cropError":"There has been an error cropping your image.","audioDetailsTitle":"Audio details","audioReplaceTitle":"Replace audio","audioAddSourceTitle":"Add audio source","audioDetailsCancel":"Cancel edit","videoDetailsTitle":"Video details","videoReplaceTitle":"Replace video","videoAddSourceTitle":"Add video source","videoDetailsCancel":"Cancel edit","videoSelectPosterImageTitle":"Select poster image","videoAddTrackTitle":"Add subtitles","playlistDragInfo":"Drag and drop to reorder tracks.","createPlaylistTitle":"Create audio playlist","editPlaylistTitle":"Edit audio playlist","cancelPlaylistTitle":"\u2190 Cancel audio playlist","insertPlaylist":"Insert audio playlist","updatePlaylist":"Update audio playlist","addToPlaylist":"Add to audio playlist","addToPlaylistTitle":"Add to Audio Playlist","videoPlaylistDragInfo":"Drag and drop to reorder videos.","createVideoPlaylistTitle":"Create video playlist","editVideoPlaylistTitle":"Edit video playlist","cancelVideoPlaylistTitle":"\u2190 Cancel video playlist","insertVideoPlaylist":"Insert video playlist","updateVideoPlaylist":"Update video playlist","addToVideoPlaylist":"Add to video playlist","addToVideoPlaylistTitle":"Add to video Playlist","filterAttachments":"Filter media","attachmentsList":"Media list","settings":{"tabs":[],"tabUrl":"http:\/\/127.0.0.1:8096\/wp-admin\/media-upload.php?chromeless=1","mimeTypes":{"image":"Images","audio":"Audio","video":"Video","application\/msword,application\/vnd.openxmlformats-officedocument.wordprocessingml.document,application\/vnd.ms-word.document.macroEnabled.12,application\/vnd.ms-word.template.macroEnabled.12,application\/vnd.oasis.opendocument.text,application\/vnd.apple.pages,application\/pdf,application\/vnd.ms-xpsdocument,application\/oxps,application\/rtf,application\/wordperfect,application\/octet-stream":"Documents","application\/vnd.apple.numbers,application\/vnd.oasis.opendocument.spreadsheet,application\/vnd.ms-excel,application\/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application\/vnd.ms-excel.sheet.macroEnabled.12,application\/vnd.ms-excel.sheet.binary.macroEnabled.12":"Spreadsheets","application\/x-gzip,application\/rar,application\/x-tar,application\/zip,application\/x-7z-compressed":"Archives"},"captions":true,"nonce":{"sendToEditor":"d794adf660","setAttachmentThumbnail":"295efa5baa"},"post":{"id":0},"defaultProps":{"link":"none","align":"","size":""},"attachmentCounts":{"audio":1,"video":1},"oEmbedProxyUrl":"http:\/\/127.0.0.1:8096\/es\/wp-json\/oembed\/1.0\/proxy","embedExts":["mp3","ogg","flac","m4a","wav","mp4","m4v","webm","ogv","flv"],"embedMimes":{"mp3":"audio\/mpeg","ogg":"audio\/ogg","flac":"audio\/flac","m4a":"audio\/mpeg","wav":"audio\/wav","mp4":"video\/mp4","m4v":"video\/mp4","webm":"video\/webm","ogv":"video\/ogg","flv":"video\/x-flv"},"contentWidth":null,"months":[{"year":"2026","month":"10","text":"October 2026"}],"mediaTrash":0,"infiniteScrolling":0}};
+</script>
+<script src="http://127.0.0.1:8096/wp-includes/js/media-views.min.js?ver=6.5.7" id="media-views-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/media-editor.min.js?ver=6.5.7" id="media-editor-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/media-audiovideo.min.js?ver=6.5.7" id="media-audiovideo-js"></script>
+<script id="mce-view-js-extra">
+var mceViewL10n = {"shortcodes":["wp_caption","caption","gallery","playlist","audio","video","embed","wpml_language_form_field","wpml_language_switcher","wpml_language_selector_widget","wpml_language_selector_footer","wpml-string","currency_switcher","product","product_page","product_category","product_categories","add_to_cart","add_to_cart_url","products","recent_products","sale_products","best_selling_products","top_rated_products","featured_products","product_attribute","related_products","shop_messages","woocommerce_order_tracking","woocommerce_cart","woocommerce_checkout","woocommerce_my_account","woocommerce_messages"]};
+</script>
+<script src="http://127.0.0.1:8096/wp-includes/js/mce-view.min.js?ver=6.5.7" id="mce-view-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/imgareaselect/jquery.imgareaselect.min.js?ver=6.5.7" id="imgareaselect-js"></script>
+<script src="http://127.0.0.1:8096/wp-admin/js/image-edit.min.js?ver=6.5.7" id="image-edit-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/dist/vendor/react.min.js?ver=18.2.0" id="react-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/dist/vendor/react-dom.min.js?ver=18.2.0" id="react-dom-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/dist/escape-html.min.js?ver=6561a406d2d232a6fbd2" id="wp-escape-html-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/dist/element.min.js?ver=cb762d190aebbec25b27" id="wp-element-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/dist/deprecated.min.js?ver=e1f84915c5e8ae38964c" id="wp-deprecated-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/dist/dom.min.js?ver=4ecffbffba91b10c5c7a" id="wp-dom-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/dist/is-shallow-equal.min.js?ver=e0f9f1d78d83f5196979" id="wp-is-shallow-equal-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/dist/keycodes.min.js?ver=034ff647a54b018581d3" id="wp-keycodes-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/dist/priority-queue.min.js?ver=9c21c957c7e50ffdbf48" id="wp-priority-queue-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/dist/compose.min.js?ver=1339d3318cd44440dccb" id="wp-compose-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/dist/vendor/moment.min.js?ver=2.29.4" id="moment-js"></script>
+<script id="moment-js-after">
+moment.updateLocale( 'en_US', {"months":["January","February","March","April","May","June","July","August","September","October","November","December"],"monthsShort":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"weekdaysShort":["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],"week":{"dow":1},"longDateFormat":{"LT":"g:i a","LTS":null,"L":null,"LL":"F j, Y","LLL":"F j, Y g:i a","LLLL":null}} );
+</script>
+<script src="http://127.0.0.1:8096/wp-includes/js/dist/date.min.js?ver=aaca6387d1cf924acc51" id="wp-date-js"></script>
+<script id="wp-date-js-after">
+wp.date.setSettings( {"l10n":{"locale":"en_US","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"monthsShort":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"weekdaysShort":["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],"meridiem":{"am":"am","pm":"pm","AM":"AM","PM":"PM"},"relative":{"future":"%s from now","past":"%s ago","s":"a second","ss":"%d seconds","m":"a minute","mm":"%d minutes","h":"an hour","hh":"%d hours","d":"a day","dd":"%d days","M":"a month","MM":"%d months","y":"a year","yy":"%d years"},"startOfWeek":1},"formats":{"time":"g:i a","date":"F j, Y","datetime":"F j, Y g:i a","datetimeAbbreviated":"M j, Y g:i a"},"timezone":{"offset":0,"offsetFormatted":"0","string":"","abbr":""}} );
+</script>
+<script src="http://127.0.0.1:8096/wp-includes/js/dist/html-entities.min.js?ver=2cd3358363e0675638fb" id="wp-html-entities-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/dist/primitives.min.js?ver=a41bfd5835f583ae838a" id="wp-primitives-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/dist/private-apis.min.js?ver=5e7fdf55d04b8c2aadef" id="wp-private-apis-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/dist/redux-routine.min.js?ver=b14553dce2bee5c0f064" id="wp-redux-routine-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/dist/data.min.js?ver=e6595ba1a7cd34429f66" id="wp-data-js"></script>
+<script id="wp-data-js-after">
+( function() {
+	var userId = 1;
+	var storageKey = "WP_DATA_USER_" + userId;
+	wp.data
+		.use( wp.data.plugins.persistence, { storageKey: storageKey } );
+} )();
+</script>
+<script src="http://127.0.0.1:8096/wp-includes/js/dist/rich-text.min.js?ver=dd125966cf6cc0394ae0" id="wp-rich-text-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/dist/warning.min.js?ver=ed7c8b0940914f4fe44b" id="wp-warning-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/dist/components.min.js?ver=c4b2ef1c62202e4e2d1e" id="wp-components-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/dist/url.min.js?ver=421139b01f33e5b327d8" id="wp-url-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/dist/api-fetch.min.js?ver=4c185334c5ec26e149cc" id="wp-api-fetch-js"></script>
+<script id="wp-api-fetch-js-after">
+wp.apiFetch.use( wp.apiFetch.createRootURLMiddleware( "http://127.0.0.1:8096/es/wp-json/" ) );
+wp.apiFetch.nonceMiddleware = wp.apiFetch.createNonceMiddleware( "e96af11d9b" );
+wp.apiFetch.use( wp.apiFetch.nonceMiddleware );
+wp.apiFetch.use( wp.apiFetch.mediaUploadMiddleware );
+wp.apiFetch.nonceEndpoint = "http://127.0.0.1:8096/wp-admin/admin-ajax.php?action=rest-nonce";
+</script>
+<script src="http://127.0.0.1:8096/wp-content/plugins/open-product-fields-for-woocommerce/assets/js/opf-builder.js?ver=0.1.1" id="opf-builder-js"></script>
+<script src="http://127.0.0.1:8096/wp-includes/js/wp-pointer.min.js?ver=6.5.7" id="wp-pointer-js"></script>
+<script src="http://127.0.0.1:8096/wp-content/plugins/woocommerce-multilingual/res/js/pointer.min.js?ver=5.6.1" id="wcml-pointer-js"></script>
+<script src="http://127.0.0.1:8096/wp-content/plugins/woocommerce-multilingual/res/js/wcml-messages.min.js?ver=5.6.1" id="wcml-messages-js"></script>
+<script src="http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/res/js/otgs-notices.js?ver=510000" id="otgs-notices-js"></script>
+<script id="wpml-updates-js-before">
+var wpmlUpdates = {"updates":[1],"nonce":"e96af11d9b","route":"http:\/\/127.0.0.1:8096\/es\/wp-json\/wpml\/v1\/updates"};
+</script>
+<script src="http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/wpml/src/../public/js/updates.js?ver=510000" id="wpml-updates-js"></script>
+<script src="http://127.0.0.1:8096/wp-content/plugins/sitepress-multilingual-cms/vendor/otgs/ui/dist/js/otgsPopoverTooltip.js?ver=6.5.7" id="otgsPopoverTooltip-js"></script>
+	<script type="text/javascript">
+	var compressionNonce = "b39f8e4ddb";
+	var testCompression = {
+		get : function(test) {
+			var x;
+			if ( window.XMLHttpRequest ) {
+				x = new XMLHttpRequest();
+			} else {
+				try{x=new ActiveXObject('Msxml2.XMLHTTP');}catch(e){try{x=new ActiveXObject('Microsoft.XMLHTTP');}catch(e){};}
+			}
+
+			if (x) {
+				x.onreadystatechange = function() {
+					var r, h;
+					if ( x.readyState == 4 ) {
+						r = x.responseText.substr(0, 18);
+						h = x.getResponseHeader('Content-Encoding');
+						testCompression.check(r, h, test);
+					}
+				};
+
+				x.open('GET', ajaxurl + '?action=wp-compression-test&test='+test+'&_ajax_nonce='+compressionNonce+'&'+(new Date()).getTime(), true);
+				x.send('');
+			}
+		},
+
+		check : function(r, h, test) {
+			if ( ! r && ! test )
+				this.get(1);
+
+			if ( 1 == test ) {
+				if ( h && ( h.match(/deflate/i) || h.match(/gzip/i) ) )
+					this.get('no');
+				else
+					this.get(2);
+
+				return;
+			}
+
+			if ( 2 == test ) {
+				if ( '"wpCompressionTest' === r )
+					this.get('yes');
+				else
+					this.get('no');
+			}
+		}
+	};
+	testCompression.check();
+	</script>
+	
+<div class="clear"></div></div><!-- wpwrap -->
+<script type="text/javascript">if(typeof wpOnload==='function')wpOnload();</script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+{"id":"1","language":"en","context":"WordPress","name":"URL slug: product","string_package_id":null,"status":"10","type":"LINE"}
+{"id":"2","language":"en","context":"WordPress","name":"URL product_cat tax slug","string_package_id":null,"status":"10","type":"LINE"}
+{"id":"3","language":"en","context":"WordPress","name":"URL product_tag tax slug","string_package_id":null,"status":"10","type":"LINE"}
+{"id":"4","language":"en","context":"WP Endpoints","name":"order-pay","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"5","language":"en","context":"WP Endpoints","name":"order-received","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"6","language":"en","context":"WP Endpoints","name":"orders","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"7","language":"en","context":"WP Endpoints","name":"view-order","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"8","language":"en","context":"WP Endpoints","name":"downloads","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"9","language":"en","context":"WP Endpoints","name":"edit-account","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"10","language":"en","context":"WP Endpoints","name":"edit-address","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"11","language":"en","context":"WP Endpoints","name":"payment-methods","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"12","language":"en","context":"WP Endpoints","name":"lost-password","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"13","language":"en","context":"WP Endpoints","name":"customer-logout","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"14","language":"en","context":"WP Endpoints","name":"add-payment-method","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"15","language":"en","context":"WP Endpoints","name":"delete-payment-method","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"16","language":"en","context":"WP Endpoints","name":"set-default-payment-method","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"17","language":"en","context":"WP Endpoints","name":"wc-api","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"18","language":"en","context":"WP Endpoints","name":"wc\/file\/transient","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"19","language":"en","context":"admin_texts_woocommerce_email_footer_text","name":"woocommerce_email_footer_text","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"20","language":"en","context":"admin_texts_woocommerce_price_thousand_sep","name":"woocommerce_price_thousand_sep","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"21","language":"en","context":"admin_texts_woocommerce_price_decimal_sep","name":"woocommerce_price_decimal_sep","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"22","language":"en","context":"admin_texts_woocommerce_email_from_name","name":"woocommerce_email_from_name","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"23","language":"en","context":"admin_texts_woocommerce_email_from_address","name":"woocommerce_email_from_address","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"24","language":"en","context":"admin_texts_woocommerce_registration_privacy_policy_text","name":"woocommerce_registration_privacy_policy_text","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"25","language":"en","context":"admin_texts_woocommerce_checkout_privacy_policy_text","name":"woocommerce_checkout_privacy_policy_text","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"26","language":"en","context":"WPML","name":"Text for alternative languages for posts","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"27","language":"en","context":"open-product-fields-14","name":"field:gift:label","string_package_id":"1","status":"10","type":"LINE"}
+{"id":"28","language":"en","context":"open-product-fields-14","name":"field:gift:description","string_package_id":"1","status":"10","type":"AREA"}
+{"id":"29","language":"en","context":"open-product-fields-14","name":"field:gift:placeholder","string_package_id":"1","status":"10","type":"LINE"}
+{"id":"30","language":"en","context":"open-product-fields-14","name":"field:gift:choice:red","string_package_id":"1","status":"10","type":"LINE"}
+{"id":"31","language":"en","context":"open-product-fields-14","name":"field:gift:choice:blue","string_package_id":"1","status":"10","type":"LINE"}
+{"id":"32","language":"en","context":"open-product-fields-14","name":"field:note:label","string_package_id":"1","status":"10","type":"LINE"}
+{"id":"33","language":"en","context":"open-product-fields-14","name":"field:note:placeholder","string_package_id":"1","status":"10","type":"LINE"}
+{"id":"34","language":"en","context":"open-product-fields-14","name":"field:info:content","string_package_id":"1","status":"10","type":"VISUAL"}
+{"id":"35","language":"en","context":"open-product-fields-14","name":"field:extra:label","string_package_id":"1","status":"10","type":"LINE"}
+{"id":"36","language":"en","context":"open-product-fields-14","name":"field:extra:choice:card","string_package_id":"1","status":"10","type":"LINE"}
+{"id":"37","language":"en","context":"open-product-fields-14","name":"field:extra:repeat:add","string_package_id":"1","status":"10","type":"LINE"}
+{"id":"38","language":"en","context":"open-product-fields-14","name":"field:extra:repeat:del","string_package_id":"1","status":"10","type":"LINE"}
+{"id":"39","language":"en","context":"open-product-fields-14","name":"field:extra:repeat:label","string_package_id":"1","status":"10","type":"LINE"}
+{"id":"40","language":"en","context":"admin_texts_woocommerce_new_order_settings","name":"[woocommerce_new_order_settings]subject","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"41","language":"en","context":"admin_texts_woocommerce_new_order_settings","name":"[woocommerce_new_order_settings]heading","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"42","language":"en","context":"admin_texts_woocommerce_customer_completed_order_settings","name":"[woocommerce_customer_completed_order_settings]subject","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"43","language":"en","context":"admin_texts_woocommerce_customer_completed_order_settings","name":"[woocommerce_customer_completed_order_settings]heading","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"44","language":"en","context":"admin_texts_woocommerce_customer_invoice_settings","name":"[woocommerce_customer_invoice_settings]subject","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"45","language":"en","context":"admin_texts_woocommerce_customer_invoice_settings","name":"[woocommerce_customer_invoice_settings]heading","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"46","language":"en","context":"admin_texts_woocommerce_customer_invoice_settings","name":"[woocommerce_customer_invoice_settings]subject_paid","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"47","language":"en","context":"admin_texts_woocommerce_customer_invoice_settings","name":"[woocommerce_customer_invoice_settings]heading_paid","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"48","language":"en","context":"admin_texts_woocommerce_customer_new_account_settings","name":"[woocommerce_customer_new_account_settings]subject","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"49","language":"en","context":"admin_texts_woocommerce_customer_new_account_settings","name":"[woocommerce_customer_new_account_settings]heading","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"50","language":"en","context":"admin_texts_woocommerce_customer_note_settings","name":"[woocommerce_customer_note_settings]subject","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"51","language":"en","context":"admin_texts_woocommerce_customer_note_settings","name":"[woocommerce_customer_note_settings]heading","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"52","language":"en","context":"admin_texts_woocommerce_customer_reset_password_settings","name":"[woocommerce_customer_reset_password_settings]subject","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"53","language":"en","context":"admin_texts_woocommerce_customer_reset_password_settings","name":"[woocommerce_customer_reset_password_settings]heading","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"54","language":"en","context":"admin_texts_woocommerce_customer_processing_order_settings","name":"[woocommerce_customer_processing_order_settings]subject","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"55","language":"en","context":"admin_texts_woocommerce_customer_processing_order_settings","name":"[woocommerce_customer_processing_order_settings]heading","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"56","language":"en","context":"admin_texts_woocommerce_cancelled_order_settings","name":"[woocommerce_cancelled_order_settings]subject","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"57","language":"en","context":"admin_texts_woocommerce_cancelled_order_settings","name":"[woocommerce_cancelled_order_settings]heading","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"58","language":"en","context":"admin_texts_woocommerce_failed_order_settings","name":"[woocommerce_failed_order_settings]subject","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"59","language":"en","context":"admin_texts_woocommerce_failed_order_settings","name":"[woocommerce_failed_order_settings]heading","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"60","language":"en","context":"admin_texts_woocommerce_customer_on_hold_order_settings","name":"[woocommerce_customer_on_hold_order_settings]subject","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"61","language":"en","context":"admin_texts_woocommerce_customer_on_hold_order_settings","name":"[woocommerce_customer_on_hold_order_settings]heading","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"62","language":"en","context":"admin_texts_woocommerce_customer_refunded_order_settings","name":"[woocommerce_customer_refunded_order_settings]subject_full","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"63","language":"en","context":"admin_texts_woocommerce_customer_refunded_order_settings","name":"[woocommerce_customer_refunded_order_settings]subject_partial","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"64","language":"en","context":"admin_texts_woocommerce_customer_refunded_order_settings","name":"[woocommerce_customer_refunded_order_settings]heading_full","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"65","language":"en","context":"admin_texts_woocommerce_customer_refunded_order_settings","name":"[woocommerce_customer_refunded_order_settings]heading_partial","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"66","language":"en","context":"woocommerce\/active-filters","name":"displayStyle","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"67","language":"en","context":"woocommerce\/attribute-filter","name":"queryType","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"68","language":"en","context":"woocommerce\/attribute-filter","name":"displayStyle","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"69","language":"en","context":"woocommerce\/attribute-filter","name":"selectType","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"70","language":"en","context":"woocommerce\/breadcrumbs","name":"fontSize","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"71","language":"en","context":"woocommerce\/breadcrumbs","name":"align","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"72","language":"en","context":"woocommerce\/catalog-sorting","name":"fontSize","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"73","language":"en","context":"woocommerce\/classic-shortcode","name":"shortcode","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"74","language":"en","context":"woocommerce\/classic-shortcode","name":"align","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"75","language":"en","context":"woocommerce\/customer-account","name":"displayStyle","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"76","language":"en","context":"woocommerce\/customer-account","name":"iconStyle","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"77","language":"en","context":"woocommerce\/customer-account","name":"iconClass","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"78","language":"en","context":"woocommerce\/featured-category","name":"contentAlign","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"79","language":"en","context":"woocommerce\/featured-category","name":"imageFit","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"80","language":"en","context":"woocommerce\/featured-category","name":"linkText","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"81","language":"en","context":"woocommerce\/featured-category","name":"overlayColor","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"82","language":"en","context":"woocommerce\/featured-product","name":"contentAlign","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"83","language":"en","context":"woocommerce\/featured-product","name":"imageFit","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"84","language":"en","context":"woocommerce\/featured-product","name":"linkText","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"85","language":"en","context":"woocommerce\/featured-product","name":"overlayColor","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"86","language":"en","context":"woocommerce\/handpicked-products","name":"orderby","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"87","language":"en","context":"woocommerce\/mini-cart","name":"miniCartIcon","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"88","language":"en","context":"woocommerce\/mini-cart","name":"addToCartBehaviour","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"89","language":"en","context":"woocommerce\/mini-cart","name":"cartAndCheckoutRenderStyle","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"90","language":"en","context":"woocommerce\/store-notices","name":"align","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"91","language":"en","context":"woocommerce\/product-best-sellers","name":"catOperator","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"92","language":"en","context":"woocommerce\/product-best-sellers","name":"orderby","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"93","language":"en","context":"woocommerce\/product-category","name":"catOperator","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"94","language":"en","context":"woocommerce\/product-category","name":"orderby","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"95","language":"en","context":"woocommerce\/product-gallery","name":"thumbnailsPosition","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"96","language":"en","context":"woocommerce\/product-gallery","name":"pagerDisplayMode","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"97","language":"en","context":"woocommerce\/product-gallery","name":"nextPreviousButtonsPosition","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"98","language":"en","context":"woocommerce\/product-gallery","name":"mode","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"99","language":"en","context":"woocommerce\/product-new","name":"catOperator","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"100","language":"en","context":"woocommerce\/product-new","name":"orderby","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"101","language":"en","context":"woocommerce\/product-tag","name":"tagOperator","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"102","language":"en","context":"woocommerce\/product-tag","name":"orderby","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"103","language":"en","context":"woocommerce\/product-top-rated","name":"catOperator","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"104","language":"en","context":"woocommerce\/product-top-rated","name":"orderby","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"105","language":"en","context":"woocommerce\/products-by-attribute","name":"attrOperator","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"106","language":"en","context":"woocommerce\/products-by-attribute","name":"orderby","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"107","language":"en","context":"woocommerce\/rating-filter","name":"displayStyle","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"108","language":"en","context":"woocommerce\/rating-filter","name":"selectType","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"109","language":"en","context":"woocommerce\/stock-filter","name":"displayStyle","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"110","language":"en","context":"woocommerce\/stock-filter","name":"selectType","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"111","language":"en","context":"woocommerce\/order-confirmation-status","name":"align","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"112","language":"en","context":"woocommerce\/order-confirmation-summary","name":"align","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"113","language":"en","context":"woocommerce\/order-confirmation-totals","name":"align","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"114","language":"en","context":"woocommerce\/order-confirmation-downloads","name":"align","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"115","language":"en","context":"woocommerce\/order-confirmation-billing-address","name":"align","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"116","language":"en","context":"woocommerce\/order-confirmation-shipping-address","name":"align","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"117","language":"en","context":"woocommerce\/order-confirmation-shipping-wrapper","name":"heading","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"118","language":"en","context":"woocommerce\/order-confirmation-additional-information","name":"align","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"119","language":"en","context":"woocommerce\/order-confirmation-additional-fields","name":"align","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"120","language":"en","context":"woocommerce\/cart-order-summary-heading-block","name":"content","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"121","language":"en","context":"woocommerce\/checkout","name":"align","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"122","language":"en","context":"WP","name":"Blog Title","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"123","language":"en","context":"block-widget","name":"2030ba32295279f8de3a571b79cd19b8","string_package_id":"2","status":"0","type":"LINE"}
+{"id":"124","language":"en","context":"block-widget","name":"4bae17ae70e3c4b1cf133ecb44b242fe","string_package_id":"2","status":"0","type":"LINE"}
+{"id":"125","language":"en","context":"block-widget","name":"525e08195f4da551e05432c44519eb08","string_package_id":"2","status":"0","type":"LINE"}
+{"id":"126","language":"en","context":"block-widget","name":"d24f8e59a27133fb61e5c40617045bbf","string_package_id":"2","status":"0","type":"LINE"}
+{"id":"127","language":"en","context":"admin_texts_date_format","name":"date_format","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"128","language":"en","context":"admin_texts_time_format","name":"time_format","string_package_id":null,"status":"0","type":"LINE"}
+{"id":"129","language":"en","context":"admin_texts_links_updated_date_format","name":"links_updated_date_format","string_package_id":null,"status":"0","type":"LINE"}
+total=129

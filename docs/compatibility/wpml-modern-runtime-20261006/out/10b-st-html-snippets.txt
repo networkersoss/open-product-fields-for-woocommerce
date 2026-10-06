@@ -1,0 +1,13 @@
+=== ST string-translation page: OPF package context in the domain selector ===
+lock-widget (4)</option>
+<option value="open-product-fields-14"
+data-unfiltered-count="13"
+>open-product-fields-14 (13)</option>
+
+=== ST package editor row for field:gift:label (EN source + ES translation), decoded ===
+{"string_id":"27","string_language":"en","string_package_id":"1","context":"open-product-fields-14","gettext_context":"","name":"field:gift:label","value":"Gift wrap","status":"10","translation_priority":"optional","translations":{"es":{"id":"4","language":"es","status":"10","value":"Envoltorio de regalo","mo_string":null,"translator_id":null,"translation_date":"2026-10-06 21:30:48"}},"hasFrontendKind":0}">
+			<td><input class="wpml-checkbox-native icl_st_row_cb icl_st_row_package js-icl-st-row-cb" type="checkbox" value="27" data-language="en" /></td>			<td class="wpml-st-col-domain">open-product-fields-14</td>
+										<td class="wpml-st-col-name">fie
+
+rows_with_context=13
+es_translation_rows=13
