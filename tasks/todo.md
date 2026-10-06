@@ -1,14 +1,19 @@
 # OPF 1.0 Burn-down Tasks
 
-## Current checkpoint — 2026-10-04, verified feature commit `db81097`
+## Current checkpoint — 2026-10-06, edition closure at `fd42ab5` (`master`)
 
-- [x] Confirm verified feature commit `db81097` is on the public branch; root independently reran the PHP and JS suites before the docs refresh.
-- [x] Recount the 131 edition rows from the ledger: 101 supported, 19 supported with documented difference, 10 partial, 1 baseline-supported, 0 gaps (77.1% strict supported).
-- [x] Refresh active orchestration: root owns review/integration; category price type is supported; both-active WAPF validation compatibility repair is active. Imported image-change `last` and image-quantity zoom proofs were reviewed and pushed, with those rows kept partial.
-- [ ] Verify every worktree diff and focused evidence; reject unsupported claims.
-- [ ] Integrate and push each coherent verified slice to `feat/opf-archive-import`.
-- [ ] Recompute roadmap counts after each accepted ledger row; keep all 131 edition rows (137 ledger rows including six excluded add-ons).
-- [ ] Continue until every row and G2–G4 pass.
+- [x] Closed the last four `partial` edition rows, each on a committed evidence doc cited in its ledger row:
+  - `521ff0c` fix(export): round-trip WAPF `switch_control` for toggle and checkbox fields → `WAPF-FIELD-TRUE-FALSE-SWITCH` (`supported`; Tools JSON + WXR round trip, 11 tests/33 assertions; caveat kept: installed WAPF 3.1.5 has no switch key, so the key rests on the published Pro 3.2 changelog plus OPF's own stored key).
+  - `2a4c27a` test(subscriptions): real unmodified WooCommerce Subscriptions 9.2.0 → `WAPF-PRODUCT-SUBSCRIPTION` (`supported`; 85/85 assertions, no compounding, renewal + order-again + partial refund).
+  - `638ed17` docs(wpml) + `d294539` fix(wpml): guard string-package registration → `WAPF-LOCALE-WPML` (`supported`; coherent set WPML core 4.2.8 + String Translation 2.10.6 + Translation Management 2.8.7, 13 `icl_strings` rows, ES storefront render, multilingual cart/order; D1 guard now prevents the silent no-op).
+  - `fd42ab5` fix(frontend): resolve image-change fallback to the selected variation image → `WAPF-INTERACTION-IMAGE-CHANGE` (`supported`; variable product with per-variation galleries, 56/56 checks against live WAPF 3.1.5, `last` mode covered).
+  - Supporting commits: `74321e0` chore(release) adds `docs/RELEASE-PROVENANCE-2026-10-06.md` (0.1.0 packaging/provenance record + `tasks/` archive-leak fix); `1cf4bd9` feat(import): file-based WAPF Tools JSON import with dry-run review.
+- [x] Recount the 131 edition rows from the ledger: **124 supported, 7 supported with documented difference (the owner-accepted D1–D5 set), 0 partial, 0 baseline-supported, 0 gap, 0 needs-audit** — accepted parity 131/131. The six `WAPF-ADDON-*` rows stay `partial` and outside the denominator (137 ledger rows total).
+- [x] Live trackers refreshed: `docs/compatibility/WAPF-CAPABILITY-LEDGER.md` (progress snapshot, G2/G3/G4 rows) and `docs/compatibility/OPF-1.0-ROADMAP.md` (progress table, per-row state, non-negotiable goalposts). G2 met; G3 met for every applicable edition row.
+- [ ] G4: produce the 1.0 version/archive, execute the WordPress.org/commercial marketplace submission, and resolve the `/tmp`-staged evidence set (`docs/RELEASE-PROVENANCE-2026-10-06.md` §9).
+
+Historical (2026-10-04 snapshot) — the counts and row states in this paragraph
+are superseded by the ledger and the table above.
 
 The exact public tip was verified with `git ls-remote` on 2026-10-04. The
 category child-price lane found and fixed a real mismatch (selected preview

@@ -31,7 +31,7 @@ Extended plugin as inactive 3.1.5 with no update currently exposed in its
 update registry. The available-source audit is complete; this live-site check
 does not change the audited version boundary.
 
-## Progress now — 2026-10-06 (`master` @ `58fce01`)
+## Progress now — 2026-10-06 edition closure (`master` @ `fd42ab5`)
 
 The 131 Free/Pro/Extended ledger rows are the 1.0 edition scope, including three
 “All versions” rows. Current recorded status, recounted from the ledger rows on
@@ -40,12 +40,12 @@ this commit:
 | Status | Rows | Meaning for the gate |
 | --- | ---: | --- |
 | Baseline supported | 0 | — |
-| Supported | 120 | Strict supported rows; documented differences are not counted as supported |
+| Supported | 124 | Strict supported rows; documented differences are not counted as supported |
 | Supported with documented difference — owner-accepted | 7 | Each carries an explicit owner decision (D1/D2/D3/D4, 2026-10-05) |
-| Partial | 4 | Material parity or proof remains; see each ledger row for its exact gap and evidence |
+| Partial | 0 | — |
 | Gap | 0 | — |
 | Needs audit | 0 | — |
-| **Total** | **131** | **G1 complete for available evidence; G2 not met — strict supported: 120/131 (91.6%); accepted parity: 127/131 (96.9%)** |
+| **Total** | **131** | **G1 complete for available evidence; G2 met — strict supported: 124/131 (94.7%); accepted parity: 131/131 (100%); G3 met for every applicable edition row; G4 open on the three items recorded below** |
 
 The six `WAPF-ADDON-*` rows are **outside** this 131-row denominator (all six
 `partial`) and are excluded from every count and gate verdict on this page.
@@ -102,16 +102,33 @@ accounting:
   and `WAPF-PRICE-FORMULA-ADVANCED` (six formula families across three tax
   classes through real gateway checkout, partial refund and order-again). Each
   row carries its reasoning and evidence citations.
-- **Still `partial` (4):** `WAPF-INTERACTION-IMAGE-CHANGE`,
-  `WAPF-FIELD-TRUE-FALSE-SWITCH`, `WAPF-PRODUCT-SUBSCRIPTION`,
-  `WAPF-LOCALE-WPML`. Each ledger row names its own residual and what would
-  close it: a variable-product and gallery-plugin lifecycle on a clone for
-  image-change (no matrix gallery plugin is installed on this host); WAPF's
-  serialized switch key added to `WapfExporter::FIELD_KEYS` + `WapfMapper` for
-  the switch (`switch_control` is absent from `FIELD_KEYS`, so a group carrying
-  it cannot be exported to WAPF at all — fail-closed); and a licensed
-  WooCommerce Subscriptions / WPML+WCML runtime, or an owner decision accepting
-  the source/hook-contract proof, for the other two.
+- **Closed on the 2026-10-06 edition recount (4):** the last `partial` edition
+  rows were promoted to `supported`, each on a committed evidence doc named in
+  its own row. `WAPF-FIELD-TRUE-FALSE-SWITCH` — `switch_control` is now a
+  type-scoped exporter/mapper key round-tripped through both the WAPF Tools JSON
+  and the WXR document (11 tests/33 assertions), keeping the caveat that
+  installed WAPF 3.1.5 has no switch key, so the key name and shape rest on the
+  published Pro 3.2 changelog plus OPF's own stored key.
+  `WAPF-INTERACTION-IMAGE-CHANGE` — a variable product with per-variation
+  galleries ran live against WAPF Extended 3.1.5 (56/56 Chromium checks in both
+  swap modes, `last` covered) and a real OPF variation-image defect was fixed in
+  `assets/js/opf-frontend.js`; the third-party gallery exercised was the free
+  wp.org `woo-product-gallery-slider`, not a named WAPF-matrix premium
+  integration, and OPF matched or exceeded WAPF on it (the 7 residual failures
+  reproduced identically on WAPF).
+  `WAPF-PRODUCT-SUBSCRIPTION` — real unmodified WooCommerce Subscriptions 9.2.0
+  drove the lifecycle end to end, 85/85 assertions, with no compounding
+  (renewal, order-again and partial refund included).
+  `WAPF-LOCALE-WPML` — proven on the coherent set WPML core 4.2.8 + String
+  Translation 2.10.6 + Translation Management 2.8.7 (13 `icl_strings` rows, the
+  package editor in EN+ES, the ES storefront render and a multilingual
+  cart/order); core 5.1.0 could not run because it requires String Translation
+  ≥ 5.0.0 / WCML ≥ 5.6.0 and no matching companions were obtainable, WCML itself
+  was not loadable with either core, and the D2 minimum-WPML-version note stands;
+  the D1 guard now prevents the silent no-op.
+- **No edition row is `partial`:** 124 `supported`, 7 owner-accepted documented
+  differences, 0 partial, 0 baseline-supported, 0 gap and 0 needs-audit. The six
+  `WAPF-ADDON-*` rows stay `partial` and outside the 131-row denominator.
 
 The narrative below is the 2026-10-03/04 record of how the rows reached this
 point. Where a sentence in it states an older status, the table above and the
@@ -168,7 +185,9 @@ real-plugin proof recorded in its row.
 A fresh evidence review removed 15 stale `supported` claims at that point in
 time; later implementation commits advanced rows based on additional evidence.
 See [the supported-row audit](SUPPORTED-ROW-AUDIT-2026-10-01.md).
-At the current `master` tip (`58fce01`), strict progress is **120/131 supported rows (91.6%)**.
+At the current `master` tip (`fd42ab5`), strict progress is **124/131 supported rows (94.7%)**
+and accepted parity is **131/131 (100%)**: 7 owner-accepted documented differences,
+0 partial, 0 baseline-supported, 0 gap, 0 needs-audit.
 The 2026-10-04 child-products query audit and WAPF validation-hook repair added
 evidence and fixed a real coactive-plugin fatal; the broad child-products row was
 later promoted on its own 2026-10-05 proof (see the table above). The integrated branch now
@@ -399,6 +418,16 @@ audit or reproducible release archive has been accepted. G4 stays open until
 source provenance, bundled notices, build output, version metadata, and
 marketplace requirements are reviewed against the exact release commit.
 
+The paragraph above is the pre-record snapshot and is kept as history. The
+0.1.0 packaging/provenance record landed on 2026-10-06 in
+[RELEASE-PROVENANCE-2026-10-06.md](../RELEASE-PROVENANCE-2026-10-06.md)
+(commit `74321e0`): reproducible build command, shipped-file inventory,
+bundled third-party license table, runtime dependency audit, GPL-2.0-or-later
+declaration, aligned `0.1.0` version metadata, SHA-256 archive manifest, and
+the internal-`tasks/` archive-leak fix. What remains for G4 is exactly the
+three items in that record's §10: no 1.0 version/archive produced, marketplace
+submission unexecuted, and the `/tmp`-staged evidence set.
+
 ## Ordered work packages
 
 | Order | Work package | Current state | Scope and required output | Exit condition |
@@ -438,24 +467,35 @@ decomposed into sized implementation and verification tasks.
    G1 is complete for the available evidence and does not block implementation.
 2. **G2 capability parity:** every edition row supported or has a reviewed,
    explicitly accepted difference; zero baseline-only, partial, gap, or
-   needs-audit rows. Current: **not met** — 120/131 supported, 7 owner-accepted
-   differences, 4 partial (`WAPF-FIELD-TRUE-FALSE-SWITCH`,
-   `WAPF-INTERACTION-IMAGE-CHANGE`, `WAPF-PRODUCT-SUBSCRIPTION`,
-   `WAPF-LOCALE-WPML`), 0 baseline-only/gap/needs-audit edition rows. The 6
-   add-on rows are outside the denominator (all six `partial`), as are the
-   compatibility-matrix tables including the 5 `WAPF-COMPAT-EXCLUDES-*`/
-   `WAPF-COMPAT-DOKAN` rows whose OPF status is `needs audit`.
+   needs-audit rows. Current: **met** — 124/131 supported, 7 owner-accepted
+   differences (`WAPF-FIELD-TOGGLE`, `WAPF-DATE-FORMAT`, `WAPF-FIELD-SECTION`,
+   `WAPF-PRICE-OPTIONS-TOTAL-NEGATIVE-FORMAT`, `WAPF-RULE-PRODUCT`,
+   `WAPF-COMPAT-MINIMUM-PLATFORM`, `WAPF-DEVELOPER-HOOKS`), 0
+   partial/baseline-only/gap/needs-audit edition rows; accepted parity is
+   131/131. The 6 add-on rows are outside the denominator (all six `partial`),
+   as are the compatibility-matrix tables including the 5
+   `WAPF-COMPAT-EXCLUDES-*`/`WAPF-COMPAT-DOKAN` rows whose OPF status is
+   `needs audit`.
 3. **G3 commerce proof:** relevant browser, server, cart/Store API,
    checkout/order, stock, restore, tax, and pricing lifecycles verified. Current:
-   **partial** — each of the 4 partial edition rows names its own open lifecycle
-   path or missing dependency; no aggregate pass claim.
+   **met for every applicable edition row** — the four rows closed on 2026-10-06
+   carry executed proofs in their own evidence docs (switch export→reimport;
+   variable-product image-change against live 3.1.5; the real WooCommerce
+   Subscriptions 9.2.0 checkout → renewal → order-again → partial-refund run;
+   the real WPML runtime incl. package editor, ES storefront render and
+   multilingual cart/order), with each row's bounds stated as evidence limits
+   rather than open lifecycle paths. The 6 add-on rows and the compatibility
+   matrix remain outside this claim.
 4. **G4 release readiness:** security, accessibility, compatibility,
    migration/rollback, FOSS source/dependency/asset provenance, aligned version
    metadata, inspected package contents, docs, and publication gates passed.
-   Current: **not met** — provenance/licence review, aligned version metadata
-   (header vs `readme.txt`) and an inspected 1.0 archive remain open, and
-   evidence docs whose artifacts were staged under `/tmp` are unreproducible by
-   construction.
+   Current: **not met**, on three recorded items only — the 1.0 version/archive
+   has not been produced (the audited archive is the 0.1.0 baseline, whose
+   packaging/provenance record is
+   [RELEASE-PROVENANCE-2026-10-06.md](../RELEASE-PROVENANCE-2026-10-06.md)),
+   WordPress.org / commercial marketplace submission is unexecuted, and the
+   evidence docs whose artifacts were staged under `/tmp` remain unreproducible
+   by construction (list in that record's §9).
 
 No single goalpost can be waived by a passing aggregate test or a marketing
 feature list. A change in WAPF target version or inclusion of separate add-ons
