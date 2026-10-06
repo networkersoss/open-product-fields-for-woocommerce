@@ -17,6 +17,9 @@ final class WpmlIntegration {
 	private const SLUG = 'open-product-fields';
 	private const SOURCE_LANGUAGE_META = '_opf_wpml_source_language';
 
+	/** Guards the unavailable-API notice so it is queued once per request. */
+	private static $unavailable_notice_queued = false;
+
 	/** Wire after WordPress and WPML have loaded. No WPML dependency when absent. */
 	public static function init(): void {
 		add_filter( 'wpml_active_string_package_kinds', [ __CLASS__, 'package_kinds' ] );
@@ -24,6 +27,86 @@ final class WpmlIntegration {
 		add_action( 'before_delete_post', [ __CLASS__, 'delete_post' ], 10, 2 );
 		add_filter( 'opf_groups_for_product', [ __CLASS__, 'translate_groups' ] );
 		add_action( 'wpml_switch_language', [ FieldGroups::class, 'flush_cache' ], 100 );
+		// WPML core disables an outdated String Translation without telling
+		// anyone. Detect that at boot so the administrator is warned instead of
+		// staring at an empty package editor. The notice re-checks availability
+		// when it renders, so an early false positive is harmless.
+		if ( ! self::strings_api_available() ) {
+			self::queue_unavailable_notice();
+		}
+	}
+
+	/**
+	 * Whether WPML's String Translation package API is actually consuming
+	 * registration hooks.
+	 *
+	 * WPML core replaces the String Translation bootstrap with
+	 * `WPML_ST_Outdated_Stand_In` and removes every registration handler when it
+	 * disables an outdated companion, so a version constant alone cannot prove
+	 * the API is live. With no WPML loaded at all the hooks stay inert as before
+	 * and nothing is skipped.
+	 */
+	private static function strings_api_available(): bool {
+		if ( self::outdated_string_translation_stand_in() ) {
+			return false;
+		}
+		return ! self::wpml_active() || self::registration_handler_present();
+	}
+
+	/** WPML core's marker for a String Translation it switched off. */
+	private static function outdated_string_translation_stand_in(): bool {
+		$st = $GLOBALS['WPML_String_Translation'] ?? null;
+		return is_object( $st )
+			&& class_exists( 'WPML_ST_Outdated_Stand_In', false )
+			&& $st instanceof \WPML_ST_Outdated_Stand_In;
+	}
+
+	/** WPML core or String Translation loaded, however healthy. */
+	private static function wpml_active(): bool {
+		return isset( $GLOBALS['WPML_String_Translation'] )
+			|| defined( 'ICL_SITEPRESS_VERSION' )
+			|| defined( 'WPML_ST_VERSION' )
+			|| class_exists( 'SitePress', false );
+	}
+
+	/**
+	 * A live String Translation subscribes a handler to the package
+	 * registration action (WPML_Package_Translation::register_string_action).
+	 * When nothing is subscribed the emitted action is a silent no-op.
+	 */
+	private static function registration_handler_present(): bool {
+		if ( ! \function_exists( 'has_action' ) && ! function_exists( __NAMESPACE__ . '\\has_action' ) ) {
+			return true; // Plain PHP: no hook API to inspect, assume the real surface.
+		}
+		return false !== has_action( 'wpml_register_string' )
+			|| false !== has_action( 'wpml_start_string_package_registration' );
+	}
+
+	/** Queue the admin warning at most once per request. */
+	private static function queue_unavailable_notice(): bool {
+		if ( self::$unavailable_notice_queued ) {
+			return false;
+		}
+		self::$unavailable_notice_queued = true;
+		add_action( 'admin_notices', [ __CLASS__, 'render_unavailable_notice' ] );
+		return true;
+	}
+
+	/**
+	 * Admin-only warning: WPML cannot receive OPF's translatable strings.
+	 * Silent on the front end and for users who cannot act on it.
+	 */
+	public static function render_unavailable_notice(): void {
+		if ( ! is_admin() || self::strings_api_available() || ! current_user_can( 'manage_woocommerce' ) ) {
+			return;
+		}
+		printf(
+			'<div class="notice notice-warning"><p>%s</p></div>',
+			esc_html__(
+				'Open Product Fields: WPML String Translation is unavailable or incompatible with the installed WPML core, so field labels cannot be registered for translation. Update WPML String Translation to the version required by WPML core.',
+				'open-product-fields-for-woocommerce'
+			)
+		);
 	}
 
 	public static function package_kinds( array $kinds ): array {
@@ -70,6 +153,12 @@ final class WpmlIntegration {
 		}
 		$data = json_decode( (string) $post->post_content, true );
 		if ( ! is_array( $data ) || ! is_array( $data['fields'] ?? null ) ) {
+			return;
+		}
+		// Without a live package API every registration hook below is dropped by
+		// WPML's stand-in. Skip emission and tell the administrator once.
+		if ( ! self::strings_api_available() ) {
+			self::queue_unavailable_notice();
 			return;
 		}
 		$package = self::package( $id, (string) $post->post_title );
