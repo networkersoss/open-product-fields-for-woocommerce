@@ -1,0 +1,86 @@
+{
+    "utc": "2026-10-06T21:37:02+00:00",
+    "theme": "woodmart",
+    "theme_name": "Woodmart",
+    "theme_version": "8.6.4",
+    "base_url": "http://127.0.0.1:8421",
+    "summary_mode": "three_line",
+    "wapf_summary": "lines",
+    "cart_page_id": 6,
+    "cart_page_content": "[woocommerce_cart]",
+    "coming_soon": "no",
+    "store_pages_only": "no",
+    "images": {
+        "main": "http://127.0.0.1:8421/wp-content/uploads/opf-tfw-main.png",
+        "vsmall": "http://127.0.0.1:8421/wp-content/uploads/opf-tfw-v-small.png",
+        "vlarge": "http://127.0.0.1:8421/wp-content/uploads/opf-tfw-v-large.png",
+        "rulea": "http://127.0.0.1:8421/wp-content/uploads/opf-tfw-rule-a.png",
+        "ruleb": "http://127.0.0.1:8421/wp-content/uploads/opf-tfw-rule-b.png"
+    },
+    "attachment_ids": {
+        "main": 91,
+        "vsmall": 92,
+        "vlarge": 93,
+        "rulea": 94,
+        "ruleb": 95
+    },
+    "products": {
+        "opf-theme-fields": {
+            "engine": "opf",
+            "product": 96,
+            "group": 99,
+            "url": "http://127.0.0.1:8421/product/opf-theme-fields/",
+            "finish": "[data-opf-field=\"finish\"] select",
+            "edge": "[data-opf-field=\"edge\"] select",
+            "totals": ".opf-product-totals",
+            "options": ".opf-product-totals .opf-options-total",
+            "grand": ".opf-product-totals .opf-grand-total",
+            "variations": [
+                {
+                    "variation_id": 97,
+                    "size": "small",
+                    "image_id": 92,
+                    "image_url": "http://127.0.0.1:8421/wp-content/uploads/opf-tfw-v-small.png"
+                },
+                {
+                    "variation_id": 98,
+                    "size": "large",
+                    "image_id": 93,
+                    "image_url": "http://127.0.0.1:8421/wp-content/uploads/opf-tfw-v-large.png"
+                }
+            ]
+        },
+        "wapf-theme-fields": {
+            "engine": "wapf",
+            "product": 100,
+            "group": 0,
+            "url": "http://127.0.0.1:8421/product/wapf-theme-fields/",
+            "finish": "select[name=\"wapf[field_finish]\"]",
+            "edge": "select[name=\"wapf[field_edge]\"]",
+            "totals": ".wapf-product-totals",
+            "options": ".wapf-product-totals .wapf-options-total",
+            "grand": ".wapf-product-totals .wapf-grand-total",
+            "variations": [
+                {
+                    "variation_id": 101,
+                    "size": "small",
+                    "image_id": 92,
+                    "image_url": "http://127.0.0.1:8421/wp-content/uploads/opf-tfw-v-small.png"
+                },
+                {
+                    "variation_id": 102,
+                    "size": "large",
+                    "image_id": 93,
+                    "image_url": "http://127.0.0.1:8421/wp-content/uploads/opf-tfw-v-large.png"
+                }
+            ]
+        }
+    },
+    "product_ids": [
+        96,
+        100
+    ],
+    "group_ids": [
+        99
+    ]
+}

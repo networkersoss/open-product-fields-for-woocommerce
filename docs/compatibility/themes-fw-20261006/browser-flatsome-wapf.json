@@ -1,0 +1,142 @@
+{
+  "theme": "flatsome",
+  "engine": "wapf",
+  "base": "http://127.0.0.1:8420",
+  "product": 100,
+  "product_url": "http://127.0.0.1:8420/product/wapf-theme-fields/",
+  "phases": {
+    "product": {
+      "checks": [
+        {
+          "label": "product/wapf: field group renders on the flatsome product page",
+          "pass": true,
+          "detail": "1 select(s)"
+        },
+        {
+          "label": "product/wapf: priced choices are rendered in the control",
+          "pass": true,
+          "detail": "Choose an option None Gold (+$10.00) Silver (+$5.00)"
+        },
+        {
+          "label": "product/wapf: selecting the +10.00 choice moves the options total to 10",
+          "pass": true,
+          "detail": "options=10 (before grand=$100.00)"
+        },
+        {
+          "label": "product/wapf: grand total = variation 100 + option 10",
+          "pass": true,
+          "detail": "grand=110"
+        },
+        {
+          "label": "product/wapf: finish=gold swaps the visible flatsome gallery image to rule-a",
+          "pass": true,
+          "detail": "opf-tfw-rule-a.png (area 260100)"
+        },
+        {
+          "label": "product/wapf: the flatsome cart line carries the field value (Finish: Gold)",
+          "pass": true,
+          "detail": "REMOVE ITEM THUMBNAIL IMAGE PRODUCT PRICE QUANTITY SUBTOTAL × WAPF Theme Fields Flatsome - small Finish: Gold (+$10.00) Edge: None $110.00 WAPF Theme Fields Flatsome - small quantity $110.00 ← CONTINUE SHOPPING UPDATE CA"
+        },
+        {
+          "label": "product/wapf: no uncaught browser errors on the flatsome product page",
+          "pass": true,
+          "detail": "[]"
+        }
+      ],
+      "errors": [],
+      "cart_text": "REMOVE ITEM THUMBNAIL IMAGE PRODUCT PRICE QUANTITY SUBTOTAL × WAPF Theme Fields Flatsome - small Finish: Gold (+$10.00) Edge: None $110.00 WAPF Theme Fields Flatsome - small quantity $110.00 ← CONTINUE SHOPPING UPDATE CART",
+      "notices": [
+        " “WAPF Theme Fields Flatsome” has been added to your cart."
+      ],
+      "gallery": {
+        "root": ".woocommerce-product-gallery",
+        "root_found": true,
+        "root_class": "product-images relative mb-half has-hover woocommerce-product-gallery woocommerce-product-gallery--with-images woocommerce-product-gallery--columns-4 images",
+        "has_images_class": true,
+        "has_woo_gallery_class": true,
+        "has_wp_post_image": true,
+        "has_flexslider_data": false,
+        "has_flickity_data": true,
+        "has_swiper": false,
+        "has_flex_control_nav": false,
+        "engine_globals": {
+          "OPF_FIELDS": "undefined",
+          "OPF_IMAGE_RULES": "undefined",
+          "opf_config": "undefined",
+          "wapf_config": "object",
+          "WAPF": "object"
+        },
+        "engine_scripts": [
+          "http://127.0.0.1:8420/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/js/frontend.min.js?ver=3.1.5"
+        ]
+      }
+    },
+    "quickview": {
+      "checks": [
+        {
+          "label": "quickview/wapf: the flatsome loop renders a quick view button for the fixture product",
+          "pass": true,
+          "detail": "1 button(s) for .quick-view[data-prod=\"100\"]"
+        },
+        {
+          "label": "quickview/wapf: fields render inside the flatsome quick view",
+          "pass": true,
+          "detail": "1 select(s) in .mfp-content .product-quick-view-container"
+        },
+        {
+          "label": "quickview/wapf: priced choice moves the quick-view options total to 10",
+          "pass": true,
+          "detail": "options=10"
+        },
+        {
+          "label": "quickview/wapf: quick-view grand total = 100 + 10",
+          "pass": true,
+          "detail": "grand=110"
+        },
+        {
+          "label": "quickview/wapf: finish=gold swaps the flatsome quick-view gallery image to rule-a",
+          "pass": false,
+          "detail": "opf-tfw-v-small.png via .mfp-content .product-quick-view-container"
+        },
+        {
+          "label": "quickview/wapf: add-to-cart from the flatsome quick view carries the field value into the cart line",
+          "pass": true,
+          "detail": "REMOVE ITEM THUMBNAIL IMAGE PRODUCT PRICE QUANTITY SUBTOTAL × WAPF Theme Fields Flatsome - small Finish: Gold (+$10.00) Edge: None $110.00 WAPF Theme Fields Flatsome - small quantity $110.00 ← CONTINUE SHOPPING UPDATE CA"
+        },
+        {
+          "label": "quickview/wapf: no uncaught browser errors in the flatsome quick view",
+          "pass": true,
+          "detail": "[]"
+        }
+      ],
+      "errors": [],
+      "cart_text": "REMOVE ITEM THUMBNAIL IMAGE PRODUCT PRICE QUANTITY SUBTOTAL × WAPF Theme Fields Flatsome - small Finish: Gold (+$10.00) Edge: None $110.00 WAPF Theme Fields Flatsome - small quantity $110.00 ← CONTINUE SHOPPING UPDATE CART",
+      "notices": [
+        " “WAPF Theme Fields Flatsome” has been added to your cart."
+      ],
+      "modal": ".mfp-content .product-quick-view-container",
+      "gallery": {
+        "root": ".mfp-content .product-quick-view-container",
+        "root_found": true,
+        "root_class": "product-quick-view-container",
+        "has_images_class": false,
+        "has_woo_gallery_class": false,
+        "has_wp_post_image": true,
+        "has_flexslider_data": false,
+        "has_flickity_data": false,
+        "has_swiper": false,
+        "has_flex_control_nav": false,
+        "engine_globals": {
+          "OPF_FIELDS": "undefined",
+          "OPF_IMAGE_RULES": "undefined",
+          "opf_config": "undefined",
+          "wapf_config": "object",
+          "WAPF": "object"
+        },
+        "engine_scripts": [
+          "http://127.0.0.1:8420/wp-content/plugins/advanced-product-fields-for-woocommerce-extended/assets/js/frontend.min.js?ver=3.1.5"
+        ]
+      }
+    }
+  }
+}

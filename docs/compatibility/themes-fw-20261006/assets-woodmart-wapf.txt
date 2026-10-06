@@ -1,0 +1,38 @@
+# Static integration evidence — theme=woodmart engine=wapf
+# captured: 2026-10-06T21:37:34Z
+# base_url: http://127.0.0.1:8421
+# product_url: http://127.0.0.1:8421/product/wapf-theme-fields/
+
+## engine frontend script served
+opf-frontend on /shop/          : 0
+opf-frontend on product page    : 0
+wapf-frontend on /shop/         : 4
+wapf-frontend on product page   : 4
+OPF_IMAGE_RULES inline global   : 0
+data-opf-gi payload on product  : 0
+
+## theme adapter / gallery hooks printed in the footer
+-- WAPF theme adapter (class-flatsome.php / class-woodmart.php) --
+new WAPF.Frontend(jQuery('.product-quick-view'))
+woodmart-quick-view-displayed
+wapf/image_changed
+lcp/auto_scroll_to
+-- OPF equivalent hooks --
+(none printed; dispatched by the module)
+
+## theme gallery markup (single product page)
+class="woocommerce-product-gallery__image"
+class="woocommerce-product-gallery woocommerce-product-gallery--with-images woocommerce-product-gallery--columns-4 images wd-has-thumb thumbs-position-left wd-thumbs-wrap images image-action-zoom"
+class="woocommerce-product-gallery__wrapper wd-carousel wd-grid"
+class="wd-carousel-container  related-products with-title wd-products-element wd-products products wd-loop-builder-off"
+class="wd-carousel-container wd-gallery-images"
+class="wd-carousel-container wd-gallery-thumb"
+class="wd-carousel-inner"
+class="wd-carousel-item "
+
+## quick view markup markers on the archive
+quick-view
+quick-view-btn wd-quick-view-icon wd-action-btn wd-style-icon
+quick-view-displayed',function(){ new WAPF.Frontend(jQuery('.product-quick-view')); });
+quick-view-js
+quick-view-wrap {

@@ -1,0 +1,30 @@
+# Static integration evidence — theme=flatsome engine=wapf
+# captured: 2026-10-06T21:36:27Z
+# base_url: http://127.0.0.1:8420
+# product_url: http://127.0.0.1:8420/product/wapf-theme-fields/
+
+## engine frontend script served
+opf-frontend on /shop/          : 0
+opf-frontend on product page    : 0
+wapf-frontend on /shop/         : 4
+wapf-frontend on product page   : 4
+OPF_IMAGE_RULES inline global   : 0
+data-opf-gi payload on product  : 0
+
+## theme adapter / gallery hooks printed in the footer
+-- WAPF theme adapter (class-flatsome.php / class-woodmart.php) --
+new WAPF.Frontend(jQuery('.product-quick-view-container'))
+mfpOpen
+-- OPF equivalent hooks --
+(none printed; dispatched by the module)
+mfpOpen
+
+## theme gallery markup (single product page)
+class="product-images relative mb-half has-hover woocommerce-product-gallery woocommerce-product-gallery--with-images woocommerce-product-gallery--columns-4 images"
+class="woocommerce-product-gallery__image slide"
+class="woocommerce-product-gallery__image slide first"
+class="woocommerce-product-gallery__wrapper product-gallery-slider slider slider-nav-small mb-half"
+
+## quick view markup markers on the archive
+quick-view
+quick-view-container'));

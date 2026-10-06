@@ -1,0 +1,22 @@
+{
+  "theme": "woodmart",
+  "engine": "opf",
+  "product": 96,
+  "steps": [
+    {
+      "step": "variation selected",
+      "visible": "opf-tfw-main.png"
+    },
+    {
+      "step": "rule target still a gallery slide",
+      "visible": "opf-tfw-main.png"
+    },
+    {
+      "step": "rule target removed from the gallery",
+      "visible": "opf-tfw-rule-a.png"
+    }
+  ],
+  "rules_global": 1,
+  "slides_removed": 1,
+  "errors": []
+}

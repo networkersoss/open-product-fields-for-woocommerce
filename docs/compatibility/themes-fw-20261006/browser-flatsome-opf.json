@@ -1,0 +1,140 @@
+{
+  "theme": "flatsome",
+  "engine": "opf",
+  "base": "http://127.0.0.1:8420",
+  "product": 96,
+  "product_url": "http://127.0.0.1:8420/product/opf-theme-fields/",
+  "phases": {
+    "product": {
+      "checks": [
+        {
+          "label": "product/opf: field group renders on the flatsome product page",
+          "pass": true,
+          "detail": "1 select(s)"
+        },
+        {
+          "label": "product/opf: priced choices are rendered in the control",
+          "pass": true,
+          "detail": "Choose an option None Gold (+ &#36;10) Silver (+ &#36;5)"
+        },
+        {
+          "label": "product/opf: selecting the +10.00 choice moves the options total to 10",
+          "pass": true,
+          "detail": "options=10 (before grand=$100.00)"
+        },
+        {
+          "label": "product/opf: grand total = variation 100 + option 10",
+          "pass": true,
+          "detail": "grand=110"
+        },
+        {
+          "label": "product/opf: finish=gold swaps the visible flatsome gallery image to rule-a",
+          "pass": false,
+          "detail": "opf-tfw-main.png (area 260100)"
+        },
+        {
+          "label": "product/opf: the flatsome cart line carries the field value (Finish: Gold)",
+          "pass": true,
+          "detail": "REMOVE ITEM THUMBNAIL IMAGE PRODUCT PRICE QUANTITY SUBTOTAL × OPF Theme Fields Flatsome - small Finish: Gold (+$10.00) $110.00 OPF Theme Fields Flatsome - small quantity $110.00 ← CONTINUE SHOPPING UPDATE CART"
+        },
+        {
+          "label": "product/opf: no uncaught browser errors on the flatsome product page",
+          "pass": true,
+          "detail": "[]"
+        }
+      ],
+      "errors": [],
+      "cart_text": "REMOVE ITEM THUMBNAIL IMAGE PRODUCT PRICE QUANTITY SUBTOTAL × OPF Theme Fields Flatsome - small Finish: Gold (+$10.00) $110.00 OPF Theme Fields Flatsome - small quantity $110.00 ← CONTINUE SHOPPING UPDATE CART",
+      "notices": [
+        " “OPF Theme Fields Flatsome” has been added to your cart."
+      ],
+      "gallery": {
+        "root": ".woocommerce-product-gallery",
+        "root_found": true,
+        "root_class": "product-images relative mb-half has-hover woocommerce-product-gallery woocommerce-product-gallery--with-images woocommerce-product-gallery--columns-4 images",
+        "has_images_class": true,
+        "has_woo_gallery_class": true,
+        "has_wp_post_image": true,
+        "has_flexslider_data": false,
+        "has_flickity_data": true,
+        "has_swiper": false,
+        "has_flex_control_nav": false,
+        "engine_globals": {
+          "OPF_FIELDS": "object",
+          "OPF_IMAGE_RULES": "object",
+          "opf_config": "object",
+          "wapf_config": "undefined",
+          "WAPF": "undefined"
+        },
+        "engine_scripts": [
+          "http://127.0.0.1:8420/wp-content/plugins/open-product-fields-for-woocommerce/assets/js/opf-frontend.js?ver=0.1.0"
+        ]
+      }
+    },
+    "quickview": {
+      "checks": [
+        {
+          "label": "quickview/opf: the flatsome loop renders a quick view button for the fixture product",
+          "pass": true,
+          "detail": "1 button(s) for .quick-view[data-prod=\"96\"]"
+        },
+        {
+          "label": "quickview/opf: fields render inside the flatsome quick view",
+          "pass": true,
+          "detail": "1 select(s) in .mfp-content .product-quick-view-container"
+        },
+        {
+          "label": "quickview/opf: priced choice moves the quick-view options total to 10",
+          "pass": false,
+          "detail": "options=null"
+        },
+        {
+          "label": "quickview/opf: quick-view grand total = 100 + 10",
+          "pass": false,
+          "detail": "grand=null"
+        },
+        {
+          "label": "quickview/opf: finish=gold swaps the flatsome quick-view gallery image to rule-a",
+          "pass": false,
+          "detail": "opf-tfw-v-small.png via .mfp-content .product-quick-view-container"
+        },
+        {
+          "label": "quickview/opf: add-to-cart from the flatsome quick view carries the field value into the cart line",
+          "pass": true,
+          "detail": "REMOVE ITEM THUMBNAIL IMAGE PRODUCT PRICE QUANTITY SUBTOTAL × OPF Theme Fields Flatsome - small Finish: Gold (+$10.00) $110.00 OPF Theme Fields Flatsome - small quantity $110.00 ← CONTINUE SHOPPING UPDATE CART"
+        },
+        {
+          "label": "quickview/opf: no uncaught browser errors in the flatsome quick view",
+          "pass": true,
+          "detail": "[]"
+        }
+      ],
+      "errors": [],
+      "cart_text": "REMOVE ITEM THUMBNAIL IMAGE PRODUCT PRICE QUANTITY SUBTOTAL × OPF Theme Fields Flatsome - small Finish: Gold (+$10.00) $110.00 OPF Theme Fields Flatsome - small quantity $110.00 ← CONTINUE SHOPPING UPDATE CART",
+      "notices": [
+        " “OPF Theme Fields Flatsome” has been added to your cart."
+      ],
+      "modal": ".mfp-content .product-quick-view-container",
+      "gallery": {
+        "root": ".mfp-content .product-quick-view-container",
+        "root_found": true,
+        "root_class": "product-quick-view-container",
+        "has_images_class": false,
+        "has_woo_gallery_class": false,
+        "has_wp_post_image": true,
+        "has_flexslider_data": false,
+        "has_flickity_data": false,
+        "has_swiper": false,
+        "has_flex_control_nav": false,
+        "engine_globals": {
+          "OPF_FIELDS": "object",
+          "OPF_IMAGE_RULES": "object",
+          "opf_config": "object",
+          "wapf_config": "undefined",
+          "WAPF": "undefined"
+        },
+        "engine_scripts": []
+      }
+    }
+  }
+}
