@@ -261,6 +261,12 @@ final class WapfMapper {
 			}
 
 			$options = is_array( $wapf_field['options'] ?? null ) ? $wapf_field['options'] : [];
+			$switch_settings = [];
+			if ( in_array( $mapped_type, [ 'toggle', 'checkbox' ], true ) && self::truthy( $options['switch_control'] ?? $wapf_field['switch_control'] ?? false ) ) {
+				// WAPF Pro serializes the is-switch presentation for true/false
+				// and checkbox fields; OPF stores the same key on those two types.
+				$switch_settings['switch_control'] = true;
+			}
 			$image_quantity_settings = [];
 			if ( 'image-swatch-qty' === $wapf_type && array_key_exists( 'large_image', $options ) ) {
 				$large_image = $options['large_image'];
@@ -306,7 +312,7 @@ final class WapfMapper {
 					// the import verbatim; Calculator::field_weight substitutes
 					// [qty]/[x] and floatvals exactly like WAPF 3.1.5.
 					'weight' => self::map_weight( $wapf_field ),
-				], $image_swatch_settings, $image_quantity_settings, $color_swatch_settings, $selection_limits, $checkbox_limits, $checkbox_columns, $text_validation, $quantity_limits, $date_settings, $number_settings, $calc_settings, $upload_settings, $products_settings, $toggle_settings, $text_settings )
+				], $image_swatch_settings, $image_quantity_settings, $color_swatch_settings, $selection_limits, $checkbox_limits, $checkbox_columns, $text_validation, $quantity_limits, $date_settings, $number_settings, $calc_settings, $upload_settings, $products_settings, $toggle_settings, $switch_settings, $text_settings )
 			);
 			if ( 'paragraph' === $field['type'] ) {
 				if ( ! empty( $wapf_field['required'] ) ) {

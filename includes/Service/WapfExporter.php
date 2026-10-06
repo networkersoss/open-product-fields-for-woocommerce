@@ -47,6 +47,13 @@ final class WapfExporter {
 		if ( 'toggle' === $type ) {
 			$extra[] = 'message';
 		}
+		if ( in_array( $type, [ 'toggle', 'checkbox' ], true ) ) {
+			// WAPF's is-switch presentation, serialized beside the field
+			// settings. FieldGroup normalizes the key under this same type
+			// rule, so a switch field round-trips while any other type still
+			// fails the export closed instead of losing the key.
+			$extra[] = 'switch_control';
+		}
 		if ( 'products' === $type && 'image' === ( $field['subtype'] ?? '' ) ) {
 			$extra[] = 'large_image';
 		}
@@ -285,6 +292,11 @@ final class WapfExporter {
 			if ( isset( $field['default'] ) ) {
 				$out['default'] = '1' === $field['default'] ? 'checked' : 'unchecked';
 			}
+		}
+		if ( in_array( $type, [ 'toggle', 'checkbox' ], true ) && ! empty( $field['switch_control'] ) ) {
+			// WAPF Pro renders true/false and checkbox fields as switches when
+			// this key is set; an unset switch is omitted, not exported false.
+			$out['switch_control'] = true;
 		}
 		if ( 'paragraph' === $type ) {
 			if ( 'p' === $out['type'] && empty( $field['process_shortcodes'] ) ) {
