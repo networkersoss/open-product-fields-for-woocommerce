@@ -1206,7 +1206,13 @@ final class Renderer {
 		}
 		echo '<div class="' . esc_attr( $wrapper_class ) . '"' . $wrapper_attrs . '>';
 		if ( ! ( 'swatch' === $field['type'] && ! empty( $field['multiple'] ) ) ) {
-			echo '<input type="hidden" class="opf-tf-h" data-fid="' . esc_attr( $fid ) . '" value="0" name="' . esc_attr( $name ) . '" />';
+			// The sentinel companion must spell the name exactly like the sibling
+			// control ("[]" for multi-value fields), or a third-party form
+			// serializer that folds duplicate names into an array pushes onto a
+			// string. CartIntegration::sanitize_value() drops the "0" sentinel and
+			// de-duplicates, so the extra element changes nothing server-side.
+			$companion_name = $multi ? $name . '[]' : $name;
+			echo '<input type="hidden" class="opf-tf-h" data-fid="' . esc_attr( $fid ) . '" value="0" name="' . esc_attr( $companion_name ) . '" />';
 		}
 
 		foreach ( $field['choices'] as $choice ) {
@@ -1470,7 +1476,7 @@ final class Renderer {
 
 			case 'image':
 				echo '<div class="opf-swatch-wrapper opf-image-swatch-wrapper opf-products opf-products--image" data-label-position="' . esc_attr( $field['label_pos'] ?? 'tooltip' ) . '" style="--opf-image-swatch-width:' . esc_attr( (string) ( $field['item_width'] ?? 60 ) ) . 'px;">';
-				echo '<input type="hidden" class="opf-tf-h" data-fid="' . esc_attr( $fid ) . '" value="0" name="' . esc_attr( $name ) . '" />';
+				echo '<input type="hidden" class="opf-tf-h" data-fid="' . esc_attr( $fid ) . '" value="0" name="' . esc_attr( $multi ? $name . '[]' : $name ) . '" />';
 				foreach ( $choices as $choice ) {
 					$disabled = ! empty( $choice['disabled'] ) || ! $choice['product']->is_in_stock();
 					if ( $disabled ) {
@@ -1510,7 +1516,7 @@ final class Renderer {
 				echo '<style>.field-' . esc_html( $fid ) . ' .opf-card-wrap{--opf-cols:' . esc_html( (string) ( $field['items_per_row'] ?? 2 ) ) . ';--opf-cols-t:' . esc_html( (string) ( $field['items_per_row_tablet'] ?? 1 ) ) . ';--opf-cols-m:' . esc_html( (string) ( $field['items_per_row_mobile'] ?? 1 ) ) . ';}</style>';
 				echo '<div class="opf-card-wrap opf-products opf-products--' . esc_attr( $subtype ) . '">';
 				if ( ! $is_qty ) {
-					echo '<input type="hidden" class="opf-tf-h" data-fid="' . esc_attr( $fid ) . '" value="0" name="' . esc_attr( $name ) . '" />';
+					echo '<input type="hidden" class="opf-tf-h" data-fid="' . esc_attr( $fid ) . '" value="0" name="' . esc_attr( $multi ? $name . '[]' : $name ) . '" />';
 				}
 				foreach ( $choices as $choice ) {
 					$disabled = ! empty( $choice['disabled'] ) || ! $choice['product']->is_in_stock();
@@ -1577,7 +1583,7 @@ final class Renderer {
 
 			default: // checkbox + radio
 				echo '<div class="opf-checkboxes opf-products opf-products--' . esc_attr( $subtype ) . ' wapf-checkboxes">';
-				echo '<input type="hidden" class="opf-tf-h" data-fid="' . esc_attr( $fid ) . '" value="0" name="' . esc_attr( $name ) . '" />';
+				echo '<input type="hidden" class="opf-tf-h" data-fid="' . esc_attr( $fid ) . '" value="0" name="' . esc_attr( 'checkbox' === $subtype ? $name . '[]' : $name ) . '" />';
 				foreach ( $choices as $choice ) {
 					$disabled = ! empty( $choice['disabled'] ) || ! $choice['product']->is_in_stock();
 					if ( $disabled ) {

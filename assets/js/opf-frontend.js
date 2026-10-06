@@ -2390,6 +2390,15 @@ const choiceOrFieldAddon = (def, value, base, qty, addons, val, fieldValues = {}
   return choiceUnitAddon(def.pricing || {}, base, qty, addons, val, fieldValues, fieldPrices, formulaBase, qtyBased, formulaOptions);
 };
 
+// `get_woocommerce_currency_symbol()` publishes HTML entities (`&#36;`,
+// `&euro;`, `&pound;`, `&yen;`). Choice hints are written through
+// `textContent`, which does not decode them (the totals block renders through
+// `innerHTML`, which does), so decode the configured symbol here.
+const PRICE_SYMBOL_ENTITIES = { nbsp: '\u00a0', euro: '\u20ac', pound: '\u00a3', yen: '\u00a5', fnof: '\u0192' };
+const decodePriceSymbol = ( value ) => String( value === undefined || value === null ? '' : value )
+	.replace( /&#(\d+);/g, ( match, code ) => ( Number( code ) <= 0x10ffff ? String.fromCodePoint( Number( code ) ) : match ) )
+	.replace( /&([a-z][a-z0-9]*);/gi, ( match, name ) => PRICE_SYMBOL_ENTITIES[ name.toLowerCase() ] || match );
+
 // WAPF price-hint formatter: honour the configured currency presentation,
 // strip zero padding, and let settings control the '+' and brackets.
 const formatPriceHint = ( amount, pricingType ) => {
@@ -2400,7 +2409,7 @@ const formatPriceHint = ( amount, pricingType ) => {
 	const integer = rawInteger.replace( /\B(?=(\d{3})+(?!\d))/g, configured.thousand || ',' );
 	const fraction = rawFraction.replace( /0+$/, '' );
 	const number = integer + ( fraction ? ( configured.decimal || '.' ) + fraction : '' );
-	const symbol = configured.symbol || '$';
+	const symbol = decodePriceSymbol( configured.symbol || '$' );
 	const priceFormat = String( configured.price_format || 'symbolprice' );
 	let money = priceFormat.replace( 'symbol', symbol ).replace( 'price', number );
 	money = money.replace( /&nbsp;/gi, ' ' );
@@ -2840,7 +2849,7 @@ const groupFormulaOptions = (groupEl, gid) => {
   const registryGroup = (window.OPF_FIELDS || {})[gid] || {};
   let variables = Array.isArray(registryGroup.__opf_variables) ? registryGroup.__opf_variables : null;
   if (!variables && groupEl && typeof groupEl.getAttribute === 'function') {
-    try { variables = JSON.parse(groupEl.getAttribute('data-variables') || '[]') || []; } catch (_e) { variables = []; }
+    try { variables = JSON.parse(groupEl.getAttribute('data-variables') || '[]') || []; } catch { variables = []; }
   }
   return {
     variables: Array.isArray(variables) ? variables : [],
@@ -2890,7 +2899,7 @@ const imageUrlMatches = ( image, target, baseUrl ) => {
 		try {
 			const url = new URL( value, baseUrl || 'https://opf.invalid/' );
 			return url.origin + url.pathname;
-		} catch ( _error ) { return String( value ); }
+		} catch { return String( value ); }
 	};
 	const expected = normalize( target );
 	return !! expected && values.some( ( value ) => normalize( value ) === expected );
@@ -2911,7 +2920,7 @@ const selectedVariationImage = ( doc ) => {
 	const raw = form.getAttribute( 'data-product_variations' );
 	if ( ! raw ) return null;
 	let variations = null;
-	try { variations = JSON.parse( raw ); } catch ( _error ) { return null; }
+	try { variations = JSON.parse( raw ); } catch { return null; }
 	if ( ! Array.isArray( variations ) ) return null;
 	const match = variations.find( ( item ) => item && String( item.variation_id ) === variationId );
 	const image = match && match.image;
@@ -2955,8 +2964,14 @@ const updateProductImage = ( doc, evaluations, legacyValues = null ) => {
 			if ( target ) break;
 		}
 	}
-	const activeSlide = gallery && typeof gallery.querySelector === 'function' ? gallery.querySelector( '.flex-active-slide' ) : null;
-	const activeIndex = activeSlide ? slides.indexOf( activeSlide ) : 0;
+	// Resolve the current slide from WooCommerce's slider viewport first: Astra
+	// Pro's thumbnail strip also carries `.flex-active-slide` inside the same
+	// gallery, and a thumbnail is not one of the tracked slides.
+	const activeSlide = gallery && typeof gallery.querySelector === 'function'
+		? ( gallery.querySelector( '.woocommerce-product-gallery__wrapper .flex-active-slide' ) || gallery.querySelector( '.flex-active-slide' ) )
+		: null;
+	const activeSlideIndex = activeSlide ? slides.indexOf( activeSlide ) : -1;
+	const activeIndex = activeSlideIndex >= 0 ? activeSlideIndex : 0;
 	const currentImage = slides[ activeIndex ] && slides[ activeIndex ].querySelector( 'img' );
 	const image = currentImage || doc.querySelector( '.woocommerce-product-gallery img.wp-post-image' ) || doc.querySelector( '.woocommerce-product-gallery img' );
 	if ( ! image ) return;
@@ -2973,14 +2988,24 @@ const updateProductImage = ( doc, evaluations, legacyValues = null ) => {
 		productImageSnapshots.set( stateKey, { gallery, slideIndex: activeIndex, images: originalImages.map( capture ) } );
 	}
 	const snapshot = productImageSnapshots.get( stateKey );
+	// Restoring an attribute to the value it already has still records a DOM
+	// mutation. Astra Pro's horizontal gallery slider observes this image and
+	// clicks its matching thumbnail on every mutation, which reaches WooCommerce's
+	// FlexSlider as a navigation it was not ready for (asNavFor TypeError), so a
+	// no-op pass must stay a no-op.
 	const restoreImages = () => {
 		snapshot.images.forEach( ( saved ) => {
 			productImageAttributeNames.forEach( ( name ) => {
+				if ( saved.attrs[ name ] === saved.image.getAttribute( name ) ) return;
 				if ( saved.attrs[ name ] === null ) saved.image.removeAttribute( name );
 				else saved.image.setAttribute( name, saved.attrs[ name ] );
 			} );
-			if ( saved.link && saved.href !== null ) saved.link.setAttribute( 'href', saved.href );
-			else if ( saved.link ) saved.link.removeAttribute( 'href' );
+			if ( ! saved.link ) return;
+			if ( saved.href !== null ) {
+				if ( saved.href !== saved.link.getAttribute( 'href' ) ) saved.link.setAttribute( 'href', saved.href );
+			} else if ( saved.link.getAttribute( 'href' ) !== null ) {
+				saved.link.removeAttribute( 'href' );
+			}
 		} );
 	};
 	const navigate = ( index ) => {
@@ -2991,7 +3016,7 @@ const updateProductImage = ( doc, evaluations, legacyValues = null ) => {
 			try {
 				const control = jq( gallery );
 				if ( control.data( 'flexslider' ) && typeof control.flexslider === 'function' ) { control.flexslider( index ); return true; }
-			} catch ( _error ) { /* theme supplied jQuery data may not be FlexSlider */ }
+			} catch { /* theme supplied jQuery data may not be FlexSlider */ }
 		}
 		const thumbs = gallery.querySelectorAll( '.flex-control-nav a' );
 		if ( thumbs[ index ] && typeof thumbs[ index ].click === 'function' ) { thumbs[ index ].click(); return true; }
@@ -3023,10 +3048,10 @@ const updateProductImage = ( doc, evaluations, legacyValues = null ) => {
 		if ( variation ) {
 			restoreImages();
 			const variationIndex = slides.findIndex( ( slide ) => imageUrlMatches( slide.querySelector( 'img' ), variation.url, baseUrl ) );
-			if ( variationIndex >= 0 ) {
-				navigate( variationIndex );
-				return;
-			}
+			// `navigate()` only drives FlexSlider; Flickity/Swiper galleries (Flatsome,
+			// Woodmart) and gallery layouts without WooCommerce's thumb nav fall
+			// through to painting the slide image directly.
+			if ( variationIndex >= 0 && navigate( variationIndex ) ) return;
 			applyMainImage( activeImageState(), variation.url, variation );
 			return;
 		}
@@ -3037,8 +3062,7 @@ const updateProductImage = ( doc, evaluations, legacyValues = null ) => {
 	const targetIndex = slides.findIndex( ( slide ) => imageUrlMatches( slide.querySelector( 'img' ), target.url, baseUrl ) );
 	if ( targetIndex >= 0 ) {
 		restoreImages();
-		navigate( targetIndex );
-		return;
+		if ( navigate( targetIndex ) ) return;
 	}
 	restoreImages();
 	applyMainImage( activeImageState(), target.url, { alt: target.alt } );
@@ -3458,7 +3482,7 @@ const writeTotals = async () => {
       }
       displayed = preview;
       displayedIsServerPriced = true;
-    } catch (_error) {
+    } catch {
       if (requestId !== pricePreviewRequestId) return;
       totalsEl.setAttribute('data-opf-price-preview-error', '1');
       totalsEl.removeAttribute('aria-busy');
@@ -3504,7 +3528,7 @@ const writeTotals = async () => {
         },
       }));
     }
-  } catch (_e) {
+  } catch {
     // A consumer-side failure must never break the totals render.
   }
 };

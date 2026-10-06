@@ -1,0 +1,19 @@
+{
+  "label": "opf-fixed",
+  "product_url": "http://127.0.0.1:8511/product/opf-astra-compat/",
+  "page_errors": [],
+  "thumb_clicks": [],
+  "mutated_attributes": [
+    "childList",
+    "class",
+    "draggable",
+    "style"
+  ],
+  "mutation_types": [
+    "childList",
+    "class",
+    "draggable",
+    "style"
+  ],
+  "recorded_utc": "2026-10-06T22:07:16.222Z"
+}

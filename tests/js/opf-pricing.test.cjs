@@ -22,7 +22,7 @@ assert.notEqual(moneyStart, -1, 'money formatter must remain in the frontend ass
 assert.notEqual(moneyEnd, -1, 'money formatter must remain before pricing helpers');
 vm.runInNewContext(`${source.slice(moneyStart, moneyEnd)}\nglobalThis.formatMoney = fmtMoney;`, sandbox);
 vm.runInNewContext(
-	`${source.slice(visibilityStart, visibilityEnd)}\n${source.slice(start, end)}\nglobalThis.calculateAddon = choiceOrFieldAddon; globalThis.evaluateFormula = evalFormula; globalThis.resolveFormulaVariables = resolveFormulaVariables; globalThis.resolveGroupFormulaVariables = resolveGroupFormulaVariables; globalThis.resolveFieldPrices = resolveFieldPrices; globalThis.resolveCalculatedValues = resolveCalculatedValues; globalThis.updateChoicePriceHints = updateChoicePriceHints; globalThis.updateProductImage = updateProductImage; globalThis.resolveProductImageRule = resolveProductImageRule;`,
+	`${source.slice(visibilityStart, visibilityEnd)}\n${source.slice(start, end)}\nglobalThis.calculateAddon = choiceOrFieldAddon; globalThis.evaluateFormula = evalFormula; globalThis.resolveFormulaVariables = resolveFormulaVariables; globalThis.resolveGroupFormulaVariables = resolveGroupFormulaVariables; globalThis.resolveFieldPrices = resolveFieldPrices; globalThis.resolveCalculatedValues = resolveCalculatedValues; globalThis.updateChoicePriceHints = updateChoicePriceHints; globalThis.updateProductImage = updateProductImage; globalThis.resolveProductImageRule = resolveProductImageRule; globalThis.formatPriceHint = formatPriceHint;`,
 	sandbox
 );
 
@@ -315,6 +315,29 @@ test('scalar and price-calculation hints use the same live line math', () => {
 		assert.equal(fixedHint.textContent, '(+ $8)');
 		assert.equal(calculationHint.textContent, '(+ $' + 3 * quantity + ')');
 	}
+	sandbox.window.OPF_PRICE_HINTS = undefined;
+	sandbox.window.OPF_PRICE_DISPLAY = undefined;
+});
+
+test('choice hints decode the WooCommerce currency symbol entity published by the server', () => {
+	sandbox.window.OPF_PRICE_HINTS = { show: true, brackets: true, plus: true };
+	const format = ( symbol ) => {
+		sandbox.window.OPF_PRICE_DISPLAY = { symbol, thousand: ',', decimal: '.', decimals: 2, price_format: 'symbolprice' };
+		return sandbox.formatPriceHint( 10, 'fixed' );
+	};
+
+	// `get_woocommerce_currency_symbol()` output: the hint is written through
+	// `textContent`, which does not decode entities.
+	assert.equal(format('&#36;'), '(+ $10)');
+	assert.equal(format('&euro;'), '(+ €10)');
+	assert.equal(format('&pound;'), '(+ £10)');
+	assert.equal(format('&#8377;'), '(+ ₹10)');
+	assert.equal(format('$'), '(+ $10)', 'an already decoded symbol is untouched');
+	assert.equal(format('&notanentity;'), '(+ &notanentity;10)', 'unknown entities are left as published');
+
+	sandbox.window.OPF_PRICE_DISPLAY = { symbol: '&#36;', thousand: ',', decimal: '.', decimals: 2, price_format: 'price symbol' };
+	assert.equal(sandbox.formatPriceHint( 10, 'fixed' ), '(+ 10 $)', 'the symbol decodes in suffix formats too');
+
 	sandbox.window.OPF_PRICE_HINTS = undefined;
 	sandbox.window.OPF_PRICE_DISPLAY = undefined;
 });

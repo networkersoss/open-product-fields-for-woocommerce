@@ -1,0 +1,136 @@
+{
+  "theme": "woodmart",
+  "engine": "opf",
+  "base": "http://127.0.0.1:8421",
+  "product": 96,
+  "product_url": "http://127.0.0.1:8421/product/opf-theme-fields/",
+  "phases": {
+    "product": {
+      "checks": [
+        {
+          "label": "product/opf: field group renders on the woodmart product page",
+          "pass": true,
+          "detail": "1 select(s)"
+        },
+        {
+          "label": "product/opf: priced choices are rendered in the control",
+          "pass": true,
+          "detail": "Choose an option None Gold (+ $10) Silver (+ $5)"
+        },
+        {
+          "label": "product/opf: selecting the +10.00 choice moves the options total to 10",
+          "pass": true,
+          "detail": "options=10 (before grand=$100.00)"
+        },
+        {
+          "label": "product/opf: grand total = variation 100 + option 10",
+          "pass": true,
+          "detail": "grand=110"
+        },
+        {
+          "label": "product/opf: finish=gold swaps the visible woodmart gallery image to rule-a",
+          "pass": true,
+          "detail": "opf-tfw-rule-a.png (area 201601)"
+        },
+        {
+          "label": "product/opf: the woodmart cart line carries the field value (Finish: Gold)",
+          "pass": true,
+          "detail": "REMOVE ITEM THUMBNAIL IMAGE PRODUCT PRICE QUANTITY SUBTOTAL × OPF Theme Fields Woodmart - small Finish: Gold (+$10.00) $110.00 - OPF Theme Fields Woodmart - small quantity + $110.00 Coupon: APPLY COUPON UPDATE CART"
+        },
+        {
+          "label": "product/opf: no uncaught browser errors on the woodmart product page",
+          "pass": true,
+          "detail": "[]"
+        }
+      ],
+      "errors": [],
+      "cart_text": "REMOVE ITEM THUMBNAIL IMAGE PRODUCT PRICE QUANTITY SUBTOTAL × OPF Theme Fields Woodmart - small Finish: Gold (+$10.00) $110.00 - OPF Theme Fields Woodmart - small quantity + $110.00 Coupon: APPLY COUPON UPDATE CART",
+      "notices": [],
+      "gallery": {
+        "root": ".woocommerce-product-gallery",
+        "root_found": true,
+        "root_class": "woocommerce-product-gallery woocommerce-product-gallery--with-images woocommerce-product-gallery--columns-4 images wd-has-thumb thumbs-position-left wd-thumbs-wrap images image-action-zoom",
+        "has_images_class": true,
+        "has_woo_gallery_class": true,
+        "has_wp_post_image": true,
+        "has_flexslider_data": false,
+        "has_flickity_data": false,
+        "has_swiper": true,
+        "has_flex_control_nav": false,
+        "engine_globals": {
+          "OPF_FIELDS": "object",
+          "OPF_IMAGE_RULES": "object",
+          "opf_config": "object",
+          "wapf_config": "undefined",
+          "WAPF": "undefined"
+        },
+        "engine_scripts": [
+          "http://127.0.0.1:8421/wp-content/plugins/open-product-fields-for-woocommerce/assets/js/opf-frontend.js?ver=0.1.1"
+        ]
+      }
+    },
+    "quickview": {
+      "checks": [
+        {
+          "label": "quickview/opf: the woodmart loop renders a quick view button for the fixture product",
+          "pass": true,
+          "detail": "1 button(s) for .open-quick-view[data-id=\"96\"]"
+        },
+        {
+          "label": "quickview/opf: fields render inside the woodmart quick view",
+          "pass": true,
+          "detail": "1 select(s) in .mfp-content .product-quick-view"
+        },
+        {
+          "label": "quickview/opf: priced choice moves the quick-view options total to 10",
+          "pass": false,
+          "detail": "options=null"
+        },
+        {
+          "label": "quickview/opf: quick-view grand total = 100 + 10",
+          "pass": false,
+          "detail": "grand=null"
+        },
+        {
+          "label": "quickview/opf: finish=gold swaps the woodmart quick-view gallery image to rule-a",
+          "pass": false,
+          "detail": "opf-tfw-v-small.png via .mfp-content .product-quick-view .woocommerce-product-gallery"
+        },
+        {
+          "label": "quickview/opf: add-to-cart from the woodmart quick view carries the field value into the cart line",
+          "pass": true,
+          "detail": "REMOVE ITEM THUMBNAIL IMAGE PRODUCT PRICE QUANTITY SUBTOTAL × OPF Theme Fields Woodmart - small Finish: Gold (+$10.00) $110.00 - OPF Theme Fields Woodmart - small quantity + $110.00 Coupon: APPLY COUPON UPDATE CART"
+        },
+        {
+          "label": "quickview/opf: no uncaught browser errors in the woodmart quick view",
+          "pass": true,
+          "detail": "[]"
+        }
+      ],
+      "errors": [],
+      "cart_text": "REMOVE ITEM THUMBNAIL IMAGE PRODUCT PRICE QUANTITY SUBTOTAL × OPF Theme Fields Woodmart - small Finish: Gold (+$10.00) $110.00 - OPF Theme Fields Woodmart - small quantity + $110.00 Coupon: APPLY COUPON UPDATE CART",
+      "notices": [],
+      "modal": ".mfp-content .product-quick-view",
+      "gallery": {
+        "root": ".mfp-content .product-quick-view .woocommerce-product-gallery",
+        "root_found": true,
+        "root_class": "product-images woocommerce-product-gallery",
+        "has_images_class": false,
+        "has_woo_gallery_class": true,
+        "has_wp_post_image": true,
+        "has_flexslider_data": false,
+        "has_flickity_data": false,
+        "has_swiper": true,
+        "has_flex_control_nav": false,
+        "engine_globals": {
+          "OPF_FIELDS": "object",
+          "OPF_IMAGE_RULES": "object",
+          "opf_config": "object",
+          "wapf_config": "undefined",
+          "WAPF": "undefined"
+        },
+        "engine_scripts": []
+      }
+    }
+  }
+}
