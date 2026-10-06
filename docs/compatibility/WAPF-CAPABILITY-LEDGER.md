@@ -138,9 +138,9 @@ plus the D1 silent-no-op guard). No edition row is `partial` any more.
 | --- | --- | --- |
 | G0 — Edition and version baseline | Installed version, current official target versions, edition boundary, available source inventory, and dated public changelog delta recorded | Done for available evidence: installed Extended 3.1.5, official Extended 3.2.1 / Pro 3.2.2, Free 1.7.1 source, edition boundary, marketing claims, and release deltas are recorded. The licensed current archive is not on the server; its absence is a version-specific limitation, not a stop condition. |
 | G1 — Source and behavior audit | Every discovered capability from available source/docs/changelogs has a ledger row, an evidence citation, an OPF status, and an explicit proof gap; version-specific unknowns are bounded to affected rows | Done for available evidence: the installed 3.1.5 source, Free 1.7.1 source, current marketing/tier claims, and all published 3.1.6–3.2.2 changes are mapped. Exact current-package internals not stated publicly remain identified on their affected rows; they do not block independent implementation. |
-| G2 — Ordered implementation parity | Every edition row is `supported` or has a specifically accepted, non-regressing difference; no baseline-supported, partial, gap, or unresolved difference | Met: 122/131 edition rows are `supported` and 9 carry a documented difference (owner-accepted D1: `WAPF-FIELD-TOGGLE`, `WAPF-DATE-FORMAT`, `WAPF-FIELD-SECTION`, `WAPF-PRICE-OPTIONS-TOTAL-NEGATIVE-FORMAT`, `WAPF-RULE-PRODUCT`; scope decision: `WAPF-COMPAT-MINIMUM-PLATFORM`; residual-recorded: `WAPF-DEVELOPER-HOOKS`; parity-by-absence re-grade by the 2026-10-06 supported-row audit: `WAPF-PRODUCT-BOOKINGS`, `WAPF-INTEGRATION-GIFT-CARDS`), so accepted parity is 131/131 and no edition row is `partial`, `baseline supported`, `gap` or `needs audit`. Outside this 131-row denominator: the 6 `WAPF-ADDON-*` rows (all six `partial`) and the compatibility-matrix tables, including the 5 `WAPF-COMPAT-EXCLUDES-*`/`WAPF-COMPAT-DOKAN` rows whose OPF status is `needs audit` |
+| G2 — Ordered implementation parity | Every edition row is `supported` or has a specifically accepted, non-regressing difference; no baseline-supported, partial, gap, or unresolved difference | Met: 122/131 edition rows are `supported` and 9 carry a documented difference (owner-accepted D1: `WAPF-FIELD-TOGGLE`, `WAPF-DATE-FORMAT`, `WAPF-FIELD-SECTION`, `WAPF-PRICE-OPTIONS-TOTAL-NEGATIVE-FORMAT`, `WAPF-RULE-PRODUCT`; scope decision: `WAPF-COMPAT-MINIMUM-PLATFORM`; residual-recorded: `WAPF-DEVELOPER-HOOKS`; parity-by-absence re-grade by the 2026-10-06 supported-row audit: `WAPF-PRODUCT-BOOKINGS`, `WAPF-INTEGRATION-GIFT-CARDS`), so accepted parity is 131/131 and no edition row is `partial`, `baseline supported`, `gap` or `needs audit`. Outside this 131-row denominator: the 6 `WAPF-ADDON-*` rows (all six `partial`) and the compatibility-matrix tables, including the 5 `WAPF-COMPAT-EXCLUDES-*`/`WAPF-COMPAT-DOKAN` rows whose OPF status is `needs audit`. The matrix's own 46 rows carry an `OPF status` cell: four are `supported` on 2026-10-06 evidence (`WAPF-COMPAT-QUICK-VIEW-PRO`, `WAPF-COMPAT-FLATSOME`, `WAPF-COMPAT-WOODMART`, `WAPF-COMPAT-ASTRA`) and 42 stay `needs audit` |
 | G3 — End-to-end proof | Browser, server validation/pricing, classic + Store API cart, checkout/order persistence, order-again/refund/stock and relevant integrations pass for every applicable row | Met for every applicable edition row: each of the four rows closed on 2026-10-06 carries its own executed lifecycle proof — the switch export→reimport round trip, the variable-product image-change run against live 3.1.5, the real WooCommerce Subscriptions 9.2.0 checkout → renewal → order-again → partial refund run, and the real WPML runtime (package editor, ES storefront render, multilingual cart/order). The bounds each row records (no HPOS run, no browser subscription run, WCML not loadable, no 3.2.1 comparison, AJAX variation sets) are stated as evidence limits on the row, not as unnamed open lifecycle paths. The 6 `WAPF-ADDON-*` rows and the compatibility-matrix tables stay outside this claim |
-| G4 — 1.0 release readiness | Compatibility/integration scope, security, accessibility, translations, upgrade/import/rollback, docs, packaging, and WordPress.org/commercial marketplace checklists pass | Not met, on three recorded items only: the 1.0 version/archive has not been produced (the audited archive is the 0.1.0 baseline), WordPress.org/commercial marketplace submission is unexecuted, and evidence docs whose artifacts were staged under `/tmp` are unreproducible by construction (list in `docs/RELEASE-PROVENANCE-2026-10-06.md` §9) |
+| G4 — 1.0 release readiness | Compatibility/integration scope, security, accessibility, translations, upgrade/import/rollback, docs, packaging, and WordPress.org/commercial marketplace checklists pass | Not met, on three recorded items only: the 1.0 version/archive has not been produced (the audited archive is the 0.1.2 baseline), WordPress.org/commercial marketplace submission is unexecuted, and evidence docs whose artifacts were staged under `/tmp` are unreproducible by construction (list in `docs/RELEASE-PROVENANCE-2026-10-06.md` §9) |
 
 Progress advances only when ledger evidence is updated. G1 is complete for the
 available source and published scope. Continue implementation and proof by
@@ -383,8 +383,10 @@ excluded from every total and gate verdict in this document and in
 The following entries mirror all 46 integrations in the current official WAPF
 compatibility matrix. WAPF labels:
 `I` integrated, `A` author integrated, `T` tested, `C` code, `P` partly
-integrated. Every OPF status is `needs audit`; OPF must not inherit WAPF's
-label. All sources are `INTEGRATIONS` and every fixture is
+integrated. Every OPF status starts as `needs audit`, and OPF must not inherit
+WAPF's label; a row is promoted to `supported` only on executed OPF-vs-WAPF
+comparison evidence, recorded in that row's own `OPF status` cell. All sources
+are `INTEGRATIONS` and every fixture is
 `compatibility/<ID>`.
 
 Reconciled against Wombat's [current premium compatibility table](https://www.studiowombat.com/knowledge-base/which-plugins-and-themes-are-compatible-with-advanced-product-fields-for-woocommerce/)
@@ -393,54 +395,63 @@ updated to match the table. These are vendor compatibility claims, not proof
 that an adapter is bundled or works in the installed runtime; source-backed
 adapter evidence is recorded separately in the 3.1.5 audit.
 
-| ID | Entry | WAPF | OPF owner |
-| --- | --- | --- | --- |
-| `WAPF-COMPAT-BEAVER` | Beaver Builder | T | Builder adapter |
-| `WAPF-COMPAT-DIVI-BUILDER` | Divi Builder | T | Builder adapter |
-| `WAPF-COMPAT-ELEMENTOR` | Elementor | T | Builder adapter |
-| `WAPF-COMPAT-OXYGEN` | Oxygen Builder | T | Builder adapter |
-| `WAPF-COMPAT-BREAKDANCE` | Breakdance | T | Builder adapter |
-| `WAPF-COMPAT-VISUAL-COMPOSER` | Visual Composer | T | Builder adapter |
-| `WAPF-COMPAT-WPBAKERY` | WP Bakery | T | Builder adapter |
-| `WAPF-COMPAT-ORDER-EXPORT` | Advanced Order Export For WooCommerce | T | Export adapter |
-| `WAPF-COMPAT-WC-DISCOUNTS` | WooCommerce Discounts | I | Discounts adapter |
-| `WAPF-COMPAT-INVOICE-DELIVERY` | Print Invoice & Delivery Notes | C | Invoice adapter |
-| `WAPF-COMPAT-RESERVED-STOCK` | Reserved Stock Pro | T | Stock adapter |
-| `WAPF-COMPAT-TI-WISHLIST` | TI WooCommerce Wishlist | A | Wishlist adapter |
-| `WAPF-COMPAT-YITH-ELEMENTOR` | Ultimate Addons for Elementor | C | Builder adapter |
-| `WAPF-COMPAT-VARIATION-SWATCHES` | Variation Swatches for WooCommerce | T | Variation adapter |
-| `WAPF-COMPAT-WEIGHT-SHIPPING` | Weight Based Shipping | T | Shipping adapter |
-| `WAPF-COMPAT-PDF-INVOICES` | WooCommerce PDF Invoices & Packing Slips | T | Invoice adapter |
-| `WAPF-COMPAT-DEPOSITS` | Deposits & Partial Payments for WooCommerce | A | Payments adapter |
-| `WAPF-COMPAT-PRODUCT-TABLE` | WooCommerce Product Table | I | Product-table adapter |
-| `WAPF-COMPAT-QUANTITY-RULES` | WooCommerce Quantity Discounts, Rules & Swatches | I | `class-tiered-pricing-table.php` adapter; current Wombat product page confirms tier pricing and quantity rules |
-| `WAPF-COMPAT-QUICK-VIEW-PRO` | WooCommerce Quick View Pro | I | Quick-view adapter |
-| `WAPF-COMPAT-RESTAURANT` | WooCommerce Restaurant Ordering | C | Ordering adapter |
-| `WAPF-COMPAT-SUBSCRIPTIONS` | WooCommerce Subscriptions | I | Subscription adapter |
-| `WAPF-COMPAT-WP-ALL-EXPORT` | WP All Export | T | Export adapter |
-| `WAPF-COMPAT-YITH-BOOKING` | YITH Booking & Appointment | C | License-gated external snippet (not bundled in 3.1.5 adapter map) |
-| `WAPF-COMPAT-YITH-QUOTE` | Yith Request a Quote | I | Quote adapter |
-| `WAPF-COMPAT-YITH-QUICK-VIEW` | Yith WooCommerce Quick View | C | Quick-view adapter |
-| `WAPF-COMPAT-ADVANCED-SHIPPING` | Advanced Shipping Rates for WooCommerce | A | Shipping adapter |
-| `WAPF-COMPAT-FEATURED-VIDEOS` | Featured Videos for WooCommerce | T | Media adapter |
-| `WAPF-COMPAT-CADDY` | Caddy – Smart Side Cart for WooCommerce | T | Cart adapter |
-| `WAPF-COMPAT-PAYPAL` | Payment Plugin for PayPal WooCommerce | A | Payments adapter |
-| `WAPF-COMPAT-AELIA` | Aelia WooCommerce Currency Switcher | I | Currency adapter (`WAPF-CURRENCY-AELIA`) |
-| `WAPF-COMPAT-FOX` | FOX – Currency Switcher Professional for WooCommerce | I | Currency adapter (`WAPF-CURRENCY-FOX`) |
-| `WAPF-COMPAT-SHOPTIMIZER` | Shoptimizer | T | Theme adapter |
-| `WAPF-COMPAT-STOREFRONT` | Storefront | T | Theme adapter |
-| `WAPF-COMPAT-FLATSOME` | Flatsome | I | Theme adapter |
-| `WAPF-COMPAT-WOODMART` | Woodmart | I | Theme adapter |
-| `WAPF-COMPAT-ASTRA` | Astra | I | Theme adapter |
-| `WAPF-COMPAT-DIVI-THEME` | Divi theme | T | Theme adapter |
-| `WAPF-COMPAT-SHOPKEEPER` | Shopkeeper | T | Theme adapter |
-| `WAPF-COMPAT-GOYA` | Goya | T | Theme adapter |
-| `WAPF-COMPAT-PORTO` | Porto | P | Theme adapter |
-| `WAPF-COMPAT-AVADA` | Avada | I | Theme adapter |
-| `WAPF-COMPAT-OCEANWP` | OceanWP | I | Theme adapter |
-| `WAPF-COMPAT-XSTORE` | X-Store | I | Theme adapter |
-| `WAPF-COMPAT-BLOCKSY` | Blocksy | Instructions | Theme adapter |
-| `WAPF-COMPAT-SHOPPE` | Shoppe | Instructions | Theme adapter |
+| ID | Entry | WAPF | OPF owner | OPF status |
+| --- | --- | --- | --- | --- |
+| `WAPF-COMPAT-BEAVER` | Beaver Builder | T | Builder adapter | needs audit |
+| `WAPF-COMPAT-DIVI-BUILDER` | Divi Builder | T | Builder adapter | needs audit |
+| `WAPF-COMPAT-ELEMENTOR` | Elementor | T | Builder adapter | needs audit |
+| `WAPF-COMPAT-OXYGEN` | Oxygen Builder | T | Builder adapter | needs audit |
+| `WAPF-COMPAT-BREAKDANCE` | Breakdance | T | Builder adapter | needs audit |
+| `WAPF-COMPAT-VISUAL-COMPOSER` | Visual Composer | T | Builder adapter | needs audit |
+| `WAPF-COMPAT-WPBAKERY` | WP Bakery | T | Builder adapter | needs audit |
+| `WAPF-COMPAT-ORDER-EXPORT` | Advanced Order Export For WooCommerce | T | Export adapter | needs audit |
+| `WAPF-COMPAT-WC-DISCOUNTS` | WooCommerce Discounts | I | Discounts adapter | needs audit |
+| `WAPF-COMPAT-INVOICE-DELIVERY` | Print Invoice & Delivery Notes | C | Invoice adapter | needs audit |
+| `WAPF-COMPAT-RESERVED-STOCK` | Reserved Stock Pro | T | Stock adapter | needs audit |
+| `WAPF-COMPAT-TI-WISHLIST` | TI WooCommerce Wishlist | A | Wishlist adapter | needs audit |
+| `WAPF-COMPAT-YITH-ELEMENTOR` | Ultimate Addons for Elementor | C | Builder adapter | needs audit |
+| `WAPF-COMPAT-VARIATION-SWATCHES` | Variation Swatches for WooCommerce | T | Variation adapter | needs audit |
+| `WAPF-COMPAT-WEIGHT-SHIPPING` | Weight Based Shipping | T | Shipping adapter | needs audit |
+| `WAPF-COMPAT-PDF-INVOICES` | WooCommerce PDF Invoices & Packing Slips | T | Invoice adapter | needs audit |
+| `WAPF-COMPAT-DEPOSITS` | Deposits & Partial Payments for WooCommerce | A | Payments adapter | needs audit |
+| `WAPF-COMPAT-PRODUCT-TABLE` | WooCommerce Product Table | I | Product-table adapter | needs audit |
+| `WAPF-COMPAT-QUANTITY-RULES` | WooCommerce Quantity Discounts, Rules & Swatches | I | `class-tiered-pricing-table.php` adapter; current Wombat product page confirms tier pricing and quantity rules | needs audit |
+| `WAPF-COMPAT-QUICK-VIEW-PRO` | WooCommerce Quick View Pro | I | Quick-view adapter | supported — 2026-10-06, [Barn2 comparison](WAPF-COMPAT-QUICK-VIEW-PRO-EVIDENCE-2026-10-06.md) plus the [adapter lane](QUICK-VIEW-ADAPTER-2026-10-06.md) and [core fixes](GALLERY-COMPAT-CORE-FIXES-2026-10-06.md): **15 / 15** checks (was 7 / 15 scenario A and 8 / 15 scenario B), WAPF Extended 3.1.5 reference 14 / 15 |
+| `WAPF-COMPAT-RESTAURANT` | WooCommerce Restaurant Ordering | C | Ordering adapter | needs audit |
+| `WAPF-COMPAT-SUBSCRIPTIONS` | WooCommerce Subscriptions | I | Subscription adapter | needs audit |
+| `WAPF-COMPAT-WP-ALL-EXPORT` | WP All Export | T | Export adapter | needs audit |
+| `WAPF-COMPAT-YITH-BOOKING` | YITH Booking & Appointment | C | License-gated external snippet (not bundled in 3.1.5 adapter map) | needs audit |
+| `WAPF-COMPAT-YITH-QUOTE` | Yith Request a Quote | I | Quote adapter | needs audit |
+| `WAPF-COMPAT-YITH-QUICK-VIEW` | Yith WooCommerce Quick View | C | Quick-view adapter | needs audit |
+| `WAPF-COMPAT-ADVANCED-SHIPPING` | Advanced Shipping Rates for WooCommerce | A | Shipping adapter | needs audit |
+| `WAPF-COMPAT-FEATURED-VIDEOS` | Featured Videos for WooCommerce | T | Media adapter | needs audit |
+| `WAPF-COMPAT-CADDY` | Caddy – Smart Side Cart for WooCommerce | T | Cart adapter | needs audit |
+| `WAPF-COMPAT-PAYPAL` | Payment Plugin for PayPal WooCommerce | A | Payments adapter | needs audit |
+| `WAPF-COMPAT-AELIA` | Aelia WooCommerce Currency Switcher | I | Currency adapter (`WAPF-CURRENCY-AELIA`) | needs audit |
+| `WAPF-COMPAT-FOX` | FOX – Currency Switcher Professional for WooCommerce | I | Currency adapter (`WAPF-CURRENCY-FOX`) | needs audit |
+| `WAPF-COMPAT-SHOPTIMIZER` | Shoptimizer | T | Theme adapter | needs audit |
+| `WAPF-COMPAT-STOREFRONT` | Storefront | T | Theme adapter | needs audit |
+| `WAPF-COMPAT-FLATSOME` | Flatsome | I | Theme adapter | supported — 2026-10-06, [Flatsome/Woodmart comparison](WAPF-COMPAT-FLATSOME-WOODMART-EVIDENCE-2026-10-06.md) plus the [adapter lane](QUICK-VIEW-ADAPTER-2026-10-06.md): **13 / 14** checks (was 10 / 14), equal to the WAPF Extended 3.1.5 reference 13 / 14; the one remaining check (quick-view gallery image swap) fails for WAPF in the same run |
+| `WAPF-COMPAT-WOODMART` | Woodmart | I | Theme adapter | supported — 2026-10-06, [Flatsome/Woodmart comparison](WAPF-COMPAT-FLATSOME-WOODMART-EVIDENCE-2026-10-06.md) plus the [adapter lane](QUICK-VIEW-ADAPTER-2026-10-06.md): **14 / 14** checks (was 10 / 14), equal to the WAPF Extended 3.1.5 reference 14 / 14 |
+| `WAPF-COMPAT-ASTRA` | Astra | I | Theme adapter | supported — 2026-10-06, [Astra/Astra Pro comparison](WAPF-COMPAT-ASTRA-EVIDENCE-2026-10-06.md) plus the [adapter lane](QUICK-VIEW-ADAPTER-2026-10-06.md) and [core fixes](GALLERY-COMPAT-CORE-FIXES-2026-10-06.md): **16 / 17** checks (was 12 / 17), WAPF Extended 3.1.5 reference 14 / 16. The one remaining check is by design: OPF ships no page-level registry on a page that renders no fields and the modal reads its settings inline instead |
+| `WAPF-COMPAT-DIVI-THEME` | Divi theme | T | Theme adapter | needs audit |
+| `WAPF-COMPAT-SHOPKEEPER` | Shopkeeper | T | Theme adapter | needs audit |
+| `WAPF-COMPAT-GOYA` | Goya | T | Theme adapter | needs audit |
+| `WAPF-COMPAT-PORTO` | Porto | P | Theme adapter | needs audit |
+| `WAPF-COMPAT-AVADA` | Avada | I | Theme adapter | needs audit |
+| `WAPF-COMPAT-OCEANWP` | OceanWP | I | Theme adapter | needs audit |
+| `WAPF-COMPAT-XSTORE` | X-Store | I | Theme adapter | needs audit |
+| `WAPF-COMPAT-BLOCKSY` | Blocksy | Instructions | Theme adapter | needs audit |
+| `WAPF-COMPAT-SHOPPE` | Shoppe | Instructions | Theme adapter | needs audit |
+
+Four of these rows left `needs audit` on 2026-10-06, each on an executed
+OPF-vs-WAPF-Extended 3.1.5 comparison whose before/after scores are in the
+status cell above: `WAPF-COMPAT-QUICK-VIEW-PRO` (Barn2 Quick View Pro 15/15,
+from 7/15), `WAPF-COMPAT-FLATSOME` (13/14, from 10/14),
+`WAPF-COMPAT-WOODMART` (14/14, from 10/14) and `WAPF-COMPAT-ASTRA` (16/17, from
+12/17). The other 42 matrix rows stay `needs audit`. The compatibility matrix is
+outside the 131-row edition denominator, so no edition count on this page
+changes with these promotions.
 
 WAPF's current [compatibility page](https://www.studiowombat.com/knowledge-base/which-plugins-and-themes-are-compatible-with-advanced-product-fields-for-woocommerce/)
 names five incompatible products/flows. OPF's target is to support these cases,

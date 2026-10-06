@@ -11,19 +11,24 @@ repository on 2026-10-06. Absolute artifact paths under `/tmp` are build
 scratch space only; no source file lives there.
 
 - Repository: `open-product-fields-for-woocommerce` (branch `master`)
-- Audited commit: `9feaa13` (`chore(i18n): reconcile public claims, refresh
-  es_ES catalogs, and make upload messages translatable`), the final 0.1.1
-  archive. Earlier same-day revisions audited `01577e8` (release hygiene: the
-  rewritten `readme.txt` description, the CHANGELOG 0.1.1 `Removed` entry, the
-  regenerated POT, and the `assets/js/opf-frontend.min.js` deletion) and
-  `fd42ab5` (the image-change variation fallback fix).
+- Audited tree: `HEAD` `e58e81c` (`feat(quick-view): ship assets, public
+  reinit, and inline registry for modal surfaces`) plus the uncommitted 0.1.2
+  release pass (version bump, refreshed `es_ES` catalogs, the 0.1.2 changelog
+  sections, and this record). The 0.1.1 record audited `9feaa13` (`chore(i18n):
+  reconcile public claims, refresh es_ES catalogs, and make upload messages
+  translatable`), the final 0.1.1 archive; earlier same-day revisions audited
+  `01577e8` (release hygiene: the rewritten `readme.txt` description, the
+  CHANGELOG 0.1.1 `Removed` entry, the regenerated POT, and the
+  `assets/js/opf-frontend.min.js` deletion) and `fd42ab5` (the image-change
+  variation fallback fix).
 - Build host PHP: `8.5.11` (the shipped code declares `Requires PHP: 7.4`)
-- Archive version inspected: **0.1.1** (this is the current baseline, not a 1.0
+- Archive version inspected: **0.1.2** (this is the current baseline, not a 1.0
   release candidate)
-- Final 0.1.1 archive at `9feaa13`: **200 files / 2,621,471 bytes**; manifest
-  200 lines, file SHA-256 `7c14cb2f…`. WordPress **Plugin Check 2.1.0** reports
-  **235 findings (191 errors / 44 warnings)** against this archive; the full
-  classification (real/fixed, intentional/documented, false positive) is in
+- Final 0.1.2 archive: **202 files / 2,649,446 bytes**; manifest 202 lines, file
+  SHA-256 `14d810e6…`. WordPress **Plugin Check 2.1.0** was last run against the
+  0.1.1 archive (**235 findings: 191 errors / 44 warnings**) and has not been
+  re-run for 0.1.2; the full classification (real/fixed,
+  intentional/documented, false positive) is in
   [`PLUGIN-CHECK-TRIAGE-2026-10-06.md`](PLUGIN-CHECK-TRIAGE-2026-10-06.md) —
   no real security defect was found.
 
@@ -39,24 +44,25 @@ bash bin/build.sh /tmp/opf-dist/open-product-fields-for-woocommerce
 step). The command is idempotent: it removes the destination, recreates it, and
 rsyncs the plugin with development artifacts excluded.
 
-## 2. Shipped-file inventory (0.1.1 archive)
+## 2. Shipped-file inventory (0.1.2 archive)
 
 | Metric | Value |
 | --- | --- |
-| Total files | **200** |
-| Total bytes (`du -sb`) | **2,621,471** |
+| Total files | **202** |
+| Total bytes (`du -sb`) | **2,649,446** |
+| Sum of file sizes | **2,469,222** (the `du -sb` figure adds the 44 directory entries × 4,096 B = 180,224) |
 | Top-level entries | 10 (`assets/`, `includes/`, `languages/` + 6 files) |
 
 Files by top-level location:
 
 | Location | Files |
 | --- | --- |
-| `includes/` | 178 (of which 124 are `includes/ThirdParty/Url/`; 54 are plugin-authored) |
-| `assets/` | 11 (3 CSS, 6 JS, 2 `index.php` guards) |
+| `includes/` | 179 (of which 124 are `includes/ThirdParty/Url/`; 55 are plugin-authored) |
+| `assets/` | 12 (3 CSS, 7 JS, 2 `index.php` guards) |
 | `languages/` | 5 (`index.php`, `.pot`, `.po`, `.mo`, `es_ES` JSON) |
 | root files | 6 (`LICENSE`, `CHANGELOG.md`, `readme.txt`, `uninstall.php`, `wpml-config.xml`, `open-product-fields-for-woocommerce.php`) |
 
-Files by extension: `.php` 177, `.js` 6, `.css` 3, `LICENSE` 7 (root + 6
+Files by extension: `.php` 178, `.js` 7, `.css` 3, `LICENSE` 7 (root + 6
 third-party), `.md` 1, `.json` 1, `.xml` 1, `.txt` 1, `.pot` 1, `.po` 1, `.mo` 1.
 
 Excluded from the archive (verified absent): `.git/`, `.gitignore`,
@@ -67,19 +73,36 @@ Excluded from the archive (verified absent): `.git/`, `.gitignore`,
 ### 2.1 Inventory delta versus the previous 0.1.1 archive
 
 Difference computed by joining the previous manifest
-(`git show 01577e8:docs/RELEASE-PROVENANCE-2026-10-06-manifest.sha256`, file
-SHA-256 `5953a1f7…`) against the manifest regenerated for this archive:
+(`git show e58e81c:docs/RELEASE-PROVENANCE-2026-10-06-manifest.sha256`, file
+SHA-256 `7c14cb2f…`) against the manifest regenerated for this archive. That
+manifest describes the archive built at `9feaa13`, so file sizes on the previous
+side are read from that commit.
 
-- Paths removed: **1** — `assets/js/opf-frontend.min.js` (63,399 bytes). The
-  file was tracked and packaged but never referenced; `includes/Service/Assets.php`
-  enqueues `assets/js/opf-frontend.js`.
-- Paths added: **0**.
-- Files with a changed hash: **3** — `readme.txt` (3,626 → 4,081 bytes),
-  `CHANGELOG.md` (3,042 → 3,241), `languages/open-product-fields-for-woocommerce.pot`
-  (29,718 → 58,738).
-- Byte-identical files: **197 of the 200** shared paths.
-- Net byte delta: 2,608,320 → 2,574,595 (−33,725) = −63,399 (min.js) + 29,674
-  (the three re-hashed files).
+- Paths removed: **0**.
+- Paths added: **2** — `assets/js/opf-quick-view.js` (2,967 bytes, the modal
+  re-init adapter) and `includes/Service/QuickView.php` (6,627 bytes, the
+  quick-view surface detector/enqueuer). Both come from the quick-view lane.
+- Files with a changed hash: **14 of the 200** shared paths.
+  - Shipped code from the gallery, quick-view and weight/upload lanes (size at
+    `9feaa13` → this archive): `assets/js/opf-frontend.js` 181,936 → 189,294;
+    `includes/Service/Renderer.php` 114,494 → 117,090;
+    `includes/Engine/Calculator.php` 67,974 → 69,675;
+    `includes/Service/Uploads.php` 34,014 → 35,122;
+    `includes/Service/Assets.php` 11,285 → 12,245;
+    `includes/Engine/FieldGroup.php` 75,864 → 76,245;
+    `includes/Service/Admin/Settings.php` 11,226 → 11,476;
+    `includes/Service/CartIntegration.php` 86,297 → 86,327;
+    `open-product-fields-for-woocommerce.php` 8,233 → 8,280 (version header and
+    `OPF_VERSION`).
+  - Release metadata rewritten by this pass: `CHANGELOG.md` 3,241 → 5,980;
+    `readme.txt` 4,801 → 6,004;
+    `languages/open-product-fields-for-woocommerce.pot` 60,702 → 60,706;
+    `languages/open-product-fields-for-woocommerce-es_ES.po` 75,092 → 75,096
+    (header only); `languages/open-product-fields-for-woocommerce-es_ES.mo`
+    23,665 → 23,665 (header only, byte size unchanged).
+- Byte-identical files: **186 of the 200** shared paths.
+- Net byte delta (sum of file sizes): 2,441,247 → 2,469,222 (+27,975)
+  = +9,594 (the two new files) + 18,381 (the fourteen re-hashed files).
 
 `LICENSE` (GNU GPL v2, 17,984 bytes) is present at the archive root.
 
@@ -106,7 +129,7 @@ Notes:
   free of charge…") under a Fabien Potencier copyright line.
 - All six MIT licenses are permissive and compatible with the plugin's
   GPL-2.0-or-later declaration.
-- No separate third-party JS/CSS payloads are bundled: the 11 `assets/` files
+- No separate third-party JS/CSS payloads are bundled: the 12 `assets/` files
   are plugin-authored, none carries a third-party license banner, and the only
   `jQuery` references are use of the host page's WordPress/WooCommerce jQuery
   rather than a bundled copy.
@@ -140,18 +163,19 @@ All four surfaces agree on GPL-2.0-or-later.
 
 | Surface | Value |
 | --- | --- |
-| Plugin header `Version:` | `0.1.1` |
-| `OPF_VERSION` constant | `0.1.1` |
-| `readme.txt` `Stable tag:` | `0.1.1` |
+| Plugin header `Version:` | `0.1.2` |
+| `OPF_VERSION` constant | `0.1.2` |
+| `readme.txt` `Stable tag:` | `0.1.2` |
+| `tests/bootstrap.php` `OPF_VERSION` (test-only, not shipped) | `0.1.2` |
 
-The three version surfaces are aligned at `0.1.1` on the audited commit.
-`readme.txt` also states `0.1.1` in its description line, which was rewritten in
-this pass to describe the shipped capability set (it previously read "Version
-0.1.0 supports text inputs and choice controls …").
-`OPF_VERSION` is also the asset version every frontend/backoffice file is
-enqueued with (`includes/Service/Assets.php`), so the changed
-`assets/js/opf-frontend.js` is served as `?ver=0.1.1`. (The 0.1.0 record noted a
-transient local edit to `0.1.1`; that bump is now the shipped version.)
+The four version surfaces are aligned at `0.1.2` on the audited tree.
+`readme.txt` also states `0.1.2` in its description line, which describes the
+shipped capability set. `OPF_VERSION` is also the asset version every frontend
+and backoffice file is enqueued with (`includes/Service/Assets.php`), so the
+changed `assets/js/opf-frontend.js` is served as `?ver=0.1.2`; upgrading from
+0.1.1 therefore re-fetches every asset on the next uncached render, and the
+`opf_version` option is updated on the first load of the new code
+(`open-product-fields-for-woocommerce.php:115,127`).
 
 ## 7. SHA-256 archive manifest
 
@@ -160,11 +184,20 @@ per-file SHA-256 list in `sha256sum` format with paths relative to the archive
 root.
 
 - Manifest: [`RELEASE-PROVENANCE-2026-10-06-manifest.sha256`](RELEASE-PROVENANCE-2026-10-06-manifest.sha256)
-  (200 lines, one per shipped file)
+  (202 lines, one per shipped file)
 - Manifest file SHA-256:
-  `7c14cb2f21f3cf78754debd29d0c535c195897d67065e491813c3c12e799fe43`
+  `14d810e686383c315684a65806a365550204d432578642e2f39483bbc60a25af`
 - `bin/build.sh` (fixed) SHA-256:
   `28e7b2cc4bd819b951d219a10339519c009a7a650ecfa96bb5170be290718b18`
+
+Generation (deterministic `LC_ALL=C` path order; the previous revision kept
+whatever order `find` returned):
+
+```sh
+cd /tmp/opf-dist/open-product-fields-for-woocommerce
+LC_ALL=C find . -type f | LC_ALL=C sort | xargs sha256sum \
+  > <repo>/docs/RELEASE-PROVENANCE-2026-10-06-manifest.sha256
+```
 
 Verification from a clean checkout:
 
@@ -172,7 +205,7 @@ Verification from a clean checkout:
 bash bin/build.sh /tmp/opf-dist/open-product-fields-for-woocommerce
 cd /tmp/opf-dist/open-product-fields-for-woocommerce
 sha256sum -c /path/to/repo/docs/RELEASE-PROVENANCE-2026-10-06-manifest.sha256
-# -> all 200 files OK
+# -> all 202 files OK
 ```
 
 ## 8. Internal-document exclusion fix
@@ -185,12 +218,17 @@ release archive. Fixed with a single scoped rsync exclude in `bin/build.sh`:
 --exclude='tasks/' \
 ```
 
-Observed effect (before → after), with nothing else changing:
+Observed effect at the 0.1.1 archive (before → after), with nothing else
+changing:
 
 - Archive: 202 files → **200 files**
 - File-list diff: only `./tasks/plan.md` and `./tasks/todo.md` removed
 - Reproduced by rebuilding with the pre-fix `HEAD:bin/build.sh` (202 files,
   `tasks/` present) and with the fixed script (200 files, `tasks/` absent).
+
+The exclusion list is unchanged for 0.1.2; §2 lists zero `tasks/`, `docs/` or
+`bin/` paths in the 202-file archive (coincidentally 202 files again, now
+including the quick-view lane's two new files).
 
 ## 9. Evidence docs that cite `/tmp/...` artifact paths (not reproducible from a clean checkout)
 
@@ -202,7 +240,7 @@ grepping the repository, not by hand:
 grep -l '/tmp/' docs/compatibility/*.md
 ```
 
-**109** top-level `docs/compatibility/*.md` files cite `/tmp/...` paths (one more
+**116** top-level `docs/compatibility/*.md` files cite `/tmp/...` paths (one more
 nested file, `docs/compatibility/wapf-reference-proof-20261005/README.md`, also
 matches, but that directory is the committed-artifact set that fixed
 reproducibility for its rows):
@@ -245,6 +283,7 @@ docs/compatibility/FORMULA-LEN-LIFECYCLE-EVIDENCE-2026-10-03.md
 docs/compatibility/FORMULA-MATH-IMPORT-EVIDENCE-2026-10-01.md
 docs/compatibility/FORMULA-QUANTITY-SEMANTICS-EVIDENCE-2026-10-02.md
 docs/compatibility/FOX-CURRENCY-CONTRACT.md
+docs/compatibility/GALLERY-COMPAT-CORE-FIXES-2026-10-06.md
 docs/compatibility/IMAGE-QUANTITY-ZOOM-RUNTIME-2026-10-04.md
 docs/compatibility/IMPEXP-LANE-EVIDENCE-2026-10-03.md
 docs/compatibility/INTERACTION-PRODUCT-EVIDENCE-2026-10-03.md
@@ -258,6 +297,7 @@ docs/compatibility/PRICE-MODE-LIFECYCLE-PRICEB-EVIDENCE-2026-10-03.md
 docs/compatibility/PRODUCT-TARGETING-LIFECYCLE-EVIDENCE.md
 docs/compatibility/PRODUCT-VARIABLE-EVIDENCE-2026-10-03.md
 docs/compatibility/QTY-SEMANTICS-PARITY-EVIDENCE-2026-10-03.md
+docs/compatibility/QUICK-VIEW-ADAPTER-2026-10-06.md
 docs/compatibility/RULES-LIFECYCLE-EVIDENCE-2026-10-03.md
 docs/compatibility/SELECT-RADIO-REQUIRED-CHOICE-EVIDENCE-2026-10-02.md
 docs/compatibility/SUBSCRIPTION-BOOT-RESTORE-EVIDENCE-2026-10-04.md
@@ -283,21 +323,30 @@ docs/compatibility/URL-FIELD-NATIVE-PARITY.md
 docs/compatibility/VALFIX-EVIDENCE-2026-10-03.md
 docs/compatibility/VARZ-EVIDENCE.md
 docs/compatibility/WAPF-CARDS-ZOOM-EVIDENCE-2026-10-03.md
+docs/compatibility/WAPF-CHANGELOG-3.1.6-3.2.2-CROSSWALK-2026-10-06.md
 docs/compatibility/WAPF-CHECKBOX-COLUMNS-EVIDENCE-2026-10-04.md
 docs/compatibility/WAPF-CHILD-PRODUCTS-CURRENCY-TAX-2026-10-05.md
 docs/compatibility/WAPF-CHILD-PRODUCTS-RUNTIME-FIXTURE-2026-10-05.md
 docs/compatibility/WAPF-CHOICE-CAPACITY-BROWSER-EVIDENCE-2026-10-01.md
 docs/compatibility/WAPF-COEXISTENCE-CHOICE-GRID-FIX-2026-10-05.md
+docs/compatibility/WAPF-COMPAT-ASTRA-EVIDENCE-2026-10-06.md
+docs/compatibility/WAPF-COMPAT-FLATSOME-WOODMART-EVIDENCE-2026-10-06.md
+docs/compatibility/WAPF-COMPAT-QUICK-VIEW-PRO-EVIDENCE-2026-10-06.md
 docs/compatibility/WAPF-DATE-FORMAT-FALLBACK-EVIDENCE-2026-10-02.md
 docs/compatibility/WAPF-DATE-FORMAT-JS-PRECEDENCE-EVIDENCE-2026-10-02.md
 docs/compatibility/WAPF-DATE-FORMAT-MIGRATION-EVIDENCE-2026-10-02.md
 docs/compatibility/WAPF-EXTENDED-DATE-COEXISTENCE-2026-10-04.md
 docs/compatibility/WAPF-GROUP-ADMIN-TITLE-SEARCH-EVIDENCE-2026-10-02.md
 docs/compatibility/WAPF-IMAGE-CHANGE-RULES-MODE-EVIDENCE-2026-10-05.md
+docs/compatibility/WAPF-IMAGE-CHANGE-VARIABLE-RUNTIME-2026-10-06.md
+docs/compatibility/WAPF-JSON-IMPORT-LANDED-2026-10-06.md
+docs/compatibility/WAPF-LOCALE-WPML-MODERN-RUNTIME-2026-10-06.md
+docs/compatibility/WAPF-LOCALE-WPML-RUNTIME-2026-10-06.md
 docs/compatibility/WAPF-MINIMUM-PLATFORM-EVIDENCE.md
 docs/compatibility/WAPF-PRICE-FORMULA-ADVANCED-COMMERCE-2026-10-05.md
 docs/compatibility/WAPF-PRICE-HINT-CONVERSION-2026-10-05.md
 docs/compatibility/WAPF-PRICE-QUANTITY-FLAT-EVIDENCE-2026-10-02.md
+docs/compatibility/WAPF-PRODUCT-SUBSCRIPTION-RUNTIME-2026-10-06.md
 docs/compatibility/WAPF-REFERENCE-CHECKBOX-COLUMNS-2026-10-05.md
 docs/compatibility/WAPF-REFERENCE-CHILD-PRODUCTS-IMAGE-ZOOM-2026-10-05.md
 docs/compatibility/WAPF-REFERENCE-DISPLAY-PRICE-HINTS-2026-10-05.md
@@ -329,23 +378,23 @@ pattern for that.
 
 ## 10. Remaining G4 blockers after this record
 
-This record closes the packaging/provenance checks for the **0.1.1** baseline:
+This record closes the packaging/provenance checks for the **0.1.2** baseline:
 
 - Reproducible build command: recorded.
 - Shipped-file inventory and checksum manifest: recorded.
 - Bundled third-party components and their licenses: recorded.
 - Runtime dependency audit (no runtime libraries): recorded.
 - GPL-2.0-or-later declaration on all surfaces: recorded.
-- Version metadata aligned (`0.1.1`): verified.
+- Version metadata aligned (`0.1.2`): verified.
 - Internal-doc (`tasks/`) leak into the archive: fixed and verified.
 
 G4 as defined in the roadmap is still **not met**:
 
-1. **No 1.0 release archive exists to inspect.** The archive above is the 0.1.1
+1. **No 1.0 release archive exists to inspect.** The archive above is the 0.1.2
    baseline; a 1.0 package cannot be produced until the version metadata is
    bumped to 1.0 and G2/G3 close, so the "inspected 1.0 archive" gate item
    remains open.
-2. **105 compatibility evidence docs remain `/tmp`-staged** (section 9). Their
+2. **116 compatibility evidence docs remain `/tmp`-staged** (section 9). Their
    raw artifacts are unreproducible from a clean checkout even though the
    affected row claims are re-derivable from committed source/harnesses.
 3. **WordPress.org / commercial marketplace submission checklists are
