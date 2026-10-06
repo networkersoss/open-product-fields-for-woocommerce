@@ -40,12 +40,12 @@ this commit:
 | Status | Rows | Meaning for the gate |
 | --- | ---: | --- |
 | Baseline supported | 0 | — |
-| Supported | 124 | Strict supported rows; documented differences are not counted as supported |
-| Supported with documented difference — owner-accepted | 7 | Each carries an explicit owner decision (D1/D2/D3/D4, 2026-10-05) |
+| Supported | 122 | Strict supported rows; documented differences are not counted as supported |
+| Supported with documented difference | 9 | 7 owner-accepted (D1/D2/D3/D4, 2026-10-05) plus 2 parity-by-absence re-grades from the 2026-10-06 supported-row audit (`WAPF-PRODUCT-BOOKINGS`, `WAPF-INTEGRATION-GIFT-CARDS`) |
 | Partial | 0 | — |
 | Gap | 0 | — |
 | Needs audit | 0 | — |
-| **Total** | **131** | **G1 complete for available evidence; G2 met — strict supported: 124/131 (94.7%); accepted parity: 131/131 (100%); G3 met for every applicable edition row; G4 open on the three items recorded below** |
+| **Total** | **131** | **G1 complete for available evidence; G2 met — strict supported: 122/131 (93.1%); accepted parity: 131/131 (100%); G3 met for every applicable edition row; G4 open on the three items recorded below** |
 
 The six `WAPF-ADDON-*` rows are **outside** this 131-row denominator (all six
 `partial`) and are excluded from every count and gate verdict on this page.
@@ -126,8 +126,9 @@ accounting:
   ≥ 5.0.0 / WCML ≥ 5.6.0 and no matching companions were obtainable, WCML itself
   was not loadable with either core, and the D2 minimum-WPML-version note stands;
   the D1 guard now prevents the silent no-op.
-- **No edition row is `partial`:** 124 `supported`, 7 owner-accepted documented
-  differences, 0 partial, 0 baseline-supported, 0 gap and 0 needs-audit. The six
+- **No edition row is `partial`:** 122 `supported`, 9 documented differences
+  (7 owner-accepted, 2 parity-by-absence audit re-grades), 0 partial,
+  0 baseline-supported, 0 gap and 0 needs-audit. The six
   `WAPF-ADDON-*` rows stay `partial` and outside the 131-row denominator.
 
 The narrative below is the 2026-10-03/04 record of how the rows reached this
@@ -185,14 +186,18 @@ real-plugin proof recorded in its row.
 A fresh evidence review removed 15 stale `supported` claims at that point in
 time; later implementation commits advanced rows based on additional evidence.
 See [the supported-row audit](SUPPORTED-ROW-AUDIT-2026-10-01.md).
-At the current `master` tip (`fd42ab5`), strict progress is **124/131 supported rows (94.7%)**
-and accepted parity is **131/131 (100%)**: 7 owner-accepted documented differences,
-0 partial, 0 baseline-supported, 0 gap, 0 needs-audit.
+At the current `master` tip, strict progress is **122/131 supported rows (93.1%)**
+and accepted parity is **131/131 (100%)**: 9 documented differences (7 owner-accepted
+in 2026-10-05 and 2 parity-by-absence re-grades from the 2026-10-06 supported-row
+audit), 0 partial, 0 baseline-supported, 0 gap, 0 needs-audit. The 2026-10-06
+supported-row audit response is in
+[SUPPORTED-ROW-AUDIT-RESPONSE-2026-10-06.md](SUPPORTED-ROW-AUDIT-RESPONSE-2026-10-06.md).
 The 2026-10-04 child-products query audit and WAPF validation-hook repair added
 evidence and fixed a real coactive-plugin fatal; the broad child-products row was
 later promoted on its own 2026-10-05 proof (see the table above). The integrated branch now
-passes PHPUnit **1056 tests / 4,481 assertions / 0 failures** and JavaScript **130/130 tests**
-(two PHPUnit deprecations, no failures). See the [query audit](CHILD-PRODUCTS-QUERY-AUDIT-2026-10-04.md)
+passes PHPUnit **1105 tests / 4,716 assertions / 0 failures** and JavaScript **132/132 tests**
+(two PHPUnit deprecations, no failures; measured 2026-10-06 in this worktree, which
+also carries uncommitted parallel work, so the committed count can differ). See the [query audit](CHILD-PRODUCTS-QUERY-AUDIT-2026-10-04.md)
 and [coexistence evidence](WAPF-VALIDATION-COEXISTENCE-2026-10-04.md). The
 additional WAPF-active Store API checkout/Order Again/refund proof is recorded
 in [coactive child-order evidence](CHILD-STORE-API-WAPF-COACTIVE-EVIDENCE-2026-10-04.md).
@@ -467,10 +472,13 @@ decomposed into sized implementation and verification tasks.
    G1 is complete for the available evidence and does not block implementation.
 2. **G2 capability parity:** every edition row supported or has a reviewed,
    explicitly accepted difference; zero baseline-only, partial, gap, or
-   needs-audit rows. Current: **met** — 124/131 supported, 7 owner-accepted
-   differences (`WAPF-FIELD-TOGGLE`, `WAPF-DATE-FORMAT`, `WAPF-FIELD-SECTION`,
-   `WAPF-PRICE-OPTIONS-TOTAL-NEGATIVE-FORMAT`, `WAPF-RULE-PRODUCT`,
-   `WAPF-COMPAT-MINIMUM-PLATFORM`, `WAPF-DEVELOPER-HOOKS`), 0
+   needs-audit rows. Current: **met** — 122/131 supported, 9 documented
+   differences (owner-accepted D1: `WAPF-FIELD-TOGGLE`, `WAPF-DATE-FORMAT`,
+   `WAPF-FIELD-SECTION`, `WAPF-PRICE-OPTIONS-TOTAL-NEGATIVE-FORMAT`,
+   `WAPF-RULE-PRODUCT`; scope decision: `WAPF-COMPAT-MINIMUM-PLATFORM`;
+   residual-recorded: `WAPF-DEVELOPER-HOOKS`; parity-by-absence re-grades from
+   the 2026-10-06 supported-row audit: `WAPF-PRODUCT-BOOKINGS`,
+   `WAPF-INTEGRATION-GIFT-CARDS`), 0
    partial/baseline-only/gap/needs-audit edition rows; accepted parity is
    131/131. The 6 add-on rows are outside the denominator (all six `partial`),
    as are the compatibility-matrix tables including the 5
