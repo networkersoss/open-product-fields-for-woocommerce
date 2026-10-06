@@ -1,0 +1,126 @@
+{
+    "phase": "order-again",
+    "passed": 13,
+    "failed": 0,
+    "checks": [
+        {
+            "name": "checkout order resolves",
+            "pass": true,
+            "detail": 26
+        },
+        {
+            "name": "order is in a reorderable status",
+            "pass": true,
+            "detail": "completed"
+        },
+        {
+            "name": "order-again followed the storefront redirect to the cart",
+            "pass": true,
+            "detail": "http://127.0.0.1:8322/?page_id=6"
+        },
+        {
+            "name": "order-again rebuilt one cart line",
+            "pass": true,
+            "detail": [
+                "16281af12b2a579cc46c1ffe376b0d61"
+            ]
+        },
+        {
+            "name": "order-again restored the OPF values",
+            "pass": true,
+            "detail": {
+                "25": {
+                    "rt_note": "runtime monthly plan"
+                }
+            }
+        },
+        {
+            "name": "order-again line price is 35",
+            "pass": true,
+            "detail": 35
+        },
+        {
+            "name": "order-again stored base is 30",
+            "pass": true,
+            "detail": 30
+        },
+        {
+            "name": "order-again recurring total is 35",
+            "pass": true,
+            "detail": {
+                "2026_11_06_monthly": {
+                    "total": 35,
+                    "subtotal": 35,
+                    "items": 1,
+                    "prices": [
+                        35
+                    ]
+                }
+            }
+        },
+        {
+            "name": "order-again checkout raised no errors",
+            "pass": true,
+            "detail": []
+        },
+        {
+            "name": "order-again checkout reached the payment gateway",
+            "pass": true,
+            "detail": null
+        },
+        {
+            "name": "order-again checkout created a new order",
+            "pass": true,
+            "detail": 29
+        },
+        {
+            "name": "reordered order total is 35",
+            "pass": true,
+            "detail": "35.00"
+        },
+        {
+            "name": "reordered order line persisted the restored _opf_fields",
+            "pass": true,
+            "detail": {
+                "25": {
+                    "rt_note": "runtime monthly plan"
+                }
+            }
+        }
+    ],
+    "extra": {
+        "source_order_id": 26,
+        "cart_item_key": "16281af12b2a579cc46c1ffe376b0d61",
+        "restored_values": {
+            "25": {
+                "rt_note": "runtime monthly plan"
+            }
+        },
+        "line_price": 35,
+        "stored_base": 30,
+        "recurring_carts": {
+            "2026_11_06_monthly": {
+                "total": 35,
+                "subtotal": 35,
+                "items": 1,
+                "prices": [
+                    35
+                ]
+            }
+        },
+        "reordered_order": 29,
+        "reordered_total": 35,
+        "reordered_items": [
+            {
+                "name": "OPF Runtime Subscription",
+                "product_id": 21,
+                "variation_id": 0,
+                "total": 35,
+                "opf_fields": "{\"25\":{\"rt_note\":\"runtime monthly plan\"}}",
+                "snapshot": true
+            }
+        ],
+        "redirected_to": "http://127.0.0.1:8322/?page_id=6",
+        "notices": []
+    }
+}

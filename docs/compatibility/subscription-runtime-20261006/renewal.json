@@ -1,0 +1,108 @@
+{
+    "phase": "renewal",
+    "passed": 14,
+    "failed": 0,
+    "checks": [
+        {
+            "name": "subscription resolves",
+            "pass": true,
+            "detail": 27
+        },
+        {
+            "name": "a renewal order was created",
+            "pass": true,
+            "detail": 28
+        },
+        {
+            "name": "renewal order detected by WCS",
+            "pass": true,
+            "detail": 28
+        },
+        {
+            "name": "manual subscription goes on hold while the renewal is due",
+            "pass": true,
+            "detail": "on-hold"
+        },
+        {
+            "name": "renewal total is 35 (no compounding on renewal)",
+            "pass": true,
+            "detail": "35.00"
+        },
+        {
+            "name": "renewal line persisted _opf_fields",
+            "pass": true,
+            "detail": "{\"25\":{\"rt_note\":\"runtime monthly plan\"}}"
+        },
+        {
+            "name": "renewal line _opf_fields carries the submitted value",
+            "pass": true,
+            "detail": {
+                "25": {
+                    "rt_note": "runtime monthly plan"
+                }
+            }
+        },
+        {
+            "name": "renewal cart rebuild did not throw",
+            "pass": true,
+            "detail": null
+        },
+        {
+            "name": "renewal cart rebuild restores the OPF values",
+            "pass": true,
+            "detail": {
+                "25": {
+                    "rt_note": "runtime monthly plan"
+                }
+            }
+        },
+        {
+            "name": "renewal cart setup skips OPF validation",
+            "pass": true,
+            "detail": true
+        },
+        {
+            "name": "renewal cart teardown restores validation",
+            "pass": true,
+            "detail": false
+        },
+        {
+            "name": "renewal order paid",
+            "pass": true,
+            "detail": "completed"
+        },
+        {
+            "name": "subscription active again after the renewal payment",
+            "pass": true,
+            "detail": "active"
+        },
+        {
+            "name": "next payment date still scheduled",
+            "pass": true,
+            "detail": "2026-11-06 16:17:39"
+        }
+    ],
+    "extra": {
+        "renewal_order_id": 28,
+        "renewal_created_by": "woocommerce_scheduled_subscription_payment",
+        "renewal_status_before": "pending",
+        "renewal_status_after": "completed",
+        "renewal_total": 35,
+        "renewal_items": [
+            {
+                "name": "OPF Runtime Subscription",
+                "product_id": 21,
+                "variation_id": 0,
+                "total": 35,
+                "opf_fields": "{\"25\":{\"rt_note\":\"runtime monthly plan\"}}",
+                "snapshot": true
+            }
+        ],
+        "subscription_status_before_renewal": "active",
+        "subscription_status_on_due": "on-hold",
+        "subscription_status_after_payment": "active",
+        "next_payment_before": "2026-11-06 16:17:39",
+        "next_payment_after": "2026-11-06 16:17:39",
+        "rebuild_error": null
+    }
+}

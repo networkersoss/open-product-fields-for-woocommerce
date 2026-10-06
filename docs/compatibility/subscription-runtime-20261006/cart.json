@@ -1,0 +1,217 @@
+{
+    "phase": "cart",
+    "passed": 22,
+    "failed": 0,
+    "checks": [
+        {
+            "name": "add-to-cart validation passes with the required field",
+            "pass": true,
+            "detail": true
+        },
+        {
+            "name": "cart line created",
+            "pass": true,
+            "detail": "15a0a7dde8ea499ba7a11a19a929f05b"
+        },
+        {
+            "name": "stored OPF base is the recurring price 30",
+            "pass": true,
+            "detail": 30
+        },
+        {
+            "name": "cart line is recurring base 30 + addon 5 = 35",
+            "pass": true,
+            "detail": 35
+        },
+        {
+            "name": "cart total is 35",
+            "pass": true,
+            "detail": 35
+        },
+        {
+            "name": "one recurring cart exists",
+            "pass": true,
+            "detail": {
+                "2026_11_06_monthly": {
+                    "total": 35,
+                    "subtotal": 35,
+                    "items": 1,
+                    "prices": [
+                        35
+                    ]
+                }
+            }
+        },
+        {
+            "name": "recurring cart total is 35, not 40",
+            "pass": true,
+            "detail": {
+                "2026_11_06_monthly": {
+                    "total": 35,
+                    "subtotal": 35,
+                    "items": 1,
+                    "prices": [
+                        35
+                    ]
+                }
+            }
+        },
+        {
+            "name": "recurring cart line price is 35",
+            "pass": true,
+            "detail": {
+                "2026_11_06_monthly": {
+                    "total": 35,
+                    "subtotal": 35,
+                    "items": 1,
+                    "prices": [
+                        35
+                    ]
+                }
+            }
+        },
+        {
+            "name": "four totals passes stay at 35 (no addon compounding)",
+            "pass": true,
+            "detail": [
+                {
+                    "pass": 1,
+                    "line": 35,
+                    "recurring": 35,
+                    "total": 35
+                },
+                {
+                    "pass": 2,
+                    "line": 35,
+                    "recurring": 35,
+                    "total": 35
+                },
+                {
+                    "pass": 3,
+                    "line": 35,
+                    "recurring": 35,
+                    "total": 35
+                }
+            ]
+        },
+        {
+            "name": "adapter re-anchors 35 back to the 30 recurring base",
+            "pass": true,
+            "detail": 30
+        },
+        {
+            "name": "catalog product price still 30",
+            "pass": true,
+            "detail": "30"
+        },
+        {
+            "name": "catalog _subscription_price meta still 30",
+            "pass": true,
+            "detail": "30"
+        },
+        {
+            "name": "WCS recurring base still 30",
+            "pass": true,
+            "detail": "30"
+        },
+        {
+            "name": "validation active outside renewal",
+            "pass": true,
+            "detail": null
+        },
+        {
+            "name": "renewal setup skips OPF validation",
+            "pass": true,
+            "detail": null
+        },
+        {
+            "name": "renewal teardown restores validation",
+            "pass": true,
+            "detail": null
+        },
+        {
+            "name": "variation add-to-cart validation passes",
+            "pass": true,
+            "detail": true
+        },
+        {
+            "name": "subscription variation is a real subscription_variation",
+            "pass": true,
+            "detail": "subscription_variation"
+        },
+        {
+            "name": "variation recurring base is 20",
+            "pass": true,
+            "detail": "20"
+        },
+        {
+            "name": "variation cart line is 20 + 5 = 25",
+            "pass": true,
+            "detail": 25
+        },
+        {
+            "name": "variation stored OPF base is 20",
+            "pass": true,
+            "detail": 20
+        },
+        {
+            "name": "variation recurring cart total is 25",
+            "pass": true,
+            "detail": 25
+        }
+    ],
+    "extra": {
+        "cart_item_key": "15a0a7dde8ea499ba7a11a19a929f05b",
+        "line_price": 35,
+        "stored_base": 30,
+        "cart_total": 35,
+        "recurring_carts": {
+            "2026_11_06_monthly": {
+                "total": 35,
+                "subtotal": 35,
+                "items": 1,
+                "prices": [
+                    35
+                ]
+            }
+        },
+        "passes": [
+            {
+                "pass": 1,
+                "line": 35,
+                "recurring": 35,
+                "total": 35
+            },
+            {
+                "pass": 2,
+                "line": 35,
+                "recurring": 35,
+                "total": 35
+            },
+            {
+                "pass": 3,
+                "line": 35,
+                "recurring": 35,
+                "total": 35
+            }
+        ],
+        "reanchored_base": 30,
+        "product_price": 30,
+        "subscription_price_meta": "30",
+        "wcs_api_price": 30,
+        "variation": {
+            "variation_id": 23,
+            "line_price": 25,
+            "stored_base": 20,
+            "recurring_total": 25,
+            "wcs_api_price": 20
+        },
+        "submitted": {
+            "opf": {
+                "25": {
+                    "rt_note": "runtime monthly plan"
+                }
+            }
+        }
+    }
+}

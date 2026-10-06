@@ -1,0 +1,77 @@
+{
+    "phase": "refund",
+    "passed": 8,
+    "failed": 0,
+    "checks": [
+        {
+            "name": "order resolves",
+            "pass": true,
+            "detail": 26
+        },
+        {
+            "name": "partial refund created",
+            "pass": true,
+            "detail": "object"
+        },
+        {
+            "name": "refunded amount is 10",
+            "pass": true,
+            "detail": 10
+        },
+        {
+            "name": "order total unchanged by a partial refund",
+            "pass": true,
+            "detail": 35
+        },
+        {
+            "name": "order line _opf_fields survives the refund",
+            "pass": true,
+            "detail": [
+                "{\"25\":{\"rt_note\":\"runtime monthly plan\"}}",
+                "{\"25\":{\"rt_note\":\"runtime monthly plan\"}}"
+            ]
+        },
+        {
+            "name": "order line total still 35",
+            "pass": true,
+            "detail": 35
+        },
+        {
+            "name": "subscription survives the refund",
+            "pass": true,
+            "detail": "active"
+        },
+        {
+            "name": "subscription resolves before the refund",
+            "pass": true,
+            "detail": "WC_Subscription"
+        }
+    ],
+    "extra": {
+        "refund_id": 31,
+        "refund_amount": 10,
+        "refunded_total": 10,
+        "order_total": 35,
+        "order_items_before": [
+            {
+                "name": "OPF Runtime Subscription",
+                "product_id": 21,
+                "variation_id": 0,
+                "total": 35,
+                "opf_fields": "{\"25\":{\"rt_note\":\"runtime monthly plan\"}}",
+                "snapshot": true
+            }
+        ],
+        "order_items_after": [
+            {
+                "name": "OPF Runtime Subscription",
+                "product_id": 21,
+                "variation_id": 0,
+                "total": 35,
+                "opf_fields": "{\"25\":{\"rt_note\":\"runtime monthly plan\"}}",
+                "snapshot": true
+            }
+        ],
+        "subscription_status": "active"
+    }
+}

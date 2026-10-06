@@ -1,0 +1,21 @@
+{
+    "removed_on_setup": {
+        "products": 2,
+        "variations": 0,
+        "groups": 1,
+        "orders": 4,
+        "subscriptions": 2
+    },
+    "simple_product": 21,
+    "variable_product": 22,
+    "variation_monthly": 23,
+    "variation_yearly": 24,
+    "group": 25,
+    "customer": 3,
+    "order": 26,
+    "subscription": 27,
+    "checkout_cart_item_key": "15a0a7dde8ea499ba7a11a19a929f05b",
+    "renewal_order": 28,
+    "reordered_order": 29,
+    "refund": 31
+}

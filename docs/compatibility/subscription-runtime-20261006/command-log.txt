@@ -1,0 +1,41 @@
+$ wp --path=/tmp/opf-subscriptions-wp plugin list --fields=name,status,version
+name	status	version
+akismet	inactive	5.7.2
+hello	inactive	1.7.2
+open-product-fields-for-woocommerce	active	0.1.0
+plugin-check	inactive	2.1.0
+sqlite-database-integration	inactive	3.0.2
+woocommerce	active	11.1.0
+woocommerce-subscriptions	active	9.2.0
+db.php	dropin	
+
+
+$ wp --path=/tmp/opf-subscriptions-wp eval-file /home/followersya-5hqi7/followersya.com/bedrock/web/app/plugins/open-product-fields-for-woocommerce/bin/e2e-subscription-runtime.php
+phase=setup passed=11 failed=0
+SUCCESS subscription-runtime setup
+
+
+$ wp --path=/tmp/opf-subscriptions-wp eval-file /home/followersya-5hqi7/followersya.com/bedrock/web/app/plugins/open-product-fields-for-woocommerce/bin/e2e-subscription-runtime.php
+phase=cart passed=22 failed=0
+SUCCESS subscription-runtime cart
+
+
+$ wp --path=/tmp/opf-subscriptions-wp eval-file /home/followersya-5hqi7/followersya.com/bedrock/web/app/plugins/open-product-fields-for-woocommerce/bin/e2e-subscription-runtime.php
+phase=checkout passed=17 failed=0
+SUCCESS subscription-runtime checkout
+
+
+$ wp --path=/tmp/opf-subscriptions-wp eval-file /home/followersya-5hqi7/followersya.com/bedrock/web/app/plugins/open-product-fields-for-woocommerce/bin/e2e-subscription-runtime.php
+phase=renewal passed=14 failed=0
+SUCCESS subscription-runtime renewal
+
+
+$ wp --path=/tmp/opf-subscriptions-wp eval-file /home/followersya-5hqi7/followersya.com/bedrock/web/app/plugins/open-product-fields-for-woocommerce/bin/e2e-subscription-runtime.php
+phase=order-again passed=13 failed=0
+SUCCESS subscription-runtime order-again
+
+
+$ wp --path=/tmp/opf-subscriptions-wp eval-file /home/followersya-5hqi7/followersya.com/bedrock/web/app/plugins/open-product-fields-for-woocommerce/bin/e2e-subscription-runtime.php
+phase=refund passed=8 failed=0
+SUCCESS subscription-runtime refund
+

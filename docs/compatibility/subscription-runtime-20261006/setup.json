@@ -1,0 +1,92 @@
+{
+    "phase": "setup",
+    "passed": 11,
+    "failed": 0,
+    "checks": [
+        {
+            "name": "real WooCommerce Subscriptions class loaded",
+            "pass": true,
+            "detail": null
+        },
+        {
+            "name": "simple product is a real subscription",
+            "pass": true,
+            "detail": "subscription"
+        },
+        {
+            "name": "simple product recurring base is 30",
+            "pass": true,
+            "detail": "30"
+        },
+        {
+            "name": "variable parent is a real variable-subscription",
+            "pass": true,
+            "detail": "variable-subscription"
+        },
+        {
+            "name": "monthly variation is a real subscription variation",
+            "pass": true,
+            "detail": "subscription_variation"
+        },
+        {
+            "name": "monthly variation recurring base is 20",
+            "pass": true,
+            "detail": "20"
+        },
+        {
+            "name": "OPF group saved",
+            "pass": true,
+            "detail": 25
+        },
+        {
+            "name": "OPF group matches the subscription product",
+            "pass": true,
+            "detail": null
+        },
+        {
+            "name": "customer ready",
+            "pass": true,
+            "detail": 3
+        },
+        {
+            "name": "manual renewals enabled",
+            "pass": true,
+            "detail": null
+        },
+        {
+            "name": "action scheduler present",
+            "pass": true,
+            "detail": null
+        }
+    ],
+    "extra": {
+        "environment": {
+            "wordpress": "7.1.2",
+            "woocommerce": "11.1.0",
+            "subscriptions": "9.2.0",
+            "php": "8.5.11",
+            "site_url": "http://127.0.0.1:8322",
+            "plugins": [
+                "open-product-fields-for-woocommerce/open-product-fields-for-woocommerce.php",
+                "woocommerce-subscriptions/woocommerce-subscriptions.php",
+                "woocommerce/woocommerce.php"
+            ],
+            "hpos": "off"
+        },
+        "state": {
+            "removed_on_setup": {
+                "products": 2,
+                "variations": 0,
+                "groups": 1,
+                "orders": 4,
+                "subscriptions": 2
+            },
+            "simple_product": 21,
+            "variable_product": 22,
+            "variation_monthly": 23,
+            "variation_yearly": 24,
+            "group": 25,
+            "customer": 3
+        }
+    }
+}

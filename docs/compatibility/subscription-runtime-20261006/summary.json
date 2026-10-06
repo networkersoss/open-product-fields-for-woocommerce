@@ -1,0 +1,54 @@
+{
+    "clone": "/tmp/opf-subscriptions-wp",
+    "site": "http://127.0.0.1:8322",
+    "php": "php",
+    "phases": {
+        "setup": {
+            "status": 0,
+            "passed": 11,
+            "failed": 0,
+            "artifact": "docs/compatibility/subscription-runtime-20261006/setup.json"
+        },
+        "cart": {
+            "status": 0,
+            "passed": 22,
+            "failed": 0,
+            "artifact": "docs/compatibility/subscription-runtime-20261006/cart.json"
+        },
+        "checkout": {
+            "status": 0,
+            "passed": 17,
+            "failed": 0,
+            "artifact": "docs/compatibility/subscription-runtime-20261006/checkout.json"
+        },
+        "renewal": {
+            "status": 0,
+            "passed": 14,
+            "failed": 0,
+            "artifact": "docs/compatibility/subscription-runtime-20261006/renewal.json"
+        },
+        "order-again": {
+            "status": 0,
+            "passed": 13,
+            "failed": 0,
+            "artifact": "docs/compatibility/subscription-runtime-20261006/order-again.json"
+        },
+        "refund": {
+            "status": 0,
+            "passed": 8,
+            "failed": 0,
+            "artifact": "docs/compatibility/subscription-runtime-20261006/refund.json"
+        }
+    },
+    "passed": 85,
+    "failed": 0,
+    "checks": [
+        "cart.json",
+        "checkout.json",
+        "order-again.json",
+        "refund.json",
+        "renewal.json",
+        "setup.json",
+        "state.json"
+    ]
+}

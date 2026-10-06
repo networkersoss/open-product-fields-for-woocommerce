@@ -1,0 +1,127 @@
+{
+    "phase": "checkout",
+    "passed": 17,
+    "failed": 0,
+    "checks": [
+        {
+            "name": "add-to-cart validation passes",
+            "pass": true,
+            "detail": true
+        },
+        {
+            "name": "checkout raised no WooCommerce error notices",
+            "pass": true,
+            "detail": []
+        },
+        {
+            "name": "checkout reached the payment gateway",
+            "pass": true,
+            "detail": null
+        },
+        {
+            "name": "checkout created an order",
+            "pass": true,
+            "detail": []
+        },
+        {
+            "name": "order status is completed after payment",
+            "pass": true,
+            "detail": "completed"
+        },
+        {
+            "name": "order total is 35 (base 30 + addon 5)",
+            "pass": true,
+            "detail": "35.00"
+        },
+        {
+            "name": "order line persisted _opf_fields",
+            "pass": true,
+            "detail": "{\"25\":{\"rt_note\":\"runtime monthly plan\"}}"
+        },
+        {
+            "name": "order line _opf_fields carries the submitted value",
+            "pass": true,
+            "detail": {
+                "25": {
+                    "rt_note": "runtime monthly plan"
+                }
+            }
+        },
+        {
+            "name": "order line persisted the field snapshot",
+            "pass": true,
+            "detail": {
+                "name": "OPF Runtime Subscription",
+                "product_id": 21,
+                "variation_id": 0,
+                "total": 35,
+                "opf_fields": "{\"25\":{\"rt_note\":\"runtime monthly plan\"}}",
+                "snapshot": true
+            }
+        },
+        {
+            "name": "WCS created a subscription for the order",
+            "pass": true,
+            "detail": [
+                27
+            ]
+        },
+        {
+            "name": "the related order is a WC_Subscription object",
+            "pass": true,
+            "detail": "WC_Subscription"
+        },
+        {
+            "name": "subscription is active",
+            "pass": true,
+            "detail": "active"
+        },
+        {
+            "name": "subscription recurring total is 35",
+            "pass": true,
+            "detail": "35.00"
+        },
+        {
+            "name": "subscription line persisted _opf_fields",
+            "pass": true,
+            "detail": "{\"25\":{\"rt_note\":\"runtime monthly plan\"}}"
+        },
+        {
+            "name": "subscription line _opf_fields carries the submitted value",
+            "pass": true,
+            "detail": {
+                "25": {
+                    "rt_note": "runtime monthly plan"
+                }
+            }
+        },
+        {
+            "name": "subscription requires manual renewal (COD)",
+            "pass": true,
+            "detail": true
+        },
+        {
+            "name": "subscription next payment scheduled",
+            "pass": true,
+            "detail": "2026-11-06 16:17:39"
+        }
+    ],
+    "extra": {
+        "order_id": 26,
+        "order_status": "completed",
+        "order_total": 35,
+        "order_items": [
+            {
+                "name": "OPF Runtime Subscription",
+                "product_id": 21,
+                "variation_id": 0,
+                "total": 35,
+                "opf_fields": "{\"25\":{\"rt_note\":\"runtime monthly plan\"}}",
+                "snapshot": true
+            }
+        ],
+        "subscription_id": 27,
+        "scheduled_payments": [],
+        "notices": []
+    }
+}
