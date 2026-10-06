@@ -56,6 +56,12 @@ User-facing changes to Open Product Fields for WooCommerce.
   Translation is unavailable, instead of failing on the missing API.
 - Release archives no longer ship the internal `tasks/` planning notes.
 
+### Removed
+
+- Stop shipping `assets/js/opf-frontend.min.js`: the file was tracked and
+  packaged but never referenced, because `includes/Service/Assets.php`
+  enqueues `assets/js/opf-frontend.js`.
+
 ### Verified
 
 - Real WooCommerce Subscriptions 9.2.0 lifecycle parity: add-to-cart, renewal,

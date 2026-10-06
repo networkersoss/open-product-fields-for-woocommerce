@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Open Product Fields for WooCommerce 0.1.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/opf-lane-locale\n"
+"Project-Id-Version: Open Product Fields for WooCommerce 0.1.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/open-product-fields-for-woocommerce\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-03T13:44:08+00:00\n"
+"POT-Creation-Date: 2026-10-06T19:00:35+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: open-product-fields-for-woocommerce\n"
@@ -39,69 +39,126 @@ msgstr ""
 msgid "https://github.com/ssthormess"
 msgstr ""
 
-#. translators: 1: field label, 2: unavailable choice label.
-#: includes/Engine/FieldValue.php:55
-msgid "\"%1$s\" includes unavailable choice \"%2$s\"."
+#. translators: 1: field label, 2: minimum selection count.
+#: includes/Engine/FieldValue.php:72
+#: includes/Engine/FieldValue.php:87
+msgid "\"%1$s\" requires at least %2$d selection(s)."
 msgstr ""
 
 #. translators: %s: field label.
-#: includes/Engine/FieldValue.php:219
-#: includes/Engine/FieldValue.php:226
+#: includes/Engine/FieldValue.php:75
+#: includes/Engine/FieldValue.php:317
+#: includes/Engine/FieldValue.php:324
 msgid "\"%s\" is a required field."
 msgstr ""
 
+#. translators: 1: field label, 2: unavailable choice label.
+#: includes/Engine/FieldValue.php:82
+msgid "\"%1$s\" includes unavailable choice \"%2$s\"."
+msgstr ""
+
+#. translators: 1: field label, 2: maximum selection count.
+#: includes/Engine/FieldValue.php:91
+msgid "\"%1$s\" allows at most %2$d selection(s)."
+msgstr ""
+
 #. translators: %s: field label.
-#: includes/Engine/FieldValue.php:234
+#: includes/Engine/FieldValue.php:332
 msgid "\"%s\" must be a valid email address."
 msgstr ""
 
 #. translators: %s: field label.
-#: includes/Engine/FieldValue.php:239
+#: includes/Engine/FieldValue.php:337
 msgid "\"%s\" must be a valid URL."
 msgstr ""
 
 #. translators: %s: field label.
-#: includes/Engine/FieldValue.php:247
+#: includes/Engine/FieldValue.php:346
+msgid "\"%s\" must be a number."
+msgstr ""
+
+#. translators: %s: field label.
+#: includes/Engine/FieldValue.php:351
+msgid "\"%s\" must be a whole number."
+msgstr ""
+
+#. translators: 1: field label, 2: minimum allowed number.
+#: includes/Engine/FieldValue.php:355
+msgid "\"%1$s\" must be at least %2$s."
+msgstr ""
+
+#. translators: 1: field label, 2: maximum allowed number.
+#: includes/Engine/FieldValue.php:359
+msgid "\"%1$s\" must be at most %2$s."
+msgstr ""
+
+#. translators: 1: field label, 2: required increment.
+#: includes/Engine/FieldValue.php:366
+msgid "\"%1$s\" must use increments of %2$s."
+msgstr ""
+
+#. translators: %s: field label.
+#: includes/Engine/FieldValue.php:376
 msgid "\"%s\" must be a valid date."
 msgstr ""
 
 #. translators: %s: field label.
-#: includes/Engine/FieldValue.php:253
+#: includes/Engine/FieldValue.php:382
+msgid "\"%s\" cannot be today."
+msgstr ""
+
+#. translators: %s: field label.
+#: includes/Engine/FieldValue.php:386
 msgid "\"%s\" cannot be in the past."
 msgstr ""
 
 #. translators: %s: field label.
-#: includes/Engine/FieldValue.php:257
+#: includes/Engine/FieldValue.php:390
 msgid "\"%s\" cannot be in the future."
 msgstr ""
 
 #. translators: 1: field label, 2: earliest allowed ISO date.
-#: includes/Engine/FieldValue.php:267
+#: includes/Engine/FieldValue.php:410
 msgid "\"%1$s\" must be on or after %2$s."
 msgstr ""
 
 #. translators: 1: field label, 2: latest allowed ISO date.
-#: includes/Engine/FieldValue.php:270
+#: includes/Engine/FieldValue.php:413
 msgid "\"%1$s\" must be on or before %2$s."
 msgstr ""
 
 #. translators: %s: field label.
-#: includes/Engine/FieldValue.php:275
+#: includes/Engine/FieldValue.php:418
 msgid "\"%s\" is unavailable on this weekday."
 msgstr ""
 
 #. translators: %s: field label.
-#: includes/Engine/FieldValue.php:279
+#: includes/Engine/FieldValue.php:422
 msgid "\"%s\" contains a disallowed date."
 msgstr ""
 
 #. translators: %s: field label.
-#: includes/Engine/FieldValue.php:283
+#: includes/Engine/FieldValue.php:426
 msgid "\"%s\" is no longer available for today."
 msgstr ""
 
+#. translators: 1: field label, 2: minimum character count.
+#: includes/Engine/FieldValue.php:436
+msgid "\"%1$s\" must be at least %2$d characters."
+msgstr ""
+
+#. translators: 1: field label, 2: maximum character count.
+#: includes/Engine/FieldValue.php:440
+msgid "\"%1$s\" must be at most %2$d characters."
+msgstr ""
+
+#. translators: %s: field label.
+#: includes/Engine/FieldValue.php:444
+msgid "\"%s\" has an invalid format."
+msgstr ""
+
 #: includes/Service/Admin/Builder.php:40
-#: includes/Service/Importer.php:194
+#: includes/Service/Importer.php:197
 msgid "Fields"
 msgstr ""
 
@@ -113,110 +170,151 @@ msgstr ""
 msgid "The field builder requires JavaScript."
 msgstr ""
 
-#: includes/Service/Admin/Builder.php:143
+#. translators: %s: attribute label.
+#: includes/Service/Admin/Builder.php:95
+msgid "%s: any value"
+msgstr ""
+
+#: includes/Service/Admin/Builder.php:167
 msgid "Leave product and customer conditions empty to show this group everywhere."
 msgstr ""
 
-#: includes/Service/Admin/Builder.php:145
+#: includes/Service/Admin/Builder.php:169
 msgid "Include products"
 msgstr ""
 
-#: includes/Service/Admin/Builder.php:145
+#: includes/Service/Admin/Builder.php:169
 msgid "Exclude products"
 msgstr ""
 
-#: includes/Service/Admin/Builder.php:146
-#: assets/js/opf-builder.js:405
+#: includes/Service/Admin/Builder.php:170
+#: assets/js/opf-builder.js:600
 msgid "Search for a product…"
 msgstr ""
 
-#: includes/Service/Admin/Builder.php:153
+#: includes/Service/Admin/Builder.php:177
 msgid "Include product IDs"
 msgstr ""
 
-#: includes/Service/Admin/Builder.php:155
+#: includes/Service/Admin/Builder.php:179
 msgid "Exclude product IDs"
 msgstr ""
 
-#: includes/Service/Admin/Builder.php:157
+#: includes/Service/Admin/Builder.php:181
 msgid "Search by product name or ID, or enter comma-separated IDs directly. Include matches any listed product; exclude removes every listed product. For variations, use the parent product."
 msgstr ""
 
-#: includes/Service/Admin/Builder.php:158
+#: includes/Service/Admin/Builder.php:183
+msgid "Show on variations"
+msgstr ""
+
+#: includes/Service/Admin/Builder.php:183
+msgid "Hide on variations"
+msgstr ""
+
+#: includes/Service/Admin/Builder.php:184
+msgid "Search for a variation…"
+msgstr ""
+
+#: includes/Service/Admin/Builder.php:191
+msgid "Include variation IDs"
+msgstr ""
+
+#: includes/Service/Admin/Builder.php:193
+msgid "Exclude variation IDs"
+msgstr ""
+
+#: includes/Service/Admin/Builder.php:195
+msgid "Variation rules gate the fields while the shopper picks options: included variations show this group's fields, excluded ones hide them. The group still needs a matching product/category rule (or no rules) to render."
+msgstr ""
+
+#: includes/Service/Admin/Builder.php:196
+msgid "Show only on variations with attribute"
+msgstr ""
+
+#: includes/Service/Admin/Builder.php:204
+msgid "Hide on products offering attribute values"
+msgstr ""
+
+#: includes/Service/Admin/Builder.php:212
+msgid "Attribute rules use attr|value pairs; “any value” matches every filled choice of that attribute on the selected variation. Excluded pairs keep the whole group off products that offer them."
+msgstr ""
+
+#: includes/Service/Admin/Builder.php:213
 msgid "Product categories"
 msgstr ""
 
-#: includes/Service/Admin/Builder.php:166
+#: includes/Service/Admin/Builder.php:221
 msgid "Product tags"
 msgstr ""
 
-#: includes/Service/Admin/Builder.php:174
+#: includes/Service/Admin/Builder.php:229
 msgid "Exclude categories"
 msgstr ""
 
-#: includes/Service/Admin/Builder.php:182
+#: includes/Service/Admin/Builder.php:237
 msgid "Exclude tags"
 msgstr ""
 
-#: includes/Service/Admin/Builder.php:190
+#: includes/Service/Admin/Builder.php:245
 msgid "Product types"
 msgstr ""
 
-#: includes/Service/Admin/Builder.php:198
+#: includes/Service/Admin/Builder.php:253
 msgid "Exclude product types"
 msgstr ""
 
-#: includes/Service/Admin/Builder.php:206
+#: includes/Service/Admin/Builder.php:261
 msgid "Attribute values"
 msgstr ""
 
-#: includes/Service/Admin/Builder.php:214
+#: includes/Service/Admin/Builder.php:269
 msgid "Exclude attribute values"
 msgstr ""
 
-#: includes/Service/Admin/Builder.php:222
+#: includes/Service/Admin/Builder.php:277
 msgid "Customer login"
 msgstr ""
 
-#: includes/Service/Admin/Builder.php:224
+#: includes/Service/Admin/Builder.php:279
 msgid "Any visitor"
 msgstr ""
 
-#: includes/Service/Admin/Builder.php:225
+#: includes/Service/Admin/Builder.php:280
 msgid "Logged in"
 msgstr ""
 
-#: includes/Service/Admin/Builder.php:226
+#: includes/Service/Admin/Builder.php:281
 msgid "Not logged in"
 msgstr ""
 
-#: includes/Service/Admin/Builder.php:228
+#: includes/Service/Admin/Builder.php:283
 msgid "Require every selected user role"
 msgstr ""
 
-#: includes/Service/Admin/Builder.php:234
+#: includes/Service/Admin/Builder.php:289
 msgid "Exclude every selected user role"
 msgstr ""
 
-#: includes/Service/Admin/Builder.php:241
+#: includes/Service/Admin/Builder.php:296
 msgid "Current language"
 msgstr ""
 
-#: includes/Service/Admin/Builder.php:243
-#: assets/js/opf-builder.js:553
+#: includes/Service/Admin/Builder.php:298
+#: assets/js/opf-builder.js:766
 msgid "Is"
 msgstr ""
 
-#: includes/Service/Admin/Builder.php:244
-#: assets/js/opf-builder.js:553
+#: includes/Service/Admin/Builder.php:299
+#: assets/js/opf-builder.js:766
 msgid "Is not"
 msgstr ""
 
-#: includes/Service/Admin/Builder.php:247
+#: includes/Service/Admin/Builder.php:302
 msgid "Any language"
 msgstr ""
 
-#: includes/Service/Admin/Builder.php:256
+#: includes/Service/Admin/Builder.php:311
 msgid "Placement changes are saved together with the fields."
 msgstr ""
 
@@ -228,232 +326,382 @@ msgstr ""
 msgid "Calculate percentage discounts on the base product price and exclude Open Product Fields add-on pricing."
 msgstr ""
 
+#: includes/Service/Admin/FormulaVariables.php:17
+#: includes/Service/Admin/FormulaVariables.php:18
+#: includes/Service/Admin/FormulaVariables.php:44
+msgid "OPF Formula Variables"
+msgstr ""
+
+#: includes/Service/Admin/FormulaVariables.php:27
+msgid "You are not allowed to manage formula variables."
+msgstr ""
+
+#: includes/Service/Admin/FormulaVariables.php:35
+msgid "Invalid JSON. No changes were saved."
+msgstr ""
+
+#: includes/Service/Admin/FormulaVariables.php:38
+msgid "Formula variables saved."
+msgstr ""
+
+#: includes/Service/Admin/FormulaVariables.php:45
+msgid "Create reusable numeric defaults and ordered conditional changes. Use [var_name] in a formula. Conditions refer to field IDs in the local group where the variable is used; the first matching change wins. A group-local definition overrides a site-wide variable with the same name."
+msgstr ""
+
+#: includes/Service/Admin/FormulaVariables.php:46
+msgid "Example: {\"wrap_cost\":{\"default\":1,\"changes\":[{\"value\":1.5,\"logic\":\"all\",\"rules\":[{\"field\":\"size\",\"operator\":\"is\",\"value\":\"large\"}]}]}}"
+msgstr ""
+
+#: includes/Service/Admin/FormulaVariables.php:53
+msgid "Save formula variables"
+msgstr ""
+
 #: includes/Service/Admin/ImportPage.php:30
 msgid "Import WAPF"
 msgstr ""
 
-#: includes/Service/Admin/Settings.php:19
+#: includes/Service/Admin/Settings.php:58
 msgid "Product fields"
 msgstr ""
 
-#: includes/Service/Admin/Settings.php:30
+#: includes/Service/Admin/Settings.php:59
+#: includes/Service/Admin/Settings.php:68
+msgid "Live Content Preview"
+msgstr ""
+
+#: includes/Service/Admin/Settings.php:70
+msgid "Register custom fonts for product-local live text previews."
+msgstr ""
+
+#: includes/Service/Admin/Settings.php:74
+#: includes/Service/LivePreviewFonts.php:24
+msgid "Custom preview fonts"
+msgstr ""
+
+#: includes/Service/Admin/Settings.php:86
 msgid "Open Product Fields"
 msgstr ""
 
-#: includes/Service/Admin/Settings.php:32
-msgid "Configure how product field dates appear in calendars, carts, checkout, and orders."
+#: includes/Service/Admin/Settings.php:88
+msgid "Configure price summary, date presentation, price hints, number controls, and the modern file uploader for product fields."
 msgstr ""
 
-#: includes/Service/Admin/Settings.php:36
+#: includes/Service/Admin/Settings.php:92
+msgid "Display pricing summary"
+msgstr ""
+
+#: includes/Service/Admin/Settings.php:93
+msgid "Show the base price, options total, and grand total; show only the grand total; or hide the summary."
+msgstr ""
+
+#: includes/Service/Admin/Settings.php:98
+msgid "Show 3-line summary"
+msgstr ""
+
+#: includes/Service/Admin/Settings.php:99
+msgid "Show only grand total"
+msgstr ""
+
+#: includes/Service/Admin/Settings.php:100
+msgid "Hide summary"
+msgstr ""
+
+#: includes/Service/Admin/Settings.php:105
+msgid "Edit product options from cart"
+msgstr ""
+
+#: includes/Service/Admin/Settings.php:106
+msgid "Add an edit link to eligible customized cart lines. Upload and linked-child-product lines are excluded until their replacement lifecycle is supported."
+msgstr ""
+
+#: includes/Service/Admin/Settings.php:107
+msgid "When enabled, users can edit product options from their cart."
+msgstr ""
+
+#: includes/Service/Admin/Settings.php:114
+msgid "Styled checkbox and radio controls"
+msgstr ""
+
+#: includes/Service/Admin/Settings.php:115
+msgid "Use the configured accent and border colors while keeping native checkbox and radio semantics."
+msgstr ""
+
+#: includes/Service/Admin/Settings.php:122
+msgid "Choice control accent color"
+msgstr ""
+
+#: includes/Service/Admin/Settings.php:123
+msgid "Used for selected checkbox and radio controls when styling is enabled."
+msgstr ""
+
+#: includes/Service/Admin/Settings.php:130
+msgid "Choice control border color"
+msgstr ""
+
+#: includes/Service/Admin/Settings.php:131
+msgid "Used for checkbox and radio outlines when styling is enabled."
+msgstr ""
+
+#: includes/Service/Admin/Settings.php:138
+msgid "Text swatch corner radius"
+msgstr ""
+
+#: includes/Service/Admin/Settings.php:139
+msgid "Corner rounding in pixels for text swatch choices. 0 renders square corners."
+msgstr ""
+
+#: includes/Service/Admin/Settings.php:140
+msgid "Matches the corner radius WAPF applies to its text swatch chips. Leave it untouched to keep an imported WAPF corner radius."
+msgstr ""
+
+#: includes/Service/Admin/Settings.php:148
+msgid "Number field plus and minus buttons"
+msgstr ""
+
+#: includes/Service/Admin/Settings.php:149
+msgid "Add accessible increment and decrement buttons beside number fields. The native number input remains the submitted value."
+msgstr ""
+
+#: includes/Service/Admin/Settings.php:156
+msgid "Modern file uploader"
+msgstr ""
+
+#: includes/Service/Admin/Settings.php:157
+msgid "Enable drag and drop, upload progress, file removal, and image previews. The standard browser file input remains available when disabled."
+msgstr ""
+
+#: includes/Service/Admin/Settings.php:164
 msgid "Date format"
 msgstr ""
 
-#: includes/Service/Admin/Settings.php:37
+#: includes/Service/Admin/Settings.php:165
 msgid "Use mm, m, dd, d, yyyy, and yy once each by component. Examples: mm-dd-yyyy, d/m/yy, or yyyy.mm.dd."
 msgstr ""
 
-#: includes/Service/Admin/Settings.php:44
-msgid "Price summary mode"
-msgstr ""
-
-#: includes/Service/Admin/Settings.php:45
-msgid "Pre-add-to-cart summary: full three-row block, grand total only, or hidden."
-msgstr ""
-
-#: includes/Service/Admin/Settings.php:49
-msgid "Three-line summary"
-msgstr ""
-
-#: includes/Service/Admin/Settings.php:50
-msgid "Grand total only"
-msgstr ""
-
-#: includes/Service/Admin/Settings.php:51
-msgid "Hidden"
-msgstr ""
-
-#: includes/Service/Admin/Settings.php:57
+#: includes/Service/Admin/Settings.php:172
 msgid "Price hints"
 msgstr ""
 
-#: includes/Service/Admin/Settings.php:58
+#: includes/Service/Admin/Settings.php:173
 msgid "Show per-option price hints (+/- amounts) beside priced fields and choices."
 msgstr ""
 
+#: includes/Service/Admin/Settings.php:180
+msgid "Price hint format"
+msgstr ""
+
+#: includes/Service/Admin/Settings.php:181
+msgid "Template for per-value price hints in the cart and on orders. {x} is the price placeholder and + the sign placeholder."
+msgstr ""
+
+#: includes/Service/Admin/Settings.php:188
+msgid "Percentage coupons discount base product price only"
+msgstr ""
+
+#: includes/Service/Admin/Settings.php:189
+msgid "Exclude Open Product Fields price add-ons from percentage coupon discounts. Fixed product and fixed cart coupons are unchanged."
+msgstr ""
+
+#: includes/Service/Admin/Settings.php:196
+msgid "Wrap price hints in parentheses"
+msgstr ""
+
+#: includes/Service/Admin/Settings.php:203
+msgid "Show plus sign for positive price hints"
+msgstr ""
+
+#: includes/Service/Admin/Settings.php:204
+msgid "Formula-based hints keep the plus sign, matching WAPF behavior."
+msgstr ""
+
 #. translators: %d: minimum number of items.
-#: includes/Service/Assets.php:108
+#: includes/Service/Assets.php:160
 msgid "Choose at least %d items in total."
 msgstr ""
 
 #. translators: %d: maximum number of items.
-#: includes/Service/Assets.php:110
+#: includes/Service/Assets.php:162
 msgid "Choose no more than %d items in total."
 msgstr ""
 
 #. translators: %d: maximum number of selectable options.
-#: includes/Service/Assets.php:112
+#: includes/Service/Assets.php:164
 msgid "Select no more than %d options."
 msgstr ""
 
-#: includes/Service/Assets.php:113
+#: includes/Service/Assets.php:165
 msgid "Select the required choices in every repeated row."
 msgstr ""
 
-#: includes/Service/Assets.php:114
+#: includes/Service/Assets.php:166
 msgid "Choose date"
 msgstr ""
 
-#: includes/Service/Assets.php:115
+#: includes/Service/Assets.php:167
 msgid "Choose a date"
 msgstr ""
 
-#: includes/Service/Assets.php:116
+#: includes/Service/Assets.php:168
 msgid "Previous month"
 msgstr ""
 
-#: includes/Service/Assets.php:117
+#: includes/Service/Assets.php:169
 msgid "Next month"
 msgstr ""
 
-#: includes/Service/Assets.php:118
+#: includes/Service/Assets.php:170
 msgid "Calendar dates"
 msgstr ""
 
-#: includes/Service/Assets.php:119
+#: includes/Service/Assets.php:171
 msgid "No selectable dates this month."
 msgstr ""
 
-#: includes/Service/Assets.php:120
+#: includes/Service/Assets.php:172
 msgid "This date is unavailable."
 msgstr ""
 
 #. translators: %d: repeated-row number.
-#: includes/Service/Assets.php:123
+#: includes/Service/Assets.php:175
 msgid "Remove row %d"
 msgstr ""
 
-#: includes/Service/Assets.php:124
+#. translators: %s: file name.
+#: includes/Service/Assets.php:176
+#: includes/Service/Renderer.php:1752
 msgid "Remove"
 msgstr ""
 
-#: includes/Service/Assets.php:125
+#: includes/Service/Assets.php:177
 msgid "Wait for uploads to finish."
 msgstr ""
 
-#: includes/Service/Assets.php:126
+#: includes/Service/Assets.php:178
 msgid "Choose a file."
 msgstr ""
 
-#: includes/Service/Assets.php:127
+#: includes/Service/Assets.php:179
 msgid "File upload progress"
 msgstr ""
 
-#: includes/Service/Assets.php:128
+#: includes/Service/Assets.php:180
 msgid "Choose files or drop them here."
 msgstr ""
 
-#: includes/Service/Assets.php:129
+#: includes/Service/Assets.php:181
 msgid "Remove a file before uploading another."
 msgstr ""
 
 #. translators: %s: file name.
-#: includes/Service/Assets.php:131
+#: includes/Service/Assets.php:183
 msgid "Uploading %s"
 msgstr ""
 
-#: includes/Service/Assets.php:132
+#: includes/Service/Assets.php:184
 msgid "Upload failed. Try again."
 msgstr ""
 
-#: includes/Service/Assets.php:133
+#: includes/Service/Assets.php:185
 msgid "Uploads are unavailable. Refresh the page."
 msgstr ""
 
 #. translators: %s: file name.
-#: includes/Service/Assets.php:135
+#: includes/Service/Assets.php:187
+#: includes/Service/Renderer.php:1752
 msgid "Remove %s"
 msgstr ""
 
-#: includes/Service/Assets.php:136
+#: includes/Service/Assets.php:188
 msgid "Could not remove this file."
 msgstr ""
 
-#: includes/Service/Assets.php:137
+#: includes/Service/Assets.php:189
 msgid "File removed."
 msgstr ""
 
-#: includes/Service/Assets.php:138
+#: includes/Service/Assets.php:190
 msgid "Upload complete."
 msgstr ""
 
-#: includes/Service/CartIntegration.php:787
+#: includes/Service/CartEdit.php:185
+msgid "edit"
+msgstr ""
+
+#: includes/Service/CartEdit.php:227
+msgid "Link to edit the cart item."
+msgstr ""
+
+#: includes/Service/CartIntegration.php:955
+#: includes/Service/CartIntegration.php:1076
 msgid "Yes"
 msgstr ""
 
-#: includes/Service/CartIntegration.php:788
+#: includes/Service/CartIntegration.php:956
+#: includes/Service/CartIntegration.php:1077
 msgid "No"
 msgstr ""
 
 #. translators: %s: field group title.
-#: includes/Service/FieldGroups.php:84
+#: includes/Service/FieldGroups.php:97
 msgid "Duplicate “%s”"
 msgstr ""
 
-#: includes/Service/FieldGroups.php:85
+#: includes/Service/FieldGroups.php:98
+#: assets/js/opf-builder.js:1030
 msgid "Duplicate"
 msgstr ""
 
-#: includes/Service/FieldGroups.php:96
+#: includes/Service/FieldGroups.php:109
 msgid "Invalid field group."
 msgstr ""
 
-#: includes/Service/FieldGroups.php:103
+#: includes/Service/FieldGroups.php:116
 msgid "This field group cannot be duplicated."
 msgstr ""
 
-#: includes/Service/FieldGroups.php:106
+#: includes/Service/FieldGroups.php:119
 msgid "You are not allowed to duplicate this field group."
 msgstr ""
 
-#: includes/Service/FieldGroups.php:111
+#: includes/Service/FieldGroups.php:124
 msgid "The field group data is invalid."
 msgstr ""
 
-#: includes/Service/FieldGroups.php:116
+#: includes/Service/FieldGroups.php:129
 msgid "The field group contains duplicate field IDs and cannot be copied safely."
 msgstr ""
 
 #. translators: %s: original field group title.
-#: includes/Service/FieldGroups.php:124
+#: includes/Service/FieldGroups.php:137
 msgid "%s (Copy)"
 msgstr ""
 
-#: includes/Service/FieldGroups.php:129
+#: includes/Service/FieldGroups.php:142
 msgid "The field group copy could not be saved."
 msgstr ""
 
-#: includes/Service/FieldGroups.php:149
+#: includes/Service/FieldGroups.php:162
 msgid "Field group duplicated."
 msgstr ""
 
-#: includes/Service/FieldGroups.php:160
+#: includes/Service/FieldGroups.php:173
 msgid "Field Groups"
 msgstr ""
 
-#: includes/Service/FieldGroups.php:161
-#: includes/Service/FieldGroups.php:328
+#: includes/Service/FieldGroups.php:174
+#: includes/Service/FieldGroups.php:459
 msgid "Field Group"
 msgstr ""
 
-#: includes/Service/FieldGroups.php:162
+#: includes/Service/FieldGroups.php:175
 msgid "Edit Field Group"
 msgstr ""
 
-#: includes/Service/FieldGroups.php:163
+#: includes/Service/FieldGroups.php:176
 msgid "New Field Group"
 msgstr ""
 
-#: includes/Service/FieldGroups.php:164
+#: includes/Service/FieldGroups.php:177
 msgid "Search Field Groups"
 msgstr ""
 
@@ -482,113 +730,449 @@ msgstr ""
 msgid "Write imported groups (uncheck = dry run)"
 msgstr ""
 
+#: includes/Service/LayeredImages.php:407
+msgid "Layered Images"
+msgstr ""
+
+#: includes/Service/LayeredImages.php:443
+msgid "Enable layered images"
+msgstr ""
+
+#: includes/Service/LayeredImages.php:444
+msgid "Base background image"
+msgstr ""
+
+#: includes/Service/LayeredImages.php:444
+#: includes/Service/LayeredImages.php:463
+msgid "Upload or select"
+msgstr ""
+
+#: includes/Service/LayeredImages.php:445
+msgid "Display on image"
+msgstr ""
+
+#: includes/Service/LayeredImages.php:445
+msgid "Main product image"
+msgstr ""
+
+#: includes/Service/LayeredImages.php:445
+msgid "Selected gallery image"
+msgstr ""
+
+#: includes/Service/LayeredImages.php:446
+msgid "Gallery image"
+msgstr ""
+
+#: includes/Service/LayeredImages.php:447
+msgid "Delay until first choice"
+msgstr ""
+
+#: includes/Service/LayeredImages.php:448
+msgid "Auto-scroll to product image"
+msgstr ""
+
+#: includes/Service/LayeredImages.php:451
+msgid "Choice image layers"
+msgstr ""
+
+#: includes/Service/LayeredImages.php:452
+msgid "Choose a PNG with transparent pixels for each option. Every layer must match the base image dimensions; invalid layers are rejected when saved."
+msgstr ""
+
+#: includes/Service/LayeredImages.php:465
+msgid "Add a product-targeted select, radio, checkbox, or swatch field with choices to configure layers."
+msgstr ""
+
+#: includes/Service/LayeredImages.php:696
+msgid "— Select image —"
+msgstr ""
+
+#: includes/Service/LayeredImages.php:715
+#: includes/Service/LivePreview.php:76
+msgid "Image %d"
+msgstr ""
+
 #. translators: %s: field label.
-#: includes/Service/LinkedProducts.php:438
-#: includes/Service/LinkedProducts.php:448
-#: includes/Service/LinkedProducts.php:478
+#: includes/Service/LinkedProducts.php:447
+#: includes/Service/LinkedProducts.php:457
+#: includes/Service/LinkedProducts.php:487
 msgid "Some selections of \"%s\" are invalid. Please refresh the page and try again."
 msgstr ""
 
 #. translators: %s: field label.
-#: includes/Service/LinkedProducts.php:453
+#: includes/Service/LinkedProducts.php:462
+#: includes/Service/LinkedProducts.php:502
 msgid "Some selections of \"%s\" are no longer available for purchase."
 msgstr ""
 
 #. translators: %s: choice slug.
-#: includes/Service/LinkedProducts.php:514
+#: includes/Service/LinkedProducts.php:538
 msgid "\"%s\" quantity is invalid."
 msgstr ""
 
 #. translators: 1: field label, 2: minimum number of items.
-#: includes/Service/LinkedProducts.php:519
+#: includes/Service/LinkedProducts.php:543
 msgid "\"%1$s\" requires a minimum of %2$d total items."
 msgstr ""
 
 #. translators: 1: field label, 2: maximum number of items.
-#: includes/Service/LinkedProducts.php:523
+#: includes/Service/LinkedProducts.php:547
 msgid "\"%1$s\" requires a maximum of %2$d total items."
 msgstr ""
 
 #. translators: %s: field label.
-#: includes/Service/LinkedProducts.php:530
+#: includes/Service/LinkedProducts.php:554
 msgid "The field \"%s\" is required."
 msgstr ""
 
 #. translators: %s: product name.
-#: includes/Service/LinkedProducts.php:546
+#: includes/Service/LinkedProducts.php:570
 msgid "The product \"%s\" is no longer available for purchase."
 msgstr ""
 
 #. translators: %s: product name.
-#: includes/Service/LinkedProducts.php:551
+#: includes/Service/LinkedProducts.php:575
 msgid "The product \"%s\" is no longer in stock."
 msgstr ""
 
 #. translators: %s: product name.
-#: includes/Service/LinkedProducts.php:556
+#: includes/Service/LinkedProducts.php:580
 msgid "The product \"%s\" doesn't have enough stock. Please select a smaller quantity."
 msgstr ""
 
-#: includes/Service/LinkedProducts.php:797
+#: includes/Service/LinkedProducts.php:823
 msgid "Cannot change product quantity because a linked child product has insufficient stock."
 msgstr ""
 
-#: includes/Service/LinkedProducts.php:831
+#: includes/Service/LinkedProducts.php:857
 msgid "Included with"
 msgstr ""
 
-#: includes/Service/LinkedProducts.php:942
+#: includes/Service/LinkedProducts.php:968
 msgid "Linked child product line managed by OPF."
 msgstr ""
 
-#: includes/Service/Renderer.php:297
-#: includes/Service/Renderer.php:382
+#: includes/Service/LivePreview.php:34
+msgid "Live Preview"
+msgstr ""
+
+#: includes/Service/LivePreview.php:87
+msgid "Choose a field and product image, then place and style its text overlay."
+msgstr ""
+
+#: includes/Service/LivePreview.php:88
+msgid "Overlays change the product image preview only. They do not change cart or order data."
+msgstr ""
+
+#: includes/Service/LivePreview.php:90
+msgid "Preview items"
+msgstr ""
+
+#: includes/Service/LivePreview.php:91
+msgid "Add overlay"
+msgstr ""
+
+#: includes/Service/LivePreview.php:92
+msgid "Remove selected overlay"
+msgstr ""
+
+#: includes/Service/LivePreview.php:95
+msgid "Field group"
+msgstr ""
+
+#: includes/Service/LivePreview.php:96
+msgid "Text field"
+msgstr ""
+
+#: includes/Service/LivePreview.php:97
+msgid "Product image"
+msgstr ""
+
+#: includes/Service/LivePreview.php:98
+msgid "Text color"
+msgstr ""
+
+#: includes/Service/LivePreview.php:99
+msgid "Font family"
+msgstr ""
+
+#: includes/Service/LivePreview.php:100
+msgid "Registered font picker"
+msgstr ""
+
+#: includes/Service/LivePreview.php:100
+msgid "Use entered font family"
+msgstr ""
+
+#: includes/Service/LivePreview.php:101
+msgid "Font size"
+msgstr ""
+
+#: includes/Service/LivePreview.php:102
+msgid "Mobile font size"
+msgstr ""
+
+#: includes/Service/LivePreview.php:103
+msgid "Font weight"
+msgstr ""
+
+#: includes/Service/LivePreview.php:104
+msgid "Font style"
+msgstr ""
+
+#: includes/Service/LivePreview.php:105
+msgid "Alignment"
+msgstr ""
+
+#: includes/Service/LivePreview.php:106
+msgid "Mobile alignment"
+msgstr ""
+
+#: includes/Service/LivePreview.php:107
+msgid "Box width (%)"
+msgstr ""
+
+#: includes/Service/LivePreview.php:108
+msgid "Box height (%)"
+msgstr ""
+
+#: includes/Service/LivePreview.php:109
+msgid "Upload image shape"
+msgstr ""
+
+#: includes/Service/LivePreview.php:110
+msgid "Upload image fit"
+msgstr ""
+
+#: includes/Service/LivePreview.php:111
+msgid "Dynamic style"
+msgstr ""
+
+#: includes/Service/LivePreview.php:112
+msgid "Dynamic value field"
+msgstr ""
+
+#: includes/Service/LivePreview.php:113
+msgid "Dynamic default"
+msgstr ""
+
+#: includes/Service/LivePreview.php:120
+msgid "Drag the text box to position it. Use arrow keys when the box is focused."
+msgstr ""
+
+#: includes/Service/LivePreview.php:122
+msgid "Add a product-targeted text field group and a product image to configure a preview."
+msgstr ""
+
+#: includes/Service/LivePreviewFonts.php:25
+msgid "Upload named WOFF or WOFF2 files (maximum 5 MB each). Use the registered name in a preview style or map it from a local Select field."
+msgstr ""
+
+#: includes/Service/LivePreviewFonts.php:26
+msgid "Font name"
+msgstr ""
+
+#: includes/Service/LivePreviewFonts.php:27
+msgid "Font file"
+msgstr ""
+
+#: includes/Service/LivePreviewFonts.php:29
+msgid "Remove a registered font"
+msgstr ""
+
+#: includes/Service/LivePreviewFonts.php:29
+msgid "Keep all fonts"
+msgstr ""
+
+#: includes/Service/LivePreviewFonts.php:31
+msgid "No custom fonts registered yet."
+msgstr ""
+
+#: includes/Service/LivePreviewFonts.php:32
+msgid "Use the Save changes button below to upload or remove a font."
+msgstr ""
+
+#: includes/Service/LivePreviewFonts.php:129
+msgid "Upload a valid WOFF or WOFF2 file no larger than 5 MB and provide a plain font name."
+msgstr ""
+
+#: includes/Service/LivePreviewFonts.php:140
+msgid "The custom font limit has been reached. Remove a font before adding another."
+msgstr ""
+
+#: includes/Service/LivePreviewFonts.php:145
+msgid "The WordPress upload directory is unavailable."
+msgstr ""
+
+#: includes/Service/LivePreviewFonts.php:150
+msgid "The preview font directory could not be created."
+msgstr ""
+
+#: includes/Service/LivePreviewFonts.php:157
+msgid "The preview font could not be stored."
+msgstr ""
+
+#: includes/Service/LivePreviewFonts.php:169
+msgid "Font uploaded and registered."
+msgstr ""
+
+#: includes/Service/LivePreviewFonts.php:174
+msgid "Font removed."
+msgstr ""
+
+#: includes/Service/LookupTableCsvImporter.php:127
+#: includes/Service/LookupTableCsvImporter.php:128
+#: includes/Service/LookupTableCsvImporter.php:137
+msgid "Lookup table CSV"
+msgstr ""
+
+#: includes/Service/LookupTableCsvImporter.php:138
+msgid "Upload lookup table CSV"
+msgstr ""
+
+#: includes/Service/LookupTableCsvImporter.php:138
+msgid "Import documented matrix or row-list CSV files. Uploading a table with the same name replaces its existing rows."
+msgstr ""
+
+#: includes/Service/LookupTableCsvImporter.php:143
+#: includes/Service/LookupTableCsvImporter.php:165
+msgid "You do not have permission to manage lookup tables."
+msgstr ""
+
+#: includes/Service/LookupTableCsvImporter.php:152
+msgid "Import lookup table CSV"
+msgstr ""
+
+#: includes/Service/LookupTableCsvImporter.php:153
+msgid "Upload a UTF-8 comma-separated file up to 5 MiB. Grid files use the first cell for the table name (or the filename when blank); row-list files use the filename. The final row-list column is the price."
+msgstr ""
+
+#: includes/Service/LookupTableCsvImporter.php:158
+msgid "Import CSV"
+msgstr ""
+
+#: includes/Service/ProductPriceDisplay.php:42
+#: assets/js/opf-builder.js:162
+msgid "Default"
+msgstr ""
+
+#: includes/Service/ProductPriceDisplay.php:43
+msgid "Hide the price"
+msgstr ""
+
+#: includes/Service/ProductPriceDisplay.php:44
+msgid "Add a label before the price"
+msgstr ""
+
+#: includes/Service/ProductPriceDisplay.php:45
+msgid "Add a label after the price"
+msgstr ""
+
+#: includes/Service/ProductPriceDisplay.php:46
+msgid "Replace WooCommerce price with text"
+msgstr ""
+
+#: includes/Service/ProductPriceDisplay.php:57
+msgid "Price display"
+msgstr ""
+
+#: includes/Service/ProductPriceDisplay.php:59
+msgid "How to display the price? You can display an extra label before/after the price. You can also hide the price completely, or replace it with your own text."
+msgstr ""
+
+#: includes/Service/ProductPriceDisplay.php:67
+msgid "Extra price label"
+msgstr ""
+
+#: includes/Service/ProductPriceDisplay.php:69
+msgid "Additional or replacement text for the price display. If or how this is displayed depends on the setting above."
+msgstr ""
+
+#: includes/Service/Renderer.php:533
+#: includes/Service/Renderer.php:716
 msgid "Add another"
 msgstr ""
 
-#: includes/Service/Renderer.php:358
+#: includes/Service/Renderer.php:686
 msgid "This repeated field type is not available yet."
 msgstr ""
 
-#: includes/Service/Renderer.php:359
+#: includes/Service/Renderer.php:687
 msgid "This quantity-based repeated field is not available yet."
 msgstr ""
 
-#: includes/Service/Renderer.php:545
-#: includes/Service/Renderer.php:778
+#: includes/Service/Renderer.php:870
+msgid "Instructions for %s"
+msgstr ""
+
+#: includes/Service/Renderer.php:925
+msgid "No products are currently available."
+msgstr ""
+
+#: includes/Service/Renderer.php:950
+#: includes/Service/Renderer.php:1094
+#: includes/Service/Renderer.php:1456
 msgid "Choose an option"
 msgstr ""
 
-#: includes/Service/Renderer.php:707
+#. translators: %s: child product name.
+#: includes/Service/Renderer.php:974
+msgid "Quantity of %s"
+msgstr ""
+
+#. translators: %s: child product name.
+#: includes/Service/Renderer.php:983
+msgid "Enlarge image: %s"
+msgstr ""
+
+#: includes/Service/Renderer.php:1367
 msgid "No products are available for this option."
 msgstr ""
 
-#: includes/Service/Renderer.php:876
+#: includes/Service/Renderer.php:1560
 msgid "Reduce"
 msgstr ""
 
-#: includes/Service/Renderer.php:880
+#: includes/Service/Renderer.php:1564
 msgid "Increase"
 msgstr ""
 
-#: includes/Service/Renderer.php:928
+#: includes/Service/Renderer.php:1612
 msgid "Details"
 msgstr ""
 
-#: includes/Service/Renderer.php:1078
+#: includes/Service/Renderer.php:1751
+msgid "Uploaded file"
+msgstr ""
+
+#: includes/Service/Renderer.php:1790
+msgid "value"
+msgstr ""
+
+#. translators: %s: field label.
+#: includes/Service/Renderer.php:1795
+msgid "Decrease %s"
+msgstr ""
+
+#. translators: %s: field label.
+#: includes/Service/Renderer.php:1795
+msgid "Increase %s"
+msgstr ""
+
+#: includes/Service/Renderer.php:1878
 msgid "Product total"
 msgstr ""
 
-#: includes/Service/Renderer.php:1079
+#: includes/Service/Renderer.php:1879
 msgid "Options total"
 msgstr ""
 
-#: includes/Service/Renderer.php:1080
+#: includes/Service/Renderer.php:1880
 msgid "Grand total"
 msgstr ""
 
-#: includes/Service/Renderer.php:1081
-#: includes/Service/Renderer.php:1096
+#: includes/Service/Renderer.php:1881
+#: includes/Service/Renderer.php:1896
 msgid "required"
 msgstr ""
 
@@ -600,809 +1184,1384 @@ msgstr ""
 msgid "Create a product first to see a preview."
 msgstr ""
 
-#: includes/Service/Uploads.php:109
+#: includes/Service/Uploads.php:117
 msgid "Delete uploaded files"
 msgstr ""
 
-#: open-product-fields-for-woocommerce.php:131
+#: includes/Service/WpmlIntegration.php:105
+msgid "Open Product Fields: WPML String Translation is unavailable or incompatible with the installed WPML core, so field labels cannot be registered for translation. Update WPML String Translation to the version required by WPML core."
+msgstr ""
+
+#: open-product-fields-for-woocommerce.php:181
 msgid "Open Product Fields requires WooCommerce to be installed and active."
 msgstr ""
 
-#: assets/js/opf-builder.js:100
+#. translators: 1: required WooCommerce version, 2: running WooCommerce version.
+#: open-product-fields-for-woocommerce.php:194
+msgid "Open Product Fields requires WooCommerce %1$s or newer; this site is running WooCommerce %2$s. The plugin is inactive until WooCommerce is updated."
+msgstr ""
+
+#: assets/js/opf-builder.js:111
 msgid "slug"
 msgstr ""
 
-#: assets/js/opf-builder.js:119
+#: assets/js/opf-builder.js:135
 msgid "amount"
 msgstr ""
 
-#: assets/js/opf-builder.js:127
-#: assets/js/opf-builder.js:305
+#: assets/js/opf-builder.js:139
+msgid "Also supports acf(field_name) and acf_option(field_name) for numeric ACF fields."
+msgstr ""
+
+#: assets/js/opf-builder.js:151
+msgid "Multiply by product quantity"
+msgstr ""
+
+#: assets/js/opf-builder.js:153
+#: assets/js/opf-builder.js:500
 msgid "Preselected"
 msgstr ""
 
-#: assets/js/opf-builder.js:136
-msgid "Default"
+#. translators: %s: choice label.
+#: assets/js/opf-builder.js:159
+msgid "Unavailable option: %s"
 msgstr ""
 
-#: assets/js/opf-builder.js:137
-#: assets/js/opf-builder.js:311
+#: assets/js/opf-builder.js:163
+#: assets/js/opf-builder.js:506
 msgid "Unavailable"
 msgstr ""
 
-#: assets/js/opf-builder.js:147
-#: assets/js/opf-builder.js:334
+#: assets/js/opf-builder.js:173
+#: assets/js/opf-builder.js:529
+#: assets/js/opf-builder.js:1009
 msgid "×"
 msgstr ""
 
-#: assets/js/opf-builder.js:162
+#: assets/js/opf-builder.js:187
+msgid "Card image URL (optional)"
+msgstr ""
+
+#: assets/js/opf-builder.js:189
+msgid "Card description (optional)"
+msgstr ""
+
+#: assets/js/opf-builder.js:199
 msgid "Swatch color"
 msgstr ""
 
-#: assets/js/opf-builder.js:167
+#: assets/js/opf-builder.js:204
 msgid "Image URL (optional)"
 msgstr ""
 
-#: assets/js/opf-builder.js:176
-#: assets/js/opf-builder.js:841
+#: assets/js/opf-builder.js:213
+#: assets/js/opf-builder.js:1478
 msgid "Choose image"
 msgstr ""
 
-#: assets/js/opf-builder.js:178
-#: assets/js/opf-builder.js:843
+#: assets/js/opf-builder.js:215
+#: assets/js/opf-builder.js:1480
 msgid "The WordPress Media Library is unavailable on this screen."
 msgstr ""
 
-#: assets/js/opf-builder.js:182
+#: assets/js/opf-builder.js:219
 msgid "Choose swatch image"
 msgstr ""
 
-#: assets/js/opf-builder.js:183
-#: assets/js/opf-builder.js:848
+#: assets/js/opf-builder.js:220
+#: assets/js/opf-builder.js:1485
 msgid "Use image"
 msgstr ""
 
-#: assets/js/opf-builder.js:204
-msgid "Place one option on each line. Blank lines are skipped; duplicate labels are kept. New choices are appended to existing choices."
+#: assets/js/opf-builder.js:250
+msgid "Bulk choice options"
 msgstr ""
 
-#: assets/js/opf-builder.js:204
-msgid " For colors, use Label, #ffffff. Missing or invalid colors use white."
-msgstr ""
-
-#: assets/js/opf-builder.js:205
-#: assets/js/opf-builder.js:257
+#: assets/js/opf-builder.js:251
+#: assets/js/opf-builder.js:313
 msgid "Choices to import"
 msgstr ""
 
-#: assets/js/opf-builder.js:205
+#: assets/js/opf-builder.js:253
 msgid ""
 "White, #ffffff\n"
 "Red, #ff0000"
 msgstr ""
 
-#: assets/js/opf-builder.js:205
-msgid ""
-"Option A\n"
-"Option B"
-msgstr ""
-
-#: assets/js/opf-builder.js:207
-msgid "Import choices"
-msgstr ""
-
-#. translators: 1: imported count, 2: total lines.
-#: assets/js/opf-builder.js:239
-msgid "%1$d out of %2$d lines imported."
+#: assets/js/opf-builder.js:255
+msgid "Replace existing choices before import"
 msgstr ""
 
 #: assets/js/opf-builder.js:256
+msgid "Import choices"
+msgstr ""
+
+#. translators: %d: line number.
+#: assets/js/opf-builder.js:268
+msgid "Line %d needs a label and, when provided, a value and numeric price."
+msgstr ""
+
+#. translators: %d: line number.
+#: assets/js/opf-builder.js:276
+msgid "Line %d duplicates an existing choice value."
+msgstr ""
+
+#. translators: %d: line number.
+#: assets/js/opf-builder.js:288
+msgid "Line %d price must be a finite number."
+msgstr ""
+
+#: assets/js/opf-builder.js:305
+msgid "Enter at least one non-empty choice."
+msgstr ""
+
+#: assets/js/opf-builder.js:312
 msgid "Bulk import choices"
 msgstr ""
 
-#: assets/js/opf-builder.js:296
-#: assets/js/opf-builder.js:396
-#: assets/js/opf-builder.js:402
-#: assets/js/opf-builder.js:479
-msgid "Price"
+#: assets/js/opf-builder.js:314
+msgid "Paste one choice per line: label, or label + Tab + value + optional Tab + fixed price. Blank lines are ignored; options append unless Replace is checked."
 msgstr ""
 
-#: assets/js/opf-builder.js:297
-#: assets/js/opf-builder.js:397
-msgid "Product price"
+#: assets/js/opf-builder.js:314
+msgid " For colors, use Label, #ffffff. Missing or invalid colors use white."
 msgstr ""
 
-#: assets/js/opf-builder.js:298
-#: assets/js/opf-builder.js:398
-msgid "Free"
+#: assets/js/opf-builder.js:315
+msgid "Replace existing choices"
 msgstr ""
 
-#: assets/js/opf-builder.js:326
-msgid "Default qty"
+#: assets/js/opf-builder.js:336
+msgid "Allow multiple files"
 msgstr ""
 
-#: assets/js/opf-builder.js:326
-msgid "Min qty"
-msgstr ""
-
-#: assets/js/opf-builder.js:326
-msgid "Max qty"
-msgstr ""
-
-#: assets/js/opf-builder.js:348
-#: assets/js/opf-builder.js:354
-msgid "Display"
-msgstr ""
-
-#: assets/js/opf-builder.js:356
-#: assets/js/opf-builder.js:362
-msgid "Product selection"
-msgstr ""
-
-#: assets/js/opf-builder.js:357
-msgid "Pick products manually"
-msgstr ""
-
+#: assets/js/opf-builder.js:347
 #: assets/js/opf-builder.js:358
-msgid "Products from a category"
+msgid "Accepted file types"
 msgstr ""
 
+#: assets/js/opf-builder.js:359
+msgid "Leave unselected to allow every WordPress-permitted file type."
+msgstr ""
+
+#: assets/js/opf-builder.js:361
 #: assets/js/opf-builder.js:366
-msgid "Product category"
+msgid "Maximum file size (MB)"
 msgstr ""
 
-#: assets/js/opf-builder.js:366
-msgid "Choose a category…"
-msgstr ""
-
-#: assets/js/opf-builder.js:378
-msgid "Category"
-msgstr ""
-
-#: assets/js/opf-builder.js:380
-msgid "Maximum products"
-msgstr ""
-
-#: assets/js/opf-builder.js:384
-msgid "Maximum products (1–50)"
+#: assets/js/opf-builder.js:367
+msgid "WAPF default is 1 MB. PHP and WordPress limits are always enforced server-side."
 msgstr ""
 
 #: assets/js/opf-builder.js:386
-#: assets/js/opf-builder.js:394
-msgid "Sorting"
+msgid "Minimum files"
 msgstr ""
 
 #: assets/js/opf-builder.js:387
-msgid "Creation date (newest first)"
+msgid "Maximum files (-1 for unlimited)"
 msgstr ""
 
 #: assets/js/opf-builder.js:388
-msgid "Creation date (oldest first)"
+msgid "Minimum file size (MB)"
 msgstr ""
 
 #: assets/js/opf-builder.js:389
-msgid "Title (A–Z)"
+msgid "Minimum image width (pixels)"
 msgstr ""
 
 #: assets/js/opf-builder.js:390
-msgid "Title (Z–A)"
+msgid "Minimum image height (pixels)"
 msgstr ""
 
-#: assets/js/opf-builder.js:426
-msgid "Linked products"
+#: assets/js/opf-builder.js:397
+msgid "Automatically resize images"
 msgstr ""
 
-#: assets/js/opf-builder.js:426
-msgid "product · price · default · unavailable · qty bounds"
+#: assets/js/opf-builder.js:398
+msgid "Maximum image width (pixels)"
 msgstr ""
 
-#: assets/js/opf-builder.js:426
-msgid "product · price · default · unavailable"
+#: assets/js/opf-builder.js:399
+msgid "Maximum image height (pixels)"
 msgstr ""
 
-#: assets/js/opf-builder.js:435
-#: assets/js/opf-builder.js:441
-msgid "Child quantity"
+#: assets/js/opf-builder.js:401
+msgid "Image editor disabled"
 msgstr ""
 
-#: assets/js/opf-builder.js:436
-msgid "Always add 1 to the cart"
+#: assets/js/opf-builder.js:402
+msgid "Optional: edit button"
 msgstr ""
 
-#: assets/js/opf-builder.js:437
-msgid "Match the parent product quantity"
+#: assets/js/opf-builder.js:403
+msgid "Required: edit before upload"
+msgstr ""
+
+#: assets/js/opf-builder.js:418
+msgid "Image editor"
+msgstr ""
+
+#: assets/js/opf-builder.js:420
+msgid "Allow crop"
+msgstr ""
+
+#: assets/js/opf-builder.js:420
+msgid "Allow zoom/resize"
+msgstr ""
+
+#: assets/js/opf-builder.js:420
+msgid "Allow rotate"
+msgstr ""
+
+#: assets/js/opf-builder.js:420
+msgid "Allow flip"
+msgstr ""
+
+#: assets/js/opf-builder.js:428
+msgid "Free crop"
+msgstr ""
+
+#: assets/js/opf-builder.js:429
+msgid "Square 1:1"
+msgstr ""
+
+#: assets/js/opf-builder.js:438
+msgid "Editor aspect ratio"
 msgstr ""
 
 #: assets/js/opf-builder.js:443
-#: assets/js/opf-builder.js:449
+msgid "Allowed types (png, jpg, application/pdf)"
+msgstr ""
+
+#: assets/js/opf-builder.js:450
+msgid "Allowed types"
+msgstr ""
+
+#: assets/js/opf-builder.js:491
+#: assets/js/opf-builder.js:591
+#: assets/js/opf-builder.js:597
+#: assets/js/opf-builder.js:681
+msgid "Price"
+msgstr ""
+
+#: assets/js/opf-builder.js:492
+#: assets/js/opf-builder.js:592
+msgid "Product price"
+msgstr ""
+
+#: assets/js/opf-builder.js:493
+#: assets/js/opf-builder.js:593
+msgid "Free"
+msgstr ""
+
+#: assets/js/opf-builder.js:521
+msgid "Default qty"
+msgstr ""
+
+#: assets/js/opf-builder.js:521
+msgid "Min qty"
+msgstr ""
+
+#: assets/js/opf-builder.js:521
+msgid "Max qty"
+msgstr ""
+
+#: assets/js/opf-builder.js:543
+#: assets/js/opf-builder.js:549
+msgid "Display"
+msgstr ""
+
+#: assets/js/opf-builder.js:551
+#: assets/js/opf-builder.js:557
+msgid "Product selection"
+msgstr ""
+
+#: assets/js/opf-builder.js:552
+msgid "Pick products manually"
+msgstr ""
+
+#: assets/js/opf-builder.js:553
+msgid "Products from a category"
+msgstr ""
+
+#: assets/js/opf-builder.js:561
+msgid "Product category"
+msgstr ""
+
+#: assets/js/opf-builder.js:561
+msgid "Choose a category…"
+msgstr ""
+
+#: assets/js/opf-builder.js:573
+msgid "Category"
+msgstr ""
+
+#: assets/js/opf-builder.js:575
+msgid "Maximum products"
+msgstr ""
+
+#: assets/js/opf-builder.js:579
+msgid "Maximum products (1–50)"
+msgstr ""
+
+#: assets/js/opf-builder.js:581
+#: assets/js/opf-builder.js:589
+msgid "Sorting"
+msgstr ""
+
+#: assets/js/opf-builder.js:582
+msgid "Creation date (newest first)"
+msgstr ""
+
+#: assets/js/opf-builder.js:583
+msgid "Creation date (oldest first)"
+msgstr ""
+
+#: assets/js/opf-builder.js:584
+msgid "Title (A–Z)"
+msgstr ""
+
+#: assets/js/opf-builder.js:585
+msgid "Title (Z–A)"
+msgstr ""
+
+#: assets/js/opf-builder.js:628
+msgid "Linked products"
+msgstr ""
+
+#: assets/js/opf-builder.js:628
+msgid "product · price · default · unavailable · qty bounds"
+msgstr ""
+
+#: assets/js/opf-builder.js:628
+msgid "product · price · default · unavailable"
+msgstr ""
+
+#: assets/js/opf-builder.js:637
+#: assets/js/opf-builder.js:643
+msgid "Child quantity"
+msgstr ""
+
+#: assets/js/opf-builder.js:638
+msgid "Always add 1 to the cart"
+msgstr ""
+
+#: assets/js/opf-builder.js:639
+msgid "Match the parent product quantity"
+msgstr ""
+
+#: assets/js/opf-builder.js:645
+#: assets/js/opf-builder.js:651
 msgid "Quantity controls"
 msgstr ""
 
-#: assets/js/opf-builder.js:444
+#: assets/js/opf-builder.js:646
 msgid "Number input"
 msgstr ""
 
-#: assets/js/opf-builder.js:445
+#: assets/js/opf-builder.js:647
+#: assets/js/opf-builder.js:1354
 msgid "+/− buttons"
 msgstr ""
 
-#: assets/js/opf-builder.js:450
-#: assets/js/opf-builder.js:883
+#: assets/js/opf-builder.js:652
+#: assets/js/opf-builder.js:1570
 msgid "Minimum total quantity"
 msgstr ""
 
-#: assets/js/opf-builder.js:450
-#: assets/js/opf-builder.js:883
+#: assets/js/opf-builder.js:652
+#: assets/js/opf-builder.js:1570
 msgid "Maximum total quantity"
 msgstr ""
 
-#: assets/js/opf-builder.js:462
+#: assets/js/opf-builder.js:664
 msgid "Desktop columns (1–4)"
 msgstr ""
 
-#: assets/js/opf-builder.js:462
+#: assets/js/opf-builder.js:664
 msgid "Tablet columns (1–4)"
 msgstr ""
 
-#: assets/js/opf-builder.js:462
+#: assets/js/opf-builder.js:664
 msgid "Mobile columns (1–4)"
 msgstr ""
 
-#: assets/js/opf-builder.js:470
+#: assets/js/opf-builder.js:672
 msgid "Show product image"
 msgstr ""
 
-#: assets/js/opf-builder.js:470
+#: assets/js/opf-builder.js:672
 msgid "Show product description"
 msgstr ""
 
 #. translators: %d: card slot number.
-#: assets/js/opf-builder.js:477
-#: assets/js/opf-builder.js:485
+#: assets/js/opf-builder.js:679
+#: assets/js/opf-builder.js:687
 msgid "Card slot %d"
 msgstr ""
 
-#: assets/js/opf-builder.js:478
+#: assets/js/opf-builder.js:680
 msgid "Nothing"
 msgstr ""
 
-#: assets/js/opf-builder.js:480
+#: assets/js/opf-builder.js:682
 msgid "Stock availability"
 msgstr ""
 
-#: assets/js/opf-builder.js:481
+#: assets/js/opf-builder.js:683
 msgid "Product link"
 msgstr ""
 
-#: assets/js/opf-builder.js:488
-#: assets/js/opf-builder.js:494
+#: assets/js/opf-builder.js:690
+#: assets/js/opf-builder.js:696
 msgid "Image fit"
 msgstr ""
 
-#: assets/js/opf-builder.js:489
+#: assets/js/opf-builder.js:691
 msgid "Cover"
 msgstr ""
 
-#: assets/js/opf-builder.js:490
+#: assets/js/opf-builder.js:692
 msgid "Contain"
 msgstr ""
 
-#: assets/js/opf-builder.js:500
+#: assets/js/opf-builder.js:702
 msgid "Label position"
 msgstr ""
 
-#: assets/js/opf-builder.js:501
-#: assets/js/opf-builder.js:960
+#: assets/js/opf-builder.js:703
+#: assets/js/opf-builder.js:1671
 msgid "Below image, inside choice"
 msgstr ""
 
-#: assets/js/opf-builder.js:502
-#: assets/js/opf-builder.js:961
+#: assets/js/opf-builder.js:704
+#: assets/js/opf-builder.js:1672
 msgid "Below image, outside choice"
 msgstr ""
 
-#: assets/js/opf-builder.js:503
-#: assets/js/opf-builder.js:962
+#: assets/js/opf-builder.js:705
+#: assets/js/opf-builder.js:1673
 msgid "Hide label visually"
 msgstr ""
 
-#: assets/js/opf-builder.js:504
-#: assets/js/opf-builder.js:963
+#: assets/js/opf-builder.js:706
+#: assets/js/opf-builder.js:1674
 msgid "Show label on hover/focus"
 msgstr ""
 
-#: assets/js/opf-builder.js:508
-#: assets/js/opf-builder.js:967
+#: assets/js/opf-builder.js:710
+#: assets/js/opf-builder.js:1678
 msgid "Image label position"
 msgstr ""
 
-#: assets/js/opf-builder.js:509
+#: assets/js/opf-builder.js:711
 msgid "Image width"
 msgstr ""
 
-#: assets/js/opf-builder.js:514
+#: assets/js/opf-builder.js:716
 msgid "Image width (30–300 px)"
 msgstr ""
 
-#: assets/js/opf-builder.js:520
+#: assets/js/opf-builder.js:720
+msgid "Enlarge child image on hover and keyboard focus"
+msgstr ""
+
+#: assets/js/opf-builder.js:726
 msgid "Swap/zoom the main product image on selection"
 msgstr ""
 
-#: assets/js/opf-builder.js:522
+#: assets/js/opf-builder.js:728
 msgid "Hide children in the cart"
 msgstr ""
 
-#: assets/js/opf-builder.js:522
+#: assets/js/opf-builder.js:728
 msgid "Hide children at checkout"
 msgstr ""
 
-#: assets/js/opf-builder.js:522
+#: assets/js/opf-builder.js:728
 msgid "Hide children on orders/emails"
 msgstr ""
 
 #. translators: %s: field id.
-#: assets/js/opf-builder.js:538
+#: assets/js/opf-builder.js:744
+#: assets/js/opf-builder.js:956
 msgid "Unavailable field: %s"
 msgstr ""
 
-#: assets/js/opf-builder.js:541
+#: assets/js/opf-builder.js:747
 msgid "Add another field first"
 msgstr ""
 
-#: assets/js/opf-builder.js:543
+#: assets/js/opf-builder.js:749
 msgid "Condition field"
 msgstr ""
 
-#: assets/js/opf-builder.js:553
+#: assets/js/opf-builder.js:762
+msgid "No quantity"
+msgstr ""
+
+#: assets/js/opf-builder.js:763
+msgid "Any quantity"
+msgstr ""
+
+#: assets/js/opf-builder.js:766
 msgid "Contains"
 msgstr ""
 
-#: assets/js/opf-builder.js:553
+#: assets/js/opf-builder.js:766
 msgid "Does not contain"
 msgstr ""
 
-#: assets/js/opf-builder.js:554
+#: assets/js/opf-builder.js:767
 msgid "Is greater than"
 msgstr ""
 
-#: assets/js/opf-builder.js:554
+#: assets/js/opf-builder.js:767
 msgid "Is less than"
 msgstr ""
 
-#: assets/js/opf-builder.js:554
+#: assets/js/opf-builder.js:767
 msgid "Is empty"
 msgstr ""
 
-#: assets/js/opf-builder.js:554
+#: assets/js/opf-builder.js:767
 msgid "Is not empty"
 msgstr ""
 
-#: assets/js/opf-builder.js:556
+#: assets/js/opf-builder.js:773
 msgid "Condition operator"
 msgstr ""
 
 #. translators: %s: stored condition value.
-#: assets/js/opf-builder.js:575
+#: assets/js/opf-builder.js:791
+#: assets/js/opf-builder.js:986
 msgid "Current value: %s"
 msgstr ""
 
-#: assets/js/opf-builder.js:577
-#: assets/js/opf-builder.js:580
-#: assets/js/opf-builder.js:587
+#: assets/js/opf-builder.js:793
+#: assets/js/opf-builder.js:796
+#: assets/js/opf-builder.js:803
 msgid "Condition value"
 msgstr ""
 
-#: assets/js/opf-builder.js:581
-#: assets/js/opf-builder.js:729
+#: assets/js/opf-builder.js:797
+#: assets/js/opf-builder.js:992
+#: assets/js/opf-builder.js:1300
 msgid "Checked"
 msgstr ""
 
-#: assets/js/opf-builder.js:582
+#: assets/js/opf-builder.js:798
+#: assets/js/opf-builder.js:993
 msgid "Not checked"
 msgstr ""
 
-#: assets/js/opf-builder.js:593
+#: assets/js/opf-builder.js:809
+#: assets/js/opf-builder.js:1840
 msgid "Remove rule"
 msgstr ""
 
-#: assets/js/opf-builder.js:599
+#: assets/js/opf-builder.js:815
+#: assets/js/opf-builder.js:959
 msgid "Field"
 msgstr ""
 
-#: assets/js/opf-builder.js:600
+#: assets/js/opf-builder.js:816
 msgid "Operator"
 msgstr ""
 
-#: assets/js/opf-builder.js:601
+#: assets/js/opf-builder.js:817
+#: assets/js/opf-builder.js:949
+#: assets/js/opf-builder.js:988
+#: assets/js/opf-builder.js:991
+#: assets/js/opf-builder.js:997
+#: assets/js/opf-builder.js:1001
 msgid "Value"
 msgstr ""
 
-#: assets/js/opf-builder.js:601
+#: assets/js/opf-builder.js:817
+#: assets/js/opf-builder.js:977
 msgid "No value needed"
 msgstr ""
 
-#: assets/js/opf-builder.js:611
+#: assets/js/opf-builder.js:836
 msgid "Visibility action"
 msgstr ""
 
-#: assets/js/opf-builder.js:612
+#: assets/js/opf-builder.js:837
 msgid "Show this field if"
 msgstr ""
 
-#: assets/js/opf-builder.js:613
+#: assets/js/opf-builder.js:838
 msgid "Hide this field if"
 msgstr ""
 
-#: assets/js/opf-builder.js:617
+#: assets/js/opf-builder.js:842
 msgid "How to combine rules"
 msgstr ""
 
-#: assets/js/opf-builder.js:618
+#: assets/js/opf-builder.js:843
 msgid "All rules match"
 msgstr ""
 
-#: assets/js/opf-builder.js:619
+#: assets/js/opf-builder.js:844
 msgid "Any rule matches"
 msgstr ""
 
-#: assets/js/opf-builder.js:623
+#: assets/js/opf-builder.js:848
 msgid "+ Add rule"
 msgstr ""
 
-#: assets/js/opf-builder.js:628
+#: assets/js/opf-builder.js:853
+#: assets/js/opf-builder.js:1830
 msgid "Remove condition"
 msgstr ""
 
-#: assets/js/opf-builder.js:634
+#: assets/js/opf-builder.js:859
 msgid "Add at least one rule for this condition to take effect."
 msgstr ""
 
-#: assets/js/opf-builder.js:637
+#: assets/js/opf-builder.js:862
 msgid "Action"
 msgstr ""
 
-#: assets/js/opf-builder.js:637
+#: assets/js/opf-builder.js:862
 msgid "Rule matching"
 msgstr ""
 
-#: assets/js/opf-builder.js:642
+#: assets/js/opf-builder.js:867
+#: assets/js/opf-builder.js:1836
 msgid "+ Add condition"
 msgstr ""
 
-#: assets/js/opf-builder.js:651
+#: assets/js/opf-builder.js:876
 msgid "Visibility conditions"
 msgstr ""
 
-#: assets/js/opf-builder.js:652
+#: assets/js/opf-builder.js:877
 msgid "Condition groups are combined as alternatives; rules inside each group use the selected matching rule."
 msgstr ""
 
-#: assets/js/opf-builder.js:667
-msgid "Field label"
+#: assets/js/opf-builder.js:888
+msgid "Field value changes"
 msgstr ""
 
-#. translators: %d: choice number.
-#: assets/js/opf-builder.js:694
-#: assets/js/opf-builder.js:868
-msgid "Option %d"
+#: assets/js/opf-builder.js:888
+msgid "Product quantity changes"
 msgstr ""
 
-#: assets/js/opf-builder.js:699
-msgid "Required"
+#: assets/js/opf-builder.js:890
+#: assets/js/opf-builder.js:900
+msgid "is equal to"
 msgstr ""
 
-#: assets/js/opf-builder.js:706
-msgid "Description (optional)"
+#: assets/js/opf-builder.js:891
+#: assets/js/opf-builder.js:901
+msgid "is not equal to"
 msgstr ""
 
-#: assets/js/opf-builder.js:711
-msgid "Duplicate field"
-msgstr ""
-
-#: assets/js/opf-builder.js:718
-msgid "Delete field"
-msgstr ""
-
-#: assets/js/opf-builder.js:726
-#: assets/js/opf-builder.js:733
-msgid "Checkbox message"
-msgstr ""
-
-#: assets/js/opf-builder.js:728
-#: assets/js/opf-builder.js:733
-#: assets/js/opf-builder.js:737
-msgid "Default value"
-msgstr ""
-
-#: assets/js/opf-builder.js:729
-msgid "Unchecked"
-msgstr ""
-
-#: assets/js/opf-builder.js:737
-msgid "Placeholder"
-msgstr ""
-
-#: assets/js/opf-builder.js:766
-msgid "Repeat this section"
-msgstr ""
-
-#: assets/js/opf-builder.js:766
-msgid "Allow customers to add repeated rows"
-msgstr ""
-
-#: assets/js/opf-builder.js:769
-msgid "Customer adds rows with a button"
-msgstr ""
-
-#: assets/js/opf-builder.js:770
-msgid "Match product quantity"
-msgstr ""
-
-#: assets/js/opf-builder.js:784
-msgid "Repeat mode"
-msgstr ""
-
-#: assets/js/opf-builder.js:786
-msgid "Maximum repeated rows"
-msgstr ""
-
-#: assets/js/opf-builder.js:791
-msgid "Maximum rows (blank uses 10000)"
-msgstr ""
-
-#: assets/js/opf-builder.js:792
-msgid "Add button text"
-msgstr ""
-
-#: assets/js/opf-builder.js:792
-msgid "Remove button text"
-msgstr ""
-
-#: assets/js/opf-builder.js:806
-msgid "Section instance label ({n} is the section number)"
-msgstr ""
-
-#: assets/js/opf-builder.js:806
-msgid "Duplicate row label ({n} is the row number)"
-msgstr ""
-
-#: assets/js/opf-builder.js:810
-msgid "Repeat settings are preserved, but this field type cannot repeat yet."
-msgstr ""
-
-#: assets/js/opf-builder.js:813
-#: assets/js/opf-builder.js:823
-msgid "Paragraph format"
-msgstr ""
-
-#: assets/js/opf-builder.js:814
-msgid "Plain text"
-msgstr ""
-
-#: assets/js/opf-builder.js:815
-msgid "Basic HTML"
-msgstr ""
-
-#: assets/js/opf-builder.js:824
-#: assets/js/opf-builder.js:827
-msgid "Paragraph content"
-msgstr ""
-
-#: assets/js/opf-builder.js:832
-msgid "Process WordPress shortcodes"
-msgstr ""
-
-#: assets/js/opf-builder.js:836
-msgid "Image URL (https or local path)"
-msgstr ""
-
-#: assets/js/opf-builder.js:836
-msgid "Content image URL"
-msgstr ""
-
-#: assets/js/opf-builder.js:847
-msgid "Choose informative image"
-msgstr ""
-
-#: assets/js/opf-builder.js:861
-msgid "Informative image URL"
-msgstr ""
-
-#: assets/js/opf-builder.js:866
-msgid "+ Add choice"
-msgstr ""
-
-#: assets/js/opf-builder.js:873
-msgid "Choices"
-msgstr ""
-
-#: assets/js/opf-builder.js:873
-msgid "slug · label · pricing"
+#: assets/js/opf-builder.js:892
+msgid "is empty"
 msgstr ""
 
 #: assets/js/opf-builder.js:893
-msgid "Default quantity"
+msgid "is not empty"
 msgstr ""
 
-#: assets/js/opf-builder.js:893
-msgid "Minimum quantity"
+#: assets/js/opf-builder.js:894
+msgid "contains"
 msgstr ""
 
-#: assets/js/opf-builder.js:893
-msgid "Maximum quantity"
+#: assets/js/opf-builder.js:895
+msgid "does not contain"
 msgstr ""
 
+#: assets/js/opf-builder.js:896
+#: assets/js/opf-builder.js:902
+msgid "is greater than"
+msgstr ""
+
+#: assets/js/opf-builder.js:897
 #: assets/js/opf-builder.js:903
-msgid "Text swatches"
-msgstr ""
-
-#: assets/js/opf-builder.js:904
-msgid "Image swatches"
-msgstr ""
-
-#: assets/js/opf-builder.js:905
-msgid "Color swatches"
-msgstr ""
-
-#: assets/js/opf-builder.js:913
-msgid "Swatch appearance"
-msgstr ""
-
-#: assets/js/opf-builder.js:918
-msgid "Allow multiple selections"
-msgstr ""
-
-#: assets/js/opf-builder.js
-msgid "Checkbox columns"
+msgid "is lesser than"
 msgstr ""
 
 #: assets/js/opf-builder.js:920
-msgid "Minimum choices"
-msgstr ""
-
-#: assets/js/opf-builder.js:920
-msgid "Maximum choices"
-msgstr ""
-
-#: assets/js/opf-builder.js:931
-msgid "Square"
-msgstr ""
-
-#: assets/js/opf-builder.js:932
-msgid "Rounded corners"
-msgstr ""
-
-#: assets/js/opf-builder.js:933
-msgid "Circle"
+msgid "When the variable changes"
 msgstr ""
 
 #: assets/js/opf-builder.js:937
-msgid "Color shape"
+msgid "If this happens"
 msgstr ""
 
 #: assets/js/opf-builder.js:940
-msgid "Color size (px)"
+msgid "Quantity condition"
 msgstr ""
 
-#: assets/js/opf-builder.js:942
-msgid "Show below"
-msgstr ""
-
-#: assets/js/opf-builder.js:943
-msgid "Hide visually"
-msgstr ""
-
-#: assets/js/opf-builder.js:944
-msgid "Show on hover/focus"
-msgstr ""
-
+#: assets/js/opf-builder.js:946
 #: assets/js/opf-builder.js:948
-msgid "Color label position"
+msgid "Quantity"
 msgstr ""
 
-#: assets/js/opf-builder.js:957
+#: assets/js/opf-builder.js:958
+msgid "Add a field first"
+msgstr ""
+
+#: assets/js/opf-builder.js:962
+msgid "This field changes"
+msgstr ""
+
+#: assets/js/opf-builder.js:964
+msgid "Field condition"
+msgstr ""
+
+#: assets/js/opf-builder.js:974
+msgid "Condition"
+msgstr ""
+
+#: assets/js/opf-builder.js:1005
+#: assets/js/opf-builder.js:1049
+msgid "number or formula"
+msgstr ""
+
+#: assets/js/opf-builder.js:1005
+msgid "Variable value"
+msgstr ""
+
+#: assets/js/opf-builder.js:1007
+msgid "Variable value is"
+msgstr ""
+
+#: assets/js/opf-builder.js:1021
+#: assets/js/opf-builder.js:2164
+msgid "Custom variables"
+msgstr ""
+
+#: assets/js/opf-builder.js:1022
+msgid "Create dynamic variables to use with formula-based pricing. Reference them as [var_name]."
+msgstr ""
+
+#: assets/js/opf-builder.js:1023
+msgid "A variable uses its standard value unless one of its rules matches; rules are checked in order and the first matching rule wins."
+msgstr ""
+
+#: assets/js/opf-builder.js:1036
+msgid "Delete"
+msgstr ""
+
+#: assets/js/opf-builder.js:1042
+msgid "name"
+msgstr ""
+
+#: assets/js/opf-builder.js:1042
+#: assets/js/opf-builder.js:1064
+msgid "Variable name"
+msgstr ""
+
+#: assets/js/opf-builder.js:1049
+#: assets/js/opf-builder.js:1065
+msgid "Standard value"
+msgstr ""
+
+#: assets/js/opf-builder.js:1055
+msgid "+ Add new rule"
+msgstr ""
+
+#: assets/js/opf-builder.js:1067
+msgid "Value changes"
+msgstr ""
+
+#: assets/js/opf-builder.js:1074
+msgid "Add new variable"
+msgstr ""
+
+#: assets/js/opf-builder.js:1101
+msgid "Field label"
+msgstr ""
+
+#: assets/js/opf-builder.js:1106
+msgid "Field type"
+msgstr ""
+
+#. translators: %d: choice number.
+#: assets/js/opf-builder.js:1147
+#: assets/js/opf-builder.js:1537
+msgid "Option %d"
+msgstr ""
+
+#: assets/js/opf-builder.js:1152
+msgid "Required"
+msgstr ""
+
+#: assets/js/opf-builder.js:1159
+msgid "Description (optional)"
+msgstr ""
+
+#: assets/js/opf-builder.js:1164
+msgid "Duplicate field"
+msgstr ""
+
+#: assets/js/opf-builder.js:1171
+msgid "Delete field"
+msgstr ""
+
+#: assets/js/opf-builder.js:1183
+msgid "Instruction presentation"
+msgstr ""
+
+#: assets/js/opf-builder.js:1184
+msgid "Instruction: inline"
+msgstr ""
+
+#: assets/js/opf-builder.js:1185
+msgid "Instruction: tooltip"
+msgstr ""
+
+#: assets/js/opf-builder.js:1198
+msgid "Default value (optional)"
+msgstr ""
+
+#: assets/js/opf-builder.js:1210
+msgid "URL query key (optional)"
+msgstr ""
+
+#: assets/js/opf-builder.js:1220
+msgid "Extra product weight formula"
+msgstr ""
+
+#: assets/js/opf-builder.js:1220
+msgid "Extra weight formula, e.g. [field.weight] * 1"
+msgstr ""
+
+#: assets/js/opf-builder.js:1227
+msgid "Hide in cart"
+msgstr ""
+
+#: assets/js/opf-builder.js:1227
+msgid "Hide in checkout"
+msgstr ""
+
+#: assets/js/opf-builder.js:1227
+msgid "Hide on order received and emails"
+msgstr ""
+
+#: assets/js/opf-builder.js:1238
+msgid "Radio card layout"
+msgstr ""
+
+#: assets/js/opf-builder.js:1239
+msgid "Radio list"
+msgstr ""
+
+#: assets/js/opf-builder.js:1240
+msgid "Horizontal cards"
+msgstr ""
+
+#: assets/js/opf-builder.js:1241
+msgid "Vertical cards"
+msgstr ""
+
+#: assets/js/opf-builder.js:1252
+msgid "Quantity for each image choice"
+msgstr ""
+
+#: assets/js/opf-builder.js:1257
+msgid "Add an image to every choice before enabling image quantities."
+msgstr ""
+
+#: assets/js/opf-builder.js:1268
+msgid "Quantity per image choice"
+msgstr ""
+
+#: assets/js/opf-builder.js:1271
+msgid "Change the main product image when this choice is selected"
+msgstr ""
+
+#: assets/js/opf-builder.js:1277
+msgid "Change main product image from selected image choice"
+msgstr ""
+
+#: assets/js/opf-builder.js:1280
+#: assets/js/opf-builder.js:1287
+msgid "Display as switches"
+msgstr ""
+
+#: assets/js/opf-builder.js:1297
+#: assets/js/opf-builder.js:1304
+msgid "Checkbox message"
+msgstr ""
+
+#: assets/js/opf-builder.js:1299
+#: assets/js/opf-builder.js:1304
+#: assets/js/opf-builder.js:1308
+msgid "Default value"
+msgstr ""
+
+#: assets/js/opf-builder.js:1300
+msgid "Unchecked"
+msgstr ""
+
+#: assets/js/opf-builder.js:1308
+msgid "Placeholder"
+msgstr ""
+
+#: assets/js/opf-builder.js:1320
+msgid "Minimum length"
+msgstr ""
+
+#: assets/js/opf-builder.js:1320
+msgid "Maximum length"
+msgstr ""
+
+#: assets/js/opf-builder.js:1329
+#: assets/js/opf-builder.js:1334
+msgid "HTML5 validation regex"
+msgstr ""
+
+#: assets/js/opf-builder.js:1340
+msgid "Number mode"
+msgstr ""
+
+#: assets/js/opf-builder.js:1341
+msgid "Whole numbers"
+msgstr ""
+
+#: assets/js/opf-builder.js:1342
+msgid "Integers and decimals"
+msgstr ""
+
+#: assets/js/opf-builder.js:1348
+msgid "Number type"
+msgstr ""
+
+#: assets/js/opf-builder.js:1351
+#: assets/js/opf-builder.js:1361
+msgid "Number controls"
+msgstr ""
+
+#: assets/js/opf-builder.js:1352
+msgid "Use site default"
+msgstr ""
+
+#: assets/js/opf-builder.js:1353
+msgid "Number input only"
+msgstr ""
+
+#: assets/js/opf-builder.js:1362
+msgid "Minimum"
+msgstr ""
+
+#: assets/js/opf-builder.js:1362
+msgid "Maximum"
+msgstr ""
+
+#: assets/js/opf-builder.js:1362
+msgid "Step"
+msgstr ""
+
+#: assets/js/opf-builder.js:1390
+msgid "Allow repeated rows"
+msgstr ""
+
+#: assets/js/opf-builder.js:1403
+msgid "Repeat this section"
+msgstr ""
+
+#: assets/js/opf-builder.js:1403
+msgid "Allow customers to add repeated rows"
+msgstr ""
+
+#: assets/js/opf-builder.js:1406
+msgid "Customer adds rows with a button"
+msgstr ""
+
+#: assets/js/opf-builder.js:1407
+msgid "Match product quantity"
+msgstr ""
+
+#: assets/js/opf-builder.js:1421
+msgid "Repeat mode"
+msgstr ""
+
+#: assets/js/opf-builder.js:1423
+msgid "Maximum repeated rows"
+msgstr ""
+
+#: assets/js/opf-builder.js:1428
+msgid "Maximum rows (blank uses 10000)"
+msgstr ""
+
+#: assets/js/opf-builder.js:1429
+msgid "Add button text"
+msgstr ""
+
+#: assets/js/opf-builder.js:1429
+msgid "Remove button text"
+msgstr ""
+
+#: assets/js/opf-builder.js:1443
+msgid "Section instance label ({n} is the section number)"
+msgstr ""
+
+#: assets/js/opf-builder.js:1443
+msgid "Duplicate row label ({n} is the row number)"
+msgstr ""
+
+#: assets/js/opf-builder.js:1447
+msgid "Repeat settings are preserved, but this field type cannot repeat yet."
+msgstr ""
+
+#: assets/js/opf-builder.js:1450
+#: assets/js/opf-builder.js:1460
+msgid "Paragraph format"
+msgstr ""
+
+#: assets/js/opf-builder.js:1451
+msgid "Plain text"
+msgstr ""
+
+#: assets/js/opf-builder.js:1452
+msgid "Basic HTML"
+msgstr ""
+
+#: assets/js/opf-builder.js:1461
+#: assets/js/opf-builder.js:1464
+msgid "Paragraph content"
+msgstr ""
+
+#: assets/js/opf-builder.js:1469
+msgid "Process WordPress shortcodes"
+msgstr ""
+
+#: assets/js/opf-builder.js:1473
+msgid "Image URL (https or local path)"
+msgstr ""
+
+#: assets/js/opf-builder.js:1473
+msgid "Content image URL"
+msgstr ""
+
+#: assets/js/opf-builder.js:1484
+msgid "Choose informative image"
+msgstr ""
+
+#: assets/js/opf-builder.js:1498
+msgid "Informative image URL"
+msgstr ""
+
+#: assets/js/opf-builder.js:1508
+#: assets/js/opf-builder.js:1516
+msgid "Calculation type"
+msgstr ""
+
+#: assets/js/opf-builder.js:1509
+msgid "Informational calculation"
+msgstr ""
+
+#: assets/js/opf-builder.js:1510
+msgid "Cost calculation (adjusts price)"
+msgstr ""
+
+#: assets/js/opf-builder.js:1514
+#: assets/js/opf-builder.js:1517
+msgid "Formula"
+msgstr ""
+
+#: assets/js/opf-builder.js:1519
+#: assets/js/opf-builder.js:1525
+msgid "Result format"
+msgstr ""
+
+#: assets/js/opf-builder.js:1520
+msgid "Format as number"
+msgstr ""
+
+#: assets/js/opf-builder.js:1521
+msgid "Don't apply formatting"
+msgstr ""
+
+#: assets/js/opf-builder.js:1527
+msgid "Result text"
+msgstr ""
+
+#: assets/js/opf-builder.js:1531
+msgid "Result text (use {result})"
+msgstr ""
+
+#: assets/js/opf-builder.js:1535
+msgid "+ Add choice"
+msgstr ""
+
+#: assets/js/opf-builder.js:1542
+msgid "Choices"
+msgstr ""
+
+#: assets/js/opf-builder.js:1542
+msgid "slug · label · pricing"
+msgstr ""
+
+#: assets/js/opf-builder.js:1553
+#: assets/js/opf-builder.js:1558
+msgid "Checkbox columns"
+msgstr ""
+
+#: assets/js/opf-builder.js:1559
+#: assets/js/opf-builder.js:1611
+msgid "Minimum choices"
+msgstr ""
+
+#: assets/js/opf-builder.js:1559
+#: assets/js/opf-builder.js:1611
+msgid "Maximum choices"
+msgstr ""
+
+#: assets/js/opf-builder.js:1580
+msgid "Default quantity"
+msgstr ""
+
+#: assets/js/opf-builder.js:1580
+msgid "Minimum quantity"
+msgstr ""
+
+#: assets/js/opf-builder.js:1580
+msgid "Maximum quantity"
+msgstr ""
+
+#: assets/js/opf-builder.js:1589
+#: assets/js/opf-builder.js:1667
 msgid "Enlarge image on hover and keyboard focus"
 msgstr ""
 
-#: assets/js/opf-builder.js:970
+#: assets/js/opf-builder.js:1594
+msgid "Text swatches"
+msgstr ""
+
+#: assets/js/opf-builder.js:1595
+msgid "Image swatches"
+msgstr ""
+
+#: assets/js/opf-builder.js:1596
+msgid "Color swatches"
+msgstr ""
+
+#: assets/js/opf-builder.js:1604
+msgid "Swatch appearance"
+msgstr ""
+
+#: assets/js/opf-builder.js:1609
+msgid "Allow multiple selections"
+msgstr ""
+
+#: assets/js/opf-builder.js:1622
+msgid "Square"
+msgstr ""
+
+#: assets/js/opf-builder.js:1623
+msgid "Rounded corners"
+msgstr ""
+
+#: assets/js/opf-builder.js:1624
+msgid "Circle"
+msgstr ""
+
+#: assets/js/opf-builder.js:1628
+msgid "Color shape"
+msgstr ""
+
+#: assets/js/opf-builder.js:1631
+msgid "Color size (px)"
+msgstr ""
+
+#: assets/js/opf-builder.js:1633
+msgid "Show below"
+msgstr ""
+
+#: assets/js/opf-builder.js:1634
+msgid "Hide visually"
+msgstr ""
+
+#: assets/js/opf-builder.js:1635
+msgid "Show on hover/focus"
+msgstr ""
+
+#: assets/js/opf-builder.js:1639
+msgid "Color label position"
+msgstr ""
+
+#: assets/js/opf-builder.js:1648
+#: assets/js/opf-builder.js:1651
+msgid "Enlarge image+quantity choices on hover or keyboard focus"
+msgstr ""
+
+#: assets/js/opf-builder.js:1654
+#: assets/js/opf-builder.js:1657
+#: assets/js/opf-builder.js:1663
+msgid "Enlarge image swatches on hover or keyboard focus"
+msgstr ""
+
+#: assets/js/opf-builder.js:1681
 msgid "Fixed image width"
 msgstr ""
 
-#: assets/js/opf-builder.js:971
+#: assets/js/opf-builder.js:1682
 msgid "Responsive columns"
 msgstr ""
 
-#: assets/js/opf-builder.js:975
+#: assets/js/opf-builder.js:1686
 msgid "Image grid layout"
 msgstr ""
 
-#: assets/js/opf-builder.js:977
+#: assets/js/opf-builder.js:1688
 msgid "Image width (20–300 px)"
 msgstr ""
 
-#: assets/js/opf-builder.js:977
+#: assets/js/opf-builder.js:1688
 msgid "Desktop columns (1–15)"
 msgstr ""
 
-#: assets/js/opf-builder.js:977
+#: assets/js/opf-builder.js:1688
 msgid "Tablet columns (1–10)"
 msgstr ""
 
-#: assets/js/opf-builder.js:977
+#: assets/js/opf-builder.js:1688
 msgid "Mobile columns (1–10)"
 msgstr ""
 
-#: assets/js/opf-builder.js:989
+#: assets/js/opf-builder.js:1700
 msgid "Allow past dates"
 msgstr ""
 
-#: assets/js/opf-builder.js:989
+#: assets/js/opf-builder.js:1700
 msgid "Allow future dates"
 msgstr ""
 
-#: assets/js/opf-builder.js:996
+#: assets/js/opf-builder.js:1707
 msgid "Minimum date (2026-12-31 or 7d)"
 msgstr ""
 
-#: assets/js/opf-builder.js:996
+#: assets/js/opf-builder.js:1707
 msgid "Maximum date (2026-12-31 or 1y 2m)"
 msgstr ""
 
-#: assets/js/opf-builder.js:1004
+#: assets/js/opf-builder.js:1715
 msgid "Disable today after"
 msgstr ""
 
-#: assets/js/opf-builder.js:1010
+#: assets/js/opf-builder.js:1721
 msgid "Disabled weekdays (0=Sun … 6=Sat)"
 msgstr ""
 
-#: assets/js/opf-builder.js:1016
+#: assets/js/opf-builder.js:1727
 msgid "Disabled dates/ranges (YYYY-MM-DD, MM-DD, or start end)"
 msgstr ""
 
-#: assets/js/opf-builder.js:1133
+#: assets/js/opf-builder.js:1789
+msgid "Conditional product images"
+msgstr ""
+
+#: assets/js/opf-builder.js:1790
+msgid "Each rule matches all its conditions. Use “Any” to ignore a field. When several rules match, the last one in the list wins. Paste a product-gallery image URL to switch to that slide, or another image URL to show an external image."
+msgstr ""
+
+#: assets/js/opf-builder.js:1797
+msgid "Gallery or external image URL"
+msgstr ""
+
+#: assets/js/opf-builder.js:1799
+msgid "Choose from Media Library"
+msgstr ""
+
+#: assets/js/opf-builder.js:1801
+msgid "Choose product image"
+msgstr ""
+
+#: assets/js/opf-builder.js:1801
+msgid "Use this image"
+msgstr ""
+
+#: assets/js/opf-builder.js:1826
+msgid "Any"
+msgstr ""
+
+#: assets/js/opf-builder.js:1847
+msgid "+ Add image rule"
+msgstr ""
+
+#: assets/js/opf-builder.js:1851
+msgid "Add at least one select, radio, checkbox, or swatch choice field to configure image rules."
+msgstr ""
+
+#: assets/js/opf-builder.js:1868
+msgid "Fix lookup table JSON before saving."
+msgstr ""
+
+#: assets/js/opf-builder.js:1880
+msgid "Fix formula variable JSON before saving."
+msgstr ""
+
+#: assets/js/opf-builder.js:2002
 msgid "Saving…"
 msgstr ""
 
-#: assets/js/opf-builder.js:1151
+#: assets/js/opf-builder.js:2020
 msgid "Saved."
 msgstr ""
 
 #. translators: %s: error message.
-#: assets/js/opf-builder.js:1153
-#: assets/js/opf-builder.js:1156
+#: assets/js/opf-builder.js:2022
+#: assets/js/opf-builder.js:2025
 msgid "Save failed: %s"
 msgstr ""
 
-#: assets/js/opf-builder.js:1153
+#: assets/js/opf-builder.js:2022
 msgid "unknown error"
 msgstr ""
 
-#: assets/js/opf-builder.js:1163
+#: assets/js/opf-builder.js:2032
 msgid "Loading preview…"
 msgstr ""
 
-#: assets/js/opf-builder.js:1172
+#: assets/js/opf-builder.js:2041
 msgid "No preview available."
 msgstr ""
 
 #. translators: %s: error message.
-#: assets/js/opf-builder.js:1175
+#: assets/js/opf-builder.js:2044
 msgid "Preview failed: %s"
 msgstr ""
 
-#: assets/js/opf-builder.js:1233
+#: assets/js/opf-builder.js:2107
 msgid "+ Add field"
 msgstr ""
 
-#: assets/js/opf-builder.js:1237
+#: assets/js/opf-builder.js:2111
 msgid "Save"
 msgstr ""
 
-#: assets/js/opf-builder.js:1238
+#: assets/js/opf-builder.js:2112
 msgid "Refresh preview"
 msgstr ""
 
-#: assets/js/opf-builder.js:1247
+#: assets/js/opf-builder.js:2125
+msgid "Lookup tables"
+msgstr ""
+
+#: assets/js/opf-builder.js:2126
+msgid "Add named tables as rows: each row has one cell per field dimension followed by the price. Use lookuptable(table_name; field_id; …) in a formula. For reusable site-wide tables, register rows with the opf_lookup_tables filter."
+msgstr ""
+
+#: assets/js/opf-builder.js:2139
+#: assets/js/opf-builder.js:2157
+msgid "Invalid JSON; save is disabled until corrected."
+msgstr ""
+
+#: assets/js/opf-builder.js:2143
+msgid "Formula variables"
+msgstr ""
+
+#: assets/js/opf-builder.js:2144
+msgid "Define numeric defaults and ordered conditional changes. Use [var_name] in formulas. The first matching change wins; site-wide reusable variables can be registered with the opf_formula_variables filter, and a group definition with the same name overrides it."
+msgstr ""
+
+#: assets/js/opf-builder.js:2168
 msgid "Preview"
 msgstr ""

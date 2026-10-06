@@ -14,7 +14,7 @@ Build custom product fields and add-ons for WooCommerce — free, open source, w
 
 == Description ==
 
-Open Product Fields lets you add custom fields and add-ons to WooCommerce product pages. Version 0.1.0 supports text inputs and choice controls, conditional visibility, and per-option pricing. See the [supported capabilities](https://github.com/netwokersllc/open-product-fields-for-woocommerce/blob/master/docs/CAPABILITIES.md) for the complete current scope and limitations.
+Open Product Fields lets you add custom fields and add-ons to WooCommerce product pages. Version 0.1.1 ships text, textarea, email, URL, number, and toggle fields; select, radio, and checkbox choices; text, image, and color swatches; date fields; file uploads; and content, section, and paragraph blocks. Fields support conditional logic, repeaters, and server-side pricing with fixed amounts, percentages, formulas, lookup tables, and quantity or weight modifiers. It runs on classic WooCommerce product pages and the Store API/block checkout, targets child products, imports and exports WAPF definitions, and translates through WPML or Polylang. See the [supported capabilities](https://github.com/netwokersllc/open-product-fields-for-woocommerce/blob/master/docs/CAPABILITIES.md) for the complete current scope and limitations.
 
 Private file uploads are available as a foundation through REST/JSON definitions, with native and Ajax transport, private order downloads, and classic/Store API checkout. This is not full WAPF upload parity: upload builder controls, WAPF upload migration, pricing, repeated uploads, and order-again behavior remain open.
 

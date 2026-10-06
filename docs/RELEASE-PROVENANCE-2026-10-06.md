@@ -11,9 +11,13 @@ repository on 2026-10-06. Absolute artifact paths under `/tmp` are build
 scratch space only; no source file lives there.
 
 - Repository: `open-product-fields-for-woocommerce` (branch `master`)
-- Audited commit: `fd42ab5` (`fix(frontend): resolve image-change fallback to
-  the selected variation image`), plus the 0.1.1 version-metadata and CHANGELOG
-  edits present in the working tree this archive was built from
+- Audited commit: `01577e8`, plus the release-hardening edits present in the
+  working tree this archive was built from (the rewritten `readme.txt`
+  description, the CHANGELOG 0.1.1 `Removed` entry, the regenerated
+  `languages/open-product-fields-for-woocommerce.pot`, and the deletion of
+  `assets/js/opf-frontend.min.js`). The previous revision of this record audited
+  `fd42ab5` (`fix(frontend): resolve image-change fallback to the selected
+  variation image`) plus the then-uncommitted 0.1.1 version metadata.
 - Build host PHP: `8.5.11` (the shipped code declares `Requires PHP: 7.4`)
 - Archive version inspected: **0.1.1** (this is the current baseline, not a 1.0
   release candidate)
@@ -34,8 +38,8 @@ rsyncs the plugin with development artifacts excluded.
 
 | Metric | Value |
 | --- | --- |
-| Total files | **201** |
-| Total bytes (`du -sb`) | **2,608,320** |
+| Total files | **200** |
+| Total bytes (`du -sb`) | **2,574,595** |
 | Top-level entries | 10 (`assets/`, `includes/`, `languages/` + 6 files) |
 
 Files by top-level location:
@@ -43,17 +47,34 @@ Files by top-level location:
 | Location | Files |
 | --- | --- |
 | `includes/` | 178 (of which 124 are `includes/ThirdParty/Url/`; 54 are plugin-authored) |
-| `assets/` | 12 (3 CSS, 7 JS, 2 `index.php` guards) |
+| `assets/` | 11 (3 CSS, 6 JS, 2 `index.php` guards) |
 | `languages/` | 5 (`index.php`, `.pot`, `.po`, `.mo`, `es_ES` JSON) |
 | root files | 6 (`LICENSE`, `CHANGELOG.md`, `readme.txt`, `uninstall.php`, `wpml-config.xml`, `open-product-fields-for-woocommerce.php`) |
 
-Files by extension: `.php` 177, `.js` 7, `.css` 3, `LICENSE` 7 (root + 6
+Files by extension: `.php` 177, `.js` 6, `.css` 3, `LICENSE` 7 (root + 6
 third-party), `.md` 1, `.json` 1, `.xml` 1, `.txt` 1, `.pot` 1, `.po` 1, `.mo` 1.
 
 Excluded from the archive (verified absent): `.git/`, `.gitignore`,
 `.phpunit.result.cache`, `vendor/`, `tests/`, `bin/`, `docs/`, `tasks/`,
 `composer.json`, `composer.lock`, `phpunit.xml.dist`. No file matching
 `*phpunit*` ships.
+
+### 2.1 Inventory delta versus the previous 0.1.1 archive
+
+Difference computed by joining the previous manifest
+(`git show 01577e8:docs/RELEASE-PROVENANCE-2026-10-06-manifest.sha256`, file
+SHA-256 `5953a1f7…`) against the manifest regenerated for this archive:
+
+- Paths removed: **1** — `assets/js/opf-frontend.min.js` (63,399 bytes). The
+  file was tracked and packaged but never referenced; `includes/Service/Assets.php`
+  enqueues `assets/js/opf-frontend.js`.
+- Paths added: **0**.
+- Files with a changed hash: **3** — `readme.txt` (3,626 → 4,081 bytes),
+  `CHANGELOG.md` (3,042 → 3,241), `languages/open-product-fields-for-woocommerce.pot`
+  (29,718 → 58,738).
+- Byte-identical files: **197 of the 200** shared paths.
+- Net byte delta: 2,608,320 → 2,574,595 (−33,725) = −63,399 (min.js) + 29,674
+  (the three re-hashed files).
 
 `LICENSE` (GNU GPL v2, 17,984 bytes) is present at the archive root.
 
@@ -80,7 +101,7 @@ Notes:
   free of charge…") under a Fabien Potencier copyright line.
 - All six MIT licenses are permissive and compatible with the plugin's
   GPL-2.0-or-later declaration.
-- No separate third-party JS/CSS payloads are bundled: the 12 `assets/` files
+- No separate third-party JS/CSS payloads are bundled: the 11 `assets/` files
   are plugin-authored, none carries a third-party license banner, and the only
   `jQuery` references are use of the host page's WordPress/WooCommerce jQuery
   rather than a bundled copy.
@@ -119,6 +140,9 @@ All four surfaces agree on GPL-2.0-or-later.
 | `readme.txt` `Stable tag:` | `0.1.1` |
 
 The three version surfaces are aligned at `0.1.1` on the audited commit.
+`readme.txt` also states `0.1.1` in its description line, which was rewritten in
+this pass to describe the shipped capability set (it previously read "Version
+0.1.0 supports text inputs and choice controls …").
 `OPF_VERSION` is also the asset version every frontend/backoffice file is
 enqueued with (`includes/Service/Assets.php`), so the changed
 `assets/js/opf-frontend.js` is served as `?ver=0.1.1`. (The 0.1.0 record noted a
@@ -131,9 +155,9 @@ per-file SHA-256 list in `sha256sum` format with paths relative to the archive
 root.
 
 - Manifest: [`RELEASE-PROVENANCE-2026-10-06-manifest.sha256`](RELEASE-PROVENANCE-2026-10-06-manifest.sha256)
-  (201 lines, one per shipped file)
+  (200 lines, one per shipped file)
 - Manifest file SHA-256:
-  `5953a1f76bbf26d012d3a4ebf7b93b87c58a9f5e5b205ad9aaaac428f4f84ce9`
+  `b840e3101c39e742c364598b2a37a84f43242a2db4cfbfff6890fb2cb06e33bc`
 - `bin/build.sh` (fixed) SHA-256:
   `28e7b2cc4bd819b951d219a10339519c009a7a650ecfa96bb5170be290718b18`
 
@@ -143,7 +167,7 @@ Verification from a clean checkout:
 bash bin/build.sh /tmp/opf-dist/open-product-fields-for-woocommerce
 cd /tmp/opf-dist/open-product-fields-for-woocommerce
 sha256sum -c /path/to/repo/docs/RELEASE-PROVENANCE-2026-10-06-manifest.sha256
-# -> all 201 files OK
+# -> all 200 files OK
 ```
 
 ## 8. Internal-document exclusion fix
