@@ -1,0 +1,289 @@
+{
+  "utc": "2026-10-06T16:35:49.318Z",
+  "variant": "woo-product-gallery-slider",
+  "base": "http://127.0.0.1:8410",
+  "checkCount": 56,
+  "failed": 7,
+  "checks": [
+    {
+      "label": "opf/rules: initial state shows the original image",
+      "pass": true,
+      "detail": "main.png"
+    },
+    {
+      "label": "opf/rules: matching rule swaps the main image to rule-a",
+      "pass": true,
+      "detail": "rule-a.png"
+    },
+    {
+      "label": "opf/rules: selecting a variation shows its own image",
+      "pass": true,
+      "detail": "v-small.png"
+    },
+    {
+      "label": "opf/rules: rule wins over the selected variation image",
+      "pass": true,
+      "detail": "rule-a.png"
+    },
+    {
+      "label": "opf/rules: clearing the rule restores the selected variation image",
+      "pass": true,
+      "detail": "v-small.png"
+    },
+    {
+      "label": "opf/rules: no variation + no matching rule shows the original image",
+      "pass": true,
+      "detail": "main.png"
+    },
+    {
+      "label": "opf/rules: edge=xl shows rule-b",
+      "pass": true,
+      "detail": "rule-b.png"
+    },
+    {
+      "label": "opf/rules: rule-b survives a variation switch (WAPF re-evaluates rules)",
+      "pass": false,
+      "detail": "v-small.png"
+    },
+    {
+      "label": "opf/rules: rule-b still wins after the next variation switch",
+      "pass": false,
+      "detail": "v-large.png"
+    },
+    {
+      "label": "opf/rules: two matching rules resolve per rules mode",
+      "pass": true,
+      "detail": "rule-b.png"
+    },
+    {
+      "label": "opf/rules: deselect-all restores the original image",
+      "pass": true,
+      "detail": "main.png"
+    },
+    {
+      "label": "opf/rules: deselect-all restores the original image link",
+      "pass": true,
+      "detail": "main.png"
+    },
+    {
+      "label": "opf/rules: deselect-all restores the original thumbnail",
+      "pass": true,
+      "detail": "main.png"
+    },
+    {
+      "label": "opf/rules: no uncaught browser errors",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "label": "opf/last: initial state shows the original image",
+      "pass": true,
+      "detail": "main.png"
+    },
+    {
+      "label": "opf/last: matching rule swaps the main image to rule-a",
+      "pass": true,
+      "detail": "rule-a.png"
+    },
+    {
+      "label": "opf/last: selecting a variation shows its own image",
+      "pass": true,
+      "detail": "v-small.png"
+    },
+    {
+      "label": "opf/last: rule wins over the selected variation image",
+      "pass": true,
+      "detail": "rule-a.png"
+    },
+    {
+      "label": "opf/last: clearing the rule restores the selected variation image",
+      "pass": true,
+      "detail": "v-small.png"
+    },
+    {
+      "label": "opf/last: no variation + no matching rule shows the original image",
+      "pass": true,
+      "detail": "main.png"
+    },
+    {
+      "label": "opf/last: edge=xl shows rule-b",
+      "pass": true,
+      "detail": "rule-b.png"
+    },
+    {
+      "label": "opf/last: rule-b survives a variation switch (WAPF re-evaluates rules)",
+      "pass": true,
+      "detail": "rule-b.png"
+    },
+    {
+      "label": "opf/last: rule-b still wins after the next variation switch",
+      "pass": true,
+      "detail": "rule-b.png"
+    },
+    {
+      "label": "opf/last: two matching rules resolve per last mode",
+      "pass": true,
+      "detail": "rule-a.png"
+    },
+    {
+      "label": "opf/last: deselect-all restores the original image",
+      "pass": true,
+      "detail": "main.png"
+    },
+    {
+      "label": "opf/last: deselect-all restores the original image link",
+      "pass": true,
+      "detail": "main.png"
+    },
+    {
+      "label": "opf/last: deselect-all restores the original thumbnail",
+      "pass": true,
+      "detail": "main.png"
+    },
+    {
+      "label": "opf/last: no uncaught browser errors",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "label": "wapf/rules: initial state shows the original image",
+      "pass": true,
+      "detail": "main.png"
+    },
+    {
+      "label": "wapf/rules: matching rule swaps the main image to rule-a",
+      "pass": true,
+      "detail": "rule-a.png"
+    },
+    {
+      "label": "wapf/rules: selecting a variation shows its own image",
+      "pass": true,
+      "detail": "v-small.png"
+    },
+    {
+      "label": "wapf/rules: rule wins over the selected variation image",
+      "pass": true,
+      "detail": "rule-a.png"
+    },
+    {
+      "label": "wapf/rules: clearing the rule restores the selected variation image",
+      "pass": true,
+      "detail": "v-small.png"
+    },
+    {
+      "label": "wapf/rules: no variation + no matching rule shows the original image",
+      "pass": true,
+      "detail": "main.png"
+    },
+    {
+      "label": "wapf/rules: edge=xl shows rule-b",
+      "pass": true,
+      "detail": "rule-b.png"
+    },
+    {
+      "label": "wapf/rules: rule-b survives a variation switch (WAPF re-evaluates rules)",
+      "pass": false,
+      "detail": "v-small.png"
+    },
+    {
+      "label": "wapf/rules: rule-b still wins after the next variation switch",
+      "pass": false,
+      "detail": "v-large.png"
+    },
+    {
+      "label": "wapf/rules: two matching rules resolve per rules mode",
+      "pass": false,
+      "detail": "v-large.png"
+    },
+    {
+      "label": "wapf/rules: deselect-all restores the original image",
+      "pass": true,
+      "detail": "main.png"
+    },
+    {
+      "label": "wapf/rules: deselect-all restores the original image link",
+      "pass": true,
+      "detail": "main.png"
+    },
+    {
+      "label": "wapf/rules: deselect-all restores the original thumbnail",
+      "pass": true,
+      "detail": "main.png"
+    },
+    {
+      "label": "wapf/rules: no uncaught browser errors",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "label": "wapf/last: initial state shows the original image",
+      "pass": true,
+      "detail": "main.png"
+    },
+    {
+      "label": "wapf/last: matching rule swaps the main image to rule-a",
+      "pass": true,
+      "detail": "rule-a.png"
+    },
+    {
+      "label": "wapf/last: selecting a variation shows its own image",
+      "pass": true,
+      "detail": "v-small.png"
+    },
+    {
+      "label": "wapf/last: rule wins over the selected variation image",
+      "pass": true,
+      "detail": "rule-a.png"
+    },
+    {
+      "label": "wapf/last: clearing the rule restores the selected variation image",
+      "pass": true,
+      "detail": "v-small.png"
+    },
+    {
+      "label": "wapf/last: no variation + no matching rule shows the original image",
+      "pass": true,
+      "detail": "main.png"
+    },
+    {
+      "label": "wapf/last: edge=xl shows rule-b",
+      "pass": true,
+      "detail": "rule-b.png"
+    },
+    {
+      "label": "wapf/last: rule-b survives a variation switch (WAPF re-evaluates rules)",
+      "pass": false,
+      "detail": "v-small.png"
+    },
+    {
+      "label": "wapf/last: rule-b still wins after the next variation switch",
+      "pass": false,
+      "detail": "v-large.png"
+    },
+    {
+      "label": "wapf/last: two matching rules resolve per last mode",
+      "pass": true,
+      "detail": "rule-a.png"
+    },
+    {
+      "label": "wapf/last: deselect-all restores the original image",
+      "pass": true,
+      "detail": "main.png"
+    },
+    {
+      "label": "wapf/last: deselect-all restores the original image link",
+      "pass": true,
+      "detail": "main.png"
+    },
+    {
+      "label": "wapf/last: deselect-all restores the original thumbnail",
+      "pass": true,
+      "detail": "main.png"
+    },
+    {
+      "label": "wapf/last: no uncaught browser errors",
+      "pass": true,
+      "detail": ""
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+{
+    "utc": "2026-10-06T16:33:52+00:00",
+    "base_url": "http://127.0.0.1:8410",
+    "images": {
+        "main": "http://127.0.0.1:8410/wp-content/uploads/opf-icv-main.png",
+        "vsmall": "http://127.0.0.1:8410/wp-content/uploads/opf-icv-v-small.png",
+        "vlarge": "http://127.0.0.1:8410/wp-content/uploads/opf-icv-v-large.png",
+        "rulea": "http://127.0.0.1:8410/wp-content/uploads/opf-icv-rule-a.png",
+        "ruleb": "http://127.0.0.1:8410/wp-content/uploads/opf-icv-rule-b.png"
+    },
+    "attachment_ids": {
+        "main": 72,
+        "vsmall": 73,
+        "vlarge": 74,
+        "rulea": 75,
+        "ruleb": 76
+    },
+    "coming_soon": "no",
+    "store_pages_only": "no",
+    "products": {
+        "opf-rules": {
+            "engine": "opf",
+            "mode": "rules",
+            "product": 77,
+            "group": 80,
+            "url": "http://127.0.0.1:8410/product/opf-icv-rules/",
+            "selector": "[data-opf-field=\"finish\"] select",
+            "edge": "[data-opf-field=\"edge\"] select",
+            "variations": [
+                {
+                    "variation_id": 78,
+                    "size": "small",
+                    "image_id": 73,
+                    "image_url": "http://127.0.0.1:8410/wp-content/uploads/opf-icv-v-small.png"
+                },
+                {
+                    "variation_id": 79,
+                    "size": "large",
+                    "image_id": 74,
+                    "image_url": "http://127.0.0.1:8410/wp-content/uploads/opf-icv-v-large.png"
+                }
+            ]
+        },
+        "opf-last": {
+            "engine": "opf",
+            "mode": "last",
+            "product": 81,
+            "group": 84,
+            "url": "http://127.0.0.1:8410/product/opf-icv-last/",
+            "selector": "[data-opf-field=\"finish\"] select",
+            "edge": "[data-opf-field=\"edge\"] select",
+            "variations": [
+                {
+                    "variation_id": 82,
+                    "size": "small",
+                    "image_id": 73,
+                    "image_url": "http://127.0.0.1:8410/wp-content/uploads/opf-icv-v-small.png"
+                },
+                {
+                    "variation_id": 83,
+                    "size": "large",
+                    "image_id": 74,
+                    "image_url": "http://127.0.0.1:8410/wp-content/uploads/opf-icv-v-large.png"
+                }
+            ]
+        },
+        "wapf-rules": {
+            "engine": "wapf",
+            "mode": "rules",
+            "product": 85,
+            "group": 0,
+            "url": "http://127.0.0.1:8410/product/wapf-icv-rules/",
+            "selector": "select[name=\"wapf[field_finish]\"]",
+            "edge": "select[name=\"wapf[field_edge]\"]",
+            "variations": [
+                {
+                    "variation_id": 86,
+                    "size": "small",
+                    "image_id": 73,
+                    "image_url": "http://127.0.0.1:8410/wp-content/uploads/opf-icv-v-small.png"
+                },
+                {
+                    "variation_id": 87,
+                    "size": "large",
+                    "image_id": 74,
+                    "image_url": "http://127.0.0.1:8410/wp-content/uploads/opf-icv-v-large.png"
+                }
+            ]
+        },
+        "wapf-last": {
+            "engine": "wapf",
+            "mode": "last",
+            "product": 88,
+            "group": 0,
+            "url": "http://127.0.0.1:8410/product/wapf-icv-last/",
+            "selector": "select[name=\"wapf[field_finish]\"]",
+            "edge": "select[name=\"wapf[field_edge]\"]",
+            "variations": [
+                {
+                    "variation_id": 89,
+                    "size": "small",
+                    "image_id": 73,
+                    "image_url": "http://127.0.0.1:8410/wp-content/uploads/opf-icv-v-small.png"
+                },
+                {
+                    "variation_id": 90,
+                    "size": "large",
+                    "image_id": 74,
+                    "image_url": "http://127.0.0.1:8410/wp-content/uploads/opf-icv-v-large.png"
+                }
+            ]
+        }
+    },
+    "product_ids": [
+        77,
+        81,
+        85,
+        88
+    ],
+    "group_ids": [
+        80,
+        84
+    ]
+}

@@ -2896,6 +2896,37 @@ const imageUrlMatches = ( image, target, baseUrl ) => {
 	return !! expected && values.some( ( value ) => normalize( value ) === expected );
 };
 
+// The variation WooCommerce currently has selected, or null. Mirrors the
+// WAPF-shaped reader's `variationImageProps()` so both image engines resolve
+// the same fallback: WAPF 3.1.5 resolves an unmatched rule state to the
+// selected variation image, then the original image (`A()` in frontend.min.js:
+// `C(getVariation() ? variation.image_id : original)`).
+const selectedVariationImage = ( doc ) => {
+	if ( ! doc || typeof doc.querySelector !== 'function' ) return null;
+	const form = doc.querySelector( 'form.variations_form' ) || doc.querySelector( 'form.cart' );
+	if ( ! form || typeof form.querySelector !== 'function' || typeof form.getAttribute !== 'function' ) return null;
+	const idInput = form.querySelector( 'input[name="variation_id"], input.variation_id' );
+	const variationId = idInput && idInput.value ? String( idInput.value ) : '';
+	if ( ! variationId || '0' === variationId ) return null;
+	const raw = form.getAttribute( 'data-product_variations' );
+	if ( ! raw ) return null;
+	let variations = null;
+	try { variations = JSON.parse( raw ); } catch ( _error ) { return null; }
+	if ( ! Array.isArray( variations ) ) return null;
+	const match = variations.find( ( item ) => item && String( item.variation_id ) === variationId );
+	const image = match && match.image;
+	if ( ! image ) return null;
+	const url = image.full_src || image.src;
+	if ( ! url ) return null;
+	return {
+		url: String( url ),
+		srcset: image.srcset || '',
+		sizes: image.sizes || '',
+		alt: image.alt || '',
+		title: image.title || '',
+	};
+};
+
 const updateProductImage = ( doc, evaluations, legacyValues = null ) => {
 	if ( ! doc || typeof doc.querySelector !== 'function' ) return;
 	// Keep the helper's earlier field-map signature for migrations and focused callers.
@@ -2966,7 +2997,39 @@ const updateProductImage = ( doc, evaluations, legacyValues = null ) => {
 		if ( thumbs[ index ] && typeof thumbs[ index ].click === 'function' ) { thumbs[ index ].click(); return true; }
 		return false;
 	};
+	const applyMainImage = ( state, url, props = {} ) => {
+		const targetImage = state.image;
+		targetImage.setAttribute( 'src', url );
+		if ( props.srcset ) targetImage.setAttribute( 'srcset', props.srcset );
+		else targetImage.removeAttribute( 'srcset' );
+		if ( props.sizes ) targetImage.setAttribute( 'sizes', props.sizes );
+		else targetImage.removeAttribute( 'sizes' );
+		targetImage.setAttribute( 'data-large_image', url );
+		targetImage.removeAttribute( 'data-large_image_width' );
+		targetImage.removeAttribute( 'data-large_image_height' );
+		if ( props.title ) targetImage.setAttribute( 'title', props.title );
+		targetImage.setAttribute( 'alt', props.alt || '' );
+		if ( state.link ) state.link.setAttribute( 'href', url );
+	};
+	const activeImageState = () => {
+		const index = activeSlide ? activeIndex : snapshot.slideIndex;
+		return snapshot.images[ index ] || snapshot.images[ 0 ];
+	};
 	if ( ! target ) {
+		// WAPF parity: an unmatched rule state shows the selected variation
+		// image, and only falls back to the original when no variation is
+		// selected (or it carries no image).
+		const variation = selectedVariationImage( doc );
+		if ( variation ) {
+			restoreImages();
+			const variationIndex = slides.findIndex( ( slide ) => imageUrlMatches( slide.querySelector( 'img' ), variation.url, baseUrl ) );
+			if ( variationIndex >= 0 ) {
+				navigate( variationIndex );
+				return;
+			}
+			applyMainImage( activeImageState(), variation.url, variation );
+			return;
+		}
 		restoreImages();
 		navigate( snapshot.slideIndex );
 		return;
@@ -2978,17 +3041,7 @@ const updateProductImage = ( doc, evaluations, legacyValues = null ) => {
 		return;
 	}
 	restoreImages();
-	const selectedIndex = activeSlide ? activeIndex : snapshot.slideIndex;
-	const selectedImageState = snapshot.images[ selectedIndex ] || snapshot.images[ 0 ];
-	const targetImage = selectedImageState.image;
-	targetImage.setAttribute( 'src', target.url );
-	targetImage.removeAttribute( 'srcset' );
-	targetImage.removeAttribute( 'sizes' );
-	targetImage.setAttribute( 'data-large_image', target.url );
-	targetImage.removeAttribute( 'data-large_image_width' );
-	targetImage.removeAttribute( 'data-large_image_height' );
-	targetImage.setAttribute( 'alt', target.alt || '' );
-	if ( selectedImageState.link ) selectedImageState.link.setAttribute( 'href', target.url );
+	applyMainImage( activeImageState(), target.url, { alt: target.alt } );
 };
 
 let pricePreviewRequestId = 0;
@@ -3463,19 +3516,24 @@ const initTotals = () => {
     const originalBase = (window.opf_config || {}).product_base_price;
     const originalFormulaBase = (window.opf_config || {}).formula_base_price;
     window.jQuery('form.variations_form').on('found_variation.opf', (_event, variation) => {
-      const totals = document.querySelector('.opf-product-totals, .wapf-product-totals');
-      if (!totals) return;
       const config = window.opf_config = window.opf_config || {};
       config.product_base_price = variation.opf_base_price ?? variation.display_price;
       config.formula_base_price = variation.opf_formula_base_price ?? config.product_base_price;
-      writeTotals();
     }).on('reset_data.opf', () => {
       const config = window.opf_config = window.opf_config || {};
       config.product_base_price = originalBase;
       config.formula_base_price = originalFormulaBase;
-      writeTotals();
     });
   }
+  // WAPF re-evaluates its gallery-image rules on every variation change (3.1.5
+  // binds the `.variation_id` change to `A('rules', allRules, input)`), so the
+  // OPF-native image rules must re-resolve too — otherwise switching variation
+  // drops a still-matching rule and clearing a rule clobbers the newly selected
+  // variation image. `opf:variation-changed` is the deferred signal `init()`
+  // already emits after WooCommerce has written `.variation_id` and its variant
+  // gallery image, so re-running totals from it (the single entry point that
+  // also refreshes images) sees the settled state.
+  document.addEventListener('opf:variation-changed', () => writeTotals());
   let timer = null;
   const schedule = (event) => {
     // WAPF 'last' image-rule mode needs the last-changed field per group.
