@@ -1,0 +1,20 @@
+en=200 http://127.0.0.1:8097/product/gift-card/
+es=200 http://127.0.0.1:8097/es/product/tarjeta-regalo/
+en_bytes=119222 es_bytes=118051
+PASS R1 EN product page renders the OPF group
+PASS R2 EN label is the source string
+PASS R3 EN choice label is the source string
+PASS R4 ES product page is served
+PASS R5 ES page is the Spanish product
+PASS R6 ES page renders the OPF group (language-specific targeting resolved)
+PASS R7 ES field label comes from the WPML package translation
+PASS R8 ES choice label comes from the WPML package translation
+PASS R9 ES description translated
+PASS R9b select empty option follows the request language
+PASS R10 ES VISUAL content translated
+PASS R11 ES repeat labels translated
+PASS R12 ES page does not leak the English label
+PASS R13 EN page does not leak the Spanish label
+PASS R14 field ids and choice slugs survive translation
+PASS R15 EN page keeps the EN product context
+FAILURES=0

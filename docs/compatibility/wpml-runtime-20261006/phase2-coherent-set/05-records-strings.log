@@ -1,0 +1,24 @@
+-- strings named field:* --
+{"id":"3965","name":"field:gift:label","string_package_id":"1","context":"open-product-fields-12","status":"0","v":"Gift wrap"}
+{"id":"3966","name":"field:gift:description","string_package_id":"1","context":"open-product-fields-12","status":"0","v":"Choose wrapping"}
+{"id":"3967","name":"field:gift:placeholder","string_package_id":"1","context":"open-product-fields-12","status":"0","v":"Select an option"}
+{"id":"3968","name":"field:gift:choice:red","string_package_id":"1","context":"open-product-fields-12","status":"0","v":"Red"}
+{"id":"3969","name":"field:gift:choice:blue","string_package_id":"1","context":"open-product-fields-12","status":"0","v":"Blue"}
+{"id":"3970","name":"field:note:label","string_package_id":"1","context":"open-product-fields-12","status":"0","v":"Note"}
+{"id":"3971","name":"field:note:placeholder","string_package_id":"1","context":"open-product-fields-12","status":"0","v":"Add a note"}
+{"id":"3972","name":"field:info:content","string_package_id":"1","context":"open-product-fields-12","status":"0","v":"<b>Information<\/b>"}
+{"id":"3973","name":"field:extra:label","string_package_id":"1","context":"open-product-fields-12","status":"0","v":"Extras"}
+{"id":"3974","name":"field:extra:choice:card","string_package_id":"1","context":"open-product-fields-12","status":"0","v":"Card"}
+{"id":"3975","name":"field:extra:repeat:add","string_package_id":"1","context":"open-product-fields-12","status":"0","v":"Add another"}
+{"id":"3976","name":"field:extra:repeat:del","string_package_id":"1","context":"open-product-fields-12","status":"0","v":"Remove"}
+{"id":"3977","name":"field:extra:repeat:label","string_package_id":"1","context":"open-product-fields-12","status":"0","v":"Copy {n}"}
+-- any string mentioning Gift wrap / Red --
+{"id":"3965","name":"field:gift:label","string_package_id":"1","context":"open-product-fields-12","v":"Gift wrap"}
+{"id":"3967","name":"field:gift:placeholder","string_package_id":"1","context":"open-product-fields-12","v":"Select an option"}
+{"id":"3968","name":"field:gift:choice:red","string_package_id":"1","context":"open-product-fields-12","v":"Red"}
+{"id":"3973","name":"field:extra:label","string_package_id":"1","context":"open-product-fields-12","v":"Extras"}
+-- package 1 string count --
+pkg1_strings=13 total_strings=5496
+wpml_object_id product/post_product 10->es = 10 / 10
+wpml_object_id product_cat/tax_product_cat 17->es = 17 / 17
+element_translations trid=51 product = ["en","es"]

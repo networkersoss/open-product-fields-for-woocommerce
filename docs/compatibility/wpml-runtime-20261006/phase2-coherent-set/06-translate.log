@@ -1,0 +1,44 @@
+package_id=1 context=open-product-fields-12
+string_id=3974 name=field:extra:choice:card written=1515
+string_id=3973 name=field:extra:label written=1516
+string_id=3975 name=field:extra:repeat:add written=1517
+string_id=3976 name=field:extra:repeat:del written=1518
+string_id=3977 name=field:extra:repeat:label written=1519
+string_id=3969 name=field:gift:choice:blue written=1520
+string_id=3968 name=field:gift:choice:red written=1521
+string_id=3966 name=field:gift:description written=1522
+string_id=3965 name=field:gift:label written=1523
+string_id=3967 name=field:gift:placeholder written=1524
+string_id=3972 name=field:info:content written=1525
+string_id=3970 name=field:note:label written=1526
+string_id=3971 name=field:note:placeholder written=1527
+
+-- read back through the runtime filter OPF uses (wpml_translate_string) --
+[en] current=en
+   field:extra:choice:card => Card
+   field:extra:label => Extras
+   field:extra:repeat:add => Add another
+   field:extra:repeat:del => Remove
+   field:extra:repeat:label => Copy {n}
+   field:gift:choice:blue => Blue
+   field:gift:choice:red => Red
+   field:gift:description => Choose wrapping
+   field:gift:label => Gift wrap
+   field:gift:placeholder => Select an option
+   field:info:content => <b>Information</b>
+   field:note:label => Note
+   field:note:placeholder => Add a note
+[es] current=es
+   field:extra:choice:card => Tarjeta
+   field:extra:label => Extras
+   field:extra:repeat:add => Añadir otro
+   field:extra:repeat:del => Quitar
+   field:extra:repeat:label => Copia {n}
+   field:gift:choice:blue => Azul
+   field:gift:choice:red => Rojo
+   field:gift:description => Elige el envoltorio
+   field:gift:label => Envoltorio de regalo
+   field:gift:placeholder => Selecciona una opción
+   field:info:content => <b>Información</b>
+   field:note:label => Nota
+   field:note:placeholder => Añade una nota

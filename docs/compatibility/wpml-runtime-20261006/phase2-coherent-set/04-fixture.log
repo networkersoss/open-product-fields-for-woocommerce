@@ -1,0 +1,13 @@
+{
+    "en_product_id": 10,
+    "es_product_id": 11,
+    "en_language": "en",
+    "es_language": "es",
+    "trid": "51",
+    "cat_id": 17,
+    "tag_id": 18,
+    "es_cat_remap": 17,
+    "es_tag_remap": 18,
+    "es_product_remap": 10,
+    "group_id": 12
+}

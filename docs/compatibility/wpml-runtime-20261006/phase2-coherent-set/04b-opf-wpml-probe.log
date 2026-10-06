@@ -1,0 +1,758 @@
+16:07:40 [cli]  HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:07:41 [cli]  EMIT wpml_start_string_package_registration package=open-product-fields/12 title=Gift options (#12)
+16:07:41 [cli]  EMIT wpml_register_string name=field:gift:label type=LINE value=Gift wrap package=open-product-fields/12
+16:07:42 [cli]  EMIT wpml_register_string name=field:gift:description type=AREA value=Choose wrapping package=open-product-fields/12
+16:07:42 [cli]  EMIT wpml_register_string name=field:gift:placeholder type=LINE value=Select an option package=open-product-fields/12
+16:07:42 [cli]  EMIT wpml_register_string name=field:gift:choice:red type=LINE value=Red package=open-product-fields/12
+16:07:42 [cli]  EMIT wpml_register_string name=field:gift:choice:blue type=LINE value=Blue package=open-product-fields/12
+16:07:42 [cli]  EMIT wpml_register_string name=field:note:label type=LINE value=Note package=open-product-fields/12
+16:07:42 [cli]  EMIT wpml_register_string name=field:note:placeholder type=LINE value=Add a note package=open-product-fields/12
+16:07:42 [cli]  EMIT wpml_register_string name=field:info:content type=VISUAL value=<b>Information</b> package=open-product-fields/12
+16:07:42 [cli]  EMIT wpml_register_string name=field:extra:label type=LINE value=Extras package=open-product-fields/12
+16:07:42 [cli]  EMIT wpml_register_string name=field:extra:choice:card type=LINE value=Card package=open-product-fields/12
+16:07:42 [cli]  EMIT wpml_register_string name=field:extra:repeat:add type=LINE value=Add another package=open-product-fields/12
+16:07:42 [cli]  EMIT wpml_register_string name=field:extra:repeat:del type=LINE value=Remove package=open-product-fields/12
+16:07:42 [cli]  EMIT wpml_register_string name=field:extra:repeat:label type=LINE value=Copy {n} package=open-product-fields/12
+16:07:42 [cli]  EMIT wpml_delete_unused_package_strings package=open-product-fields/12
+16:07:43 [cli]  HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:07:54 [cli]  HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:07:55 [cli]  HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:08:05 [cli]  HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:08:23 [cli]  HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:08:26 [cli]  HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:08:30 [cli]  HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:08:30 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:08:30 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:08:30 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:08:30 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:08:30 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:08:30 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:08:30 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:08:30 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:08:30 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:08:30 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:08:30 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:08:30 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:08:30 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:08:30 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:08:30 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:08:30 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:08:30 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:08:30 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:08:30 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:08:30 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:08:30 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:08:30 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:08:30 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:08:30 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:08:30 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:08:30 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:08:41 [cli]  HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:08:42 [front] /gift-card/ HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:08:42 [front] /es/tarjeta-regalo/ HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:08:46 [front] / HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:08:46 [front] /gift-card/ HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:08:47 [cli]  HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:08:48 [cli]  HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:08:52 [cli]  HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:08:52 [front] /product/gift-card/ HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:08:52 [front] /product/gift-card/ FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:08:52 [front] /product/gift-card/ FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:08:52 [front] /product/gift-card/ FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:08:52 [front] /product/gift-card/ FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:08:52 [front] /product/gift-card/ FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:08:52 [front] /product/gift-card/ FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:08:52 [front] /product/gift-card/ FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:08:52 [front] /product/gift-card/ FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:08:52 [front] /product/gift-card/ FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:08:52 [front] /product/gift-card/ FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:08:52 [front] /product/gift-card/ FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:08:52 [front] /product/gift-card/ FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:08:52 [front] /product/gift-card/ FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:08:53 [front] /es/product/tarjeta-regalo/ HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:08:53 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:08:53 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:08:53 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:08:53 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:08:53 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:08:53 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:08:53 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:08:53 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:08:53 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:08:53 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:08:53 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:08:53 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:08:53 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:09:04 [cli]  HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:09:05 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:09:05 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:09:05 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:09:05 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:09:05 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:09:05 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:09:05 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:09:05 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:09:05 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:09:05 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:09:05 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:09:05 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:09:05 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:09:05 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:09:05 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:09:05 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:09:05 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:09:05 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:09:05 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:09:05 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:09:05 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:09:05 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:09:05 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:09:05 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:09:05 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:09:05 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:09:24 [cli]  HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:09:24 [cli]  EMIT wpml_start_string_package_registration package=open-product-fields/12 title=Gift options (#12)
+16:09:24 [cli]  EMIT wpml_register_string name=field:gift:label type=LINE value=Gift wrap package=open-product-fields/12
+16:09:24 [cli]  EMIT wpml_register_string name=field:gift:description type=AREA value=Choose wrapping package=open-product-fields/12
+16:09:24 [cli]  EMIT wpml_register_string name=field:gift:placeholder type=LINE value=Select an option package=open-product-fields/12
+16:09:24 [cli]  EMIT wpml_register_string name=field:gift:choice:red type=LINE value=Red package=open-product-fields/12
+16:09:24 [cli]  EMIT wpml_register_string name=field:gift:choice:blue type=LINE value=Blue package=open-product-fields/12
+16:09:24 [cli]  EMIT wpml_register_string name=field:note:label type=LINE value=Note package=open-product-fields/12
+16:09:24 [cli]  EMIT wpml_register_string name=field:note:placeholder type=LINE value=Add a note package=open-product-fields/12
+16:09:24 [cli]  EMIT wpml_register_string name=field:info:content type=VISUAL value=<b>Information</b> package=open-product-fields/12
+16:09:24 [cli]  EMIT wpml_register_string name=field:extra:label type=LINE value=Extras package=open-product-fields/12
+16:09:24 [cli]  EMIT wpml_register_string name=field:extra:choice:card type=LINE value=Card package=open-product-fields/12
+16:09:24 [cli]  EMIT wpml_register_string name=field:extra:repeat:add type=LINE value=Add another package=open-product-fields/12
+16:09:24 [cli]  EMIT wpml_register_string name=field:extra:repeat:del type=LINE value=Remove package=open-product-fields/12
+16:09:24 [cli]  EMIT wpml_register_string name=field:extra:repeat:label type=LINE value=Copy {n} package=open-product-fields/12
+16:09:24 [cli]  EMIT wpml_delete_unused_package_strings package=open-product-fields/12
+16:09:24 [cli]  HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:09:25 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:09:25 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:09:25 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:09:25 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:09:25 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:09:25 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:09:25 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:09:25 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:09:25 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:09:25 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:09:25 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:09:25 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:09:25 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:09:25 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:09:25 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:09:25 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:09:25 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:09:25 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:09:25 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:09:25 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:09:25 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:09:25 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:09:25 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:09:25 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:09:25 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:09:25 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:09:25 [cli]  HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:09:26 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:09:26 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:09:26 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:09:26 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:09:26 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:09:26 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:09:26 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:09:26 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:09:26 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:09:26 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:09:26 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:09:26 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:09:26 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:09:26 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:09:26 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:09:26 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:09:26 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:09:26 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:09:26 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:09:26 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:09:26 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:09:26 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:09:26 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:09:26 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:09:26 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:09:26 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:09:26 [cli]  HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:09:27 [front] /product/gift-card/ HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:09:27 [front] /product/gift-card/ FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:09:27 [front] /product/gift-card/ FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:09:27 [front] /product/gift-card/ FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:09:27 [front] /product/gift-card/ FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:09:27 [front] /product/gift-card/ FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:09:27 [front] /product/gift-card/ FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:09:27 [front] /product/gift-card/ FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:09:27 [front] /product/gift-card/ FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:09:27 [front] /product/gift-card/ FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:09:27 [front] /product/gift-card/ FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:09:27 [front] /product/gift-card/ FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:09:27 [front] /product/gift-card/ FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:09:27 [front] /product/gift-card/ FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:09:27 [front] /es/product/tarjeta-regalo/ HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:09:27 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:09:27 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:09:27 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:09:27 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:09:27 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:09:27 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:09:27 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:09:27 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:09:27 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:09:27 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:09:27 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:09:27 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:09:27 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:09:53 [cli]  HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:09:54 [front] /product/gift-card/ HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:09:54 [front] /product/gift-card/ FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:09:54 [front] /product/gift-card/ FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:09:54 [front] /product/gift-card/ FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:09:54 [front] /product/gift-card/ FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:09:54 [front] /product/gift-card/ FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:09:54 [front] /product/gift-card/ FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:09:54 [front] /product/gift-card/ FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:09:54 [front] /product/gift-card/ FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:09:54 [front] /product/gift-card/ FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:09:54 [front] /product/gift-card/ FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:09:54 [front] /product/gift-card/ FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:09:54 [front] /product/gift-card/ FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:09:54 [front] /product/gift-card/ FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:09:54 [front] /es/product/tarjeta-regalo/ HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:09:54 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:09:54 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:09:54 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:09:54 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:09:54 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:09:54 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:09:54 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:09:54 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:09:54 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:09:54 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:09:54 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:09:54 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:09:54 [front] /es/product/tarjeta-regalo/ FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:09:54 [front] /wp-login.php HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:09:54 [front] /wp-login.php HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:09:55 [admin] /wp-admin/admin.php?page=wpml-string-translation/menu/string-translation.php&context=open-product-fields-12 HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=10:WPML_Package_Translation::get_string_package filter(wpml_active_string_package_kinds)=none
+16:09:58 [admin] /wp-admin/admin.php?page=wpml-string-translation/menu/string-translation.php&context=open-product-fields-12&lang=es HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=10:WPML_Package_Translation::get_string_package filter(wpml_active_string_package_kinds)=none
+16:10:04 [admin] /wp-admin/admin.php?page=wpml-string-translation/menu/string-translation.php HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=10:WPML_Package_Translation::get_string_package filter(wpml_active_string_package_kinds)=none
+16:10:11 [admin] /wp-admin/admin.php?page=wpml-string-translation/menu/string-translation.php&context=open-product-fields-12 HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=10:WPML_Package_Translation::get_string_package filter(wpml_active_string_package_kinds)=none
+16:10:11 [admin] /wp-admin/admin.php?page=wpml-string-translation/menu/string-translation.php&context=open-product-fields-12&show_results=all&lang=es HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=10:WPML_Package_Translation::get_string_package filter(wpml_active_string_package_kinds)=none
+16:10:11 [admin] /wp-admin/admin.php?page=wpml-string-translation/menu/string-translation.php&context=open-product-fields-12&trop=1 HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=10:WPML_Package_Translation::get_string_package filter(wpml_active_string_package_kinds)=none
+16:10:29 [cli]  HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:29 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:29 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:29 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:29 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:29 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:29 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:29 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:29 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:29 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:29 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:29 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:29 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:29 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:29 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:29 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:29 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:29 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:29 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:29 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:29 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:29 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:29 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:29 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:29 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:29 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:29 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:29 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:29 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:29 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:29 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:29 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:29 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:29 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:29 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:29 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:29 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:29 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:29 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:29 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:29 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:29 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:34 [cli]  HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:34 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:34 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:34 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:34 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:34 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:34 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:34 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:34 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:34 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:34 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:34 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:34 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:34 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:34 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:34 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:34 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:34 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:34 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:34 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:34 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:34 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:34 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:34 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:34 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:34 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:34 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:34 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:34 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:34 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:34 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:34 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:34 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:34 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:34 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:34 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:34 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:34 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:34 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:34 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:34 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:34 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:40 [cli]  HOOK-STATE WPML_TM_VERSION=2.8.7 setup_complete=1 action(wpml_register_string)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::register_string_action,10:WPML_Package_Translation::register_string_action filter(wpml_translate_string)=1:closure,10:WPML_Package_Translation::translate_string action(wpml_start_string_package_registration)=1:closure,10:WPML_Package_Translation::start_string_package_registration_action action(wpml_delete_unused_package_strings)=1:closure,10:WPML_TM_Word_Count_Refresh_Hooks::delete_unused_package_strings_action,10:WPML_Package_Translation::delete_unused_package_strings_action filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:41 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:41 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:41 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:41 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:41 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:41 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:41 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:41 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:41 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:41 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:41 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:41 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:41 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:41 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:41 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:41 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:41 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:41 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:41 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:41 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:41 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:41 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:41 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:41 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:41 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:41 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:41 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:41 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:41 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:41 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:41 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:41 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:41 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:41 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:41 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:41 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:label package=open-product-fields/12 out=Gift wrap
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:description package=open-product-fields/12 out=Choose wrapping
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:placeholder package=open-product-fields/12 out=Select an option
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:choice:red package=open-product-fields/12 out=Red
+16:10:41 [cli]  FILTER wpml_translate_string in=field:gift:choice:blue package=open-product-fields/12 out=Blue
+16:10:41 [cli]  FILTER wpml_translate_string in=field:note:label package=open-product-fields/12 out=Note
+16:10:41 [cli]  FILTER wpml_translate_string in=field:note:placeholder package=open-product-fields/12 out=Add a note
+16:10:41 [cli]  FILTER wpml_translate_string in=field:info:content package=open-product-fields/12 out=<b>Information</b>
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:label package=open-product-fields/12 out=Extras
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:choice:card package=open-product-fields/12 out=Card
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:add package=open-product-fields/12 out=Add another
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:del package=open-product-fields/12 out=Remove
+16:10:41 [cli]  FILTER wpml_translate_string in=field:extra:repeat:label package=open-product-fields/12 out=Copy {n}

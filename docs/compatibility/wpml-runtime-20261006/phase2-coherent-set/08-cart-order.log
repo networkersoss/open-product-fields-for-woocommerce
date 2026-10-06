@@ -1,0 +1,9 @@
+current_language=es es_product=11 cart_item_key='d5474bf4d78ae02ff481b5d64b290993'
+cart_item_data={"12":{"gift":"red","note":"Hola","extra":["card"]}}
+cart_totals={"total":"25.00","subtotal":"25"}
+order_id=16 status=pending total=25.00
+order_item product=11 name=Tarjeta Regalo opf_fields="{\"12\":{\"gift\":\"red\",\"note\":\"Hola\",\"extra\":[\"card\"]}}"
+order_item visible_meta={"Envoltorio de regalo":"Rojo (+&#36;5.00)","Nota":"Hola","Extras":"Tarjeta"}
+order_language=NULL
+order_tr_meta=""
+order_lang_meta_rows=[]

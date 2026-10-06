@@ -1,0 +1,9 @@
+Warning: Undefined property: stdClass::$requires in phar:///tools/wp-cli.phar/vendor/wp-cli/extension-command/src/Plugin_Command.php on line 875
+name,status,version
+akismet,inactive,5.3.2
+hello,inactive,1.7.2
+open-product-fields-for-woocommerce,active,0.1.0
+woocommerce,active,9.0.2
+woocommerce-multilingual,active,5.5.8
+sitepress-multilingual-cms,active,5.1.0
+wpml-string-translation,active,3.5.2

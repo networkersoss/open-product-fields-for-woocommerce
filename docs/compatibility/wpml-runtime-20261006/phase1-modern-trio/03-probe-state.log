@@ -1,0 +1,13 @@
+WPML_TM_VERSION=2.11.0
+ICL_SITEPRESS_VERSION=5.1.0 WPML_ST_VERSION=3.5.2 WCML_VERSION=5.5.8
+setup_complete=1
+action(wpml_register_string)=true
+action(wpml_start_string_package_registration)=true
+action(wpml_delete_unused_package_strings)=true
+action(wpml_delete_package)=false
+filter(wpml_translate_string)=true
+filter(wpml_st_get_string_package)=false
+filter(wpml_active_string_package_kinds)=true
+class WPML_Package=yes WPML_ST_Package_Factory=yes WPML_Package_Translation=yes
+icl_string_packages table=MISSING rows=0
+icl_strings columns=id,language,context,name,value,string_package_id,location,wrap_tag,type,title,status,gettext_context,domain_name_context_md5,translation_priority,word_count,has_text

@@ -1,0 +1,2124 @@
+<!DOCTYPE html>
+<html class="wp-toolbar"
+	lang="en-US">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>String Translation &lsaquo; OPF WPML Coherent Runtime &#8212; WordPress</title>
+<script type="text/javascript">
+addLoadEvent = function(func){if(typeof jQuery!=='undefined')jQuery(function(){func();});else if(typeof wpOnload!=='function'){wpOnload=func;}else{var oldonload=wpOnload;wpOnload=function(){oldonload();func();}}};
+var ajaxurl = '/wp-admin/admin-ajax.php',
+	pagenow = 'wpml-string-translation/menu/string-translation',
+	typenow = '',
+	adminpage = 'wpml-string-translation-menu-string-translation-php',
+	thousandsSeparator = ',',
+	decimalPoint = '.',
+	isRtl = 0;
+</script>
+<link rel='stylesheet' href='http://127.0.0.1:8097/wp-admin/load-styles.php?c=0&amp;dir=ltr&amp;load%5Bchunk_0%5D=dashicons,wp-color-picker,wp-jquery-ui-dialog,admin-bar,common,forms,admin-menu,dashboard,list-tables,edit,revisions,media,theme&amp;load%5Bchunk_1%5D=s,about,nav-menus,wp-pointer,widgets,site-icon,l10n,buttons,wp-auth-check&amp;ver=6.5.7' media='all' />
+<style>
+@media print { #wpadminbar { display:none; } }
+</style>
+<link rel='stylesheet' id='thickbox-css' href='http://127.0.0.1:8097/wp-includes/js/thickbox/thickbox.css?ver=6.5.7' media='all' />
+<link rel='stylesheet' id='otgsPopoverTooltip-css' href='http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/vendor/otgs/ui/dist/css/otgsPopoverTooltip.css?ver=6.5.7' media='all' />
+<link rel='stylesheet' id='wpml-st-styles-css' href='http://127.0.0.1:8097/wp-content/plugins/wpml-string-translation/res/css/style.css?ver=2.10.6' media='all' />
+<link rel='stylesheet' id='wpml-select-2-css' href='http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/lib/select2/select2.css?ver=6.5.7' media='all' />
+<link rel='stylesheet' id='sitepress-style-css' href='http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/css/style.css?ver=4.2.8' media='all' />
+<link rel='stylesheet' id='otgs-notices-css' href='http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/css/otgs-notices.css?ver=6.5.7' media='all' />
+<link rel='stylesheet' id='wpml-tm-styles-css' href='http://127.0.0.1:8097/wp-content/plugins/wpml-translation-management/res/css/style.css?ver=2.8.7' media='all' />
+<link rel='stylesheet' id='wpml-theme-plugin-localization-scan-css' href='http://127.0.0.1:8097/wp-content/plugins/wpml-string-translation/res/css/theme-plugin-localization/theme-plugin-localization.css?ver=2.10.6' media='all' />
+<link rel='stylesheet' id='woocommerce_admin_menu_styles-css' href='http://127.0.0.1:8097/wp-content/plugins/woocommerce/assets/css/menu.css?ver=9.0.2' media='all' />
+<style id='wp-emoji-styles-inline-css'>
+
+	img.wp-smiley, img.emoji {
+		display: inline !important;
+		border: none !important;
+		box-shadow: none !important;
+		height: 1em !important;
+		width: 1em !important;
+		margin: 0 0.07em !important;
+		vertical-align: -0.1em !important;
+		background: none !important;
+		padding: 0 !important;
+	}
+</style>
+<link rel='stylesheet' id='otgs-dialogs-css' href='http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/css/otgs-dialogs.css?ver=4.2.8' media='all' />
+<link rel='stylesheet' id='wpml-dialog-css' href='http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/css/dialog.css?ver=4.2.8' media='all' />
+<link rel='stylesheet' id='otgs-ico-css' href='http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/css/otgs-ico.css?ver=4.2.8' media='all' />
+<link rel='stylesheet' id='wpml-wizard-css' href='http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/css/wpml-wizard.css?ver=4.2.8' media='all' />
+<link rel='stylesheet' id='otgsSwitcher-css' href='http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/vendor/otgs/ui/dist/css/otgsSwitcher.css?ver=6.5.7' media='all' />
+<style id='wp-fonts-local'>
+@font-face{font-family:Inter;font-style:normal;font-weight:300 900;font-display:fallback;src:url('http://127.0.0.1:8097/wp-content/themes/twentytwentyfour/assets/fonts/inter/Inter-VariableFont_slnt,wght.woff2') format('woff2');font-stretch:normal;}
+@font-face{font-family:Cardo;font-style:normal;font-weight:400;font-display:fallback;src:url('http://127.0.0.1:8097/wp-content/themes/twentytwentyfour/assets/fonts/cardo/cardo_normal_400.woff2') format('woff2');}
+@font-face{font-family:Cardo;font-style:italic;font-weight:400;font-display:fallback;src:url('http://127.0.0.1:8097/wp-content/themes/twentytwentyfour/assets/fonts/cardo/cardo_italic_400.woff2') format('woff2');}
+@font-face{font-family:Cardo;font-style:normal;font-weight:700;font-display:fallback;src:url('http://127.0.0.1:8097/wp-content/themes/twentytwentyfour/assets/fonts/cardo/cardo_normal_700.woff2') format('woff2');}
+</style>
+<script>
+window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"concatemoji":"http:\/\/127.0.0.1:8097\/wp-includes\/js\/wp-emoji-release.min.js?ver=6.5.7"}};
+/*! This file is auto-generated */
+!function(i,n){var o,s,e;function c(e){try{var t={supportTests:e,timestamp:(new Date).valueOf()};sessionStorage.setItem(o,JSON.stringify(t))}catch(e){}}function p(e,t,n){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);var t=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data),r=(e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(n,0,0),new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data));return t.every(function(e,t){return e===r[t]})}function u(e,t,n){switch(t){case"flag":return n(e,"\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f","\ud83c\udff3\ufe0f\u200b\u26a7\ufe0f")?!1:!n(e,"\ud83c\uddfa\ud83c\uddf3","\ud83c\uddfa\u200b\ud83c\uddf3")&&!n(e,"\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f","\ud83c\udff4\u200b\udb40\udc67\u200b\udb40\udc62\u200b\udb40\udc65\u200b\udb40\udc6e\u200b\udb40\udc67\u200b\udb40\udc7f");case"emoji":return!n(e,"\ud83d\udc26\u200d\u2b1b","\ud83d\udc26\u200b\u2b1b")}return!1}function f(e,t,n){var r="undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?new OffscreenCanvas(300,150):i.createElement("canvas"),a=r.getContext("2d",{willReadFrequently:!0}),o=(a.textBaseline="top",a.font="600 32px Arial",{});return e.forEach(function(e){o[e]=t(a,e,n)}),o}function t(e){var t=i.createElement("script");t.src=e,t.defer=!0,i.head.appendChild(t)}"undefined"!=typeof Promise&&(o="wpEmojiSettingsSupports",s=["flag","emoji"],n.supports={everything:!0,everythingExceptFlag:!0},e=new Promise(function(e){i.addEventListener("DOMContentLoaded",e,{once:!0})}),new Promise(function(t){var n=function(){try{var e=JSON.parse(sessionStorage.getItem(o));if("object"==typeof e&&"number"==typeof e.timestamp&&(new Date).valueOf()<e.timestamp+604800&&"object"==typeof e.supportTests)return e.supportTests}catch(e){}return null}();if(!n){if("undefined"!=typeof Worker&&"undefined"!=typeof OffscreenCanvas&&"undefined"!=typeof URL&&URL.createObjectURL&&"undefined"!=typeof Blob)try{var e="postMessage("+f.toString()+"("+[JSON.stringify(s),u.toString(),p.toString()].join(",")+"));",r=new Blob([e],{type:"text/javascript"}),a=new Worker(URL.createObjectURL(r),{name:"wpTestEmojiSupports"});return void(a.onmessage=function(e){c(n=e.data),a.terminate(),t(n)})}catch(e){}c(n=f(s,u,p))}t(n)}).then(function(e){for(var t in e)n.supports[t]=e[t],n.supports.everything=n.supports.everything&&n.supports[t],"flag"!==t&&(n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&n.supports[t]);n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&!n.supports.flag,n.DOMReady=!1,n.readyCallback=function(){n.DOMReady=!0}}).then(function(){return e}).then(function(){var e;n.supports.everything||(n.readyCallback(),(e=n.source||{}).concatemoji?t(e.concatemoji):e.wpemoji&&e.twemoji&&(t(e.twemoji),t(e.wpemoji)))}))}((window,document),window._wpemojiSettings);
+</script>
+        <script type="text/javascript">
+            // <![CDATA[
+            var icl_ajx_url = 'http://127.0.0.1:8097/wp-admin/admin.php?page=sitepress-multilingual-cms%2Fmenu%2Flanguages.php',
+                icl_ajx_saved = 'Data saved',
+                icl_ajx_error = 'Error: data not saved',
+                icl_default_mark = 'default',
+                icl_this_lang = 'en',
+                icl_ajxloaderimg_src = 'http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/img/ajax-loader.gif',
+                icl_cat_adder_msg = 'To add categories that already exist in other languages go to the <a href="http://127.0.0.1:8097/wp-admin/edit-tags.php?taxonomy=category">category management page</a>';
+            // ]]>
+
+			            addLoadEvent(function () {
+                jQuery.ajax({
+                    type: "POST", url: icl_ajx_url, data: "icl_ajx_action=health_check", error: function (msg) {
+                        var icl_initial_language = jQuery('#icl_initial_language');
+                        if (icl_initial_language.length) {
+                            icl_initial_language.find('input').attr('disabled', 'disabled');
+                        }
+                        jQuery('.wrap').prepend('<div class="error"><p>WPML can\'t run normally. There is an installation or server configuration problem. <a href="#" onclick="jQuery(this).parent().next().slideToggle()">Show details</a></p><p style="display:none">AJAX Error: ' + msg.statusText + ' [' + msg.status + ']<br />URL:' + icl_ajx_url + '</p></div>');
+                    }
+                });
+            });
+			        </script>
+		<script id="sitepress-js-extra">
+var icl_vars = {"current_language":"en","icl_home":"http:\/\/127.0.0.1:8097","ajax_url":"http:\/\/127.0.0.1:8097\/wp-admin\/admin-ajax.php","url_type":"1"};
+</script>
+<script id="wpml-theme-plugin-localization-scan-js-extra">
+var wpml_groups_to_scan = [""];
+var wpml_active_plugins_themes = {"plugin":["open-product-fields-for-woocommerce\/open-product-fields-for-woocommerce.php","woocommerce\/woocommerce.php","woocommerce-multilingual\/wpml-woocommerce.php","sitepress-multilingual-cms\/sitepress.php","wpml-string-translation\/plugin.php","wpml-translation-management\/plugin.php"],"theme":["twentytwentyfour"]};
+</script>
+<script id="wpml-st-translation-memory-js-extra">
+var wpml_translation_memory_nonce = {"value":"c12047e44b"};
+</script>
+
+<script>
+/* <![CDATA[ */
+var userSettings = {"url":"\/","uid":"1","time":"1791303004","secure":""};var _wpUtilSettings = {"ajax":{"url":"\/wp-admin\/admin-ajax.php"}};/* ]]> */
+</script>
+<script src='http://127.0.0.1:8097/wp-admin/load-scripts.php?c=0&amp;load%5Bchunk_0%5D=jquery-core,jquery-migrate,jquery-ui-core,jquery-ui-mouse,jquery-ui-resizable,jquery-ui-draggable,jquery-ui-controlgroup,jquery-&amp;load%5Bchunk_1%5D=ui-checkboxradio,jquery-ui-button,jquery-ui-dialog,utils,underscore,wp-util,jquery-ui-sortable&amp;ver=6.5.7'></script>
+<script src="http://127.0.0.1:8097/wp-content/plugins/wpml-string-translation/res/js/scripts.js?ver=2.10.6" id="wpml-st-scripts-js"></script>
+<script src="http://127.0.0.1:8097/wp-content/plugins/wpml-string-translation/res/js/change_string_lang.js?ver=2.10.6" id="wpml-st-change-lang-js"></script>
+<script src="http://127.0.0.1:8097/wp-content/plugins/wpml-string-translation/res/js/settings.js?ver=2.10.6" id="wpml-st-settings-js"></script>
+<script src="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/vendor/otgs/ui/dist/js/otgsPopoverTooltip.js?ver=6.5.7" id="otgsPopoverTooltip-js"></script>
+<script src="http://127.0.0.1:8097/wp-content/plugins/wpml-string-translation/res/js/wpml-excluded-contexts.js?ver=2.10.6" id="wpml-excluded-contexts-js"></script>
+<script src="http://127.0.0.1:8097/wp-content/plugins/wpml-string-translation/res/js/change_string_domain_lang.js?ver=2.10.6" id="wpml-st-change-domian-lang-js"></script>
+<script src="http://127.0.0.1:8097/wp-content/plugins/wpml-string-translation/res/js/wpml_string_translation_basket.js?ver=2.10.6" id="wpml-st-translation_basket-js"></script>
+<script src="http://127.0.0.1:8097/wp-content/plugins/wpml-string-translation/res/js/wpml-plugin-list-table-filter.js?ver=2.10.6" id="wpml-plugin-list-table-filter-js"></script>
+<script src="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/js/scripts.js?ver=4.2.8" id="sitepress-scripts-js"></script>
+<script src="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/js/sitepress.js?ver=6.5.7" id="sitepress-js"></script>
+<script src="http://127.0.0.1:8097/wp-content/plugins/wpml-string-translation/res/js/troubleshooting.js?ver=6.5.7" id="wpml-st-db-troubleshooting-js"></script>
+<script src="http://127.0.0.1:8097/wp-content/plugins/wpml-translation-management/res/js/scripts.js?ver=2.8.7" id="wpml-tm-scripts-js"></script>
+<script src="http://127.0.0.1:8097/wp-content/plugins/wpml-string-translation/res/js/theme-plugin-localization/theme-plugin-localization.js?ver=2.10.6" id="wpml-theme-plugin-localization-scan-js"></script>
+<script src="http://127.0.0.1:8097/wp-content/plugins/wpml-string-translation/res/js/performance/enable-fastest-settings.js?ver=2.10.6" id="wpml-enable-fastest-settings-js"></script>
+<script src="http://127.0.0.1:8097/wp-content/plugins/wpml-string-translation/res/js/tracking-all-strings-as-english-notice.js?ver=2.10.6" id="wpml-st-tracking-all-strings-as-english-notice-js"></script>
+<script src="http://127.0.0.1:8097/wp-content/plugins/wpml-string-translation/res/js/string-translation-memory.js?ver=2.10.6" id="wpml-st-translation-memory-js"></script>
+<script src="http://127.0.0.1:8097/wp-content/plugins/wpml-string-translation/res/js/strings_json_import_po.js?ver=2.10.6" id="wpml-st-strings-json-import-po-js"></script>
+<script src="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/js/icl-admin-notifier.js?ver=4.2.8" id="icl-admin-notifier-js"></script>
+<script src="http://127.0.0.1:8097/wp-content/plugins/woocommerce-multilingual/vendor/otgs/installer/res/js/save-components-setting.js?ver=2.4.0" id="otgs-installer-components-save-setting-js"></script>
+		<script type="text/javascript">
+			var wpml_xliff_ajax_nonce = 'ce96cfd3de';
+		</script>
+		<script type="text/javascript">var _wpColorScheme = {"icons":{"base":"#a7aaad","focus":"#72aee6","current":"#fff"}};</script>
+	<link id="wp-admin-canonical" rel="canonical" href="http://127.0.0.1:8097/wp-admin/admin.php?page=wpml-string-translation%2Fmenu%2Fstring-translation.php" />
+	<script>
+		if ( window.history.replaceState ) {
+			window.history.replaceState( null, null, document.getElementById( 'wp-admin-canonical' ).href + window.location.hash );
+		}
+	</script>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body class="wp-admin wp-core-ui no-js theme-twentytwentyfour  wc-wp-version-gte-53 wc-wp-version-gte-55 wpml-string-translation-menu-string-translation-php auto-fold admin-bar branch-6-5 version-6-5-7 admin-color-fresh locale-en-us no-customize-support no-svg">
+<script type="text/javascript">
+	document.body.className = document.body.className.replace('no-js','js');
+</script>
+
+<script>
+		(function() {
+			var request, b = document.body, c = 'className', cs = 'customize-support', rcs = new RegExp('(^|\\s+)(no-)?'+cs+'(\\s+|$)');
+
+				request = true;
+	
+			b[c] = b[c].replace( rcs, ' ' );
+			// The customizer requires postMessage and CORS (if the site is cross domain).
+			b[c] += ( window.postMessage && request ? ' ' : ' no-' ) + cs;
+		}());
+	
+</script>
+
+<div id="wpwrap">
+
+<div id="adminmenumain" role="navigation" aria-label="Main menu">
+<a href="#wpbody-content" class="screen-reader-shortcut">Skip to main content</a>
+<a href="#wp-toolbar" class="screen-reader-shortcut">Skip to toolbar</a>
+<div id="adminmenuback"></div>
+<div id="adminmenuwrap">
+<ul id="adminmenu">
+
+
+	<li class="wp-first-item wp-has-submenu wp-not-current-submenu menu-top menu-top-first menu-icon-dashboard menu-top-first menu-top-last" id="menu-dashboard">
+	<a href='index.php' class="wp-first-item wp-has-submenu wp-not-current-submenu menu-top menu-top-first menu-icon-dashboard menu-top-first menu-top-last" aria-haspopup="true"><div class="wp-menu-arrow"><div></div></div><div class='wp-menu-image dashicons-before dashicons-dashboard' aria-hidden='true'><br /></div><div class='wp-menu-name'>Dashboard</div></a>
+	<ul class='wp-submenu wp-submenu-wrap'><li class='wp-submenu-head' aria-hidden='true'>Dashboard</li><li class="wp-first-item"><a href='index.php' class="wp-first-item">Home</a></li><li><a href='update-core.php'>Updates <span class="update-plugins count-6"><span class="update-count">6</span></span></a></li></ul></li>
+	<li class="wp-not-current-submenu wp-menu-separator" aria-hidden="true"><div class="separator"></div></li>
+	<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-post open-if-no-js menu-top-first" id="menu-posts">
+	<a href='edit.php' class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-post open-if-no-js menu-top-first" aria-haspopup="true"><div class="wp-menu-arrow"><div></div></div><div class='wp-menu-image dashicons-before dashicons-admin-post' aria-hidden='true'><br /></div><div class='wp-menu-name'>Posts</div></a>
+	<ul class='wp-submenu wp-submenu-wrap'><li class='wp-submenu-head' aria-hidden='true'>Posts</li><li class="wp-first-item"><a href='edit.php' class="wp-first-item">All Posts</a></li><li><a href='post-new.php'>Add New Post</a></li><li><a href='edit-tags.php?taxonomy=category'>Categories</a></li><li><a href='edit-tags.php?taxonomy=post_tag'>Tags</a></li></ul></li>
+	<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-media" id="menu-media">
+	<a href='upload.php' class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-media" aria-haspopup="true"><div class="wp-menu-arrow"><div></div></div><div class='wp-menu-image dashicons-before dashicons-admin-media' aria-hidden='true'><br /></div><div class='wp-menu-name'>Media</div></a>
+	<ul class='wp-submenu wp-submenu-wrap'><li class='wp-submenu-head' aria-hidden='true'>Media</li><li class="wp-first-item"><a href='upload.php' class="wp-first-item">Library</a></li><li><a href='media-new.php'>Add New Media File</a></li></ul></li>
+	<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-page" id="menu-pages">
+	<a href='edit.php?post_type=page' class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-page" aria-haspopup="true"><div class="wp-menu-arrow"><div></div></div><div class='wp-menu-image dashicons-before dashicons-admin-page' aria-hidden='true'><br /></div><div class='wp-menu-name'>Pages</div></a>
+	<ul class='wp-submenu wp-submenu-wrap'><li class='wp-submenu-head' aria-hidden='true'>Pages</li><li class="wp-first-item"><a href='edit.php?post_type=page' class="wp-first-item">All Pages</a></li><li><a href='post-new.php?post_type=page'>Add New Page</a></li></ul></li>
+	<li class="wp-not-current-submenu menu-top menu-icon-comments menu-top-last" id="menu-comments">
+	<a href='edit-comments.php' class="wp-not-current-submenu menu-top menu-icon-comments menu-top-last" ><div class="wp-menu-arrow"><div></div></div><div class='wp-menu-image dashicons-before dashicons-admin-comments' aria-hidden='true'><br /></div><div class='wp-menu-name'>Comments <span class="awaiting-mod count-0"><span class="pending-count" aria-hidden="true">0</span><span class="comments-in-moderation-text screen-reader-text">0 Comments in moderation</span></span></div></a></li>
+	<li class="wp-not-current-submenu wp-menu-separator woocommerce" aria-hidden="true"><div class="separator"></div></li>
+	<li class="wp-has-submenu wp-not-current-submenu menu-top toplevel_page_woocommerce menu-top-first" id="toplevel_page_woocommerce"><a href='admin.php?page=wc-admin' class="wp-has-submenu wp-not-current-submenu menu-top toplevel_page_woocommerce menu-top-first" aria-haspopup="true"><div class="wp-menu-arrow"><div></div></div><div class='wp-menu-image svg' style="background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDI0IDEwMjQiPjxwYXRoIGZpbGw9IiNhMmFhYjIiIGQ9Ik02MTIuMTkyIDQyNi4zMzZjMC02Ljg5Ni0zLjEzNi01MS42LTI4LTUxLjYtMzcuMzYgMC00Ni43MDQgNzIuMjU2LTQ2LjcwNCA4Mi42MjQgMCAzLjQwOCAzLjE1MiA1OC40OTYgMjguMDMyIDU4LjQ5NiAzNC4xOTItLjAzMiA0Ni42NzItNzIuMjg4IDQ2LjY3Mi04OS41MnptMjAyLjE5MiAwYzAtNi44OTYtMy4xNTItNTEuNi0yOC4wMzItNTEuNi0zNy4yOCAwLTQ2LjYwOCA3Mi4yNTYtNDYuNjA4IDgyLjYyNCAwIDMuNDA4IDMuMDcyIDU4LjQ5NiAyNy45NTIgNTguNDk2IDM0LjE5Mi0uMDMyIDQ2LjY4OC03Mi4yODggNDYuNjg4LTg5LjUyek0xNDEuMjk2Ljc2OGMtNjguMjI0IDAtMTIzLjUwNCA1NS40ODgtMTIzLjUwNCAxMjMuOTJ2NjUwLjcyYzAgNjguNDMyIDU1LjI5NiAxMjMuOTIgMTIzLjUwNCAxMjMuOTJoMzM5LjgwOGwxMjMuNTA0IDEyMy45MzZWODk5LjMyOGgyNzguMDQ4YzY4LjIyNCAwIDEyMy41Mi01NS40NzIgMTIzLjUyLTEyMy45MnYtNjUwLjcyYzAtNjguNDMyLTU1LjI5Ni0xMjMuOTItMTIzLjUyLTEyMy45MmgtNzQxLjM2em01MjYuODY0IDQyMi4xNmMwIDU1LjA4OC0zMS4wODggMTU0Ljg4LTEwMi42NCAxNTQuODgtNi4yMDggMC0xOC40OTYtMy42MTYtMjUuNDI0LTYuMDE2LTMyLjUxMi0xMS4xNjgtNTAuMTkyLTQ5LjY5Ni01Mi4zNTItNjYuMjU2IDAgMC0zLjA3Mi0xNy43OTItMy4wNzItNDAuNzUyIDAtMjIuOTkyIDMuMDcyLTQ1LjMyOCAzLjA3Mi00NS4zMjggMTUuNTUyLTc1LjcyOCA0My41NTItMTA2LjczNiA5Ni40NDgtMTA2LjczNiA1OS4wNzItLjAzMiA4My45NjggNTguNTI4IDgzLjk2OCAxMTAuMjA4ek00ODYuNDk2IDMwMi40YzAgMy4zOTItNDMuNTUyIDE0MS4xNjgtNDMuNTUyIDIxMy40MjR2NzUuNzEyYy0yLjU5MiAxMi4wOC00LjE2IDI0LjE0NC0yMS44MjQgMjQuMTQ0LTQ2LjYwOCAwLTg4Ljg4LTE1MS40NzItOTIuMDE2LTE2MS44NC02LjIwOCA2Ljg5Ni02Mi4yNCAxNjEuODQtOTYuNDQ4IDE2MS44NC0yNC44NjQgMC00My41NTItMTEzLjY0OC00Ni42MDgtMTIzLjkzNkMxNzYuNzA0IDQzNi42NzIgMTYwIDMzNC4yMjQgMTYwIDMyNy4zMjhjMC0yMC42NzIgMS4xNTItMzguNzM2IDI2LjA0OC0zOC43MzYgNi4yMDggMCAyMS42IDYuMDY0IDIzLjcxMiAxNy4xNjggMTEuNjQ4IDYyLjAzMiAxNi42ODggMTIwLjUxMiAyOS4xNjggMTg1Ljk2OCAxLjg1NiAyLjkyOCAxLjUwNCA3LjAwOCA0LjU2IDEwLjQzMiAzLjE1Mi0xMC4yODggNjYuOTI4LTE2OC43ODQgOTQuOTYtMTY4Ljc4NCAyMi41NDQgMCAzMC40IDQ0LjU5MiAzMy41MzYgNjEuODI0IDYuMjA4IDIwLjY1NiAxMy4wODggNTUuMjE2IDIyLjQxNiA4Mi43NTIgMC0xMy43NzYgMTIuNDgtMjAzLjEyIDY1LjM5Mi0yMDMuMTIgMTguNTkyLjAzMiAyNi43MDQgNi45MjggMjYuNzA0IDI3LjU2OHpNODcwLjMyIDQyMi45MjhjMCA1NS4wODgtMzEuMDg4IDE1NC44OC0xMDIuNjQgMTU0Ljg4LTYuMTkyIDAtMTguNDQ4LTMuNjE2LTI1LjQyNC02LjAxNi0zMi40MzItMTEuMTY4LTUwLjE3Ni00OS42OTYtNTIuMjg4LTY2LjI1NiAwIDAtMy44ODgtMTcuOTItMy44ODgtNDAuODk2czMuODg4LTQ1LjE4NCAzLjg4OC00NS4xODRjMTUuNTUyLTc1LjcyOCA0My40ODgtMTA2LjczNiA5Ni4zODQtMTA2LjczNiA1OS4xMDQtLjAzMiA4My45NjggNTguNTI4IDgzLjk2OCAxMTAuMjA4eiIvPjwvc3ZnPg==')" aria-hidden='true'><br /></div><div class='wp-menu-name'>WooCommerce</div></a>
+	<ul class='wp-submenu wp-submenu-wrap'><li class='wp-submenu-head' aria-hidden='true'>WooCommerce</li><li class="wp-first-item"><a href='admin.php?page=wc-admin' class="wp-first-item">Home <span class="awaiting-mod update-plugins remaining-tasks-badge woocommerce-task-list-remaining-tasks-badge"><span class="count-5">5</span></span></a></li><li><a href='edit.php?post_type=shop_order'>Orders</a></li><li><a href='edit.php?post_type=opf_field_group'>Field Groups</a></li><li><a href='admin.php?page=wc-admin&#038;path=/customers'>Customers</a></li><li><a href='admin.php?page=wc-reports'>Reports</a></li><li><a href='admin.php?page=wc-settings'>Settings</a></li><li><a href='admin.php?page=wc-status'>Status</a></li><li><a href='admin.php?page=wc-admin&#038;path=/extensions'>Extensions<span class="update-plugins count-0"><span class="update-count">0</span></span></a></li><li class="hide-if-js"><a href='admin.php?page=wc-addons' class="hide-if-js"></a></li></ul></li>
+	<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-product" id="menu-posts-product">
+	<a href='edit.php?post_type=product' class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-product" aria-haspopup="true"><div class="wp-menu-arrow"><div></div></div><div class='wp-menu-image dashicons-before dashicons-archive' aria-hidden='true'><br /></div><div class='wp-menu-name'>Products</div></a>
+	<ul class='wp-submenu wp-submenu-wrap'><li class='wp-submenu-head' aria-hidden='true'>Products</li><li class="wp-first-item"><a href='edit.php?post_type=product' class="wp-first-item">All Products</a></li><li><a href='post-new.php?post_type=product'>Add New</a></li><li><a href='edit-tags.php?taxonomy=product_cat&amp;post_type=product'>Categories</a></li><li><a href='edit-tags.php?taxonomy=product_tag&amp;post_type=product'>Tags</a></li><li><a href='edit.php?post_type=product&#038;page=product_attributes'>Attributes</a></li><li><a href='edit.php?post_type=product&#038;page=product-reviews'>Reviews</a></li></ul></li>
+	<li class="wp-not-current-submenu menu-top toplevel_page_wc-admin&amp;path=/wc-pay-welcome-page" id="toplevel_page_wc-admin-path--wc-pay-welcome-page">
+	<a href='admin.php?page=wc-admin&path=/wc-pay-welcome-page' class="wp-not-current-submenu menu-top toplevel_page_wc-admin&amp;path=/wc-pay-welcome-page" ><div class="wp-menu-arrow"><div></div></div><div class='wp-menu-image svg' style="background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4NTIiIGhlaWdodD0iNjg0Ij48cGF0aCBmaWxsPSIjYTJhYWIyIiBkPSJNODIgODZ2NTEyaDY4NFY4NlptMCA1OThjLTQ4IDAtODQtMzgtODQtODZWODZDLTIgMzggMzQgMCA4MiAwaDY4NGM0OCAwIDg0IDM4IDg0IDg2djUxMmMwIDQ4LTM2IDg2LTg0IDg2em0zODQtNTU2djQ0aDg2djg0SDM4MnY0NGgxMjhjMjQgMCA0MiAxOCA0MiA0MnYxMjhjMCAyNC0xOCA0Mi00MiA0MmgtNDR2NDRoLTg0di00NGgtODZ2LTg0aDE3MHYtNDRIMzM4Yy0yNCAwLTQyLTE4LTQyLTQyVjIxNGMwLTI0IDE4LTQyIDQyLTQyaDQ0di00NHoiLz48L3N2Zz4=')" aria-hidden='true'><br /></div><div class='wp-menu-name'>Payments <span class="wcpay-menu-badge awaiting-mod count-1"><span class="plugin-count">1</span></span></div></a></li>
+	<li class="wp-has-submenu wp-not-current-submenu menu-top toplevel_page_wc-admin&amp;path=/analytics/overview" id="toplevel_page_wc-admin-path--analytics-overview"><a href='admin.php?page=wc-admin&path=/analytics/overview' class="wp-has-submenu wp-not-current-submenu menu-top toplevel_page_wc-admin&amp;path=/analytics/overview" aria-haspopup="true"><div class="wp-menu-arrow"><div></div></div><div class='wp-menu-image dashicons-before dashicons-chart-bar' aria-hidden='true'><br /></div><div class='wp-menu-name'>Analytics</div></a>
+	<ul class='wp-submenu wp-submenu-wrap'><li class='wp-submenu-head' aria-hidden='true'>Analytics</li><li class="wp-first-item"><a href='admin.php?page=wc-admin&#038;path=/analytics/overview' class="wp-first-item">Overview</a></li><li><a href='admin.php?page=wc-admin&#038;path=/analytics/products'>Products</a></li><li><a href='admin.php?page=wc-admin&#038;path=/analytics/revenue'>Revenue</a></li><li><a href='admin.php?page=wc-admin&#038;path=/analytics/orders'>Orders</a></li><li><a href='admin.php?page=wc-admin&#038;path=/analytics/variations'>Variations</a></li><li><a href='admin.php?page=wc-admin&#038;path=/analytics/categories'>Categories</a></li><li><a href='admin.php?page=wc-admin&#038;path=/analytics/coupons'>Coupons</a></li><li><a href='admin.php?page=wc-admin&#038;path=/analytics/taxes'>Taxes</a></li><li><a href='admin.php?page=wc-admin&#038;path=/analytics/downloads'>Downloads</a></li><li><a href='admin.php?page=wc-admin&#038;path=/analytics/stock'>Stock</a></li><li><a href='admin.php?page=wc-admin&#038;path=/analytics/settings'>Settings</a></li></ul></li>
+	<li class="wp-has-submenu wp-not-current-submenu menu-top toplevel_page_woocommerce-marketing menu-top-last" id="toplevel_page_woocommerce-marketing">
+	<a href='admin.php?page=wc-admin&path=/marketing' class="wp-has-submenu wp-not-current-submenu menu-top toplevel_page_woocommerce-marketing menu-top-last" aria-haspopup="true"><div class="wp-menu-arrow"><div></div></div><div class='wp-menu-image dashicons-before dashicons-megaphone' aria-hidden='true'><br /></div><div class='wp-menu-name'>Marketing</div></a>
+	<ul class='wp-submenu wp-submenu-wrap'><li class='wp-submenu-head' aria-hidden='true'>Marketing</li><li class="wp-first-item"><a href='admin.php?page=wc-admin&path=/marketing' class="wp-first-item">Overview</a></li><li><a href='edit.php?post_type=shop_coupon'>Coupons</a></li></ul></li>
+	<li class="wp-not-current-submenu wp-menu-separator" aria-hidden="true"><div class="separator"></div></li>
+	<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-appearance menu-top-first" id="menu-appearance">
+	<a href='themes.php' class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-appearance menu-top-first" aria-haspopup="true"><div class="wp-menu-arrow"><div></div></div><div class='wp-menu-image dashicons-before dashicons-admin-appearance' aria-hidden='true'><br /></div><div class='wp-menu-name'>Appearance</div></a>
+	<ul class='wp-submenu wp-submenu-wrap'><li class='wp-submenu-head' aria-hidden='true'>Appearance</li><li class="wp-first-item"><a href='themes.php' class="wp-first-item">Themes <span class="update-plugins count-3"><span class="theme-count">3</span></span></a></li><li><a href='site-editor.php'>Editor</a></li></ul></li>
+	<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-plugins" id="menu-plugins">
+	<a href='plugins.php' class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-plugins" aria-haspopup="true"><div class="wp-menu-arrow"><div></div></div><div class='wp-menu-image dashicons-before dashicons-admin-plugins' aria-hidden='true'><br /></div><div class='wp-menu-name'>Plugins <span class="update-plugins count-2"><span class="plugin-count">2</span></span></div></a>
+	<ul class='wp-submenu wp-submenu-wrap'><li class='wp-submenu-head' aria-hidden='true'>Plugins <span class="update-plugins count-2"><span class="plugin-count">2</span></span></li><li class="wp-first-item"><a href='plugins.php' class="wp-first-item">Installed Plugins</a></li><li><a href='plugin-install.php'>Add New Plugin</a></li></ul></li>
+	<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-users" id="menu-users">
+	<a href='users.php' class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-users" aria-haspopup="true"><div class="wp-menu-arrow"><div></div></div><div class='wp-menu-image dashicons-before dashicons-admin-users' aria-hidden='true'><br /></div><div class='wp-menu-name'>Users</div></a>
+	<ul class='wp-submenu wp-submenu-wrap'><li class='wp-submenu-head' aria-hidden='true'>Users</li><li class="wp-first-item"><a href='users.php' class="wp-first-item">All Users</a></li><li><a href='user-new.php'>Add New User</a></li><li><a href='profile.php'>Profile</a></li></ul></li>
+	<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-tools" id="menu-tools">
+	<a href='tools.php' class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-tools" aria-haspopup="true"><div class="wp-menu-arrow"><div></div></div><div class='wp-menu-image dashicons-before dashicons-admin-tools' aria-hidden='true'><br /></div><div class='wp-menu-name'>Tools</div></a>
+	<ul class='wp-submenu wp-submenu-wrap'><li class='wp-submenu-head' aria-hidden='true'>Tools</li><li class="wp-first-item"><a href='tools.php' class="wp-first-item">Available Tools</a></li><li><a href='import.php'>Import</a></li><li><a href='export.php'>Export</a></li><li><a href='site-health.php'>Site Health <span class="menu-counter site-health-counter count-0"><span class="count">0</span></span></a></li><li><a href='export-personal-data.php'>Export Personal Data</a></li><li><a href='erase-personal-data.php'>Erase Personal Data</a></li><li><a href='tools.php?page=action-scheduler'>Scheduled Actions</a></li><li><a href='tools.php?page=opf-import'>Import WAPF Fields</a></li><li><a href='theme-editor.php'>Theme File Editor</a></li><li><a href='plugin-editor.php'>Plugin File Editor</a></li></ul></li>
+	<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-settings menu-top-last" id="menu-settings">
+	<a href='options-general.php' class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-settings menu-top-last" aria-haspopup="true"><div class="wp-menu-arrow"><div></div></div><div class='wp-menu-image dashicons-before dashicons-admin-settings' aria-hidden='true'><br /></div><div class='wp-menu-name'>Settings</div></a>
+	<ul class='wp-submenu wp-submenu-wrap'><li class='wp-submenu-head' aria-hidden='true'>Settings</li><li class="wp-first-item"><a href='options-general.php' class="wp-first-item">General</a></li><li><a href='options-writing.php'>Writing</a></li><li><a href='options-reading.php'>Reading</a></li><li><a href='options-discussion.php'>Discussion</a></li><li><a href='options-media.php'>Media</a></li><li><a href='options-permalink.php'>Permalinks</a></li><li><a href='options-privacy.php'>Privacy</a></li></ul></li>
+	<li class="wp-not-current-submenu wp-menu-separator" aria-hidden="true"><div class="separator"></div></li>
+	<li class="wp-has-submenu wp-has-current-submenu wp-menu-open menu-top toplevel_page_sitepress-multilingual-cms/menu/languages menu-top-first menu-top-last" id="toplevel_page_sitepress-multilingual-cms-menu-languages"><a href='admin.php?page=sitepress-multilingual-cms/menu/languages.php' class="wp-has-submenu wp-has-current-submenu wp-menu-open menu-top toplevel_page_sitepress-multilingual-cms/menu/languages menu-top-first menu-top-last" ><div class="wp-menu-arrow"><div></div></div><div class='wp-menu-image dashicons-before' aria-hidden='true'><img src="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/img/icon16.png" alt="" /></div><div class='wp-menu-name'>WPML</div></a>
+	<ul class='wp-submenu wp-submenu-wrap'><li class='wp-submenu-head' aria-hidden='true'>WPML</li><li class="wp-first-item"><a href='admin.php?page=sitepress-multilingual-cms/menu/languages.php' class="wp-first-item">Languages</a></li><li><a href='admin.php?page=sitepress-multilingual-cms/menu/theme-localization.php'>Theme and plugins localization</a></li><li><a href='admin.php?page=wpml-translation-management/menu/main.php'>Translation Management</a></li><li><a href='admin.php?page=wpml-translation-management/menu/translations-queue.php'>Translations</a></li><li><a href='admin.php?page=sitepress-multilingual-cms/menu/menu-sync/menus-sync.php'>WP Menus Sync</a></li><li class="current"><a href='admin.php?page=wpml-string-translation/menu/string-translation.php' class="current" aria-current="page">String Translation</a></li><li><a href='admin.php?page=sitepress-multilingual-cms/menu/taxonomy-translation.php'>Taxonomy translation</a></li><li><a href='admin.php?page=wpml-package-management'>Packages</a></li><li><a href='admin.php?page=wpml-translation-management/menu/settings'>Settings</a></li><li><a href='admin.php?page=sitepress-multilingual-cms/menu/support.php'>Support</a></li></ul></li><li id="collapse-menu" class="hide-if-no-js"><button type="button" id="collapse-button" aria-label="Collapse Main menu" aria-expanded="true"><span class="collapse-button-icon" aria-hidden="true"></span><span class="collapse-button-label">Collapse menu</span></button></li></ul>
+</div>
+</div>
+<div id="wpcontent">
+
+		<div id="wpadminbar" class="nojq nojs">
+						<div class="quicklinks" id="wp-toolbar" role="navigation" aria-label="Toolbar">
+				<ul role='menu' id='wp-admin-bar-root-default' class="ab-top-menu"><li id='wp-admin-bar-menu-toggle'><a class='ab-item' role="menuitem" href='#'><span class="ab-icon" aria-hidden="true"></span><span class="screen-reader-text">Menu</span></a></li><li id='wp-admin-bar-wp-logo' class="menupop"><a class='ab-item' role="menuitem" aria-expanded="false" href='http://127.0.0.1:8097/wp-admin/about.php'><span class="ab-icon" aria-hidden="true"></span><span class="screen-reader-text">About WordPress</span></a><div class="ab-sub-wrapper"><ul role='menu' aria-label='About WordPress' id='wp-admin-bar-wp-logo-default' class="ab-submenu"><li id='wp-admin-bar-about'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8097/wp-admin/about.php'>About WordPress</a></li><li id='wp-admin-bar-contribute'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8097/wp-admin/contribute.php'>Get Involved</a></li></ul><ul role='menu' aria-label='About WordPress' id='wp-admin-bar-wp-logo-external' class="ab-sub-secondary ab-submenu"><li id='wp-admin-bar-wporg'><a class='ab-item' role="menuitem" href='https://wordpress.org/'>WordPress.org</a></li><li id='wp-admin-bar-documentation'><a class='ab-item' role="menuitem" href='https://wordpress.org/documentation/'>Documentation</a></li><li id='wp-admin-bar-learn'><a class='ab-item' role="menuitem" href='https://learn.wordpress.org/'>Learn WordPress</a></li><li id='wp-admin-bar-support-forums'><a class='ab-item' role="menuitem" href='https://wordpress.org/support/forums/'>Support</a></li><li id='wp-admin-bar-feedback'><a class='ab-item' role="menuitem" href='https://wordpress.org/support/forum/requests-and-feedback'>Feedback</a></li></ul></div></li><li id='wp-admin-bar-site-name' class="menupop"><a class='ab-item' role="menuitem" aria-expanded="false" href='http://127.0.0.1:8097/'>OPF WPML Coherent Runtime</a><div class="ab-sub-wrapper"><ul role='menu' aria-label='OPF WPML Coherent Runtime' id='wp-admin-bar-site-name-default' class="ab-submenu"><li id='wp-admin-bar-view-site'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8097/'>Visit Site</a></li><li id='wp-admin-bar-view-store'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8097/shop/'>Visit Store</a></li></ul></div></li><li id='wp-admin-bar-updates'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8097/wp-admin/update-core.php'><span class="ab-icon" aria-hidden="true"></span><span class="ab-label" aria-hidden="true">6</span><span class="screen-reader-text updates-available-text">6 updates available</span></a></li><li id='wp-admin-bar-comments'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8097/wp-admin/edit-comments.php'><span class="ab-icon" aria-hidden="true"></span><span class="ab-label awaiting-mod pending-count count-0" aria-hidden="true">0</span><span class="screen-reader-text comments-in-moderation-text">0 Comments in moderation</span></a></li><li id='wp-admin-bar-new-content' class="menupop"><a class='ab-item' role="menuitem" aria-expanded="false" href='http://127.0.0.1:8097/wp-admin/post-new.php'><span class="ab-icon" aria-hidden="true"></span><span class="ab-label">New</span></a><div class="ab-sub-wrapper"><ul role='menu' aria-label='New' id='wp-admin-bar-new-content-default' class="ab-submenu"><li id='wp-admin-bar-new-post'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8097/wp-admin/post-new.php'>Post</a></li><li id='wp-admin-bar-new-media'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8097/wp-admin/media-new.php'>Media</a></li><li id='wp-admin-bar-new-page'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8097/wp-admin/post-new.php?post_type=page'>Page</a></li><li id='wp-admin-bar-new-product'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8097/wp-admin/post-new.php?post_type=product'>Product</a></li><li id='wp-admin-bar-new-shop_order'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8097/wp-admin/post-new.php?post_type=shop_order'>Order</a></li><li id='wp-admin-bar-new-shop_coupon'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8097/wp-admin/post-new.php?post_type=shop_coupon'>Coupon</a></li><li id='wp-admin-bar-new-opf_field_group'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8097/wp-admin/post-new.php?post_type=opf_field_group'>Field Group</a></li><li id='wp-admin-bar-new-user'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8097/wp-admin/user-new.php'>User</a></li></ul></div></li></ul><ul role='menu' id='wp-admin-bar-top-secondary' class="ab-top-secondary ab-top-menu"><li id='wp-admin-bar-my-account' class="menupop with-avatar"><a class='ab-item' role="menuitem" aria-expanded="false" href='http://127.0.0.1:8097/wp-admin/profile.php'>Howdy, <span class="display-name">admin</span><img alt='' src='http://2.gravatar.com/avatar/51965088c5db83c3fd307f308d25198a?s=26&#038;d=mm&#038;r=g' srcset='http://2.gravatar.com/avatar/51965088c5db83c3fd307f308d25198a?s=52&#038;d=mm&#038;r=g 2x' class='avatar avatar-26 photo' height='26' width='26' loading='lazy' decoding='async'/></a><div class="ab-sub-wrapper"><ul role='menu' aria-label='Howdy, admin' id='wp-admin-bar-user-actions' class="ab-submenu"><li id='wp-admin-bar-user-info'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8097/wp-admin/profile.php'><img alt='' src='http://2.gravatar.com/avatar/51965088c5db83c3fd307f308d25198a?s=64&#038;d=mm&#038;r=g' srcset='http://2.gravatar.com/avatar/51965088c5db83c3fd307f308d25198a?s=128&#038;d=mm&#038;r=g 2x' class='avatar avatar-64 photo' height='64' width='64' loading='lazy' decoding='async'/><span class='display-name'>admin</span><span class='display-name edit-profile'>Edit Profile</span></a></li><li id='wp-admin-bar-logout'><a class='ab-item' role="menuitem" href='http://127.0.0.1:8097/wp-login.php?action=logout&#038;_wpnonce=4684198802'>Log Out</a></li></ul></div></li></ul>			</div>
+		</div>
+
+		
+<div id="wpbody" role="main">
+
+<div id="wpbody-content">
+		<div id="screen-meta" class="metabox-prefs">
+
+			<div id="contextual-help-wrap" class="hidden no-sidebar" tabindex="-1" aria-label="Contextual Help Tab">
+				<div id="contextual-help-back"></div>
+				<div id="contextual-help-columns">
+					<div class="contextual-help-tabs">
+						<ul>
+												</ul>
+					</div>
+
+					
+					<div class="contextual-help-tabs-wrap">
+											</div>
+				</div>
+			</div>
+				</div>
+		<div class="notice notice-warning update-nag inline"><a href="https://wordpress.org/documentation/wordpress-version/version-7-1-2/">WordPress 7.1.2</a> is available! <a href="http://127.0.0.1:8097/wp-admin/update-core.php" aria-label="Please update WordPress now">Please update now</a>.</div><div class="error wpml-admin-notice"><h3>WPML Update is Incomplete</h3><p>You are running updated <strong>woocommerce-multilingual</strong>, but the following component is not updated:</p><p><ul class="ul-disc"><li data-installed-version="4.2.8">sitepress-multilingual-cms</li><li data-installed-version="2.10.6">wpml-string-translation</li><li data-installed-version="2.8.7">wpml-translation-management</li></ul></p><p>Your site will not work as it should in this configuration Please update all components which you are using. For WPML components you can receive updates from your <a href="https://wpml.org/account/" title="WPML.org account">WPML.org account</a> or automatically, after you register WPML.</p></div><div class="info notice-info is-dismissible notice otgs-notice" data-id="wpml_st_faster_settings" data-group="wpml-st-string-scan" data-nonce="2635dc74d1" data-hide-text="Hide" ><p><h3>Your site can run faster</h3>This version of WPML includes new settings that will help your site run faster. We recommend changing the following settings, which are all available in WPML->Theme and plugins localization:<br /><ul><li><strong>Assume that the original language of all strings is English</strong>: Almost all themes and plugins have texts in English. Reducing the check for the string's language simplifies and shortens the string translation process.</li></ul><div style="display:none" class="js-done">Settings saved</div><div style="display:none" class="js-error">Error</div></p><div class="otgs-notice-actions"><a href="#" class="notice-action button-primary notice-action-button-primary" data-nonce="2635dc74d1">Apply those changes</a><span class="otgs-notice-hide notice-hide"><span class="screen-reader-text">Skip</span></span></div><span class="otgs-notice-hide notice-hide"><span class="screen-reader-text">Hide this notice.</span></span><input type="hidden" id="wpml-localization-options-nonce" name="wpml-localization-options-nonce" value="31aa8364e3" /><input type="hidden" name="_wp_http_referer" value="/wp-admin/admin.php?page=wpml-string-translation%2Fmenu%2Fstring-translation.php" /></div>		<div class="error message otgs-is-dismissible">
+			<p>
+				WPML needs to set languages to existing media in your site.				<a href="http://127.0.0.1:8097/wp-admin/admin.php?page=wpml-translation-management/menu/settings#ml-content-setup-sec-media"
+				   class="button-secondary">Set media languages</a>
+
+				<span
+						id="wpml_media_dismiss_1" class="notice-dismiss"
+						onclick="		
+			jQuery.ajax( {
+				url: ajaxurl,
+				method: 'POST',
+				data: {
+					action: 'wpml_media_dismiss_starting_help',
+					nonce: 'de89070fdf'
+				},
+				success: function() {
+								
+				jQuery( '#wpml_media_dismiss_1' ).closest( '.message' ).fadeOut();
+			
+							}
+			} );
+		
+		 return false; ">
+					<span class="screen-reader-text">Dismiss</span>
+				</span>
+			</p>
+		</div>
+		<div class="wrap">
+
+	<h2>String translation</h2>
+
+	
+    
+        <p style="line-height:220%;">
+			Select which strings to display:        <select name="icl_st_filter_status">
+	                    <option value=""  selected='selected'>
+				All strings            </option>
+	                    <option value="10" >
+	            Translation complete            </option>
+	        		        <option value="0" >
+					Translation needed		        </option>
+		        		        <option value="1" >
+					Waiting for translator		        </option>
+	        
+        </select>
+
+                            &nbsp;&nbsp;
+                <span style="white-space:nowrap">
+        Select strings within domain:                    <select name="icl_st_filter_context">
+                        <option value=""
+								>All domains</option>
+                        	                                                    <option value="admin_texts_woocommerce_checkout_privacy_policy_text"
+                                    data-unfiltered-count="1"
+                                    >admin_texts_woocommerce_checkout_privacy_policy_text (1)</option>
+                        	                                                    <option value="admin_texts_woocommerce_email_footer_text"
+                                    data-unfiltered-count="1"
+                                    >admin_texts_woocommerce_email_footer_text (1)</option>
+                        	                                                    <option value="admin_texts_woocommerce_email_from_address"
+                                    data-unfiltered-count="1"
+                                    >admin_texts_woocommerce_email_from_address (1)</option>
+                        	                                                    <option value="admin_texts_woocommerce_email_from_name"
+                                    data-unfiltered-count="1"
+                                    >admin_texts_woocommerce_email_from_name (1)</option>
+                        	                                                    <option value="admin_texts_woocommerce_price_decimal_sep"
+                                    data-unfiltered-count="1"
+                                    >admin_texts_woocommerce_price_decimal_sep (1)</option>
+                        	                                                    <option value="admin_texts_woocommerce_price_thousand_sep"
+                                    data-unfiltered-count="1"
+                                    >admin_texts_woocommerce_price_thousand_sep (1)</option>
+                        	                                                    <option value="admin_texts_woocommerce_registration_privacy_policy_text"
+                                    data-unfiltered-count="1"
+                                    >admin_texts_woocommerce_registration_privacy_policy_text (1)</option>
+                        	                                                    <option value="default"
+                                    data-unfiltered-count="1759"
+                                    >default (1759)</option>
+                        	                                                    <option value="installer"
+                                    data-unfiltered-count="4"
+                                    >installer (4)</option>
+                        	                                                    <option value="jetpack-connection"
+                                    data-unfiltered-count="9"
+                                    >jetpack-connection (9)</option>
+                        	                                                    <option value="open-product-fields-12"
+                                    data-unfiltered-count="13"
+                                    >open-product-fields-12 (13)</option>
+                        	                                                    <option value="open-product-fields-for-woocommerce"
+                                    data-unfiltered-count="314"
+                                    >open-product-fields-for-woocommerce (314)</option>
+                        	                                                    <option value="sitepress"
+                                    data-unfiltered-count="1347"
+                                    >sitepress (1347)</option>
+                        	                                                    <option value="sitepress-multilingual-cms"
+                                    data-unfiltered-count="6"
+                                    >sitepress-multilingual-cms (6)</option>
+                        	                                                    <option value="twentytwentyfour"
+                                    data-unfiltered-count="166"
+                                    >twentytwentyfour (166)</option>
+                        	                                                    <option value="woocommerce"
+                                    data-unfiltered-count="2531"
+                                    >woocommerce (2531)</option>
+                        	                                                    <option value="woocommerce-multilingual"
+                                    data-unfiltered-count="6"
+                                    >woocommerce-multilingual (6)</option>
+                        	                                                    <option value="WP"
+                                    data-unfiltered-count="1"
+                                    >WP (1)</option>
+                        	                                                    <option value="WP Endpoints"
+                                    data-unfiltered-count="15"
+                                    >WP Endpoints (15)</option>
+                        	                                                    <option value="WPML"
+                                    data-unfiltered-count="1"
+                                    >WPML (1)</option>
+                        	                                                    <option value="wpml-string-translation"
+                                    data-unfiltered-count="273"
+                                    >wpml-string-translation (273)</option>
+                        	                                                    <option value="wpml-translation-management"
+                                    data-unfiltered-count="941"
+                                    >wpml-translation-management (941)</option>
+                                            </select>
+        </span>
+            
+                    <span style="white-space:nowrap">
+                Select strings Translation Priority:                <select name="icl-st-filter-translation-priority">
+                    <option value="">All Translation Priorities</option>
+                                            <option value="Not needed" >
+                            Not needed                        </option>
+                                            <option value="Optional" >
+                            Optional                        </option>
+                                            <option value="Required" >
+                            Required                        </option>
+                                    </select>
+            </span>
+                &nbsp;&nbsp;
+        <span style="white-space:nowrap">
+        <label>
+        Search for:        <input type="text" id="icl_st_filter_search" value="" />
+        </label>
+
+        <label>
+        <input type="checkbox" id="icl_st_filter_search_em" value="1"  />
+			Exact match        </label>
+
+        <label>
+        <input
+			type="checkbox"
+			id="search_translation"
+			value="1"
+						class="js-otgs-popover-tooltip"
+			title="Search in both the original language and in translations. Searching in translations may take a bit of time."
+		/>
+			Include translations        </label>
+
+        <input class="button" type="button" value="Search" id="icl_st_filter_search_sb"/>
+        </span>
+
+        
+        </p>
+					<p><a href="#" id="wpml-language-of-domains-link">Languages of domains</a></p>
+		        		<table id="icl_string_translations" class="widefat" cellspacing="0">
+					<thead>
+		<tr>
+			<td scope="col" class="manage-column column-cb check-column"><input type="checkbox"/></td>
+			<th scope="col">Domain</th>
+			<th scope="col">Context</th>
+			<th scope="col">Name</th>
+			<th scope="col">View</th>
+			<th scope="col">String</th>
+			<th scope="col">Status</th>
+		</tr>
+		<thead>
+				<tfoot>
+		<tr>
+			<td scope="col" class="manage-column column-cb check-column"><input type="checkbox"/></td>
+			<th scope="col">Domain</th>
+			<th scope="col">Context</th>
+			<th scope="col">Name</th>
+			<th scope="col">View</th>
+			<th scope="col">String</th>
+			<th scope="col">Status</th>
+		</tr>
+		<tfoot>
+					<tbody>
+					<tr valign="top">
+			<td><input class="icl_st_row_cb" type="checkbox" value="7416" data-language="en" /></td>			<td class="wpml-st-col-domain">default</td>
+			<td></td>
+			<td class="wpml-st-col-name"></td>
+			<td nowrap="nowrap">
+							</td>
+			<td class="wpml-st-col-string">
+				<div class="icl-st-original" dir="ltr" style="text-align:left;direction:ltr;">
+					<img src="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/en.png"> The login page will open in a new tab. After logging in you can close it and return to this page.				</div>
+				<div style="float:right;">
+					<a href="#icl-st-toggle-translations" class="js-wpml-st-toggle-translations">translations</a>
+				</div>
+				<br clear="all"/>
+				<div class="icl-st-inline"
+					 data-original="The login page will open in a new tab. After logging in you can close it and return to this page."
+					 data-source-lang="en">
+					
+						
+						<form class="icl_st_form"
+							  name="icl_st_form_es_7416" action="">
+							<input type="hidden" id="_icl_nonce" name="_icl_nonce" value="910bb0794c" /><input type="hidden" name="_wp_http_referer" value="/wp-admin/admin.php?page=wpml-string-translation%2Fmenu%2Fstring-translation.php" />							<input type="hidden" name="icl_st_language"
+								   value="es"/>
+							<input type="hidden" name="icl_st_string_id" value="7416"/>
+
+							<table class="icl-st-table">
+								<tr>
+									<td style="border:none">
+										Spanish										<br/>
+																				<img class="icl_ajx_loader"
+											 src="http://127.0.0.1:8097/wp-content/plugins/wpml-string-translation/res/img/ajax-loader.gif"
+											 style="float:left;display:none;position:absolute;margin:5px" alt=""/>
+																				<textarea dir="ltr" style="text-align:left;direction:ltr;width:100%"												rows="3" cols="40"
+												name="icl_st_translation"
+ 												placeholder="The login page will open in a new tab. After logging in you can close it and return to this page."
+ 												data-lang="es"
+																						></textarea>
+									</td>
+								</tr>
+								<tr>
+									<td align="right" style="border:none">
+																				<label>
+											<input 
+														type="checkbox"
+														name="icl_st_translation_complete"
+ 														data-lang="es"
+														value="1"
+																															   											/>
+											Translation is complete										</label>&nbsp;
+										<input type="submit" class="button-secondary action"
+														data-lang="es"
+														value="Save"/>
+																			</td>
+								</tr>
+							</table>
+						</form>
+
+					
+				</div>
+			</td>
+			<td nowrap="nowrap" id="icl_st_string_status_7416">
+				<span>
+				Not translated				</span>
+				<input type="hidden" id="icl_st_wc_7416" value="21"/>
+			</td>
+		</tr>
+				<tr valign="top">
+			<td><input class="icl_st_row_cb" type="checkbox" value="7415" data-language="en" /></td>			<td class="wpml-st-col-domain">default</td>
+			<td></td>
+			<td class="wpml-st-col-name"></td>
+			<td nowrap="nowrap">
+							</td>
+			<td class="wpml-st-col-string">
+				<div class="icl-st-original" dir="ltr" style="text-align:left;direction:ltr;">
+					<img src="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/en.png"> Please log in again.				</div>
+				<div style="float:right;">
+					<a href="#icl-st-toggle-translations" class="js-wpml-st-toggle-translations">translations</a>
+				</div>
+				<br clear="all"/>
+				<div class="icl-st-inline"
+					 data-original="Please log in again."
+					 data-source-lang="en">
+					
+						
+						<form class="icl_st_form"
+							  name="icl_st_form_es_7415" action="">
+							<input type="hidden" id="_icl_nonce" name="_icl_nonce" value="910bb0794c" /><input type="hidden" name="_wp_http_referer" value="/wp-admin/admin.php?page=wpml-string-translation%2Fmenu%2Fstring-translation.php" />							<input type="hidden" name="icl_st_language"
+								   value="es"/>
+							<input type="hidden" name="icl_st_string_id" value="7415"/>
+
+							<table class="icl-st-table">
+								<tr>
+									<td style="border:none">
+										Spanish										<br/>
+																				<img class="icl_ajx_loader"
+											 src="http://127.0.0.1:8097/wp-content/plugins/wpml-string-translation/res/img/ajax-loader.gif"
+											 style="float:left;display:none;position:absolute;margin:5px" alt=""/>
+																				<textarea dir="ltr" style="text-align:left;direction:ltr;width:100%"												rows="2" cols="40"
+												name="icl_st_translation"
+ 												placeholder="Please log in again."
+ 												data-lang="es"
+																						></textarea>
+									</td>
+								</tr>
+								<tr>
+									<td align="right" style="border:none">
+																				<label>
+											<input 
+														type="checkbox"
+														name="icl_st_translation_complete"
+ 														data-lang="es"
+														value="1"
+																															   											/>
+											Translation is complete										</label>&nbsp;
+										<input type="submit" class="button-secondary action"
+														data-lang="es"
+														value="Save"/>
+																			</td>
+								</tr>
+							</table>
+						</form>
+
+					
+				</div>
+			</td>
+			<td nowrap="nowrap" id="icl_st_string_status_7415">
+				<span>
+				Not translated				</span>
+				<input type="hidden" id="icl_st_wc_7415" value="4"/>
+			</td>
+		</tr>
+				<tr valign="top">
+			<td><input class="icl_st_row_cb" type="checkbox" value="7414" data-language="en" /></td>			<td class="wpml-st-col-domain">default</td>
+			<td></td>
+			<td class="wpml-st-col-name"></td>
+			<td nowrap="nowrap">
+							</td>
+			<td class="wpml-st-col-string">
+				<div class="icl-st-original" dir="ltr" style="text-align:left;direction:ltr;">
+					<img src="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/en.png"> Close dialog				</div>
+				<div style="float:right;">
+					<a href="#icl-st-toggle-translations" class="js-wpml-st-toggle-translations">translations</a>
+				</div>
+				<br clear="all"/>
+				<div class="icl-st-inline"
+					 data-original="Close dialog"
+					 data-source-lang="en">
+					
+						
+						<form class="icl_st_form"
+							  name="icl_st_form_es_7414" action="">
+							<input type="hidden" id="_icl_nonce" name="_icl_nonce" value="910bb0794c" /><input type="hidden" name="_wp_http_referer" value="/wp-admin/admin.php?page=wpml-string-translation%2Fmenu%2Fstring-translation.php" />							<input type="hidden" name="icl_st_language"
+								   value="es"/>
+							<input type="hidden" name="icl_st_string_id" value="7414"/>
+
+							<table class="icl-st-table">
+								<tr>
+									<td style="border:none">
+										Spanish										<br/>
+																				<img class="icl_ajx_loader"
+											 src="http://127.0.0.1:8097/wp-content/plugins/wpml-string-translation/res/img/ajax-loader.gif"
+											 style="float:left;display:none;position:absolute;margin:5px" alt=""/>
+																				<textarea dir="ltr" style="text-align:left;direction:ltr;width:100%"												rows="2" cols="40"
+												name="icl_st_translation"
+ 												placeholder="Close dialog"
+ 												data-lang="es"
+																						></textarea>
+									</td>
+								</tr>
+								<tr>
+									<td align="right" style="border:none">
+																				<label>
+											<input 
+														type="checkbox"
+														name="icl_st_translation_complete"
+ 														data-lang="es"
+														value="1"
+																															   											/>
+											Translation is complete										</label>&nbsp;
+										<input type="submit" class="button-secondary action"
+														data-lang="es"
+														value="Save"/>
+																			</td>
+								</tr>
+							</table>
+						</form>
+
+					
+				</div>
+			</td>
+			<td nowrap="nowrap" id="icl_st_string_status_7414">
+				<span>
+				Not translated				</span>
+				<input type="hidden" id="icl_st_wc_7414" value="2"/>
+			</td>
+		</tr>
+				<tr valign="top">
+			<td><input class="icl_st_row_cb" type="checkbox" value="7413" data-language="en" /></td>			<td class="wpml-st-col-domain">default</td>
+			<td></td>
+			<td class="wpml-st-col-name"></td>
+			<td nowrap="nowrap">
+							</td>
+			<td class="wpml-st-col-string">
+				<div class="icl-st-original" dir="ltr" style="text-align:left;direction:ltr;">
+					<img src="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/en.png"> Get Version %s				</div>
+				<div style="float:right;">
+					<a href="#icl-st-toggle-translations" class="js-wpml-st-toggle-translations">translations</a>
+				</div>
+				<br clear="all"/>
+				<div class="icl-st-inline"
+					 data-original="Get Version %s"
+					 data-source-lang="en">
+					
+						
+						<form class="icl_st_form"
+							  name="icl_st_form_es_7413" action="">
+							<input type="hidden" id="_icl_nonce" name="_icl_nonce" value="910bb0794c" /><input type="hidden" name="_wp_http_referer" value="/wp-admin/admin.php?page=wpml-string-translation%2Fmenu%2Fstring-translation.php" />							<input type="hidden" name="icl_st_language"
+								   value="es"/>
+							<input type="hidden" name="icl_st_string_id" value="7413"/>
+
+							<table class="icl-st-table">
+								<tr>
+									<td style="border:none">
+										Spanish										<br/>
+																				<img class="icl_ajx_loader"
+											 src="http://127.0.0.1:8097/wp-content/plugins/wpml-string-translation/res/img/ajax-loader.gif"
+											 style="float:left;display:none;position:absolute;margin:5px" alt=""/>
+																				<textarea dir="ltr" style="text-align:left;direction:ltr;width:100%"												rows="2" cols="40"
+												name="icl_st_translation"
+ 												placeholder="Get Version %s"
+ 												data-lang="es"
+																						></textarea>
+									</td>
+								</tr>
+								<tr>
+									<td align="right" style="border:none">
+																				<label>
+											<input 
+														type="checkbox"
+														name="icl_st_translation_complete"
+ 														data-lang="es"
+														value="1"
+																															   											/>
+											Translation is complete										</label>&nbsp;
+										<input type="submit" class="button-secondary action"
+														data-lang="es"
+														value="Save"/>
+																			</td>
+								</tr>
+							</table>
+						</form>
+
+					
+				</div>
+			</td>
+			<td nowrap="nowrap" id="icl_st_string_status_7413">
+				<span>
+				Not translated				</span>
+				<input type="hidden" id="icl_st_wc_7413" value="3"/>
+			</td>
+		</tr>
+				<tr valign="top">
+			<td><input class="icl_st_row_cb" type="checkbox" value="7412" data-language="en" /></td>			<td class="wpml-st-col-domain">default</td>
+			<td></td>
+			<td class="wpml-st-col-name"></td>
+			<td nowrap="nowrap">
+							</td>
+			<td class="wpml-st-col-string">
+				<div class="icl-st-original" dir="ltr" style="text-align:left;direction:ltr;">
+					<img src="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/en.png"> Thank you for creating with &lt;a href=&quot;%s&quot;&gt;WordPress&lt;/a&gt;.				</div>
+				<div style="float:right;">
+					<a href="#icl-st-toggle-translations" class="js-wpml-st-toggle-translations">translations</a>
+				</div>
+				<br clear="all"/>
+				<div class="icl-st-inline"
+					 data-original="Thank you for creating with &lt;a href=&quot;%s&quot;&gt;WordPress&lt;/a&gt;."
+					 data-source-lang="en">
+					
+						
+						<form class="icl_st_form"
+							  name="icl_st_form_es_7412" action="">
+							<input type="hidden" id="_icl_nonce" name="_icl_nonce" value="910bb0794c" /><input type="hidden" name="_wp_http_referer" value="/wp-admin/admin.php?page=wpml-string-translation%2Fmenu%2Fstring-translation.php" />							<input type="hidden" name="icl_st_language"
+								   value="es"/>
+							<input type="hidden" name="icl_st_string_id" value="7412"/>
+
+							<table class="icl-st-table">
+								<tr>
+									<td style="border:none">
+										Spanish										<br/>
+																				<img class="icl_ajx_loader"
+											 src="http://127.0.0.1:8097/wp-content/plugins/wpml-string-translation/res/img/ajax-loader.gif"
+											 style="float:left;display:none;position:absolute;margin:5px" alt=""/>
+																				<textarea dir="ltr" style="text-align:left;direction:ltr;width:100%"												rows="2" cols="40"
+												name="icl_st_translation"
+ 												placeholder="Thank you for creating with &lt;a href=&quot;%s&quot;&gt;WordPress&lt;/a&gt;."
+ 												data-lang="es"
+																						></textarea>
+									</td>
+								</tr>
+								<tr>
+									<td align="right" style="border:none">
+																				<label>
+											<input 
+														type="checkbox"
+														name="icl_st_translation_complete"
+ 														data-lang="es"
+														value="1"
+																															   											/>
+											Translation is complete										</label>&nbsp;
+										<input type="submit" class="button-secondary action"
+														data-lang="es"
+														value="Save"/>
+																			</td>
+								</tr>
+							</table>
+						</form>
+
+					
+				</div>
+			</td>
+			<td nowrap="nowrap" id="icl_st_string_status_7412">
+				<span>
+				Not translated				</span>
+				<input type="hidden" id="icl_st_wc_7412" value="6"/>
+			</td>
+		</tr>
+				<tr valign="top">
+			<td><input class="icl_st_row_cb" type="checkbox" value="7411" data-language="en" /></td>			<td class="wpml-st-col-domain">woocommerce</td>
+			<td>User role</td>
+			<td class="wpml-st-col-name"></td>
+			<td nowrap="nowrap">
+							</td>
+			<td class="wpml-st-col-string">
+				<div class="icl-st-original" dir="ltr" style="text-align:left;direction:ltr;">
+					<img src="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/en.png"> Shop manager				</div>
+				<div style="float:right;">
+					<a href="#icl-st-toggle-translations" class="js-wpml-st-toggle-translations">translations</a>
+				</div>
+				<br clear="all"/>
+				<div class="icl-st-inline"
+					 data-original="Shop manager"
+					 data-source-lang="en">
+					
+						
+						<form class="icl_st_form"
+							  name="icl_st_form_es_7411" action="">
+							<input type="hidden" id="_icl_nonce" name="_icl_nonce" value="910bb0794c" /><input type="hidden" name="_wp_http_referer" value="/wp-admin/admin.php?page=wpml-string-translation%2Fmenu%2Fstring-translation.php" />							<input type="hidden" name="icl_st_language"
+								   value="es"/>
+							<input type="hidden" name="icl_st_string_id" value="7411"/>
+
+							<table class="icl-st-table">
+								<tr>
+									<td style="border:none">
+										Spanish										<br/>
+																				<img class="icl_ajx_loader"
+											 src="http://127.0.0.1:8097/wp-content/plugins/wpml-string-translation/res/img/ajax-loader.gif"
+											 style="float:left;display:none;position:absolute;margin:5px" alt=""/>
+																				<textarea dir="ltr" style="text-align:left;direction:ltr;width:100%"												rows="2" cols="40"
+												name="icl_st_translation"
+ 												placeholder="Shop manager"
+ 												data-lang="es"
+																						></textarea>
+									</td>
+								</tr>
+								<tr>
+									<td align="right" style="border:none">
+																				<label>
+											<input 
+														type="checkbox"
+														name="icl_st_translation_complete"
+ 														data-lang="es"
+														value="1"
+																															   											/>
+											Translation is complete										</label>&nbsp;
+										<input type="submit" class="button-secondary action"
+														data-lang="es"
+														value="Save"/>
+																			</td>
+								</tr>
+							</table>
+						</form>
+
+					
+				</div>
+			</td>
+			<td nowrap="nowrap" id="icl_st_string_status_7411">
+				<span>
+				Not translated				</span>
+				<input type="hidden" id="icl_st_wc_7411" value="2"/>
+			</td>
+		</tr>
+				<tr valign="top">
+			<td><input class="icl_st_row_cb" type="checkbox" value="7410" data-language="en" /></td>			<td class="wpml-st-col-domain">default</td>
+			<td>User role</td>
+			<td class="wpml-st-col-name"></td>
+			<td nowrap="nowrap">
+							</td>
+			<td class="wpml-st-col-string">
+				<div class="icl-st-original" dir="ltr" style="text-align:left;direction:ltr;">
+					<img src="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/en.png"> Shop manager				</div>
+				<div style="float:right;">
+					<a href="#icl-st-toggle-translations" class="js-wpml-st-toggle-translations">translations</a>
+				</div>
+				<br clear="all"/>
+				<div class="icl-st-inline"
+					 data-original="Shop manager"
+					 data-source-lang="en">
+					
+						
+						<form class="icl_st_form"
+							  name="icl_st_form_es_7410" action="">
+							<input type="hidden" id="_icl_nonce" name="_icl_nonce" value="910bb0794c" /><input type="hidden" name="_wp_http_referer" value="/wp-admin/admin.php?page=wpml-string-translation%2Fmenu%2Fstring-translation.php" />							<input type="hidden" name="icl_st_language"
+								   value="es"/>
+							<input type="hidden" name="icl_st_string_id" value="7410"/>
+
+							<table class="icl-st-table">
+								<tr>
+									<td style="border:none">
+										Spanish										<br/>
+																				<img class="icl_ajx_loader"
+											 src="http://127.0.0.1:8097/wp-content/plugins/wpml-string-translation/res/img/ajax-loader.gif"
+											 style="float:left;display:none;position:absolute;margin:5px" alt=""/>
+																				<textarea dir="ltr" style="text-align:left;direction:ltr;width:100%"												rows="2" cols="40"
+												name="icl_st_translation"
+ 												placeholder="Shop manager"
+ 												data-lang="es"
+																						></textarea>
+									</td>
+								</tr>
+								<tr>
+									<td align="right" style="border:none">
+																				<label>
+											<input 
+														type="checkbox"
+														name="icl_st_translation_complete"
+ 														data-lang="es"
+														value="1"
+																															   											/>
+											Translation is complete										</label>&nbsp;
+										<input type="submit" class="button-secondary action"
+														data-lang="es"
+														value="Save"/>
+																			</td>
+								</tr>
+							</table>
+						</form>
+
+					
+				</div>
+			</td>
+			<td nowrap="nowrap" id="icl_st_string_status_7410">
+				<span>
+				Not translated				</span>
+				<input type="hidden" id="icl_st_wc_7410" value="2"/>
+			</td>
+		</tr>
+				<tr valign="top">
+			<td><input class="icl_st_row_cb" type="checkbox" value="7409" data-language="en" /></td>			<td class="wpml-st-col-domain">woocommerce</td>
+			<td>User role</td>
+			<td class="wpml-st-col-name"></td>
+			<td nowrap="nowrap">
+							</td>
+			<td class="wpml-st-col-string">
+				<div class="icl-st-original" dir="ltr" style="text-align:left;direction:ltr;">
+					<img src="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/en.png"> Customer				</div>
+				<div style="float:right;">
+					<a href="#icl-st-toggle-translations" class="js-wpml-st-toggle-translations">translations</a>
+				</div>
+				<br clear="all"/>
+				<div class="icl-st-inline"
+					 data-original="Customer"
+					 data-source-lang="en">
+					
+						
+						<form class="icl_st_form"
+							  name="icl_st_form_es_7409" action="">
+							<input type="hidden" id="_icl_nonce" name="_icl_nonce" value="910bb0794c" /><input type="hidden" name="_wp_http_referer" value="/wp-admin/admin.php?page=wpml-string-translation%2Fmenu%2Fstring-translation.php" />							<input type="hidden" name="icl_st_language"
+								   value="es"/>
+							<input type="hidden" name="icl_st_string_id" value="7409"/>
+
+							<table class="icl-st-table">
+								<tr>
+									<td style="border:none">
+										Spanish										<br/>
+																				<img class="icl_ajx_loader"
+											 src="http://127.0.0.1:8097/wp-content/plugins/wpml-string-translation/res/img/ajax-loader.gif"
+											 style="float:left;display:none;position:absolute;margin:5px" alt=""/>
+																				<textarea dir="ltr" style="text-align:left;direction:ltr;width:100%"												rows="2" cols="40"
+												name="icl_st_translation"
+ 												placeholder="Customer"
+ 												data-lang="es"
+																						></textarea>
+									</td>
+								</tr>
+								<tr>
+									<td align="right" style="border:none">
+																				<label>
+											<input 
+														type="checkbox"
+														name="icl_st_translation_complete"
+ 														data-lang="es"
+														value="1"
+																															   											/>
+											Translation is complete										</label>&nbsp;
+										<input type="submit" class="button-secondary action"
+														data-lang="es"
+														value="Save"/>
+																			</td>
+								</tr>
+							</table>
+						</form>
+
+					
+				</div>
+			</td>
+			<td nowrap="nowrap" id="icl_st_string_status_7409">
+				<span>
+				Not translated				</span>
+				<input type="hidden" id="icl_st_wc_7409" value="1"/>
+			</td>
+		</tr>
+				<tr valign="top">
+			<td><input class="icl_st_row_cb" type="checkbox" value="7408" data-language="en" /></td>			<td class="wpml-st-col-domain">default</td>
+			<td>User role</td>
+			<td class="wpml-st-col-name"></td>
+			<td nowrap="nowrap">
+							</td>
+			<td class="wpml-st-col-string">
+				<div class="icl-st-original" dir="ltr" style="text-align:left;direction:ltr;">
+					<img src="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/en.png"> Customer				</div>
+				<div style="float:right;">
+					<a href="#icl-st-toggle-translations" class="js-wpml-st-toggle-translations">translations</a>
+				</div>
+				<br clear="all"/>
+				<div class="icl-st-inline"
+					 data-original="Customer"
+					 data-source-lang="en">
+					
+						
+						<form class="icl_st_form"
+							  name="icl_st_form_es_7408" action="">
+							<input type="hidden" id="_icl_nonce" name="_icl_nonce" value="910bb0794c" /><input type="hidden" name="_wp_http_referer" value="/wp-admin/admin.php?page=wpml-string-translation%2Fmenu%2Fstring-translation.php" />							<input type="hidden" name="icl_st_language"
+								   value="es"/>
+							<input type="hidden" name="icl_st_string_id" value="7408"/>
+
+							<table class="icl-st-table">
+								<tr>
+									<td style="border:none">
+										Spanish										<br/>
+																				<img class="icl_ajx_loader"
+											 src="http://127.0.0.1:8097/wp-content/plugins/wpml-string-translation/res/img/ajax-loader.gif"
+											 style="float:left;display:none;position:absolute;margin:5px" alt=""/>
+																				<textarea dir="ltr" style="text-align:left;direction:ltr;width:100%"												rows="2" cols="40"
+												name="icl_st_translation"
+ 												placeholder="Customer"
+ 												data-lang="es"
+																						></textarea>
+									</td>
+								</tr>
+								<tr>
+									<td align="right" style="border:none">
+																				<label>
+											<input 
+														type="checkbox"
+														name="icl_st_translation_complete"
+ 														data-lang="es"
+														value="1"
+																															   											/>
+											Translation is complete										</label>&nbsp;
+										<input type="submit" class="button-secondary action"
+														data-lang="es"
+														value="Save"/>
+																			</td>
+								</tr>
+							</table>
+						</form>
+
+					
+				</div>
+			</td>
+			<td nowrap="nowrap" id="icl_st_string_status_7408">
+				<span>
+				Not translated				</span>
+				<input type="hidden" id="icl_st_wc_7408" value="1"/>
+			</td>
+		</tr>
+				<tr valign="top">
+			<td><input class="icl_st_row_cb" type="checkbox" value="7407" data-language="en" /></td>			<td class="wpml-st-col-domain">default</td>
+			<td>User role</td>
+			<td class="wpml-st-col-name"></td>
+			<td nowrap="nowrap">
+							</td>
+			<td class="wpml-st-col-string">
+				<div class="icl-st-original" dir="ltr" style="text-align:left;direction:ltr;">
+					<img src="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/en.png"> Subscriber				</div>
+				<div style="float:right;">
+					<a href="#icl-st-toggle-translations" class="js-wpml-st-toggle-translations">translations</a>
+				</div>
+				<br clear="all"/>
+				<div class="icl-st-inline"
+					 data-original="Subscriber"
+					 data-source-lang="en">
+					
+						
+						<form class="icl_st_form"
+							  name="icl_st_form_es_7407" action="">
+							<input type="hidden" id="_icl_nonce" name="_icl_nonce" value="910bb0794c" /><input type="hidden" name="_wp_http_referer" value="/wp-admin/admin.php?page=wpml-string-translation%2Fmenu%2Fstring-translation.php" />							<input type="hidden" name="icl_st_language"
+								   value="es"/>
+							<input type="hidden" name="icl_st_string_id" value="7407"/>
+
+							<table class="icl-st-table">
+								<tr>
+									<td style="border:none">
+										Spanish										<br/>
+																				<img class="icl_ajx_loader"
+											 src="http://127.0.0.1:8097/wp-content/plugins/wpml-string-translation/res/img/ajax-loader.gif"
+											 style="float:left;display:none;position:absolute;margin:5px" alt=""/>
+																				<textarea dir="ltr" style="text-align:left;direction:ltr;width:100%"												rows="2" cols="40"
+												name="icl_st_translation"
+ 												placeholder="Subscriber"
+ 												data-lang="es"
+																						></textarea>
+									</td>
+								</tr>
+								<tr>
+									<td align="right" style="border:none">
+																				<label>
+											<input 
+														type="checkbox"
+														name="icl_st_translation_complete"
+ 														data-lang="es"
+														value="1"
+																															   											/>
+											Translation is complete										</label>&nbsp;
+										<input type="submit" class="button-secondary action"
+														data-lang="es"
+														value="Save"/>
+																			</td>
+								</tr>
+							</table>
+						</form>
+
+					
+				</div>
+			</td>
+			<td nowrap="nowrap" id="icl_st_string_status_7407">
+				<span>
+				Not translated				</span>
+				<input type="hidden" id="icl_st_wc_7407" value="1"/>
+			</td>
+		</tr>
+					</tbody>
+		</table>
+
+					<div id="wpml-change-domain-language-dialog"
+				 class="wpml-change-language-dialog"
+				 title="Language of domains"
+				 style="display:none"
+				 data-button-text="Apply" 
+				 data-cancel-text="Cancel" >
+				<label for="wpml-domain-select">
+					Select for which domain to set the language: 				</label>
+				<select id="wpml-domain-select">
+					<option value="" selected="selected">-- Please select --</option>
+					<option value="admin_texts_woocommerce_checkout_privacy_policy_text" data-langs="[{&quot;language&quot;:&quot;en&quot;,&quot;count&quot;:&quot;1&quot;,&quot;display_name&quot;:&quot;English&quot;}]"data-domain_lang="" >admin_texts_woocommerce_checkout_privacy_policy_text</option><option value="admin_texts_woocommerce_email_footer_text" data-langs="[{&quot;language&quot;:&quot;en&quot;,&quot;count&quot;:&quot;1&quot;,&quot;display_name&quot;:&quot;English&quot;}]"data-domain_lang="" >admin_texts_woocommerce_email_footer_text</option><option value="admin_texts_woocommerce_email_from_address" data-langs="[{&quot;language&quot;:&quot;en&quot;,&quot;count&quot;:&quot;1&quot;,&quot;display_name&quot;:&quot;English&quot;}]"data-domain_lang="" >admin_texts_woocommerce_email_from_address</option><option value="admin_texts_woocommerce_email_from_name" data-langs="[{&quot;language&quot;:&quot;en&quot;,&quot;count&quot;:&quot;1&quot;,&quot;display_name&quot;:&quot;English&quot;}]"data-domain_lang="" >admin_texts_woocommerce_email_from_name</option><option value="admin_texts_woocommerce_price_decimal_sep" data-langs="[{&quot;language&quot;:&quot;en&quot;,&quot;count&quot;:&quot;1&quot;,&quot;display_name&quot;:&quot;English&quot;}]"data-domain_lang="" >admin_texts_woocommerce_price_decimal_sep</option><option value="admin_texts_woocommerce_price_thousand_sep" data-langs="[{&quot;language&quot;:&quot;en&quot;,&quot;count&quot;:&quot;1&quot;,&quot;display_name&quot;:&quot;English&quot;}]"data-domain_lang="" >admin_texts_woocommerce_price_thousand_sep</option><option value="admin_texts_woocommerce_registration_privacy_policy_text" data-langs="[{&quot;language&quot;:&quot;en&quot;,&quot;count&quot;:&quot;1&quot;,&quot;display_name&quot;:&quot;English&quot;}]"data-domain_lang="" >admin_texts_woocommerce_registration_privacy_policy_text</option><option value="default" data-langs="[{&quot;language&quot;:&quot;en&quot;,&quot;count&quot;:&quot;1759&quot;,&quot;display_name&quot;:&quot;English&quot;}]"data-domain_lang="" >default</option><option value="installer" data-langs="[{&quot;language&quot;:&quot;en&quot;,&quot;count&quot;:&quot;4&quot;,&quot;display_name&quot;:&quot;English&quot;}]"data-domain_lang="" >installer</option><option value="jetpack-connection" data-langs="[{&quot;language&quot;:&quot;en&quot;,&quot;count&quot;:&quot;9&quot;,&quot;display_name&quot;:&quot;English&quot;}]"data-domain_lang="" >jetpack-connection</option><option value="open-product-fields-12" data-langs="[{&quot;language&quot;:&quot;en&quot;,&quot;count&quot;:&quot;13&quot;,&quot;display_name&quot;:&quot;English&quot;}]"data-domain_lang="" >open-product-fields-12</option><option value="open-product-fields-for-woocommerce" data-langs="[{&quot;language&quot;:&quot;en&quot;,&quot;count&quot;:&quot;314&quot;,&quot;display_name&quot;:&quot;English&quot;}]"data-domain_lang="" >open-product-fields-for-woocommerce</option><option value="sitepress" data-langs="[{&quot;language&quot;:&quot;en&quot;,&quot;count&quot;:&quot;1347&quot;,&quot;display_name&quot;:&quot;English&quot;}]"data-domain_lang="" >sitepress</option><option value="sitepress-multilingual-cms" data-langs="[{&quot;language&quot;:&quot;en&quot;,&quot;count&quot;:&quot;6&quot;,&quot;display_name&quot;:&quot;English&quot;}]"data-domain_lang="" >sitepress-multilingual-cms</option><option value="twentytwentyfour" data-langs="[{&quot;language&quot;:&quot;en&quot;,&quot;count&quot;:&quot;166&quot;,&quot;display_name&quot;:&quot;English&quot;}]"data-domain_lang="" >twentytwentyfour</option><option value="woocommerce" data-langs="[{&quot;language&quot;:&quot;en&quot;,&quot;count&quot;:&quot;2531&quot;,&quot;display_name&quot;:&quot;English&quot;}]"data-domain_lang="" >woocommerce</option><option value="woocommerce-multilingual" data-langs="[{&quot;language&quot;:&quot;en&quot;,&quot;count&quot;:&quot;6&quot;,&quot;display_name&quot;:&quot;English&quot;}]"data-domain_lang="" >woocommerce-multilingual</option><option value="WP" data-langs="[{&quot;language&quot;:&quot;en&quot;,&quot;count&quot;:&quot;1&quot;,&quot;display_name&quot;:&quot;English&quot;}]"data-domain_lang="" >WP</option><option value="WP Endpoints" data-langs="[{&quot;language&quot;:&quot;en&quot;,&quot;count&quot;:&quot;15&quot;,&quot;display_name&quot;:&quot;English&quot;}]"data-domain_lang="" >WP Endpoints</option><option value="WPML" data-langs="[{&quot;language&quot;:&quot;en&quot;,&quot;count&quot;:&quot;1&quot;,&quot;display_name&quot;:&quot;English&quot;}]"data-domain_lang="" >WPML</option><option value="wpml-string-translation" data-langs="[{&quot;language&quot;:&quot;en&quot;,&quot;count&quot;:&quot;273&quot;,&quot;display_name&quot;:&quot;English&quot;}]"data-domain_lang="" >wpml-string-translation</option><option value="wpml-translation-management" data-langs="[{&quot;language&quot;:&quot;en&quot;,&quot;count&quot;:&quot;941&quot;,&quot;display_name&quot;:&quot;English&quot;}]"data-domain_lang="" >wpml-translation-management</option>				
+				</select>
+				<div class="js-summary wpml-cdl-summary" style="display:none" >
+					<p class="wpml-cdl-info">
+						This domain currently has the following strings:					</p>
+					<table class="widefat striped wpml-cdl-table">
+						<thead>
+							<tr>
+								<td class="manage-column column-cb check-column"><input class="js-all-check" type="checkbox" value="all" /></td>
+								<th>Current source language</th>
+								<th class="num">Number of strings</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+					<div class="js-lang-select-area wpml-cdl-info">
+						<label for="wpml-source-domain-language-change">Set the source language of these strings to:</label>
+								<select
+			title="wpml-simple-language-selector"
+			 id="wpml-source-domain-language-change"			class="wpml-simple-lang-selector js-simple-lang-selector  js-simple-lang-selector-flags"
+									style="">
+							<option value="" selected="selected"					>
+					-- Please select --				</option>
+								<option value="sq" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/sq.png" data-status="">
+					Albanian				</option>
+								<option value="ar" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/ar.png" data-status="">
+					Arabic				</option>
+								<option value="hy" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/hy.png" data-status="">
+					Armenian				</option>
+								<option value="eu" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/eu.png" data-status="">
+					Basque				</option>
+								<option value="bn" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/bn.png" data-status="">
+					Bengali				</option>
+								<option value="bs" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/bs.png" data-status="">
+					Bosnian				</option>
+								<option value="bg" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/bg.png" data-status="">
+					Bulgarian				</option>
+								<option value="ca" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/ca.png" data-status="">
+					Catalan				</option>
+								<option value="zh-hans" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/zh.png" data-status="">
+					Chinese (Simplified)				</option>
+								<option value="zh-hant" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/zh.png" data-status="">
+					Chinese (Traditional)				</option>
+								<option value="hr" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/hr.png" data-status="">
+					Croatian				</option>
+								<option value="cs" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/cs.png" data-status="">
+					Czech				</option>
+								<option value="da" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/da.png" data-status="">
+					Danish				</option>
+								<option value="nl" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/nl.png" data-status="">
+					Dutch				</option>
+								<option value="en" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/en.png" data-status="active">
+					English				</option>
+								<option value="eo" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/eo.png" data-status="">
+					Esperanto				</option>
+								<option value="et" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/et.png" data-status="">
+					Estonian				</option>
+								<option value="fi" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/fi.png" data-status="">
+					Finnish				</option>
+								<option value="fr" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/fr.png" data-status="">
+					French				</option>
+								<option value="gl" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/gl.png" data-status="">
+					Galician				</option>
+								<option value="de" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/de.png" data-status="">
+					German				</option>
+								<option value="el" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/el.png" data-status="">
+					Greek				</option>
+								<option value="he" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/he.png" data-status="">
+					Hebrew				</option>
+								<option value="hi" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/hi.png" data-status="">
+					Hindi				</option>
+								<option value="hu" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/hu.png" data-status="">
+					Hungarian				</option>
+								<option value="is" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/is.png" data-status="">
+					Icelandic				</option>
+								<option value="id" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/id.png" data-status="">
+					Indonesian				</option>
+								<option value="ga" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/ga.png" data-status="">
+					Irish				</option>
+								<option value="it" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/it.png" data-status="">
+					Italian				</option>
+								<option value="ja" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/ja.png" data-status="">
+					Japanese				</option>
+								<option value="ko" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/ko.png" data-status="">
+					Korean				</option>
+								<option value="ku" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/ku.png" data-status="">
+					Kurdish				</option>
+								<option value="lv" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/lv.png" data-status="">
+					Latvian				</option>
+								<option value="lt" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/lt.png" data-status="">
+					Lithuanian				</option>
+								<option value="mk" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/mk.png" data-status="">
+					Macedonian				</option>
+								<option value="ms" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/ms.png" data-status="">
+					Malay				</option>
+								<option value="mt" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/mt.png" data-status="">
+					Maltese				</option>
+								<option value="mn" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/mn.png" data-status="">
+					Mongolian				</option>
+								<option value="ne" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/ne.png" data-status="">
+					Nepali				</option>
+								<option value="no" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/no.png" data-status="">
+					Norwegian Bokmål				</option>
+								<option value="fa" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/fa.png" data-status="">
+					Persian				</option>
+								<option value="pl" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/pl.png" data-status="">
+					Polish				</option>
+								<option value="pt-br" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/pt-br.png" data-status="">
+					Portuguese (Brazil)				</option>
+								<option value="pt-pt" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/pt-pt.png" data-status="">
+					Portuguese (Portugal)				</option>
+								<option value="pa" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/pa.png" data-status="">
+					Punjabi				</option>
+								<option value="qu" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/qu.png" data-status="">
+					Quechua				</option>
+								<option value="ro" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/ro.png" data-status="">
+					Romanian				</option>
+								<option value="ru" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/ru.png" data-status="">
+					Russian				</option>
+								<option value="sr" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/sr.png" data-status="">
+					Serbian				</option>
+								<option value="sk" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/sk.png" data-status="">
+					Slovak				</option>
+								<option value="sl" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/sl.png" data-status="">
+					Slovenian				</option>
+								<option value="so" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/so.png" data-status="">
+					Somali				</option>
+								<option value="es" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/es.png" data-status="active">
+					Spanish				</option>
+								<option value="sv" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/sv.png" data-status="">
+					Swedish				</option>
+								<option value="ta" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/ta.png" data-status="">
+					Tamil				</option>
+								<option value="th" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/th.png" data-status="">
+					Thai				</option>
+								<option value="tr" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/tr.png" data-status="">
+					Turkish				</option>
+								<option value="uk" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/uk.png" data-status="">
+					Ukrainian				</option>
+								<option value="ur" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/ur.png" data-status="">
+					Urdu				</option>
+								<option value="uz" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/uz.png" data-status="">
+					Uzbek				</option>
+								<option value="vi" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/vi.png" data-status="">
+					Vietnamese				</option>
+								<option value="cy" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/cy.png" data-status="">
+					Welsh				</option>
+								<option value="yi" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/yi.png" data-status="">
+					Yiddish				</option>
+								<option value="zu" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/zu.png" data-status="">
+					Zulu				</option>
+						</select>
+								<label for="wpml-cdl-set-default">
+							<input id="wpml-cdl-set-default" type="checkbox" class="js-default" value="use-as-default" checked="checked" />
+							Use this language as the default language for new strings in this domain						</label>
+					</div>
+				</div>
+				<span class="spinner"></span>
+				<input type="hidden" id="wpml_change_string_domain_language_nonce" name="wpml_change_string_domain_language_nonce" value="7d6e4f2ec9" /><input type="hidden" name="_wp_http_referer" value="/wp-admin/admin.php?page=wpml-string-translation%2Fmenu%2Fstring-translation.php" />			</div>
+					<div class="tablenav">
+				
+					<div class="tablenav-pages">
+						<span class="displaying-num">Displaying 1&#8211;10 of 7,393</span><span aria-current="page" class="page-numbers current">1</span>
+<a class="page-numbers" href="/wp-admin/admin.php?page=wpml-string-translation%2Fmenu%2Fstring-translation.php&#038;paged=2">2</a>
+<a class="page-numbers" href="/wp-admin/admin.php?page=wpml-string-translation%2Fmenu%2Fstring-translation.php&#038;paged=3">3</a>
+<span class="page-numbers dots">&hellip;</span>
+<a class="page-numbers" href="/wp-admin/admin.php?page=wpml-string-translation%2Fmenu%2Fstring-translation.php&#038;paged=740">740</a>
+<a class="next page-numbers" href="/wp-admin/admin.php?page=wpml-string-translation%2Fmenu%2Fstring-translation.php&#038;paged=2">&raquo;</a>Strings per page:							<select name="icl_st_per_page"
+									onchange="location.href='http://127.0.0.1:8097/wp-admin/admin.php?page=wpml-string-translation/menu/string-translation.php&amp;strings_per_page='+this.value">
+								<option value="10" selected="selected">10</option><option value="20">20</option><option value="50">50</option><option value="100">100</option>							</select>&nbsp;
+							<a href="http://127.0.0.1:8097/wp-admin/admin.php?page=wpml-string-translation/menu/string-translation.php&#038;show_results=all">Display all results</a>
+												</div>
+								</div>
+			
+        
+        <span class="subsubsub">
+            <input type="hidden" id="_icl_nonce_dstr"
+                   value="dbc14408a2"/>
+						<div id="wpml-st-package-incomplete"
+							 style="display:none;color:red;">You have selected strings belonging to a package. Please select all strings from the affected package or unselect these strings.</div>
+            <input type="button" class="button-secondary" id="icl_st_delete_selected"
+				   value="Delete selected strings"
+				   data-confirm="Are you sure you want to delete these strings?
+Their translations will be deleted too."
+                   data-error="WPML could not delete the strings"
+				   disabled="disabled"/>
+
+            		<select
+			title="wpml-simple-language-selector"
+			 id="icl_st_change_lang_selected"			class="wpml-simple-lang-selector js-simple-lang-selector wpml-select2-button js-simple-lang-selector-flags"
+						 disabled=&quot;disabled&quot; 			style="">
+							<option value="" selected="selected"					>
+					Change the language of selected strings				</option>
+								<option value="sq" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/sq.png" data-status="">
+					Albanian				</option>
+								<option value="ar" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/ar.png" data-status="">
+					Arabic				</option>
+								<option value="hy" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/hy.png" data-status="">
+					Armenian				</option>
+								<option value="eu" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/eu.png" data-status="">
+					Basque				</option>
+								<option value="bn" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/bn.png" data-status="">
+					Bengali				</option>
+								<option value="bs" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/bs.png" data-status="">
+					Bosnian				</option>
+								<option value="bg" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/bg.png" data-status="">
+					Bulgarian				</option>
+								<option value="ca" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/ca.png" data-status="">
+					Catalan				</option>
+								<option value="zh-hans" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/zh.png" data-status="">
+					Chinese (Simplified)				</option>
+								<option value="zh-hant" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/zh.png" data-status="">
+					Chinese (Traditional)				</option>
+								<option value="hr" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/hr.png" data-status="">
+					Croatian				</option>
+								<option value="cs" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/cs.png" data-status="">
+					Czech				</option>
+								<option value="da" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/da.png" data-status="">
+					Danish				</option>
+								<option value="nl" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/nl.png" data-status="">
+					Dutch				</option>
+								<option value="en" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/en.png" data-status="active">
+					English				</option>
+								<option value="eo" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/eo.png" data-status="">
+					Esperanto				</option>
+								<option value="et" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/et.png" data-status="">
+					Estonian				</option>
+								<option value="fi" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/fi.png" data-status="">
+					Finnish				</option>
+								<option value="fr" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/fr.png" data-status="">
+					French				</option>
+								<option value="gl" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/gl.png" data-status="">
+					Galician				</option>
+								<option value="de" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/de.png" data-status="">
+					German				</option>
+								<option value="el" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/el.png" data-status="">
+					Greek				</option>
+								<option value="he" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/he.png" data-status="">
+					Hebrew				</option>
+								<option value="hi" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/hi.png" data-status="">
+					Hindi				</option>
+								<option value="hu" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/hu.png" data-status="">
+					Hungarian				</option>
+								<option value="is" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/is.png" data-status="">
+					Icelandic				</option>
+								<option value="id" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/id.png" data-status="">
+					Indonesian				</option>
+								<option value="ga" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/ga.png" data-status="">
+					Irish				</option>
+								<option value="it" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/it.png" data-status="">
+					Italian				</option>
+								<option value="ja" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/ja.png" data-status="">
+					Japanese				</option>
+								<option value="ko" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/ko.png" data-status="">
+					Korean				</option>
+								<option value="ku" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/ku.png" data-status="">
+					Kurdish				</option>
+								<option value="lv" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/lv.png" data-status="">
+					Latvian				</option>
+								<option value="lt" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/lt.png" data-status="">
+					Lithuanian				</option>
+								<option value="mk" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/mk.png" data-status="">
+					Macedonian				</option>
+								<option value="ms" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/ms.png" data-status="">
+					Malay				</option>
+								<option value="mt" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/mt.png" data-status="">
+					Maltese				</option>
+								<option value="mn" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/mn.png" data-status="">
+					Mongolian				</option>
+								<option value="ne" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/ne.png" data-status="">
+					Nepali				</option>
+								<option value="no" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/no.png" data-status="">
+					Norwegian Bokmål				</option>
+								<option value="fa" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/fa.png" data-status="">
+					Persian				</option>
+								<option value="pl" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/pl.png" data-status="">
+					Polish				</option>
+								<option value="pt-br" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/pt-br.png" data-status="">
+					Portuguese (Brazil)				</option>
+								<option value="pt-pt" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/pt-pt.png" data-status="">
+					Portuguese (Portugal)				</option>
+								<option value="pa" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/pa.png" data-status="">
+					Punjabi				</option>
+								<option value="qu" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/qu.png" data-status="">
+					Quechua				</option>
+								<option value="ro" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/ro.png" data-status="">
+					Romanian				</option>
+								<option value="ru" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/ru.png" data-status="">
+					Russian				</option>
+								<option value="sr" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/sr.png" data-status="">
+					Serbian				</option>
+								<option value="sk" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/sk.png" data-status="">
+					Slovak				</option>
+								<option value="sl" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/sl.png" data-status="">
+					Slovenian				</option>
+								<option value="so" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/so.png" data-status="">
+					Somali				</option>
+								<option value="es" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/es.png" data-status="active">
+					Spanish				</option>
+								<option value="sv" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/sv.png" data-status="">
+					Swedish				</option>
+								<option value="ta" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/ta.png" data-status="">
+					Tamil				</option>
+								<option value="th" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/th.png" data-status="">
+					Thai				</option>
+								<option value="tr" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/tr.png" data-status="">
+					Turkish				</option>
+								<option value="uk" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/uk.png" data-status="">
+					Ukrainian				</option>
+								<option value="ur" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/ur.png" data-status="">
+					Urdu				</option>
+								<option value="uz" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/uz.png" data-status="">
+					Uzbek				</option>
+								<option value="vi" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/vi.png" data-status="">
+					Vietnamese				</option>
+								<option value="cy" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/cy.png" data-status="">
+					Welsh				</option>
+								<option value="yi" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/yi.png" data-status="">
+					Yiddish				</option>
+								<option value="zu" 								data-flag_url="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/flags/zu.png" data-status="">
+					Zulu				</option>
+						</select>
+		<input type="hidden" id="wpml_change_string_language_nonce" name="wpml_change_string_language_nonce" value="a6155dcfdf" /><input type="hidden" name="_wp_http_referer" value="/wp-admin/admin.php?page=wpml-string-translation%2Fmenu%2Fstring-translation.php" /><input type="hidden" id="wpml_change_string_translation_priority_nonce" name="wpml_change_string_translation_priority_nonce" value="b88514efc8" /><input type="hidden" name="_wp_http_referer" value="/wp-admin/admin.php?page=wpml-string-translation%2Fmenu%2Fstring-translation.php" /><select  class="wpml-select2-button js-change-translation-priority" id="icl-st-change-translation-priority-selected" disabled="disabled">
+    <option value="">Change translation priority of selected strings</option>
+            <option value="Not needed">
+            Not needed
+        </option>
+            <option value="Optional">
+            Optional
+        </option>
+            <option value="Required">
+            Required
+        </option>
+    </select>
+
+<input type="hidden" id="wpml_change_string_translation_priority_nonce" name="wpml_change_string_translation_priority_nonce" value="b88514efc8" /><input type="hidden" name="_wp_http_referer" value="/wp-admin/admin.php?page=wpml-string-translation%2Fmenu%2Fstring-translation.php" />
+            <span class="spinner icl-st-change-spinner"></span>
+
+        </span>
+
+        <br clear="all" />
+
+        <br />
+
+				<form method="post" id="icl_st_send_strings" name="icl_st_send_strings"
+		      action="">
+			<input type="hidden" name="icl_st_action" value="send_strings"/>
+			<input type="hidden" name="strings" value=""/>
+			<input type="hidden" name="icl-tr-from"
+			       value=""/>
+			<input type="hidden" name="icl-basket-language"
+			       value=""/>
+
+			<table id="icl-tr-opt" class="widefat fixed" cellspacing="0"
+			       style="width:100%">
+				<thead>
+				<tr>
+					<th>Translation options</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr>
+					<td>
+						<ul id="icl_tm_languages">
+															<li>
+									<input type="checkbox"
+									       id="translate_to[en]"
+									       name="translate_to[en]"
+									       value="1"
+									       id="icl_st_translate_to_en"  checked='checked'									       data-language="en"
+									/>
+									<label
+										for="translate_to[en]"
+										class="active">
+										Translate to English									</label>
+																	</li>
+																<li>
+									<input type="checkbox"
+									       id="translate_to[es]"
+									       name="translate_to[es]"
+									       value="1"
+									       id="icl_st_translate_to_es"  checked='checked'									       data-language="es"
+									/>
+									<label
+										for="translate_to[es]"
+										class="active">
+										Translate to Spanish									</label>
+																	</li>
+														</ul>
+						<input name="_icl_nonce" type="hidden" value="64c78fcd34"/>						<input id="icl_send_strings" class="button-primary"
+						       type="submit"
+						       value="Add to translation basket"
+						       disabled="disabled"
+						       data-lang-not-active-message="One of the selected strings is in a language that is not activate. It can not be added to the translation basket."
+						       data-more-than-one-lang-message="Strings in different languages are selected. They can not be added to the translation basket."
+						       data-translation-basket-lang-message="You cannot add strings in this language to the basket since it already contains posts or strings of another source language! Either submit the current basket or delete the posts of differing language in the current basket"
+						/>
+
+						<div class="update-nag js-translation-message"
+						     style="display:none"></div>
+
+						<div style="width: 45%; margin: auto">
+													</div>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+		</form>
+		
+        <br style="clear:both;" />
+        <div id="dashboard-widgets-wrap">
+            <div id="dashboard-widgets" class="metabox-holder">
+
+	            
+	            <div class="postbox-container" style="width: 49%;">
+                    <div id="normal-sortables-stsel" class="meta-box-sortables ui-sortable">
+
+                        <div id="dashboard_wpml_stsel_1" class="postbox">
+							<div class="handlediv" title="Click to toggle">
+                                <br/>
+                            </div>
+                            <h3 class="hndle">
+								<span>Track where strings appear on the site</span>
+                            </h3>
+                            <div class="inside">
+								<p class="sub">WPML can keep track of where strings are used on the public pages. Activating this feature will enable the &#039;view in page&#039; functionality and make translation easier.</p>
+                                <form id="icl_st_track_strings" name="icl_st_track_strings" action="">
+                                    <input type="hidden" id="_icl_nonce" name="_icl_nonce" value="9e2818cc06" /><input type="hidden" name="_wp_http_referer" value="/wp-admin/admin.php?page=wpml-string-translation%2Fmenu%2Fstring-translation.php" />                                    <p class="icl_form_errors" style="display:none"></p>
+                                    <ul>
+                                        <li>
+                                           	<input type="hidden" name="icl_st[track_strings]" value="0" />
+	                                        	                                        <input type="checkbox" id="track_strings" name="icl_st[track_strings]" value="1"  />
+											<label for="track_strings">Track where strings appear on the site</label>
+	                                        <p class="js-track-strings-note"  style="color: red;display: none;"">
+		                                        <a href="https://wpml.org/documentation/getting-started-guide/string-translation/#track-strings" target="_blank">String Tracking</a> allows you to see where strings come from, so you can translate them accurately. It needs to parse the PHP source files and the output HTML. This feature is CPU-intensive and should only be used while you are developing sites. Remember to turn it off before going to production, to avoid performance problems.	                                        </p>
+											<p><a href="https://wpml.org/?p=9073" target="_blank">Performance considerations&nbsp;&raquo;</a></p>
+                                        </li>
+                                        <li>
+                                            <label for="icl-st-hl-color">Highlight color for strings</label><br /><input class="wpml-colorpicker wp-color-picker-field" type="text"size="7" id="icl-st-hl-color" name="icl_st[hl_color]" value="#FFFF00" data-default-color="#FFFF00" />                                        </li>
+                                    </ul>
+                                    <p>
+										<input class="button-secondary" type="submit" name="iclt_st_save" value="Apply"/>
+                                    <span class="icl_ajx_response" id="icl_ajx_response2" style="display:inline"></span>
+                                    </p>
+                                </form>
+
+                            </div>
+                        </div>
+
+                        <div id="dashboard_wpml_stsel_1.5" class="postbox wpml-st-exclude-contexts">
+                            <div class="handlediv" title="Click to toggle">
+                                <br/>
+                            </div>
+                            <h3 class="hndle">
+                                <span>Auto register strings for translation</span>
+                            </h3>
+                            <div class="inside">
+                                <p class="sub">WPML can automatically register strings for translation. This allows you to translate user-generated content with minimal PHP code.</p>
+
+                                <p class="wpml-st-excluded-info"
+                                   data-all-included="Strings from all text domains will be auto-registered"
+                                   data-all-excluded="Strings from all text domains are excluded"
+                                   data-excluded-preview="You excluded: "
+                                   data-included-preview="You included: "
+                                   data-preview-suffix="and others"
+                                >
+
+                                </p>
+                                <p>
+                                    <input type="button"
+                                           class="button-secondary js-wpml-autoregister-edit-contexts"
+                                           value="Edit"
+                                    />
+                                </p>
+
+                                <div class="wpml-st-exclude-contexts-box"
+                                     style="display:none;"
+                                     title="Auto-register strings from these text domains"
+                                >
+                                    <form method="post" action="" data-nonce="c14c936421" >
+                                        
+                                        <div id="wpml-st-filter-and-select-all-box">
+                                            <input type="input" name="search" placeholder="Search" />
+
+                                            <br/>
+
+                                            <p>
+                                                <input type="checkbox" name="select_all"  checked='checked' />
+                                                <span></span>
+                                            </p>
+                                        </div>
+
+                                        <div class="contexts">
+                                                                                                                                            <p>
+                                                    <input
+                                                        type="checkbox"
+                                                        name="wpml_st_auto_reg_excluded_contexts[]"
+                                                        value="admin_texts_woocommerce_checkout_privacy_policy_text"
+                                                         checked='checked'                                                    />
+                                                    <span>admin_texts_woocommerce_checkout_privacy_policy_text</span>
+                                                </p>
+                                                                                                                                                                                            <p>
+                                                    <input
+                                                        type="checkbox"
+                                                        name="wpml_st_auto_reg_excluded_contexts[]"
+                                                        value="admin_texts_woocommerce_email_footer_text"
+                                                         checked='checked'                                                    />
+                                                    <span>admin_texts_woocommerce_email_footer_text</span>
+                                                </p>
+                                                                                                                                                                                            <p>
+                                                    <input
+                                                        type="checkbox"
+                                                        name="wpml_st_auto_reg_excluded_contexts[]"
+                                                        value="admin_texts_woocommerce_email_from_address"
+                                                         checked='checked'                                                    />
+                                                    <span>admin_texts_woocommerce_email_from_address</span>
+                                                </p>
+                                                                                                                                                                                            <p>
+                                                    <input
+                                                        type="checkbox"
+                                                        name="wpml_st_auto_reg_excluded_contexts[]"
+                                                        value="admin_texts_woocommerce_email_from_name"
+                                                         checked='checked'                                                    />
+                                                    <span>admin_texts_woocommerce_email_from_name</span>
+                                                </p>
+                                                                                                                                                                                            <p>
+                                                    <input
+                                                        type="checkbox"
+                                                        name="wpml_st_auto_reg_excluded_contexts[]"
+                                                        value="admin_texts_woocommerce_price_decimal_sep"
+                                                         checked='checked'                                                    />
+                                                    <span>admin_texts_woocommerce_price_decimal_sep</span>
+                                                </p>
+                                                                                                                                                                                            <p>
+                                                    <input
+                                                        type="checkbox"
+                                                        name="wpml_st_auto_reg_excluded_contexts[]"
+                                                        value="admin_texts_woocommerce_price_thousand_sep"
+                                                         checked='checked'                                                    />
+                                                    <span>admin_texts_woocommerce_price_thousand_sep</span>
+                                                </p>
+                                                                                                                                                                                            <p>
+                                                    <input
+                                                        type="checkbox"
+                                                        name="wpml_st_auto_reg_excluded_contexts[]"
+                                                        value="admin_texts_woocommerce_registration_privacy_policy_text"
+                                                         checked='checked'                                                    />
+                                                    <span>admin_texts_woocommerce_registration_privacy_policy_text</span>
+                                                </p>
+                                                                                                                                                                                            <p>
+                                                    <input
+                                                        type="checkbox"
+                                                        name="wpml_st_auto_reg_excluded_contexts[]"
+                                                        value="default"
+                                                         checked='checked'                                                    />
+                                                    <span>default</span>
+                                                </p>
+                                                                                                                                                                                            <p>
+                                                    <input
+                                                        type="checkbox"
+                                                        name="wpml_st_auto_reg_excluded_contexts[]"
+                                                        value="installer"
+                                                         checked='checked'                                                    />
+                                                    <span>installer</span>
+                                                </p>
+                                                                                                                                                                                            <p>
+                                                    <input
+                                                        type="checkbox"
+                                                        name="wpml_st_auto_reg_excluded_contexts[]"
+                                                        value="jetpack-connection"
+                                                         checked='checked'                                                    />
+                                                    <span>jetpack-connection</span>
+                                                </p>
+                                                                                                                                                                                            <p>
+                                                    <input
+                                                        type="checkbox"
+                                                        name="wpml_st_auto_reg_excluded_contexts[]"
+                                                        value="open-product-fields-12"
+                                                         checked='checked'                                                    />
+                                                    <span>open-product-fields-12</span>
+                                                </p>
+                                                                                                                                                                                            <p>
+                                                    <input
+                                                        type="checkbox"
+                                                        name="wpml_st_auto_reg_excluded_contexts[]"
+                                                        value="open-product-fields-for-woocommerce"
+                                                         checked='checked'                                                    />
+                                                    <span>open-product-fields-for-woocommerce</span>
+                                                </p>
+                                                                                                                                                                                            <p>
+                                                    <input
+                                                        type="checkbox"
+                                                        name="wpml_st_auto_reg_excluded_contexts[]"
+                                                        value="sitepress"
+                                                         checked='checked'                                                    />
+                                                    <span>sitepress</span>
+                                                </p>
+                                                                                                                                                                                            <p>
+                                                    <input
+                                                        type="checkbox"
+                                                        name="wpml_st_auto_reg_excluded_contexts[]"
+                                                        value="sitepress-multilingual-cms"
+                                                         checked='checked'                                                    />
+                                                    <span>sitepress-multilingual-cms</span>
+                                                </p>
+                                                                                                                                                                                            <p>
+                                                    <input
+                                                        type="checkbox"
+                                                        name="wpml_st_auto_reg_excluded_contexts[]"
+                                                        value="twentytwentyfour"
+                                                         checked='checked'                                                    />
+                                                    <span>twentytwentyfour</span>
+                                                </p>
+                                                                                                                                                                                            <p>
+                                                    <input
+                                                        type="checkbox"
+                                                        name="wpml_st_auto_reg_excluded_contexts[]"
+                                                        value="woocommerce"
+                                                         checked='checked'                                                    />
+                                                    <span>woocommerce</span>
+                                                </p>
+                                                                                                                                                                                            <p>
+                                                    <input
+                                                        type="checkbox"
+                                                        name="wpml_st_auto_reg_excluded_contexts[]"
+                                                        value="woocommerce-multilingual"
+                                                         checked='checked'                                                    />
+                                                    <span>woocommerce-multilingual</span>
+                                                </p>
+                                                                                                                                                                                            <p>
+                                                    <input
+                                                        type="checkbox"
+                                                        name="wpml_st_auto_reg_excluded_contexts[]"
+                                                        value="WP"
+                                                         checked='checked'                                                    />
+                                                    <span>WP</span>
+                                                </p>
+                                                                                                                                                                                            <p>
+                                                    <input
+                                                        type="checkbox"
+                                                        name="wpml_st_auto_reg_excluded_contexts[]"
+                                                        value="WP Endpoints"
+                                                         checked='checked'                                                    />
+                                                    <span>WP Endpoints</span>
+                                                </p>
+                                                                                                                                                                                            <p>
+                                                    <input
+                                                        type="checkbox"
+                                                        name="wpml_st_auto_reg_excluded_contexts[]"
+                                                        value="WPML"
+                                                         checked='checked'                                                    />
+                                                    <span>WPML</span>
+                                                </p>
+                                                                                                                                                                                            <p>
+                                                    <input
+                                                        type="checkbox"
+                                                        name="wpml_st_auto_reg_excluded_contexts[]"
+                                                        value="wpml-string-translation"
+                                                         checked='checked'                                                    />
+                                                    <span>wpml-string-translation</span>
+                                                </p>
+                                                                                                                                                                                            <p>
+                                                    <input
+                                                        type="checkbox"
+                                                        name="wpml_st_auto_reg_excluded_contexts[]"
+                                                        value="wpml-translation-management"
+                                                         checked='checked'                                                    />
+                                                    <span>wpml-translation-management</span>
+                                                </p>
+                                                                                                                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+	            
+                <div class="postbox-container" style="width: 49%;">
+                    <div id="normal-sortables-poie" class="meta-box-sortables ui-sortable">
+                        <div id="dashboard_wpml_st_poie" class="postbox">
+							<div class="handlediv" title="Click to toggle">
+                                <br/>
+                            </div>
+                            <h3 class="hndle">
+								<span>Import / export .po</span>
+                            </h3>
+                            <div class="inside">
+								<h5>Import</h5>
+                                <form id="icl_st_po_form" action="" name="icl_st_po_form" method="post" enctype="multipart/form-data">
+                                    <input type="hidden" id="_wpnonce" name="_wpnonce" value="2b5bd3514e" /><input type="hidden" name="_wp_http_referer" value="/wp-admin/admin.php?page=wpml-string-translation%2Fmenu%2Fstring-translation.php" />                                    <p class="sub">
+										<label for="icl_po_file">.po file:</label>
+                                        <input id="icl_po_file" class="button primary" type="file" name="icl_po_file" />
+                                    </p>
+                                    <p class="sub" style="line-height:2.3em">
+                                        <input type="checkbox" name="icl_st_po_translations" id="icl_st_po_translations" />
+										<label for="icl_st_po_translations">Also create translations according to the .po file</label>
+                                        <select name="icl_st_po_language" id="icl_st_po_language" style="display:none">
+                                                                                <option value="es">Spanish</option>
+                                                                                </select>
+                                    </p>
+                                    <p class="sub" style="line-height:2.3em"    >
+										Select what the strings are for:                                        
+                                        &nbsp;&nbsp;
+                                        <span>
+                                        <select name="icl_st_i_context">
+                                            <option value="">-------</option>
+                                                                                        <option value="admin_texts_woocommerce_checkout_privacy_policy_text" >admin_texts_woocommerce_checkout_privacy_policy_text</option>
+                                                                                        <option value="admin_texts_woocommerce_email_footer_text" >admin_texts_woocommerce_email_footer_text</option>
+                                                                                        <option value="admin_texts_woocommerce_email_from_address" >admin_texts_woocommerce_email_from_address</option>
+                                                                                        <option value="admin_texts_woocommerce_email_from_name" >admin_texts_woocommerce_email_from_name</option>
+                                                                                        <option value="admin_texts_woocommerce_price_decimal_sep" >admin_texts_woocommerce_price_decimal_sep</option>
+                                                                                        <option value="admin_texts_woocommerce_price_thousand_sep" >admin_texts_woocommerce_price_thousand_sep</option>
+                                                                                        <option value="admin_texts_woocommerce_registration_privacy_policy_text" >admin_texts_woocommerce_registration_privacy_policy_text</option>
+                                                                                        <option value="default" >default</option>
+                                                                                        <option value="installer" >installer</option>
+                                                                                        <option value="jetpack-connection" >jetpack-connection</option>
+                                                                                        <option value="open-product-fields-12" >open-product-fields-12</option>
+                                                                                        <option value="open-product-fields-for-woocommerce" >open-product-fields-for-woocommerce</option>
+                                                                                        <option value="sitepress" >sitepress</option>
+                                                                                        <option value="sitepress-multilingual-cms" >sitepress-multilingual-cms</option>
+                                                                                        <option value="twentytwentyfour" >twentytwentyfour</option>
+                                                                                        <option value="woocommerce" >woocommerce</option>
+                                                                                        <option value="woocommerce-multilingual" >woocommerce-multilingual</option>
+                                                                                        <option value="WP" >WP</option>
+                                                                                        <option value="WP Endpoints" >WP Endpoints</option>
+                                                                                        <option value="WPML" >WPML</option>
+                                                                                        <option value="wpml-string-translation" >wpml-string-translation</option>
+                                                                                        <option value="wpml-translation-management" >wpml-translation-management</option>
+                                                                                    </select>
+                                        <a href="#"
+										   onclick="var __nxt = jQuery(this).parent().next(); jQuery(this).prev().val(''); jQuery(this).parent().fadeOut('fast',function(){__nxt.fadeIn('fast')});return false;">new</a>
+                                        </span>
+                                                                                <span style="display:none">
+                                        <input type="text" name="icl_st_i_context_new" />
+                                        											<a href="#"
+											   onclick="var __prv = jQuery(this).parent().prev(); jQuery(this).prev().val(''); jQuery(this).parent().fadeOut('fast',function(){__prv.fadeIn('fast')});return false;">select from existing</a>
+                                                                                </span>
+                                    </p>
+
+                                    <p>
+										<input class="button" name="icl_po_upload" id="icl_po_upload" type="submit" value="Submit"/>
+										<span id="icl_st_err_domain" class="icl_error_text" style="display:none">Please enter a domain!</span>
+										<span id="icl_st_err_po" class="icl_error_text" style="display:none">Please select the .po file to upload!</span>
+                                    </p>
+
+                                </form>
+                                								<h5>Export strings into .po/.pot file</h5>
+	                                                            <form method="post" action="">
+                                <input type="hidden" id="_wpnonce" name="_wpnonce" value="af94b34822" /><input type="hidden" name="_wp_http_referer" value="/wp-admin/admin.php?page=wpml-string-translation%2Fmenu%2Fstring-translation.php" />                                <p>
+									Select domain:                                    <select name="icl_st_e_context" id="icl_st_e_context">
+                                                                                <option value="admin_texts_woocommerce_checkout_privacy_policy_text" >admin_texts_woocommerce_checkout_privacy_policy_text (1)</option>
+                                                                                <option value="admin_texts_woocommerce_email_footer_text" >admin_texts_woocommerce_email_footer_text (1)</option>
+                                                                                <option value="admin_texts_woocommerce_email_from_address" >admin_texts_woocommerce_email_from_address (1)</option>
+                                                                                <option value="admin_texts_woocommerce_email_from_name" >admin_texts_woocommerce_email_from_name (1)</option>
+                                                                                <option value="admin_texts_woocommerce_price_decimal_sep" >admin_texts_woocommerce_price_decimal_sep (1)</option>
+                                                                                <option value="admin_texts_woocommerce_price_thousand_sep" >admin_texts_woocommerce_price_thousand_sep (1)</option>
+                                                                                <option value="admin_texts_woocommerce_registration_privacy_policy_text" >admin_texts_woocommerce_registration_privacy_policy_text (1)</option>
+                                                                                <option value="default" >default (1759)</option>
+                                                                                <option value="installer" >installer (4)</option>
+                                                                                <option value="jetpack-connection" >jetpack-connection (9)</option>
+                                                                                <option value="open-product-fields-12" >open-product-fields-12 (13)</option>
+                                                                                <option value="open-product-fields-for-woocommerce" >open-product-fields-for-woocommerce (314)</option>
+                                                                                <option value="sitepress" >sitepress (1347)</option>
+                                                                                <option value="sitepress-multilingual-cms" >sitepress-multilingual-cms (6)</option>
+                                                                                <option value="twentytwentyfour" >twentytwentyfour (166)</option>
+                                                                                <option value="woocommerce" >woocommerce (2531)</option>
+                                                                                <option value="woocommerce-multilingual" >woocommerce-multilingual (6)</option>
+                                                                                <option value="WP" >WP (1)</option>
+                                                                                <option value="WP Endpoints" >WP Endpoints (15)</option>
+                                                                                <option value="WPML" >WPML (1)</option>
+                                                                                <option value="wpml-string-translation" >wpml-string-translation (273)</option>
+                                                                                <option value="wpml-translation-management" >wpml-translation-management (941)</option>
+                                                                            </select>
+                               </p>
+                               <p style="line-height:2.3em">
+                                    <input type="checkbox" name="icl_st_pe_translations" id="icl_st_pe_translations" checked="checked" value="1" onchange="if(jQuery(this).attr('checked'))jQuery('#icl_st_e_language').fadeIn('fast'); else jQuery('#icl_st_e_language').fadeOut('fast')" />
+								   <label for="icl_st_pe_translations">Also include translations</label>
+                                    <select name="icl_st_e_language" id="icl_st_e_language">
+                                                                        <option value="es">Spanish</option>
+                                                                        </select>
+                                </p>
+									<p><input type="submit" class="button-secondary" name="icl_st_pie_e" value="Submit"/></p>
+                                                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+	            
+                <div class="postbox-container" style="width: 49%;">
+                    <div id="normal-sortables-moreoptions" class="meta-box-sortables ui-sortable">
+                        <div id="dashboard_wpml_st_poie" class="postbox">
+							<div class="handlediv" title="Click to toggle">
+                                <br/>
+                            </div>
+                            <h3 class="hndle">
+								<span>More options</span>
+                            </h3>
+                            <div class="inside">
+                                <form id="icl_st_more_options" name="icl_st_more_options" method="post">
+                                <input type="hidden" id="_icl_nonce" name="_icl_nonce" value="6bf9158dfd" /><input type="hidden" name="_wp_http_referer" value="/wp-admin/admin.php?page=wpml-string-translation%2Fmenu%2Fstring-translation.php" />                                <div>
+                                                                        Translating users of types: none</span>&nbsp;&nbsp;<a href="#" onclick="jQuery('#icl_st_tusers').slideToggle();return false;">edit</a>
+
+                                    <div id="icl_st_tusers" style="padding:6px;display: none;">
+                                                                            <label><input type="checkbox" name="users[administrator]" value="1"/>&nbsp;<span>Administrator</span></label>&nbsp;
+                                                                                <label><input type="checkbox" name="users[editor]" value="1"/>&nbsp;<span>Editor</span></label>&nbsp;
+                                                                                <label><input type="checkbox" name="users[author]" value="1"/>&nbsp;<span>Author</span></label>&nbsp;
+                                                                                <label><input type="checkbox" name="users[contributor]" value="1"/>&nbsp;<span>Contributor</span></label>&nbsp;
+                                                                                <label><input type="checkbox" name="users[subscriber]" value="1"/>&nbsp;<span>Subscriber</span></label>&nbsp;
+                                                                                <label><input type="checkbox" name="users[customer]" value="1"/>&nbsp;<span>Customer</span></label>&nbsp;
+                                                                                <label><input type="checkbox" name="users[shop_manager]" value="1"/>&nbsp;<span>Shop manager</span></label>&nbsp;
+                                                                            </div>
+
+                                </div>
+
+                                <p class="submit">
+                                    <input class="button-secondary" type="submit" value="Apply" />
+                                    <span class="icl_ajx_response" id="icl_ajx_response4" style="display:inline"></span>
+                                </p>
+
+                                </form>
+
+
+
+                            </div>
+                    </div>
+                </div>
+
+	            
+            </div>
+        </div>
+
+        <br clear="all" /><br />
+
+			<a href="admin.php?page=wpml-string-translation/menu/string-translation.php&amp;trop=1">Translate texts in admin screens &raquo;</a>
+
+            </div>
+
+<div class="clear"></div></div><!-- wpbody-content -->
+<div class="clear"></div></div><!-- wpbody -->
+<div class="clear"></div></div><!-- wpcontent -->
+
+<div id="wpfooter" role="contentinfo">
+		<p id="footer-left" class="alignleft">
+		<span id="footer-thankyou">Thank you for creating with <a href="https://wordpress.org/">WordPress</a>.</span>	</p>
+	<p id="footer-upgrade" class="alignright">
+		<strong><a href="http://127.0.0.1:8097/wp-admin/update-core.php">Get Version 7.1.2</a></strong>	</p>
+	<div class="clear"></div>
+</div>
+            <script type="text/javascript">
+							jQuery(document).ready(function () {
+								addLoadEvent(function () {
+		            									var menu_id = '0';
+									var location_menu_id = jQuery('#locations-' + menu_id);
+									if (location_menu_id.length > 0) {
+										location_menu_id.find('option').first().html('not translated in current language');
+										location_menu_id.css('font-style', 'italic');
+										location_menu_id.change(function () {
+											if (jQuery(this).val() != 0) {
+												jQuery(this).css('font-style', 'normal');
+											} else {
+												jQuery(this).css('font-style', 'italic')
+											}
+										});
+									}
+		            								});
+							});
+            </script>
+            		<!-- WooCommerce Tracks -->
+		<script type="text/javascript">
+			window.wcTracks = window.wcTracks || {};
+			window.wcTracks.isEnabled = false;
+			window._tkq = window._tkq || [];
+
+						window.wcTracks.validateEvent = function( eventName, props = {} ) {
+				let isValid = true;
+				if ( ! /^(([a-z0-9]+)_){1}([a-z0-9_]+)$/.test( eventName ) ) {
+					if ( true ) {
+						/* eslint-disable no-console */
+						console.error(
+							`A valid event name must be specified. The event name: "${ eventName }" is not valid.`
+						);
+						/* eslint-enable no-console */
+					}
+					isValid = false;
+				}
+				for ( const prop of Object.keys( props ) ) {
+					if ( ! /^[a-z_][a-z0-9_]*$/.test( prop ) ) {
+						if ( true ) {
+							/* eslint-disable no-console */
+							console.error(
+								`A valid prop name must be specified. The property name: "${ prop }" is not valid.`
+							);
+							/* eslint-enable no-console */
+						}
+						isValid = false;
+					}
+				}
+				return isValid;
+			}
+			window.wcTracks.recordEvent = function( name, properties ) {
+				if ( ! window.wcTracks.isEnabled ) {
+					return;
+				}
+
+				const eventName = 'wcadmin_' + name;
+				let eventProperties = properties || {};
+				eventProperties = { ...eventProperties, ...{"_via_ua":"curl\/7.81.0","_via_ip":"172.26.0.1","_lg":"","_dr":"","_dl":"http:\/\/127.0.0.1:8097\/wp-admin\/admin.php?page=wpml-string-translation\/menu\/string-translation.php","url":"http:\/\/127.0.0.1:8097","blog_lang":"en_US","blog_id":false,"store_id":"24be31eb-7919-4a9f-8efc-9331cfff6633","products_count":"2","wc_version":"9.0.2"} };
+				if ( window.wp && window.wp.hooks && window.wp.hooks.applyFilters ) {
+					eventProperties = window.wp.hooks.applyFilters( 'woocommerce_tracks_client_event_properties', eventProperties, eventName );
+					delete( eventProperties._ui );
+					delete( eventProperties._ut );
+				}
+
+				if ( ! window.wcTracks.validateEvent( eventName, eventProperties ) ) {
+					return;
+				}
+				window._tkq.push( [ 'recordEvent', eventName, eventProperties ] );
+			}
+		</script>
+				<script type="text/javascript">
+			window.wcTracks.enable = function( callback ) {
+				window.wcTracks.isEnabled = true;
+
+				var scriptUrl = 'https://stats.wp.com/w.js';
+				var existingScript = document.querySelector( `script[src="${ scriptUrl }"]` );
+				if ( existingScript ) {
+					return;
+				}
+
+				var script = document.createElement('script');
+				script.src = scriptUrl;
+				document.body.append(script);
+
+				// Callback after scripts have loaded.
+				script.onload = function() {
+					if ( 'function' === typeof callback ) {
+						callback( true );
+					}
+				}
+
+				// Callback triggered if the script fails to load.
+				script.onerror = function() {
+					if ( 'function' === typeof callback ) {
+						callback( false );
+					}
+				}
+			}
+		</script>
+			<div id="wp-auth-check-wrap" class="hidden">
+	<div id="wp-auth-check-bg"></div>
+	<div id="wp-auth-check">
+	<button type="button" class="wp-auth-check-close button-link"><span class="screen-reader-text">
+		Close dialog	</span></button>
+			<div id="wp-auth-check-form" class="loading" data-src="http://127.0.0.1:8097/wp-login.php?interim-login=1&#038;wp_lang=en_US"></div>
+			<div class="wp-auth-fallback">
+		<p><b class="wp-auth-fallback-expired" tabindex="0">Session expired</b></p>
+		<p><a href="http://127.0.0.1:8097/wp-login.php" target="_blank">Please log in again.</a>
+		The login page will open in a new tab. After logging in you can close it and return to this page.</p>
+	</div>
+	</div>
+	</div>
+	<link rel='stylesheet' id='wpml-color-picker-css' href='http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/css/colorpicker.css?ver=4.2.8' media='all' />
+
+<script>
+/* <![CDATA[ */
+var thickboxL10n = {"next":"Next >","prev":"< Prev","image":"Image","of":"of","close":"Close","noiframes":"This feature requires inline frames. You have iframes disabled or your browser does not support them.","loadingAnimation":"http:\/\/127.0.0.1:8097\/wp-includes\/js\/thickbox\/loadingAnimation.gif"};/* ]]> */
+</script>
+<script src='http://127.0.0.1:8097/wp-admin/load-scripts.php?c=0&amp;load%5Bchunk_0%5D=thickbox,jquery-ui-slider,jquery-touch-punch,iris,wp-polyfill-inert,regenerator-runtime,wp-polyfill,wp-hooks&amp;ver=6.5.7'></script>
+<script src="http://127.0.0.1:8097/wp-includes/js/dist/i18n.min.js?ver=5e580eb46a90c2b997e6" id="wp-i18n-js"></script>
+<script id="wp-i18n-js-after">
+wp.i18n.setLocaleData( { 'text direction\u0004ltr': [ 'ltr' ] } );
+</script>
+<script src="http://127.0.0.1:8097/wp-admin/js/color-picker.min.js?ver=6.5.7" id="wp-color-picker-js"></script>
+<script src="http://127.0.0.1:8097/wp-content/plugins/woocommerce-multilingual/vendor/otgs/installer/res/js/dismiss-nag.js?ver=2.4.0" id="installer-dismiss-nag-js"></script>
+<script src="http://127.0.0.1:8097/wp-includes/js/hoverIntent.min.js?ver=1.10.2" id="hoverIntent-js"></script>
+<script src="http://127.0.0.1:8097/wp-admin/js/common.min.js?ver=6.5.7" id="common-js"></script>
+<script src="http://127.0.0.1:8097/wp-includes/js/hoverintent-js.min.js?ver=2.2.1" id="hoverintent-js-js"></script>
+<script src="http://127.0.0.1:8097/wp-includes/js/admin-bar.min.js?ver=6.5.7" id="admin-bar-js"></script>
+<script src="http://127.0.0.1:8097/wp-admin/js/svg-painter.js?ver=6.5.7" id="svg-painter-js"></script>
+<script id="heartbeat-js-extra">
+var heartbeatSettings = {"nonce":"cf9b057f7d"};
+</script>
+<script src="http://127.0.0.1:8097/wp-includes/js/heartbeat.min.js?ver=6.5.7" id="heartbeat-js"></script>
+<script src="http://127.0.0.1:8097/wp-includes/js/wp-auth-check.min.js?ver=6.5.7" id="wp-auth-check-js"></script>
+<script src="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/js/otgs-notices.js?ver=4.2.8" id="otgs-notices-js"></script>
+<script src="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/lib/select2/select2.min.js?ver=4.2.8" id="wpml-select-2-js"></script>
+<script src="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/js/wpml-simple-language-selector.js?ver=4.2.8" id="wpml-simple_language-selector-js"></script>
+<script src="http://127.0.0.1:8097/wp-content/plugins/wpml-string-translation/res/js/string-translation-priority.js?ver=2.10.6" id="wpml-st-translation-priority-js"></script>
+<script src="http://127.0.0.1:8097/wp-content/plugins/sitepress-multilingual-cms/res/js/wpml-color-picker.js?ver=4.2.8" id="wpml-color-picker-js"></script>
+	<script type="text/javascript">
+	var compressionNonce = "8a607f3a50";
+	var testCompression = {
+		get : function(test) {
+			var x;
+			if ( window.XMLHttpRequest ) {
+				x = new XMLHttpRequest();
+			} else {
+				try{x=new ActiveXObject('Msxml2.XMLHTTP');}catch(e){try{x=new ActiveXObject('Microsoft.XMLHTTP');}catch(e){};}
+			}
+
+			if (x) {
+				x.onreadystatechange = function() {
+					var r, h;
+					if ( x.readyState == 4 ) {
+						r = x.responseText.substr(0, 18);
+						h = x.getResponseHeader('Content-Encoding');
+						testCompression.check(r, h, test);
+					}
+				};
+
+				x.open('GET', ajaxurl + '?action=wp-compression-test&test='+test+'&_ajax_nonce='+compressionNonce+'&'+(new Date()).getTime(), true);
+				x.send('');
+			}
+		},
+
+		check : function(r, h, test) {
+			if ( ! r && ! test )
+				this.get(1);
+
+			if ( 1 == test ) {
+				if ( h && ( h.match(/deflate/i) || h.match(/gzip/i) ) )
+					this.get('no');
+				else
+					this.get(2);
+
+				return;
+			}
+
+			if ( 2 == test ) {
+				if ( '"wpCompressionTest' === r )
+					this.get('yes');
+				else
+					this.get('no');
+			}
+		}
+	};
+	testCompression.check();
+	</script>
+	
+<div class="clear"></div></div><!-- wpwrap -->
+<script type="text/javascript">if(typeof wpOnload==='function')wpOnload();</script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+WPML_ST_VERSION=3.5.2
+WCML_VERSION=5.5.8
+ICL_SITEPRESS_VERSION=5.1.0 WPML_TM_VERSION=2.11.0
+StringTranslation_object=WPML_ST_Outdated_Stand_In
+woocommerce_wpml_object=woocommerce_wpml
+did_action(wpml_loaded)=1 did_action(wcml_loaded)=0
+isStOutdated=true
+core_requires={"wpml-string-translation":"5.0.0","woocommerce-multilingual":"5.6.0","acfml":"5.0.0","wpml-media-translation":"5.0.0","wpml-sticky-links":"5.0.0","wpml-cms-nav":"5.0.0","wpml-import":"5.0.0"}
+action(wpml_register_string)=true
+filter(wpml_translate_string)=true
+action(wpml_start_string_package_registration)=true
+action(wpml_delete_unused_package_strings)=true
+filter(wpml_st_get_string_package)=false
+icl_string_packages_rows=1 icl_strings_rows=0 icl_string_translations_rows=0
+icl_string_packages_table=wp_icl_string_packages

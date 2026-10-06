@@ -1,0 +1,21 @@
+ids={"en_product_id":10,"es_product_id":11,"en_language":"en","es_language":"es","trid":"51","cat_id":17,"tag_id":18,"es_cat_remap":17,"es_tag_remap":18,"es_product_remap":10,"group_id":12}
+group_id=12
+
+-- icl_string_packages --
+ID=1 kind_slug=open-product-fields name=12 title=Gift options (#12)
+
+-- icl_strings of the OPF package (string_package_id=12) --
+opf_string_count=0
+
+-- icl_string_translations for the OPF package --
+opf_translation_count=0
+
+-- language element rows --
+element_id=10 type=post_product language=en source= trid=51
+element_id=11 type=post_product language=es source=en trid=51
+element_id=15 type=tax_product_cat language=en source= trid=48
+EN product language='en'
+ES product language='es'
+product 10 -> es = 10
+cat 17 -> es = 17
+tag 18 -> es = 18

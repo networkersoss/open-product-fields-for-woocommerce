@@ -1,0 +1,27 @@
+16:02:34 HOOK-STATE WPML_TM_VERSION=2.11.0 setup_complete=1 has_action(wpml_register_string)=true has_filter(wpml_translate_string)=true has_action(wpml_start_string_package_registration)=true has_action(wpml_delete_unused_package_strings)=true has_filter(wpml_st_get_string_package)=false has_filter(wpml_active_string_package_kinds)=false
+16:02:35 EMIT wpml_start_string_package_registration package=open-product-fields/13 title=Gift options (#13)
+16:02:35 EMIT wpml_register_string name=field:gift:label type=LINE value=Gift wrap package=open-product-fields/13
+16:02:35 EMIT wpml_register_string name=field:gift:description type=AREA value=Choose wrapping package=open-product-fields/13
+16:02:35 EMIT wpml_register_string name=field:gift:placeholder type=LINE value=Select an option package=open-product-fields/13
+16:02:35 EMIT wpml_register_string name=field:gift:choice:red type=LINE value=Red package=open-product-fields/13
+16:02:35 EMIT wpml_register_string name=field:gift:choice:blue type=LINE value=Blue package=open-product-fields/13
+16:02:35 EMIT wpml_register_string name=field:note:label type=LINE value=Note package=open-product-fields/13
+16:02:35 EMIT wpml_register_string name=field:note:placeholder type=LINE value=Add a note package=open-product-fields/13
+16:02:35 EMIT wpml_register_string name=field:info:content type=VISUAL value=<b>Information</b> package=open-product-fields/13
+16:02:35 EMIT wpml_register_string name=field:extra:label type=LINE value=Extras package=open-product-fields/13
+16:02:35 EMIT wpml_register_string name=field:extra:choice:card type=LINE value=Card package=open-product-fields/13
+16:02:35 EMIT wpml_register_string name=field:extra:repeat:add type=LINE value=Add another package=open-product-fields/13
+16:02:35 EMIT wpml_register_string name=field:extra:repeat:del type=LINE value=Remove package=open-product-fields/13
+16:02:35 EMIT wpml_register_string name=field:extra:repeat:label type=LINE value=Copy {n} package=open-product-fields/13
+16:02:35 EMIT wpml_delete_unused_package_strings package=open-product-fields/13
+16:02:39 HOOK-STATE WPML_TM_VERSION=2.11.0 setup_complete=1 has_action(wpml_register_string)=true has_filter(wpml_translate_string)=true has_action(wpml_start_string_package_registration)=true has_action(wpml_delete_unused_package_strings)=true has_filter(wpml_st_get_string_package)=false has_filter(wpml_active_string_package_kinds)=false
+16:02:54 HOOK-STATE WPML_TM_VERSION=2.11.0 setup_complete=1 has_action(wpml_register_string)=true has_filter(wpml_translate_string)=true has_action(wpml_start_string_package_registration)=true has_action(wpml_delete_unused_package_strings)=true has_filter(wpml_st_get_string_package)=false has_filter(wpml_active_string_package_kinds)=false
+16:03:03 HOOK-STATE WPML_TM_VERSION=2.11.0 setup_complete=1 has_action(wpml_register_string)=true has_filter(wpml_translate_string)=true has_action(wpml_start_string_package_registration)=true has_action(wpml_delete_unused_package_strings)=true has_filter(wpml_st_get_string_package)=false has_filter(wpml_active_string_package_kinds)=false
+16:03:03 EMIT wpml_start_string_package_registration package=open-product-fields/999 title=Reg probe
+16:03:03 EMIT wpml_register_string name=field:probe:label type=LINE value=Probe string value package=open-product-fields/999
+16:03:25 HOOK-STATE WPML_TM_VERSION=2.11.0 setup_complete=1 has_action(wpml_register_string)=true has_filter(wpml_translate_string)=true has_action(wpml_start_string_package_registration)=true has_action(wpml_delete_unused_package_strings)=true has_filter(wpml_st_get_string_package)=false has_filter(wpml_active_string_package_kinds)=false
+16:03:50 [cli]  HOOK-STATE WPML_TM_VERSION=2.11.0 setup_complete=1 action(wpml_register_string)=1:closure filter(wpml_translate_string)=1:closure action(wpml_start_string_package_registration)=1:closure action(wpml_delete_unused_package_strings)=1:closure filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:03:54 [admin] /wp-admin/admin.php?page=wpml-string-translation/menu/string-translation.php HOOK-STATE WPML_TM_VERSION=2.11.0 setup_complete=1 action(wpml_register_string)=1:closure filter(wpml_translate_string)=1:closure action(wpml_start_string_package_registration)=1:closure action(wpml_delete_unused_package_strings)=1:closure filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:04:10 [cli]  HOOK-STATE WPML_TM_VERSION=2.11.0 setup_complete=1 action(wpml_register_string)=1:closure filter(wpml_translate_string)=1:closure action(wpml_start_string_package_registration)=1:closure action(wpml_delete_unused_package_strings)=1:closure filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:04:57 [cli]  HOOK-STATE WPML_TM_VERSION=2.11.0 setup_complete=1 action(wpml_register_string)=1:closure filter(wpml_translate_string)=1:closure action(wpml_start_string_package_registration)=1:closure action(wpml_delete_unused_package_strings)=1:closure filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none
+16:05:06 [cli]  HOOK-STATE WPML_TM_VERSION=2.11.0 setup_complete=1 action(wpml_register_string)=1:closure filter(wpml_translate_string)=1:closure action(wpml_start_string_package_registration)=1:closure action(wpml_delete_unused_package_strings)=1:closure filter(wpml_st_get_string_package)=none filter(wpml_active_string_package_kinds)=none

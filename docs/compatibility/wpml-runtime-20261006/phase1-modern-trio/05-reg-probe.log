@@ -1,0 +1,14 @@
+WPML_Package_Translation => wp-content/plugins/wpml-string-translation/inc/package-translation/inc/wpml-package-translation.class.php
+WPML_Package => wp-content/plugins/wpml-string-translation/inc/package-translation/inc/wpml-package.class.php
+WPML_ST_Package_Factory => wp-content/plugins/wpml-string-translation/inc/package-translation/inc/wpml-package-factory.class.php
+WPML_Package_Helper => wp-content/plugins/wpml-string-translation/inc/package-translation/inc/wpml-package-translation-helper.class.php
+WPML_Package_TM => wp-content/plugins/wpml-string-translation/inc/package-translation/inc/wpml-package-translation-tm.class.php
+WPML_Package_Translation_Schema => wp-content/plugins/wpml-string-translation/inc/package-translation/inc/wpml-package-translation-schema.class.php
+-- handlers on wpml_register_string --
+-- manual package record --
+has_kind_and_name=true ID=NULL kind='Open Product Fields' name='999'
+created_id=1 last_error= rows=1
+-- direct registration through the real action --
+action_result=NULL
+strings_rows=0 last_error=
+{"ID":"1","kind_slug":"open-product-fields","kind":"Open Product Fields","name":"999","title":"Reg probe","edit_link":"","view_link":"","post_id":null,"word_count":null,"translator_note":null}

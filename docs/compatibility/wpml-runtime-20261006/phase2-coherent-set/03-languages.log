@@ -1,0 +1,9 @@
+
+-- active languages --
+en	English	en_US
+default_language=en
+current via filter=en
+icl_languages active=en,es
+setup_complete=1
+is_setup_complete=1
+language_negotiation_type=1
