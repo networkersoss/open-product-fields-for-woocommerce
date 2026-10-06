@@ -3,12 +3,17 @@
  * WAPF-COMMERCE-WEIGHT / WAPF-PRICE-FORMULA-WEIGHT unit tests.
  *
  * Covers the schema boundary (FieldGroup), the import boundary (WapfMapper)
- * and the runtime evaluator (Calculator::field_weight) against the WAPF 3.1.5
+ * and the runtime evaluator (Calculator::field_weight) against the WAPF
  * Extended_Controller::maybe_calculate_weight semantics verified on the
- * reference plugin:
- *  - weight lives on field `options.weight` and choice `options.weight`;
- *  - [qty] = cart line quantity, [x] = submitted value / choice label;
- *  - the substituted string is floatval()'d, not arithmetically evaluated;
+ * reference plugin, plus WAPF 3.2's "the weight setting can hold simple
+ * formulas":
+ *  - weight lives on field `options.weight` (aliased by the builder's
+ *    `weight_formula`) and choice `options.weight`;
+ *  - [qty] = cart line quantity, [x] = submitted value / choice label,
+ *    [field.{id}] = another submitted field's value;
+ *  - plain numbers and bare tokens keep their 3.1.5 floatval() results, while
+ *    arithmetic is evaluated by the pricing formula parser (no second engine)
+ *    and an expression the parser rejects fails closed to 0;
  *  - qty_selector (image_quantity) multiplies the choice weight by the
  *    entered count;
  *  - weight composes with signed field_addon pricing without touching it.
@@ -192,12 +197,53 @@ namespace OPF\Tests\Unit {
 			$this->assertSame( 0.0, Calculator::field_weight( $field, 'abc', 1 ) );
 		}
 
-		public function test_weight_is_floatval_not_arithmetic(): void {
-			// WAPF 3.1.5 str_replace + floatval: '4*0.5' floatvals to 4.
+		public function test_weight_is_evaluated_as_a_simple_formula(): void {
+			// WAPF 3.2: the weight setting may hold a simple formula. [x]*0.5 at
+			// x=4 is 2, not the 3.1.5 floatval() result of 4.
 			$field = [ 'id' => 'w', 'type' => 'number', 'weight' => '[x]*0.5' ];
-			$this->assertSame( 4.0, Calculator::field_weight( $field, '4', 1 ) );
-			$tricky = [ 'id' => 'w', 'type' => 'number', 'weight' => '[x]+1' ];
-			$this->assertSame( 4.0, Calculator::field_weight( $tricky, '4', 1 ) );
+			$this->assertSame( 2.0, Calculator::field_weight( $field, '4', 1 ) );
+			$plus = [ 'id' => 'w', 'type' => 'number', 'weight' => '[x]+1' ];
+			$this->assertSame( 5.0, Calculator::field_weight( $plus, '4', 1 ) );
+		}
+
+		public function test_qty_token_is_evaluated_arithmetically(): void {
+			$field = [ 'id' => 'w', 'type' => 'number', 'weight' => '[qty] * 0.25' ];
+			$this->assertSame( 1.0, Calculator::field_weight( $field, '4', 4 ) );
+			// A bare [qty] keeps its 3.1.5 result.
+			$bare = [ 'id' => 'w', 'type' => 'number', 'weight' => '[qty]' ];
+			$this->assertSame( 3.0, Calculator::field_weight( $bare, '4', 3 ) );
+		}
+
+		public function test_numeric_field_reference_is_resolved(): void {
+			$field = [ 'id' => 'w', 'type' => 'number', 'weight' => '[field.extra] * 2' ];
+			$this->assertSame( 6.0, Calculator::field_weight( $field, '4', 1, [ 'extra' => '3' ] ) );
+			// A non-numeric referenced value contributes 0 without failing the
+			// rest of the arithmetic (pricing-formula retry semantics).
+			$mixed = [ 'id' => 'w', 'type' => 'number', 'weight' => '[field.extra] * 2 + 1' ];
+			$this->assertSame( 1.0, Calculator::field_weight( $mixed, '4', 1, [ 'extra' => 'abc' ] ) );
+			// Without the referenced value the field contributes nothing.
+			$this->assertSame( 0.0, Calculator::field_weight( $field, '4', 1 ) );
+		}
+
+		public function test_builder_weight_formula_key_is_evaluated(): void {
+			// The builder has no separate `weight` input: it writes `weight_formula`.
+			// That key must never be inert.
+			$field = [ 'id' => 'w', 'type' => 'number', 'weight_formula' => '[field.extra] * 2' ];
+			$this->assertSame( 6.0, Calculator::field_weight( $field, '3', 1, [ 'extra' => '3' ] ) );
+			$scalar = [ 'id' => 'w', 'type' => 'number', 'weight_formula' => '[x] * 1' ];
+			$this->assertSame( 1.75, Calculator::field_weight( $scalar, '1.75', 1 ) );
+		}
+
+		public function test_weight_key_wins_over_weight_formula_alias(): void {
+			$field = [ 'id' => 'w', 'type' => 'number', 'weight' => '0.5', 'weight_formula' => '[x] * 9' ];
+			$this->assertSame( 0.5, Calculator::field_weight( $field, '4', 1 ) );
+		}
+
+		public function test_invalid_formula_fails_closed_to_zero(): void {
+			foreach ( [ '[x] *', '[x] * * 2', '[unknown_function(2)', '([x]' ] as $broken ) {
+				$field = [ 'id' => 'w', 'type' => 'number', 'weight' => $broken ];
+				$this->assertSame( 0.0, Calculator::field_weight( $field, '4', 1 ), 'expression ' . $broken );
+			}
 		}
 
 		public function test_checkbox_weights_sum_per_selected_choice(): void {

@@ -33,8 +33,37 @@ final class Uploads {
 		wp_clear_scheduled_hook( 'opf_upload_cleanup' );
 	}
 
+	/**
+	 * Is the modern (drag/drop + progress) uploader active?
+	 *
+	 * `opf_modern_uploader` is the admin toggle and wins whenever it has been
+	 * saved, so the setting always controls the renderer. Before the first save
+	 * the migrated legacy values keep governing the store: `opf_upload_ajax`
+	 * first, then `wapf_upload_ajax`. When nothing is configured at all the
+	 * WAPF 3.1.7 default applies — the modern uploader is on.
+	 */
 	public static function modern(): bool {
-		return 'yes' === get_option( 'opf_upload_ajax', get_option( 'wapf_upload_ajax', 'no' ) );
+		$configured = get_option( 'opf_modern_uploader', null );
+		if ( is_string( $configured ) && '' !== $configured ) {
+			return 'yes' === $configured;
+		}
+		return self::modern_default();
+	}
+
+	/**
+	 * Modern-uploader state that applies while the admin toggle is unsaved:
+	 * an explicit `opf_upload_ajax`/`wapf_upload_ajax` value, else WAPF 3.1.7's
+	 * on-by-default. The settings screen uses this as the checkbox default so
+	 * the rendered toggle reflects the state the storefront actually gets.
+	 */
+	public static function modern_default(): bool {
+		foreach ( [ 'opf_upload_ajax', 'wapf_upload_ajax' ] as $option ) {
+			$value = get_option( $option, null );
+			if ( is_string( $value ) && '' !== $value ) {
+				return 'yes' === $value;
+			}
+		}
+		return true;
 	}
 
 	/**

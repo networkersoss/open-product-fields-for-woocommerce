@@ -5,6 +5,7 @@ namespace OPF\Service\Admin;
 
 use OPF\Engine\DateFormat;
 use OPF\Service\LivePreviewFonts;
+use OPF\Service\Uploads;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -157,7 +158,10 @@ final class Settings {
 				'desc' => __( 'Enable drag and drop, upload progress, file removal, and image previews. The standard browser file input remains available when disabled.', 'open-product-fields-for-woocommerce' ),
 				'id' => 'opf_modern_uploader',
 				'type' => 'checkbox',
-				'default' => 'yes',
+				// Reflects the state the storefront actually gets before this toggle
+				// is saved: an explicit legacy opf_upload_ajax/wapf_upload_ajax value,
+				// else WAPF 3.1.7's on-by-default.
+				'default' => Uploads::modern_default() ? 'yes' : 'no',
 				'autoload' => false,
 			],
 			[

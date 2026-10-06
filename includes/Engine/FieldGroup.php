@@ -683,8 +683,12 @@ final class FieldGroup {
 		foreach ( [ 'hide_cart', 'hide_checkout', 'hide_order' ] as $visibility_option ) {
 			$normalized[ $visibility_option ] = ! empty( $field[ $visibility_option ] ) || ! empty( $field['options'][ $visibility_option ] );
 		}
-		// WAPF "Weight formula" (options.weight_formula): verbatim formula string
-		// resolved at cart time; bounded to keep payloads sane.
+		// OPF builder "Weight formula" (stored as `weight_formula`): the field-level
+		// weight expression authored through the builder. It is an alias of the
+		// WAPF `weight` setting — Calculator::field_weight_expression() reads
+		// `weight` first and falls back to this key, and Calculator evaluates
+		// either as a plain number or a simple formula ([x], [qty], [field.{id}]).
+		// Bounded to keep payloads sane.
 		if ( isset( $field['weight_formula'] ) && is_string( $field['weight_formula'] ) && strlen( $field['weight_formula'] ) <= 4096 && '' !== trim( $field['weight_formula'] ) ) {
 			$normalized['weight_formula'] = trim( $field['weight_formula'] );
 		}
@@ -1355,9 +1359,11 @@ final class FieldGroup {
 
 	/**
 	 * Normalize a WAPF weight expression ('0.5', '[qty]', '[x]', '-10', or a
-	 * composite like '[x]*0.5'). WAPF stores it verbatim and floatvals the
-	 * token-substituted string at cart time; anything non-scalar or empty is
-	 * dropped. Bounded to keep POST payloads sane.
+	 * composite like '[x]*0.5'). WAPF stores it verbatim; since WAPF 3.2 the
+	 * setting may hold a simple formula, so Calculator evaluates the
+	 * substituted expression as arithmetic instead of floatval()ing it.
+	 * Anything non-scalar or empty is dropped. Bounded to keep POST payloads
+	 * sane.
 	 *
 	 * @param mixed $value Raw weight option.
 	 */

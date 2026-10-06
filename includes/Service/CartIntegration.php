@@ -510,14 +510,14 @@ final class CartIntegration {
 						if ( ! Evaluator::is_visible( $field, $clone_values ) ) {
 							continue;
 						}
-						$weight += Calculator::field_weight( $instance_field, $row_value, $quantity );
+						$weight += Calculator::field_weight( $instance_field, $row_value, $quantity, $clone_values );
 					}
 					continue;
 				}
 				if ( ! Evaluator::is_visible( $field, $group_values ) ) {
 					continue;
 				}
-				$weight += Calculator::field_weight( $weight_field, $group_values[ $fid ], $quantity );
+				$weight += Calculator::field_weight( $weight_field, $group_values[ $fid ], $quantity, $group_values );
 			}
 		}
 

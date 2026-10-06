@@ -408,11 +408,14 @@ final class Calculator {
 
 	/**
 	 * Additional product weight contributed by one field's submitted value,
-	 * in the store's configured weight unit — WAPF 3.1.5
+	 * in the store's configured weight unit — WAPF Extended
 	 * Extended_Controller::maybe_calculate_weight parity (WAPF-COMMERCE-WEIGHT /
 	 * WAPF-PRICE-FORMULA-WEIGHT):
-	 *  - A field contributes only when it carries a `weight` expression itself
-	 *    or one of its choices does (WAPF's calc_weight flag).
+	 *  - A field contributes only when it carries a field-level weight
+	 *    expression itself or one of its choices does (WAPF's calc_weight
+	 *    flag). The field-level expression is read from `weight` (WAPF
+	 *    `options.weight`) and falls back to the builder's `weight_formula`
+	 *    spelling — see field_weight_expression().
 	 *  - Choice values (select/radio/checkbox/swatch) read the choice's weight
 	 *    with [x] bound to the choice LABEL (WAPF $v = value label).
 	 *  - Quantity-selector fields (image_quantity — WAPF qty_selector) evaluate
@@ -424,15 +427,17 @@ final class Calculator {
 	 * The signed sum is returned; the cart layer floors the merged product
 	 * weight at zero exactly like WAPF.
 	 *
-	 * @param array<string,mixed> $field Normalized field array.
-	 * @param string|array        $value Submitted value(s).
-	 * @param int                 $qty   Cart line quantity ([qty] context).
+	 * @param array<string,mixed> $field        Normalized field array.
+	 * @param string|array        $value        Submitted value(s).
+	 * @param int                 $qty          Cart line quantity ([qty] context).
+	 * @param array<string,mixed> $field_values Submitted group values, for
+	 *                                          `[field.{id}]` weight references.
 	 * @return float Signed extra weight for this field on the cart line.
 	 */
-	public static function field_weight( array $field, $value, int $qty ): float {
-		$has_weight = self::normalize_weight_string( $field['weight'] ?? null );
-		$choices    = is_array( $field['choices'] ?? null ) ? $field['choices'] : [];
-		if ( null === $has_weight ) {
+	public static function field_weight( array $field, $value, int $qty, array $field_values = [] ): float {
+		$field_expression = self::field_weight_expression( $field );
+		$choices          = is_array( $field['choices'] ?? null ) ? $field['choices'] : [];
+		if ( null === $field_expression ) {
 			$has_weight = false;
 			foreach ( $choices as $choice ) {
 				if ( null !== self::normalize_weight_string( $choice['weight'] ?? null ) ) {
@@ -440,11 +445,9 @@ final class Calculator {
 					break;
 				}
 			}
-		} else {
-			$has_weight = true;
-		}
-		if ( ! $has_weight ) {
-			return 0.0;
+			if ( ! $has_weight ) {
+				return 0.0;
+			}
 		}
 
 		if ( ! empty( $field['repeat']['enabled'] ) ) {
@@ -453,7 +456,7 @@ final class Calculator {
 			$instances = is_array( $value ) ? $value : ( null === $value ? [] : [ $value ] );
 			$total     = 0.0;
 			foreach ( $instances as $instance_value ) {
-				$total += self::field_weight( $instance_field, $instance_value, $qty );
+				$total += self::field_weight( $instance_field, $instance_value, $qty, $field_values );
 			}
 			return (float) $total;
 		}
@@ -475,7 +478,7 @@ final class Calculator {
 				if ( null === $weight ) {
 					continue;
 				}
-				$total += self::weight_expression( $weight, (string) $count, $qty ) * $count;
+				$total += self::weight_expression( $weight, (string) $count, $qty, $field_values ) * $count;
 			}
 			return (float) $total;
 		}
@@ -490,7 +493,7 @@ final class Calculator {
 						if ( null !== $weight ) {
 							// WAPF substitutes [x] with the selected choice's
 							// label for slugged values.
-							$total += self::weight_expression( $weight, (string) ( $choice['label'] ?? '' ), $qty );
+							$total += self::weight_expression( $weight, (string) ( $choice['label'] ?? '' ), $qty, $field_values );
 						}
 						if ( ! in_array( $type, [ 'checkbox' ], true ) && ! ( 'swatch' === $type && ! empty( $field['multiple'] ) ) ) {
 							break;
@@ -507,8 +510,7 @@ final class Calculator {
 		if ( ! in_array( $type, [ 'text', 'textarea', 'email', 'url', 'number', 'date', 'toggle', 'upload' ], true ) ) {
 			return 0.0;
 		}
-		$field_weight = self::normalize_weight_string( $field['weight'] ?? null );
-		if ( null === $field_weight ) {
+		if ( null === $field_expression ) {
 			return 0.0;
 		}
 		if ( 'toggle' === $type && '1' !== (string) $value ) {
@@ -519,7 +521,7 @@ final class Calculator {
 			if ( '' === trim( $raw ) ) {
 				return 0.0;
 			}
-			return self::weight_expression( $field_weight, $raw, $qty );
+			return self::weight_expression( $field_expression, $raw, $qty, $field_values );
 		}
 		if ( is_array( $value ) ) {
 			// Upload submissions are token arrays; WAPF joins the file names
@@ -534,23 +536,47 @@ final class Calculator {
 			if ( ! $scalars ) {
 				return 0.0;
 			}
-			return self::weight_expression( $field_weight, implode( ', ', $scalars ), $qty );
+			return self::weight_expression( $field_expression, implode( ', ', $scalars ), $qty, $field_values );
 		}
 		return 0.0;
 	}
 
 	/**
-	 * Evaluate one WAPF weight expression — 3.1.5 substitutes [qty] and [x]
-	 * into the stored string, runs it through the wapf/field_weight filter
-	 * (OPF: opf_field_weight) and floatvals the result. It does NOT evaluate
-	 * arithmetic ('[x]*0.5' with x=4 yields 4, not 2); true formula weight is
-	 * a 3.2 feature.
+	 * The field-level weight expression, in one canonical place.
 	 *
-	 * @param string $expression Stored weight expression.
-	 * @param string $value      [x] context (raw submission or choice label).
-	 * @param int    $qty        [qty] context (cart line quantity).
+	 * `weight` is the WAPF setting (`options.weight`), which since WAPF 3.2 may
+	 * hold a simple formula. `weight_formula` is the spelling OPF's builder
+	 * writes (it has no separate `weight` input) and is therefore accepted as an
+	 * alias so an authored formula is never inert. `weight` wins when both keys
+	 * are present; both are evaluated by weight_expression().
+	 *
+	 * @param array<string,mixed> $field Normalized (or raw) field array.
+	 * @return string|null Expression, or null when the field carries none.
 	 */
-	private static function weight_expression( string $expression, string $value, int $qty ): float {
+	private static function field_weight_expression( array $field ): ?string {
+		return self::normalize_weight_string( $field['weight'] ?? null )
+			?? self::normalize_weight_string( $field['weight_formula'] ?? null );
+	}
+
+	/**
+	 * Evaluate one stored weight expression.
+	 *
+	 * WAPF 3.2: the `weight` setting can hold a simple formula. The expression
+	 * is substituted ([qty] → cart line quantity, [x] → submitted value or
+	 * choice label), passed through the opf_field_weight filter, and evaluated
+	 * with the same sandboxed parser as pricing formulas
+	 * (Calculator::evaluate_formula — no second engine, no eval()). `[field.{id}]`
+	 * references resolve against the submitted group values. Plain numbers
+	 * ('0.5', '-10') and bare tokens ('[x]', '[qty]') keep their WAPF 3.1.5
+	 * results; an expression the parser rejects fails closed to 0.
+	 *
+	 * @param string              $expression   Stored weight expression.
+	 * @param string              $value        [x] context (raw submission or choice label).
+	 * @param int                 $qty          [qty] context (cart line quantity).
+	 * @param array<string,mixed> $field_values Submitted group values for [field.{id}].
+	 */
+	private static function weight_expression( string $expression, string $value, int $qty, array $field_values = [] ): float {
+		$qty         = max( 1, $qty );
 		$substituted = str_replace( [ '[qty]', '[x]' ], [ (string) $qty, $value ], $expression );
 		if ( function_exists( 'apply_filters' ) ) {
 			$substituted = (string) apply_filters(
@@ -563,7 +589,7 @@ final class Calculator {
 				]
 			);
 		}
-		return (float) $substituted; // floatval — WAPF 3.1.5 weight is not arithmetic.
+		return self::evaluate_formula( $substituted, 0.0, $qty, 0.0, $value, null, $field_values );
 	}
 
 	/**
