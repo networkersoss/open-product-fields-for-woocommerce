@@ -14,9 +14,9 @@ Build custom product fields and add-ons for WooCommerce — free, open source, w
 
 == Description ==
 
-Open Product Fields lets you add custom fields and add-ons to WooCommerce product pages. Version 0.1.1 ships text, textarea, email, URL, number, and toggle fields; select, radio, and checkbox choices; text, image, and color swatches; date fields; file uploads; and content, section, and paragraph blocks. Fields support conditional logic, repeaters, and server-side pricing with fixed amounts, percentages, formulas, lookup tables, and quantity or weight modifiers. It runs on classic WooCommerce product pages and the Store API/block checkout, targets child products, imports and exports WAPF definitions, and translates through WPML or Polylang. See the [supported capabilities](https://github.com/netwokersllc/open-product-fields-for-woocommerce/blob/master/docs/CAPABILITIES.md) for the complete current scope and limitations.
+Open Product Fields lets you add custom fields and add-ons to WooCommerce product pages. Version 0.1.1 ships text, textarea, email, URL, number, and toggle fields; select, radio, and checkbox choices; text, image, and color swatches; date fields; file uploads; and content, section, and paragraph blocks. Fields support conditional logic, repeaters, and server-side pricing with fixed amounts, percentages, formulas, lookup tables, and quantity or weight modifiers. It runs on classic WooCommerce product pages and the Store API/block checkout, targets child products, imports and exports WAPF definitions, and translates through WPML or Polylang. See the [supported capabilities](https://github.com/networkersoss/open-product-fields-for-woocommerce/blob/master/docs/CAPABILITIES.md) for the complete current scope and limitations.
 
-Private file uploads are available as a foundation through REST/JSON definitions, with native and Ajax transport, private order downloads, and classic/Store API checkout. This is not full WAPF upload parity: upload builder controls, WAPF upload migration, pricing, repeated uploads, and order-again behavior remain open.
+Private file uploads are implemented with builder controls (multiple files, accepted types, maximum size), native and Ajax transport, thumbnail previews, private order downloads, and classic/Store API checkout. WAPF upload settings round-trip through Tools JSON and WXR, and order-again reissues an authorized private copy. Upload-specific repeaters and upload pricing remain open, so this is not full WAPF upload parity.
 
 = Why "Open"? =
 
@@ -55,6 +55,13 @@ OPF renders fields through standard WooCommerce product hooks. Validate it with 
 Run `wp opf import-wapf` (dry run first, then `--commit`). Supported placement rules, field types, choices, and pricing are mapped; unsupported field types, repeaters, and pricing are flagged for review. See docs/MIGRATION.md and docs/CAPABILITIES.md.
 
 == Changelog ==
+
+= 0.1.1 =
+* Import WAPF Tools JSON exports from a file, with a dry-run review of every group and field before anything is written (`wp opf import-wapf` and the admin import page).
+* Round-trip WAPF switch controls for toggle and checkbox fields through export and import.
+* Fall back to the selected variation's image when an image-change rule has no matching image.
+* Skip WPML string-package registration with a warning when String Translation is unavailable, instead of failing on the missing API.
+* Release archives no longer ship the dead `assets/js/opf-frontend.min.js` or the internal `tasks/` planning notes.
 
 = 0.1.0 =
 * Field groups with conditional logic and server-side pricing.

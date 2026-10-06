@@ -134,7 +134,7 @@ De-WAPF the codebase (inventory in `WAPF-DELETION.md`):
 
 - `themes/framework/modules/wapf.php` → add and test an OPF extension point
   for the required Polylang locale-targeting behaviour before retiring the
-  WAPF-specific parts. OPF 0.1.0 does not provide an
+  WAPF-specific parts. OPF 0.1.1 does not provide an
   `opf/product_field_groups` filter.
 - Theme CSS (`field-accordion.css`, `product.css`, `pro.css`) → retarget
   `.wapf-*` selectors to `.opf-*`, or keep compat mode.

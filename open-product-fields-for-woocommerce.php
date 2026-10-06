@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Open Product Fields for WooCommerce
- * Plugin URI: https://github.com/netwokersllc/open-product-fields-for-woocommerce
+ * Plugin URI: https://github.com/networkersoss/open-product-fields-for-woocommerce
  * Description: Build custom product fields and add-ons for WooCommerce — conditional logic, server-side pricing, and first-class block checkout support. Free and open source.
  * Version: 0.1.1
  * Author: ssthormess

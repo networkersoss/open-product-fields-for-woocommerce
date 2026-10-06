@@ -2,7 +2,7 @@
 
 This is a record of the followersya cutover test campaign, not a current
 release compatibility guarantee. Refer to [CAPABILITIES.md](CAPABILITIES.md)
-for the implemented OPF 0.1.0 feature set and its exclusions.
+for the implemented OPF 0.1.1 feature set and its exclusions.
 
 Full-suite stability: **multiple consecutive all-green iterations** via the
 single runner `bin/run-all-tests.sh <site> <export.json> [iterations]`

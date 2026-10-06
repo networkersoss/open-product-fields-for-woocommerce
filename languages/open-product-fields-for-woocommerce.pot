@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-06T19:00:35+00:00\n"
+"POT-Creation-Date: 2026-10-06T20:01:08+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: open-product-fields-for-woocommerce\n"
@@ -21,7 +21,7 @@ msgstr ""
 
 #. Plugin URI of the plugin
 #: open-product-fields-for-woocommerce.php
-msgid "https://github.com/netwokersllc/open-product-fields-for-woocommerce"
+msgid "https://github.com/networkersoss/open-product-fields-for-woocommerce"
 msgstr ""
 
 #. Description of the plugin
@@ -589,6 +589,7 @@ msgid "Choose files or drop them here."
 msgstr ""
 
 #: includes/Service/Assets.php:181
+#: includes/Service/Uploads.php:314
 msgid "Remove a file before uploading another."
 msgstr ""
 
@@ -787,6 +788,8 @@ msgstr ""
 msgid "— Select image —"
 msgstr ""
 
+#. translators: %d: attachment ID.
+#. translators: %d: image position in the product gallery.
 #: includes/Service/LayeredImages.php:715
 #: includes/Service/LivePreview.php:76
 msgid "Image %d"
@@ -1101,6 +1104,7 @@ msgstr ""
 msgid "This quantity-based repeated field is not available yet."
 msgstr ""
 
+#. translators: %s: field label.
 #: includes/Service/Renderer.php:870
 msgid "Instructions for %s"
 msgstr ""
@@ -1184,8 +1188,82 @@ msgstr ""
 msgid "Create a product first to see a preview."
 msgstr ""
 
+#: includes/Service/Uploads.php:81
+#: includes/Service/Uploads.php:194
+msgid "Refresh the page before uploading."
+msgstr ""
+
 #: includes/Service/Uploads.php:117
 msgid "Delete uploaded files"
+msgstr ""
+
+#: includes/Service/Uploads.php:158
+msgid "Upload request origin is not allowed."
+msgstr ""
+
+#: includes/Service/Uploads.php:160
+msgid "Uploads are unavailable."
+msgstr ""
+
+#: includes/Service/Uploads.php:242
+#: includes/Service/Uploads.php:288
+msgid "Choose a valid file."
+msgstr ""
+
+#: includes/Service/Uploads.php:245
+msgid "The file exceeds the allowed size."
+msgstr ""
+
+#: includes/Service/Uploads.php:249
+msgid "This file type is not allowed."
+msgstr ""
+
+#: includes/Service/Uploads.php:251
+msgid "Secure upload validation is unavailable."
+msgstr ""
+
+#: includes/Service/Uploads.php:253
+msgid "The file content does not match its allowed type."
+msgstr ""
+
+#: includes/Service/Uploads.php:255
+msgid "The file is smaller than the minimum size."
+msgstr ""
+
+#: includes/Service/Uploads.php:261
+msgid "The image could not be verified."
+msgstr ""
+
+#: includes/Service/Uploads.php:262
+msgid "The image does not meet the minimum dimensions."
+msgstr ""
+
+#: includes/Service/Uploads.php:265
+msgid "The image does not match its required crop aspect ratio."
+msgstr ""
+
+#: includes/Service/Uploads.php:283
+msgid "This upload field is unavailable."
+msgstr ""
+
+#: includes/Service/Uploads.php:306
+msgid "Uploads are temporarily unavailable. Please contact the shop."
+msgstr ""
+
+#: includes/Service/Uploads.php:323
+#: includes/Service/Uploads.php:529
+msgid "Private upload storage is unavailable."
+msgstr ""
+
+#: includes/Service/Uploads.php:527
+#: includes/Service/Uploads.php:535
+#: includes/Service/Uploads.php:538
+#: includes/Service/Uploads.php:540
+msgid "File not found."
+msgstr ""
+
+#: includes/Service/Uploads.php:528
+msgid "This file is attached to a cart or order."
 msgstr ""
 
 #: includes/Service/WpmlIntegration.php:105

@@ -78,7 +78,7 @@ final class Uploads {
 				if ( UPLOAD_ERR_NO_FILE === $file['error'] ) continue;
 				$request->set_param( 'product_id', $pid ); $request->set_param( 'group_id', $gid ); $request->set_param( 'field_id', $fid );
 				$request->set_file_params( [ 'file' => $file ] );
-				$response = $allowed ? self::receive( $request ) : self::error( 'opf_upload_nonce', 'Refresh the page before uploading.', 403 );
+				$response = $allowed ? self::receive( $request ) : self::error( 'opf_upload_nonce', __( 'Refresh the page before uploading.', 'open-product-fields-for-woocommerce' ), 403 );
 				self::$native_values[ $pid ][ $gid ][ $fid ][] = is_wp_error( $response ) ? 'invalid' : $response->get_data()['token'];
 			}
 		}
@@ -155,9 +155,9 @@ final class Uploads {
 		$home = wp_parse_url( home_url() );
 		$given = wp_parse_url( $origin );
 		if ( $origin && ( ! is_array( $given ) || strtolower( $given['host'] ?? '' ) !== strtolower( $home['host'] ?? '' ) || ( $given['scheme'] ?? '' ) !== ( $home['scheme'] ?? '' ) || ( $given['port'] ?? null ) !== ( $home['port'] ?? null ) ) ) {
-			return self::error( 'opf_upload_origin', 'Upload request origin is not allowed.', 403 );
+			return self::error( 'opf_upload_origin', __( 'Upload request origin is not allowed.', 'open-product-fields-for-woocommerce' ), 403 );
 		}
-		return Renderer::visible_to_viewer() ? true : self::error( 'opf_upload_unavailable', 'Uploads are unavailable.', 403 );
+		return Renderer::visible_to_viewer() ? true : self::error( 'opf_upload_unavailable', __( 'Uploads are unavailable.', 'open-product-fields-for-woocommerce' ), 403 );
 	}
 
 	private static function load_session(): void {
@@ -191,7 +191,7 @@ final class Uploads {
 		$expected = WC()->session->get( 'opf_upload_nonce' );
 		$given = $request->get_header( 'x-opf-upload-nonce' );
 		return is_string( $expected ) && is_string( $given ) && strlen( $given ) === 64 && hash_equals( $expected, $given )
-			? true : self::error( 'opf_upload_nonce', 'Refresh the page before uploading.', 403 );
+			? true : self::error( 'opf_upload_nonce', __( 'Refresh the page before uploading.', 'open-product-fields-for-woocommerce' ), 403 );
 	}
 
 	/** Resolve only an upload field currently applicable to a published product. */
@@ -239,30 +239,30 @@ final class Uploads {
 
 	/** Extension + WordPress allowlist + content MIME, never browser MIME. */
 	public static function validate_file( array $file, array $field ) {
-		if ( ( $file['error'] ?? UPLOAD_ERR_NO_FILE ) !== UPLOAD_ERR_OK || ! is_string( $file['tmp_name'] ?? null ) || ! is_string( $file['name'] ?? null ) || ! is_file( $file['tmp_name'] ) ) return self::error( 'opf_upload_file', 'Choose a valid file.' );
+		if ( ( $file['error'] ?? UPLOAD_ERR_NO_FILE ) !== UPLOAD_ERR_OK || ! is_string( $file['tmp_name'] ?? null ) || ! is_string( $file['name'] ?? null ) || ! is_file( $file['tmp_name'] ) ) return self::error( 'opf_upload_file', __( 'Choose a valid file.', 'open-product-fields-for-woocommerce' ) );
 		$size = filesize( $file['tmp_name'] );
 		$maximum = $field['max_size'] > 0 ? min( $field['max_size'] * MB_IN_BYTES, wp_max_upload_size() ) : wp_max_upload_size();
-		if ( ! $size || $size > $maximum ) return self::error( 'opf_upload_size', 'The file exceeds the allowed size.' );
+		if ( ! $size || $size > $maximum ) return self::error( 'opf_upload_size', __( 'The file exceeds the allowed size.', 'open-product-fields-for-woocommerce' ) );
 		$name = sanitize_file_name( basename( $file['name'] ) );
 		$ext = strtolower( pathinfo( $name, PATHINFO_EXTENSION ) );
 		// Executable and active-content formats stay forbidden even if an admin allows them.
-		if ( ( $field['accepted_types'] && ! in_array( $ext, $field['accepted_types'], true ) ) || in_array( $ext, [ 'php', 'phtml', 'phar', 'html', 'htm', 'svg', 'js', 'exe', 'sh' ], true ) ) return self::error( 'opf_upload_type', 'This file type is not allowed.' );
+		if ( ( $field['accepted_types'] && ! in_array( $ext, $field['accepted_types'], true ) ) || in_array( $ext, [ 'php', 'phtml', 'phar', 'html', 'htm', 'svg', 'js', 'exe', 'sh' ], true ) ) return self::error( 'opf_upload_type', __( 'This file type is not allowed.', 'open-product-fields-for-woocommerce' ) );
 		$checked = wp_check_filetype_and_ext( $file['tmp_name'], $name, get_allowed_mime_types() );
-		if ( ! class_exists( \finfo::class ) ) return self::error( 'opf_upload_validation', 'Secure upload validation is unavailable.', 503 );
+		if ( ! class_exists( \finfo::class ) ) return self::error( 'opf_upload_validation', __( 'Secure upload validation is unavailable.', 'open-product-fields-for-woocommerce' ), 503 );
 		$mime = ( new \finfo( FILEINFO_MIME_TYPE ) )->file( $file['tmp_name'] );
-		if ( empty( $checked['ext'] ) || empty( $checked['type'] ) || $checked['ext'] !== $ext || $checked['type'] !== $mime ) return self::error( 'opf_upload_type', 'The file content does not match its allowed type.' );
+		if ( empty( $checked['ext'] ) || empty( $checked['type'] ) || $checked['ext'] !== $ext || $checked['type'] !== $mime ) return self::error( 'opf_upload_type', __( 'The file content does not match its allowed type.', 'open-product-fields-for-woocommerce' ) );
 		$minimum_size = isset( $field['min_size_mb'] ) && is_numeric( $field['min_size_mb'] ) && (float) $field['min_size_mb'] > 0 ? (int) ceil( (float) $field['min_size_mb'] * MB_IN_BYTES ) : 0;
-		if ( $minimum_size && $size < $minimum_size ) return self::error( 'opf_upload_min_size', 'The file is smaller than the minimum size.' );
+		if ( $minimum_size && $size < $minimum_size ) return self::error( 'opf_upload_min_size', __( 'The file is smaller than the minimum size.', 'open-product-fields-for-woocommerce' ) );
 		$min_width  = isset( $field['min_width'] ) ? max( 0, (int) $field['min_width'] ) : 0;
 		$min_height = isset( $field['min_height'] ) ? max( 0, (int) $field['min_height'] ) : 0;
 		$aspect     = 'forced' === ( $field['image_editor_mode'] ?? '' ) && ! empty( $field['image_editor_crop'] ) && 'free' !== ( $field['image_editor_aspect_ratio'] ?? 'free' ) ? array_map( 'intval', explode( ':', (string) $field['image_editor_aspect_ratio'] ) ) : [];
 		if ( $min_width || $min_height || $aspect ) {
 			$dimensions = self::image_dimensions( $file['tmp_name'], (string) $mime );
-			if ( null === $dimensions ) return self::error( 'opf_upload_image', 'The image could not be verified.' );
-			if ( $dimensions[0] < $min_width || $dimensions[1] < $min_height ) return self::error( 'opf_upload_dimensions', 'The image does not meet the minimum dimensions.' );
+			if ( null === $dimensions ) return self::error( 'opf_upload_image', __( 'The image could not be verified.', 'open-product-fields-for-woocommerce' ) );
+			if ( $dimensions[0] < $min_width || $dimensions[1] < $min_height ) return self::error( 'opf_upload_dimensions', __( 'The image does not meet the minimum dimensions.', 'open-product-fields-for-woocommerce' ) );
 			// Canvas output rounds each dimension independently: allow half a
 			// pixel on both sides, |w*q - h*p| <= (p + q) / 2.
-			if ( $aspect && ( count( $aspect ) !== 2 || $aspect[0] < 1 || $aspect[1] < 1 || abs( $dimensions[0] * $aspect[1] - $dimensions[1] * $aspect[0] ) > ( $aspect[0] + $aspect[1] ) / 2 ) ) return self::error( 'opf_upload_aspect', 'The image does not match its required crop aspect ratio.' );
+			if ( $aspect && ( count( $aspect ) !== 2 || $aspect[0] < 1 || $aspect[1] < 1 || abs( $dimensions[0] * $aspect[1] - $dimensions[1] * $aspect[0] ) > ( $aspect[0] + $aspect[1] ) / 2 ) ) return self::error( 'opf_upload_aspect', __( 'The image does not match its required crop aspect ratio.', 'open-product-fields-for-woocommerce' ) );
 		}
 		return [ 'name' => $name, 'mime' => $mime, 'size' => $size ];
 	}
@@ -280,12 +280,12 @@ final class Uploads {
 		$gid = (string) $request->get_param( 'group_id' );
 		$fid = (string) $request->get_param( 'field_id' );
 		$field = self::field( $pid, $gid, $fid );
-		if ( ! $field ) return self::error( 'opf_upload_field', 'This upload field is unavailable.', 404 );
+		if ( ! $field ) return self::error( 'opf_upload_field', __( 'This upload field is unavailable.', 'open-product-fields-for-woocommerce' ), 404 );
 		$files = $request->get_file_params();
 		$file = $files['file'] ?? [];
 		$checked = self::validate_file( $file, $field );
 		if ( is_wp_error( $checked ) ) return $checked;
-		if ( ! is_uploaded_file( $file['tmp_name'] ) ) return self::error( 'opf_upload_file', 'Choose a valid file.' );
+		if ( ! is_uploaded_file( $file['tmp_name'] ) ) return self::error( 'opf_upload_file', __( 'Choose a valid file.', 'open-product-fields-for-woocommerce' ) );
 		$lock = null;
 		try {
 			$root = self::root();
@@ -303,7 +303,7 @@ final class Uploads {
 			}
 			$max_bytes = defined( 'OPF_UPLOAD_MAX_BYTES' ) ? max( 1, (int) OPF_UPLOAD_MAX_BYTES ) : 1024 * MB_IN_BYTES;
 			$max_files = defined( 'OPF_UPLOAD_MAX_FILES' ) ? max( 1, (int) OPF_UPLOAD_MAX_FILES ) : 10000;
-			if ( $site_files >= $max_files || $site_bytes + $checked['size'] > $max_bytes ) return self::error( 'opf_upload_capacity', 'Uploads are temporarily unavailable. Please contact the shop.', 503 );
+			if ( $site_files >= $max_files || $site_bytes + $checked['size'] > $max_bytes ) return self::error( 'opf_upload_capacity', __( 'Uploads are temporarily unavailable. Please contact the shop.', 'open-product-fields-for-woocommerce' ), 503 );
 			$count = 0; $bytes = 0; $total = 0;
 			foreach ( self::records() as $record ) {
 				if ( $record['owner'] !== $owner || ! empty( $record['order_id'] ) || $record['created'] + self::TTL <= time() ) continue;
@@ -311,7 +311,7 @@ final class Uploads {
 				if ( $record['product_id'] === $pid && $record['group_id'] === $gid && $record['field_id'] === $fid ) $count++;
 			}
 			$budget = max( wp_max_upload_size(), (int) apply_filters( 'opf_upload_session_budget', 100 * MB_IN_BYTES ) );
-			if ( $count >= self::max_files( $field ) || $total >= self::max_files( [ 'multiple' => true ] ) || $bytes + $checked['size'] > $budget ) return self::error( 'opf_upload_limit', 'Remove a file before uploading another.' );
+			if ( $count >= self::max_files( $field ) || $total >= self::max_files( [ 'multiple' => true ] ) || $bytes + $checked['size'] > $budget ) return self::error( 'opf_upload_limit', __( 'Remove a file before uploading another.', 'open-product-fields-for-woocommerce' ) );
 			$token = bin2hex( random_bytes( 32 ) );
 			$path = $root . '/' . $token . '.bin';
 			if ( ! move_uploaded_file( $file['tmp_name'], $path ) ) throw new \RuntimeException();
@@ -320,7 +320,7 @@ final class Uploads {
 			if ( ! add_option( self::PREFIX . $token, $record, '', false ) ) { unlink( $path ); throw new \RuntimeException(); }
 			return new \WP_REST_Response( [ 'token' => $token, 'name' => $checked['name'], 'size' => $checked['size'] ], 201, [ 'Cache-Control' => 'private, no-store' ] );
 		} catch ( \Throwable $error ) {
-			return self::error( 'opf_upload_storage', 'Private upload storage is unavailable.', 503 );
+			return self::error( 'opf_upload_storage', __( 'Private upload storage is unavailable.', 'open-product-fields-for-woocommerce' ), 503 );
 		} finally {
 			if ( is_resource( $lock ) ) { flock( $lock, LOCK_UN ); fclose( $lock ); }
 		}
@@ -524,20 +524,20 @@ final class Uploads {
 
 	public static function remove( \WP_REST_Request $request ) {
 		$token = (string) $request['token']; $record = self::record( $token );
-		if ( ! $record || ! hash_equals( $record['owner'], self::owner() ) ) return self::error( 'opf_upload_missing', 'File not found.', 404 );
-		if ( ! empty( $record['cart'] ) || self::bound_order( $record ) ) return self::error( 'opf_upload_claimed', 'This file is attached to a cart or order.', 409 );
-		try { self::delete( $token ); } catch ( \Throwable $error ) { return self::error( 'opf_upload_storage', 'Private upload storage is unavailable.', 503 ); }
+		if ( ! $record || ! hash_equals( $record['owner'], self::owner() ) ) return self::error( 'opf_upload_missing', __( 'File not found.', 'open-product-fields-for-woocommerce' ), 404 );
+		if ( ! empty( $record['cart'] ) || self::bound_order( $record ) ) return self::error( 'opf_upload_claimed', __( 'This file is attached to a cart or order.', 'open-product-fields-for-woocommerce' ), 409 );
+		try { self::delete( $token ); } catch ( \Throwable $error ) { return self::error( 'opf_upload_storage', __( 'Private upload storage is unavailable.', 'open-product-fields-for-woocommerce' ), 503 ); }
 		return new \WP_REST_Response( null, 204 );
 	}
 
 	public static function download( \WP_REST_Request $request ) {
 		$token = (string) $request['token']; $record = self::record( $token );
-		if ( ! $record ) return self::error( 'opf_upload_missing', 'File not found.', 404 );
+		if ( ! $record ) return self::error( 'opf_upload_missing', __( 'File not found.', 'open-product-fields-for-woocommerce' ), 404 );
 		$order = ! empty( $record['order_id'] ) ? wc_get_order( $record['order_id'] ) : null;
 		$allowed = hash_equals( $record['owner'], self::owner() ) || ( $order && ( current_user_can( 'manage_woocommerce' ) || ( get_current_user_id() > 0 && $order->get_customer_id() === get_current_user_id() ) ) );
-		if ( ! $allowed ) return self::error( 'opf_upload_missing', 'File not found.', 404 );
+		if ( ! $allowed ) return self::error( 'opf_upload_missing', __( 'File not found.', 'open-product-fields-for-woocommerce' ), 404 );
 		try { $path = self::path( $token ); } catch ( \Throwable $error ) { $path = null; }
-		if ( ! $path || ( empty( $record['order_id'] ) && $record['created'] + self::TTL <= time() ) ) return self::error( 'opf_upload_missing', 'File not found.', 404 );
+		if ( ! $path || ( empty( $record['order_id'] ) && $record['created'] + self::TTL <= time() ) ) return self::error( 'opf_upload_missing', __( 'File not found.', 'open-product-fields-for-woocommerce' ), 404 );
 		self::$download_path = $path;
 		return new \WP_REST_Response( null, 200, [ 'Content-Type' => 'application/octet-stream', 'Content-Disposition' => 'attachment; filename="' . str_replace( [ '"', "\r", "\n" ], '', $record['name'] ) . '"', 'Content-Length' => $record['size'], 'Cache-Control' => 'private, no-store', 'X-Content-Type-Options' => 'nosniff' ] );
 	}
@@ -591,7 +591,8 @@ final class Uploads {
 		}
 	}
 
+	/** Messages arrive already translated: every call site wraps its own literal in __(). */
 	private static function error( string $code, string $message, int $status = 400 ): \WP_Error {
-		return new \WP_Error( $code, __( $message, 'open-product-fields-for-woocommerce' ), [ 'status' => $status ] );
+		return new \WP_Error( $code, $message, [ 'status' => $status ] );
 	}
 }
