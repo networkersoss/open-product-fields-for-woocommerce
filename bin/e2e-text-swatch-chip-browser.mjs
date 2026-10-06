@@ -1,7 +1,8 @@
 // Real-Chromium proof for the text-swatch chip decoration (base, hover, selected).
 //
-// WAPF Extended 3.1.5 applies four declarations to `.wapf-swatch--text`
-// (`assets/css/frontend-themed.min.css`):
+// With design settings, WAPF Extended 3.1.5's generated `frontend.min.css`
+// (`assets/css/frontend-themed.min.css`) applies four declarations to
+// `.wapf-swatch--text`:
 //
 //   border: var(--apf-ts-border, none);
 //   color: var(--apf-ts-color, inherit);
@@ -17,15 +18,25 @@
 //                                   background: var(--apf-ts-bg-sel, transparent);
 //                                   color: var(--apf-ts-color-sel, inherit);
 //
+// Without design settings WAPF serves `frontend-default.min.css` instead
+// (`class-design-helper.php:1137-1146` → `set_default_css()` at `:1308-1311`,
+// enqueued by `class-public-controller.php:182-186`), whose chip is
+// `border: 1px solid #ccc` (char 4976), `:hover{border-color:#353c4e}`
+// (char 5098) and `.wapf-checked{border-color:#353c4e;background:#353c4e;color:#fff}`
+// (char 5144). OPF emits no `--apf-ts-*` in that case, so its variable fallbacks
+// carry the whole unconfigured appearance and must equal those values (owner
+// decision 2026-10-06).
+//
 // OPF re-emits the `--apf-ts-*` values from the migrated `wapf_design_settings`
 // option and must apply them on `.opf-text-swatch-wrapper .opf-swatch--text`
 // only: plain checkbox/radio choices also carry `.opf-swatch--text` in OPF.
 //
-// `OPF_TSCHIP_EXPECT.hover` / `.selected` (both optional, same shape as the base
-// values) assert the configured state values; when a state is omitted the
-// harness asserts the state is *not visible* — the unconfigured fallbacks
-// (`transparent` / `inherit`) must leave the chip's rendering untouched. Every
-// state is also checked against the plain checkbox and radio choices.
+// `OPF_TSCHIP_EXPECT.hover` / `.selected` (same shape as the base values, with
+// `color: 'inherit'` meaning "resolves to the container's colour") are required:
+// base, hover and selected are all visible in every state — configured by the
+// `--apf-ts-*` variables, unconfigured by WAPF's default chip. Every state is
+// also checked against the plain checkbox and radio choices, which must stay
+// completely undecorated.
 //
 // Usage:
 //   OPF_TSCHIP_BASE_URL=http://127.0.0.1:8090 \
@@ -53,12 +64,12 @@ if ( ! expected.border || ! expected.background || ! expected.color || ! expecte
 	throw new Error( 'OPF_TSCHIP_EXPECT needs border, background, color and radius.' );
 }
 
-// `hover` / `selected` are optional: an omitted state must not be visible.
+// `hover` / `selected` are required: WAPF's default chip defines all three
+// states, so a run that cannot pin them is not proving the contract.
 const stateExpectation = ( name ) => {
 	const value = expected[name];
-	if ( undefined === value ) return null;
 	for ( const key of [ 'borderColor', 'background', 'color' ] ) {
-		if ( ! value[key] ) throw new Error( `OPF_TSCHIP_EXPECT.${ name } needs borderColor, background and color.` );
+		if ( ! value || ! value[key] ) throw new Error( `OPF_TSCHIP_EXPECT.${ name } needs borderColor, background and color.` );
 	}
 	return value;
 };
@@ -93,21 +104,18 @@ const chipStyle = ( locator ) => locator.evaluate( ( node ) => {
 	};
 } );
 
-// Assert the configured state values, or — when the state is unconfigured — that
-// nothing visible changed (an unconfigured chip keeps `transparent`/`inherit`
-// fallbacks, and its border-color resolves to transparent while it has no border
-// to paint).
+// Assert the state values. `color: 'inherit'` means the chip must resolve to the
+// colour of its own container — WAPF's `inherit` fallback for a state it does
+// not re-colour.
 const checkVisibleState = ( name, style, expectation ) => {
-	if ( expectation ) {
-		check( `${ name }: border-color is "${ expectation.borderColor }"`, expectation.borderColor === style.borderTopColor, style.borderTopColor );
-		check( `${ name }: background is "${ expectation.background }"`, expectation.background === style.background, style.background );
+	check( `${ name }: border-color is "${ expectation.borderColor }"`, expectation.borderColor === style.borderTopColor, style.borderTopColor );
+	check( `${ name }: background is "${ expectation.background }"`, expectation.background === style.background, style.background );
+	if ( 'inherit' === expectation.color ) {
+		check( `${ name }: colour falls back to inherit`, style.color === style.inheritedColor, `${ style.color } vs wrapper ${ style.inheritedColor }` );
+	} else {
 		check( `${ name }: colour is "${ expectation.color }"`, expectation.color === style.color, style.color );
-		check( `${ name }: keeps the configured radius`, style.radius === expected.radius, style.radius );
-		return;
 	}
-	check( `${ name }: no border appears`, '0px' === style.borderTopWidth && 'none' === style.borderTopStyle, `${ style.borderTopWidth } ${ style.borderTopStyle }` );
-	check( `${ name }: background stays transparent`, 'rgba(0, 0, 0, 0)' === style.background, style.background );
-	check( `${ name }: colour stays inherited`, style.color === style.inheritedColor, `${ style.color } vs wrapper ${ style.inheritedColor }` );
+	check( `${ name }: keeps the configured radius`, style.radius === expected.radius, style.radius );
 };
 
 // Plain checkbox/radio choices share `.opf-swatch--text`; no state may decorate
@@ -131,7 +139,7 @@ try {
 		url: page.url(),
 		generatedAt: new Date().toISOString(),
 		expected,
-		configured: { hover: !! hoverExpect, selected: !! selectedExpect },
+		assertedStates: [ 'base', 'hover', 'selected' ],
 		stylesheets: await page.evaluate( () => Array.from( document.querySelectorAll( 'link[rel="stylesheet"]' ) ).map( ( link ) => link.href ).filter( ( href ) => /opf-frontend|advanced-product-fields/.test( href ) ) ),
 	};
 
@@ -225,17 +233,15 @@ try {
 	result.hovered = hovered;
 	check( 'hovered chip keeps the text-swatch scope', /opf-text-swatch-wrapper/.test( hovered.wrapperClasses ), hovered.wrapperClasses );
 	checkVisibleState( 'hovered chip', hovered, hoverExpect );
-	if ( hoverExpect ) {
-		check( 'hovered chip keeps the base border width', baseHoverTarget.borderTopWidth === hovered.borderTopWidth, hovered.borderTopWidth );
-		check( 'hovered chip keeps the base radius', baseHoverTarget.radius === hovered.radius, hovered.radius );
-	}
-	checkRendering( 'hovered chip', baseHoverTargetShot, await clipShot( hoverTarget ), !! hoverExpect );
+	check( 'hovered chip keeps the base border width', baseHoverTarget.borderTopWidth === hovered.borderTopWidth, hovered.borderTopWidth );
+	check( 'hovered chip keeps the base radius', baseHoverTarget.radius === hovered.radius, hovered.radius );
+	checkRendering( 'hovered chip', baseHoverTargetShot, await clipShot( hoverTarget ), true );
 
 	await multiChips.nth( 1 ).hover();
 	const hoveredMulti = await chipStyle( multiChips.nth( 1 ) );
 	result.hoveredMulti = hoveredMulti;
 	checkVisibleState( 'hovered multi-choice chip', hoveredMulti, hoverExpect );
-	checkRendering( 'hovered multi-choice chip', baseMultiHoverTargetShot, await clipShot( multiChips.nth( 1 ) ), !! hoverExpect );
+	checkRendering( 'hovered multi-choice chip', baseMultiHoverTargetShot, await clipShot( multiChips.nth( 1 ) ), true );
 
 	for ( const [ field, kind ] of [ [ 'extras', 'checkbox' ], [ 'size', 'radio' ] ] ) {
 		const locator = page.locator( `[data-opf-field="${ field }"] .opf-swatch--text` ).first();
@@ -255,7 +261,7 @@ try {
 	result.selectedChip = selected;
 	check( 'selected chip carries `.opf-checked` (the class the state rule consumes)', /(^|\s)opf-checked(\s|$)/.test( selected.classes ), selected.classes );
 	checkVisibleState( 'selected chip', selected, selectedExpect );
-	checkRendering( 'selected chip', baseChipShot, await clipShot( singleChips.first() ), !! selectedExpect );
+	checkRendering( 'selected chip', baseChipShot, await clipShot( singleChips.first() ), true );
 
 	await page.locator( '[data-opf-field="finish_multi"] input[value="matte"]' ).check();
 	await parkMouse();
@@ -263,7 +269,7 @@ try {
 	result.selectedMultiChip = selectedMulti;
 	check( 'selected multi-choice chip carries `.opf-checked`', /(^|\s)opf-checked(\s|$)/.test( selectedMulti.classes ), selectedMulti.classes );
 	checkVisibleState( 'selected multi-choice chip', selectedMulti, selectedExpect );
-	checkRendering( 'selected multi-choice chip', baseMultiChipShot, await clipShot( multiChips.first() ), !! selectedExpect );
+	checkRendering( 'selected multi-choice chip', baseMultiChipShot, await clipShot( multiChips.first() ), true );
 
 	// WAPF cascade: `.wapf-checked` is declared after `:hover`, so a selected
 	// chip that is also hovered keeps its selected values.

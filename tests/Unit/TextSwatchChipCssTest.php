@@ -10,9 +10,10 @@ use PHPUnit\Framework\TestCase;
 /**
  * WAPF text-swatch chip decoration contract: base, hover and selected.
  *
- * WAPF Extended 3.1.5's themed stylesheet
- * (`assets/css/frontend-themed.min.css`) applies four declarations to
- * `.wapf-swatch--text`:
+ * WAPF Extended 3.1.5 ships two chip stylesheets. With design settings saved it
+ * serves the generated `frontend.min.css` (written from
+ * `assets/css/frontend-themed.min.css`, `class-design-helper.php:1446-1478`),
+ * which applies four declarations to `.wapf-swatch--text`:
  *
  *   border: var(--apf-ts-border, none);
  *   color: var(--apf-ts-color, inherit);
@@ -31,9 +32,27 @@ use PHPUnit\Framework\TestCase;
  * (`includes/Service/Renderer.php:1221`), which the frontend script toggles on
  * every `.opf-swatch`.
  *
+ * **Without design settings** `generate_css()` defers to `set_default_css()`
+ * (`class-design-helper.php:1137-1146`, `:1308-1311`), which byte-copies
+ * `assets/css/frontend-default.min.css` over `frontend.min.css`; the public
+ * controller enqueues that file (`class-public-controller.php:182-186`). OPF
+ * emits no `--apf-ts-*` at all in that case (`WapfDesign::css()` returns ''), so
+ * the variable fallbacks below carry the whole unconfigured appearance. The
+ * owner decided 2026-10-06 that OPF matches that default chip, i.e. the
+ * fallbacks are the default stylesheet's values (single line, char offsets):
+ *
+ *   char 4976 `.wapf-swatch--text{…;border-radius:4px;border:1px solid #ccc}`
+ *   char 5098 `.wapf-swatch--text:hover{border-color:#353c4e}`
+ *   char 5144 `.wapf-swatch--text.wapf-checked{border-color:#353c4e;background:#353c4e;color:#fff}`
+ *
+ * The default stylesheet's hover rule re-colours the border only, so the hover
+ * colour and background keep the themed `inherit`/`transparent` fallbacks; the
+ * radius fallback stays 4px, matching both stylesheets.
+ *
  * The `--apf-ts-*` values come from the migrated `wapf_design_settings` option
  * (`includes/classes/class-design-helper.php:1514-1516`; OPF re-emits them in
- * `Engine\WapfDesign::css()`). WAPF renders text swatches as
+ * `Engine\WapfDesign::css()`), so a configured design still overrides every
+ * fallback. WAPF renders text swatches as
  * `views/frontend/fields/text-swatch.php:17` →
  * `<div class="wapf-swatch wapf-swatch--text …">` and
  * `views/frontend/fields/multi-text-swatch.php:18` for the multi choice, while
@@ -72,25 +91,31 @@ final class TextSwatchChipCssTest extends TestCase {
 		return substr( $css, $start, (int) strpos( $css, '}', $start ) - $start );
 	}
 
-	public function test_base_rule_consumes_the_wapf_text_swatch_variables_with_wapf_defaults(): void {
+	public function test_base_rule_consumes_the_wapf_text_swatch_variables_with_the_wapf_default_chip(): void {
 		$rule = $this->declarations( self::CHIP_SELECTOR );
 
-		$this->assertStringContainsString( 'border: var(--apf-ts-border, none);', $rule );
+		// `1px solid #ccc` is `frontend-default.min.css` char 4976: with no design
+		// settings WAPF serves that stylesheet and OPF emits no `--apf-ts-border`.
+		$this->assertStringContainsString( 'border: var(--apf-ts-border, 1px solid #ccc);', $rule );
 		$this->assertStringContainsString( 'background: var(--apf-ts-bg, transparent);', $rule );
 		$this->assertStringContainsString( 'color: var(--apf-ts-color, inherit);', $rule );
 
-		// The corner radius keeps its OPF-first precedence chain.
+		// The corner radius keeps its OPF-first precedence chain (4px = WAPF's own
+		// default radius in both stylesheets).
 		$this->assertStringContainsString(
 			'border-radius: var(--opf-text-swatch-radius, var(--apf-ts-radius, 4px));',
 			$rule
 		);
 	}
 
-	public function test_hover_rule_consumes_the_wapf_hover_variables_with_wapf_defaults(): void {
+	public function test_hover_rule_consumes_the_wapf_hover_variables_with_the_wapf_default_chip(): void {
 		$rule = $this->declarations( self::HOVER_SELECTOR );
 
 		$this->assertStringContainsString( 'color: var(--apf-ts-color-hov, inherit);', $rule );
-		$this->assertStringContainsString( 'border-color: var(--apf-ts-border-color-hov, transparent);', $rule );
+		// `#353c4e` is `frontend-default.min.css` char 5098. The default stylesheet's
+		// hover rule re-colours the border only, so colour/background keep the
+		// themed fallbacks.
+		$this->assertStringContainsString( 'border-color: var(--apf-ts-border-color-hov, #353c4e);', $rule );
 		$this->assertStringContainsString( 'background: var(--apf-ts-bg-hov, transparent);', $rule );
 
 		// The hover state re-colours the chip; it never re-declares the base
@@ -99,12 +124,14 @@ final class TextSwatchChipCssTest extends TestCase {
 		$this->assertStringNotContainsString( 'border:', $rule );
 	}
 
-	public function test_selected_rule_consumes_the_wapf_selected_variables_with_wapf_defaults(): void {
+	public function test_selected_rule_consumes_the_wapf_selected_variables_with_the_wapf_default_chip(): void {
 		$rule = $this->declarations( self::CHECKED_SELECTOR );
 
-		$this->assertStringContainsString( 'border-color: var(--apf-ts-border-color-sel, transparent);', $rule );
-		$this->assertStringContainsString( 'background: var(--apf-ts-bg-sel, transparent);', $rule );
-		$this->assertStringContainsString( 'color: var(--apf-ts-color-sel, inherit);', $rule );
+		// `#353c4e` background/border and white text are
+		// `frontend-default.min.css` char 5144.
+		$this->assertStringContainsString( 'border-color: var(--apf-ts-border-color-sel, #353c4e);', $rule );
+		$this->assertStringContainsString( 'background: var(--apf-ts-bg-sel, #353c4e);', $rule );
+		$this->assertStringContainsString( 'color: var(--apf-ts-color-sel, #fff);', $rule );
 
 		$this->assertStringNotContainsString( 'border-radius', $rule );
 		$this->assertStringNotContainsString( 'border:', $rule );

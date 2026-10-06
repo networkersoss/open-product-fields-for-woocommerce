@@ -1,0 +1,75 @@
+ok fixture product page returns HTTP 200 — 200
+ok single-select text swatch renders the text-swatch wrapper
+ok every single-select choice is a text swatch chip — 2
+ok multi-choice text swatch renders the text-swatch wrapper
+ok every multi-choice choice is a text swatch chip — 2
+ok the multi-choice chip is not the single-select variant — opf-swatch opf-swatch--text
+ok chip border is "2px solid rgb(204, 204, 204)" — 2px solid rgb(204, 204, 204)
+ok chip background is "rgb(18, 18, 18)" — rgb(18, 18, 18)
+ok chip color is "rgb(255, 255, 255)" — rgb(255, 255, 255)
+ok chip border-radius is "18px" — 18px
+ok chip wrapper is the scoped text-swatch wrapper — opf-swatch-wrapper opf-text-swatch-wrapper
+ok multi-choice chip carries the same base decoration — 2px solid rgb(204, 204, 204) / rgb(18, 18, 18) / rgb(255, 255, 255) / 18px
+ok plain checkbox choice keeps no border — 0px none rgb(17, 17, 17)
+ok plain checkbox choice keeps a transparent background — rgba(0, 0, 0, 0)
+ok plain checkbox choice keeps a 0px radius — 0px
+ok plain checkbox wrapper is not the text-swatch wrapper — opf-swatch-wrapper wapf-checkboxes
+ok plain radio choice keeps no border — 0px none rgb(17, 17, 17)
+ok plain radio choice keeps a transparent background — rgba(0, 0, 0, 0)
+ok plain radio choice keeps a 0px radius — 0px
+ok plain radio wrapper is not the text-swatch wrapper — opf-swatch-wrapper wapf-radios
+ok hovered chip keeps the text-swatch scope — opf-swatch-wrapper opf-text-swatch-wrapper
+ok hovered chip: border-color is "rgb(164, 164, 164)" — rgb(164, 164, 164)
+ok hovered chip: background is "rgb(0, 255, 0)" — rgb(0, 255, 0)
+ok hovered chip: colour is "rgb(0, 0, 255)" — rgb(0, 0, 255)
+ok hovered chip: keeps the configured radius — 18px
+ok hovered chip keeps the base border width — 2px
+ok hovered chip keeps the base radius — 18px
+ok hovered chip: rendered pixels change — different clip
+ok hovered multi-choice chip: border-color is "rgb(164, 164, 164)" — rgb(164, 164, 164)
+ok hovered multi-choice chip: background is "rgb(0, 255, 0)" — rgb(0, 255, 0)
+ok hovered multi-choice chip: colour is "rgb(0, 0, 255)" — rgb(0, 0, 255)
+ok hovered multi-choice chip: keeps the configured radius — 18px
+ok hovered multi-choice chip: rendered pixels change — different clip
+ok hovered plain checkbox choice: stays borderless — 0px none rgb(17, 17, 17)
+ok hovered plain checkbox choice: stays transparent — rgba(0, 0, 0, 0)
+ok hovered plain checkbox choice: keeps its 0px radius — 0px
+ok hovered plain checkbox choice: keeps the unscoped wrapper — opf-swatch-wrapper wapf-checkboxes
+ok hovered plain checkbox choice: rendering is unchanged — rgba(0, 0, 0, 0) / 0px none rgb(17, 17, 17)
+ok hovered plain checkbox choice: rendered pixels are unchanged — identical clip
+ok hovered plain radio choice: stays borderless — 0px none rgb(17, 17, 17)
+ok hovered plain radio choice: stays transparent — rgba(0, 0, 0, 0)
+ok hovered plain radio choice: keeps its 0px radius — 0px
+ok hovered plain radio choice: keeps the unscoped wrapper — opf-swatch-wrapper wapf-radios
+ok hovered plain radio choice: rendering is unchanged — rgba(0, 0, 0, 0) / 0px none rgb(17, 17, 17)
+ok hovered plain radio choice: rendered pixels are unchanged — identical clip
+ok selected chip carries `.opf-checked` (the class the state rule consumes) — opf-swatch opf-swatch--text opf-single-select opf-checked
+ok selected chip: border-color is "rgb(255, 0, 255)" — rgb(255, 0, 255)
+ok selected chip: background is "rgb(53, 60, 78)" — rgb(53, 60, 78)
+ok selected chip: colour is "rgb(255, 255, 0)" — rgb(255, 255, 0)
+ok selected chip: keeps the configured radius — 18px
+ok selected chip: rendered pixels change — different clip
+ok selected multi-choice chip carries `.opf-checked` — opf-swatch opf-swatch--text opf-checked
+ok selected multi-choice chip: border-color is "rgb(255, 0, 255)" — rgb(255, 0, 255)
+ok selected multi-choice chip: background is "rgb(53, 60, 78)" — rgb(53, 60, 78)
+ok selected multi-choice chip: colour is "rgb(255, 255, 0)" — rgb(255, 255, 0)
+ok selected multi-choice chip: keeps the configured radius — 18px
+ok selected multi-choice chip: rendered pixels change — different clip
+ok selected + hovered chip keeps the selected state — rgb(53, 60, 78) / rgb(255, 255, 0) / rgb(255, 0, 255)
+ok checked plain checkbox choice is selected but not decorated — opf-swatch opf-swatch--text wapf-checkbox opf-checked
+ok checked plain checkbox choice: stays borderless — 0px none rgb(17, 17, 17)
+ok checked plain checkbox choice: stays transparent — rgba(0, 0, 0, 0)
+ok checked plain checkbox choice: keeps its 0px radius — 0px
+ok checked plain checkbox choice: keeps the unscoped wrapper — opf-swatch-wrapper wapf-checkboxes
+ok checked plain checkbox choice: rendering is unchanged — rgba(0, 0, 0, 0) / 0px none rgb(17, 17, 17)
+ok checked plain checkbox choice: rendered pixels are unchanged — identical clip
+ok checked plain radio choice is selected but not decorated — opf-swatch opf-swatch--text wapf-radio opf-single-select opf-checked
+ok checked plain radio choice: stays borderless — 0px none rgb(17, 17, 17)
+ok checked plain radio choice: stays transparent — rgba(0, 0, 0, 0)
+ok checked plain radio choice: keeps its 0px radius — 0px
+ok checked plain radio choice: keeps the unscoped wrapper — opf-swatch-wrapper wapf-radios
+ok checked plain radio choice: rendering is unchanged — rgba(0, 0, 0, 0) / 0px none rgb(17, 17, 17)
+ok checked plain radio choice: rendered pixels are unchanged — identical clip
+artifact docs/compatibility/textswatchchip-proof-20261005/opf-radius-override-hover-selected.json
+72 checks, 0 failures (opf-radius-override-hover-selected)
+72 checks, 0 failures (opf-radius-override-hover-selected)

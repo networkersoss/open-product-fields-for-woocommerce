@@ -575,39 +575,50 @@
 	gap: 0.4em;
 }
 
-/* WAPF text-swatch chip: WAPF's themed stylesheet applies
- * `border: var(--apf-ts-border, none)`, `color: var(--apf-ts-color, inherit)`,
- * `background: var(--apf-ts-bg, transparent)` and
- * `border-radius: var(--apf-ts-radius, 4px)` to `.wapf-swatch--text`
- * (frontend-themed.min.css); the `--apf-ts-*` values come from the migrated
- * `wapf_design_settings` option (Engine/WapfDesign.php). Scoped to the
- * text-swatch wrapper because OPF also puts `.opf-swatch--text` on plain
- * checkbox/radio choices, which WAPF renders as `.wapf-checkbox`/`.wapf-radio`. */
+/* WAPF text-swatch chip. With design settings the themed stylesheet
+ * (frontend-themed.min.css) applies `border: var(--apf-ts-border, none)`,
+ * `color: var(--apf-ts-color, inherit)`, `background: var(--apf-ts-bg,
+ * transparent)` and `border-radius: var(--apf-ts-radius, 4px)` to
+ * `.wapf-swatch--text`, and the `--apf-ts-*` values come from the migrated
+ * `wapf_design_settings` option (Engine/WapfDesign.php). Without design settings
+ * WAPF serves the default stylesheet (class-design-helper.php:1137-1146 →
+ * set_default_css() at :1308-1311), whose chip is `border: 1px solid #ccc`
+ * (frontend-default.min.css char 4976) — so the variables are absent and the
+ * fallbacks below carry WAPF's default chip.
+ * Scoped to the text-swatch wrapper because OPF also puts `.opf-swatch--text` on
+ * plain checkbox/radio choices, which WAPF renders as `.wapf-checkbox`/`.wapf-radio`. */
 .opf-text-swatch-wrapper .opf-swatch--text {
-	border: var(--apf-ts-border, none);
+	border: var(--apf-ts-border, 1px solid #ccc);
 	background: var(--apf-ts-bg, transparent);
 	color: var(--apf-ts-color, inherit);
 	border-radius: var(--opf-text-swatch-radius, var(--apf-ts-radius, 4px));
 }
 
-/* WAPF's hover and selected states for the same chip: the themed stylesheet
- * applies `color: var(--apf-ts-color-hov, inherit)`,
- * `border-color: var(--apf-ts-border-color-hov, transparent)` and
- * `background: var(--apf-ts-bg-hov, transparent)` on `.wapf-swatch--text:hover`,
- * and the `-sel` variables on `.wapf-swatch--text.wapf-checked` — the class WAPF
- * puts on a selected chip (class-html.php:597, then toggled per change event).
- * `.opf-checked` is OPF's equivalent (Renderer.php), so the same scope keeps
- * plain checkbox/radio choices untouched. */
+/* WAPF's hover and selected states for the same chip. Themed: `color:
+ * var(--apf-ts-color-hov, inherit)`, `border-color:
+ * var(--apf-ts-border-color-hov, transparent)`, `background:
+ * var(--apf-ts-bg-hov, transparent)` on `.wapf-swatch--text:hover`. Default
+ * stylesheet: `.wapf-swatch--text:hover{border-color:#353c4e}` (char 5098) —
+ * colour and background stay untouched, hence the unchanged `inherit`/`transparent`
+ * fallbacks. `.opf-checked` is OPF's equivalent of WAPF's `wapf-checked` (the
+ * class WAPF puts on a selected chip, class-html.php:597, then toggled per change
+ * event; OPF emits it in Renderer.php), so the same scope keeps plain
+ * checkbox/radio choices untouched. This rule stays before the selected rule:
+ * both have equal specificity, so a selected chip that is hovered keeps its
+ * selected values, exactly as in WAPF. */
 .opf-text-swatch-wrapper .opf-swatch--text:hover {
 	color: var(--apf-ts-color-hov, inherit);
-	border-color: var(--apf-ts-border-color-hov, transparent);
+	border-color: var(--apf-ts-border-color-hov, #353c4e);
 	background: var(--apf-ts-bg-hov, transparent);
 }
 
+/* Default stylesheet: `.wapf-swatch--text.wapf-checked{border-color:#353c4e;
+ * background:#353c4e;color:#fff}` (frontend-default.min.css char 5144); with
+ * design settings the `-sel` variables replace those three fallbacks. */
 .opf-text-swatch-wrapper .opf-swatch--text.opf-checked {
-	border-color: var(--apf-ts-border-color-sel, transparent);
-	background: var(--apf-ts-bg-sel, transparent);
-	color: var(--apf-ts-color-sel, inherit);
+	border-color: var(--apf-ts-border-color-sel, #353c4e);
+	background: var(--apf-ts-bg-sel, #353c4e);
+	color: var(--apf-ts-color-sel, #fff);
 }
 
 .opf-color-swatch-wrapper .opf-swatch--color > label {
