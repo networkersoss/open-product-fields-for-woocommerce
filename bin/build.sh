@@ -14,6 +14,7 @@ rsync -a --delete \
 	--exclude='tests/' \
 	--exclude='bin/' \
 	--exclude='docs/' \
+	--exclude='tasks/' \
 	--exclude='composer.json' \
 	--exclude='phpunit.xml.dist' \
 	--exclude='composer.lock' \
