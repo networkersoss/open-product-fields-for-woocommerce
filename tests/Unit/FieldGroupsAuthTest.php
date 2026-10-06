@@ -33,7 +33,30 @@ namespace {
 
 namespace OPF\Service {
 	function is_user_logged_in(): bool { return (bool) ( $GLOBALS['opf_auth_test_logged_in'] ?? false ); }
-	function get_posts( array $args = [] ): array { return $GLOBALS['opf_auth_test_posts'] ?? []; }
+	function get_posts( array $args = [] ): array {
+		$posts  = $GLOBALS['opf_auth_test_posts'] ?? [];
+		$status = $args['post_status'] ?? '';
+		if ( ! $status || 'any' === $status ) {
+			return $posts;
+		}
+		// Emulate WP_Query's post_status filter so tests can assert which statuses
+		// the caller asked for. Fixtures without a registered status count as
+		// published, which keeps every existing fixture behaving as before.
+		$statuses = array_map( 'strval', (array) $status );
+		$by_id    = $GLOBALS['opf_auth_test_post_statuses'] ?? [];
+		return array_values(
+			array_filter(
+				$posts,
+				static function ( $post ) use ( $statuses, $by_id ): bool {
+					$id = is_object( $post ) ? ( $post->ID ?? null ) : ( is_int( $post ) ? $post : null );
+					if ( null === $id ) {
+						return true;
+					}
+					return in_array( $by_id[ $id ] ?? 'publish', $statuses, true );
+				}
+			)
+		);
+	}
 	function wc_get_product_term_ids( int $product_id, string $taxonomy ): array { return []; }
 	function wp_cache_get( $key, string $group = '' ) { return $GLOBALS['opf_auth_test_cache'][ $group ][ $key ] ?? false; }
 	function wp_cache_set( $key, $value, string $group = '' ): bool { $GLOBALS['opf_auth_test_cache'][ $group ][ $key ] = $value; return true; }
