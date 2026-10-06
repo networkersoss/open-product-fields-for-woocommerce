@@ -19,6 +19,10 @@ final class Cli {
 	 */
 	public static function init(): void {
 		\WP_CLI::add_command( 'opf', self::class );
+		// WP-CLI names a class method subcommand exactly as the method is spelled,
+		// so the dashed form documented for the file importer is registered on
+		// purpose alongside `wp opf import_wapf_json`.
+		\WP_CLI::add_command( 'opf import-wapf-json', [ self::class, 'import_wapf_json' ] );
 	}
 
 	/**
@@ -123,6 +127,78 @@ final class Cli {
 			}
 		}
 		\WP_CLI::success( sprintf( '%s %d group(s).', isset( $assoc_args['commit'] ) ? 'Imported' : 'Would import', $report['imported'] ) );
+	}
+
+	/**
+	 * Import one JSON payload copied from WAPF Tools as a reviewable draft.
+	 *
+	 * ## OPTIONS
+	 *
+	 * <file>
+	 * : Path to a WAPF Tools JSON payload (maximum 5 MiB).
+	 *
+	 * [--title=<title>]
+	 * : Title for the new OPF draft. Defaults to the payload file name.
+	 *
+	 * [--commit]
+	 * : Create the review draft. Without this flag the command only reports the mapping.
+	 *
+	 * [--product-id=<id>]
+	 * : Attach the draft to one existing WooCommerce product, replacing imported placement.
+	 *
+	 * [--format=<format>]
+	 * : Output format: table (default) or json.
+	 *
+	 * ## EXAMPLES
+	 *
+	 *     wp opf import-wapf-json /tmp/wapf-fields.json
+	 *     wp opf import-wapf-json /tmp/wapf-fields.json --commit
+	 *     wp opf import-wapf-json /tmp/wapf-fields.json --title="Imported fields" --product-id=123 --commit
+	 *
+	 * @param array<int,string>    $args       Positional args.
+	 * @param array<string,string> $assoc_args Flags.
+	 */
+	public function import_wapf_json( array $args, array $assoc_args = [] ): void {
+		if ( 1 !== count( $args ) ) {
+			\WP_CLI::error( 'Provide exactly one WAPF Tools JSON file.' );
+		}
+		$format = $assoc_args['format'] ?? 'table';
+		if ( ! in_array( $format, [ 'table', 'json' ], true ) ) {
+			\WP_CLI::error( 'WAPF JSON import format must be table or json.' );
+		}
+		$commit     = isset( $assoc_args['commit'] );
+		$product_id = isset( $assoc_args['product-id'] ) ? self::positive_id( $assoc_args['product-id'] ) : 0;
+		$title      = isset( $assoc_args['title'] ) ? (string) $assoc_args['title'] : self::payload_file_title( (string) $args[0] );
+		try {
+			$prepared = WapfJsonFileImporter::inspect_file( (string) $args[0] );
+			$report   = WapfJsonFileImporter::run( $prepared, $title, $commit, $product_id );
+		} catch ( \InvalidArgumentException $exception ) {
+			\WP_CLI::error( $exception->getMessage() );
+		} catch ( \RuntimeException $exception ) {
+			\WP_CLI::error( $exception->getMessage() );
+		}
+		$report['notes'] = is_array( $report['notes'] ?? null ) ? $report['notes'] : [];
+		if ( 'json' === $format ) {
+			\WP_CLI::line( wp_json_encode( $report, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE ) );
+		} else {
+			\WP_CLI::line( sprintf( 'Result: %s', $report['result'] ) );
+			\WP_CLI::line( sprintf( 'Title:  %s', $report['title'] ) );
+			\WP_CLI::line( sprintf( 'Fields: %d', $report['fields'] ?? 0 ) );
+			if ( $report['opf_id'] > 0 ) {
+				\WP_CLI::line( sprintf( 'Group:  #%d', $report['opf_id'] ) );
+			}
+			if ( 'draft-created' === $report['result'] ) {
+				\WP_CLI::line( 'Status: draft; review placement, title and options before publishing.' );
+			} elseif ( 'dry-run' === $report['result'] ) {
+				\WP_CLI::line( 'Status: dry run; no draft was written. Re-run with --commit to create the review draft.' );
+			} else {
+				\WP_CLI::line( 'Status: no changes written; inspect the result above.' );
+			}
+			foreach ( $report['notes'] as $note ) {
+				\WP_CLI::line( '  Review: ' . $note );
+			}
+		}
+		\WP_CLI::success( sprintf( '%s WAPF JSON payload as "%s".', $commit ? 'Imported' : 'Would import', $report['title'] ) );
 	}
 
 	/**
@@ -350,5 +426,12 @@ final class Cli {
 			\WP_CLI::error( 'The selected ID must be a positive integer.' );
 		}
 		return (int) $value;
+	}
+
+	/**
+	 * Draft title for a WAPF Tools payload file when --title is absent.
+	 */
+	private static function payload_file_title( string $path ): string {
+		return (string) preg_replace( '/\.json$/i', '', basename( $path ) );
 	}
 }
