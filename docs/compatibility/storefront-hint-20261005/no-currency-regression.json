@@ -1,0 +1,230 @@
+{
+  "currency": "USD",
+  "identical": true,
+  "cases": {
+    "fixed": {
+      "before": {
+        "choice_hints": [
+          "(+ &#36;2)"
+        ],
+        "pills": [
+          "+ $2.00",
+          "+ $2.00",
+          "(+ &#36;2)"
+        ],
+        "options": [],
+        "price_data": [
+          {
+            "tag": "INPUT",
+            "id": "opf-70-fee-a",
+            "price": "2",
+            "pricetype": "fixed"
+          },
+          {
+            "tag": "INPUT",
+            "id": "opf-70-engrave",
+            "price": "2",
+            "pricetype": "fixed"
+          }
+        ],
+        "preview_totals": "Product total $10.00 Options total $4.00 Grand total $14.00",
+        "totals_price_attr": "10"
+      },
+      "after": {
+        "choice_hints": [
+          "(+ &#36;2)"
+        ],
+        "pills": [
+          "+ $2.00",
+          "+ $2.00",
+          "(+ &#36;2)"
+        ],
+        "options": [],
+        "price_data": [
+          {
+            "tag": "INPUT",
+            "id": "opf-70-fee-a",
+            "price": "2",
+            "pricetype": "fixed"
+          },
+          {
+            "tag": "INPUT",
+            "id": "opf-70-engrave",
+            "price": "2",
+            "pricetype": "fixed"
+          }
+        ],
+        "preview_totals": "Product total $10.00 Options total $4.00 Grand total $14.00",
+        "totals_price_attr": "10"
+      },
+      "identical": true
+    },
+    "percent": {
+      "before": {
+        "choice_hints": [
+          "(+ &#36;1)"
+        ],
+        "pills": [
+          "+ $1.00"
+        ],
+        "options": [],
+        "price_data": [
+          {
+            "tag": "INPUT",
+            "id": "opf-72-fee-a",
+            "price": "10",
+            "pricetype": "percent"
+          }
+        ],
+        "preview_totals": "Product total $10.00 Options total $1.00 Grand total $11.00",
+        "totals_price_attr": "10"
+      },
+      "after": {
+        "choice_hints": [
+          "(+ &#36;1)"
+        ],
+        "pills": [
+          "+ $1.00"
+        ],
+        "options": [],
+        "price_data": [
+          {
+            "tag": "INPUT",
+            "id": "opf-72-fee-a",
+            "price": "10",
+            "pricetype": "percent"
+          }
+        ],
+        "preview_totals": "Product total $10.00 Options total $1.00 Grand total $11.00",
+        "totals_price_attr": "10"
+      },
+      "identical": true
+    },
+    "minmax": {
+      "before": {
+        "choice_hints": [
+          "a (+ &#36;5)"
+        ],
+        "pills": [],
+        "options": [
+          {
+            "value": "",
+            "text": "Choose an option",
+            "price": null,
+            "pricetype": null
+          },
+          {
+            "value": "a",
+            "text": "a (+ &#36;5)",
+            "price": "(max(3;min([field.x];7))*[qty])",
+            "pricetype": "fx"
+          }
+        ],
+        "price_data": [
+          {
+            "tag": "OPTION",
+            "id": null,
+            "price": "(max(3;min([field.x];7))*[qty])",
+            "pricetype": "fx"
+          }
+        ],
+        "preview_totals": "Product total $10.00 Options total $5.00 Grand total $15.00",
+        "totals_price_attr": "10"
+      },
+      "after": {
+        "choice_hints": [
+          "a (+ &#36;5)"
+        ],
+        "pills": [],
+        "options": [
+          {
+            "value": "",
+            "text": "Choose an option",
+            "price": null,
+            "pricetype": null
+          },
+          {
+            "value": "a",
+            "text": "a (+ &#36;5)",
+            "price": "(max(3;min([field.x];7))*[qty])",
+            "pricetype": "fx"
+          }
+        ],
+        "price_data": [
+          {
+            "tag": "OPTION",
+            "id": null,
+            "price": "(max(3;min([field.x];7))*[qty])",
+            "pricetype": "fx"
+          }
+        ],
+        "preview_totals": "Product total $10.00 Options total $5.00 Grand total $15.00",
+        "totals_price_attr": "10"
+      },
+      "identical": true
+    },
+    "date": {
+      "before": {
+        "choice_hints": [
+          "a (+ &#36;42)"
+        ],
+        "pills": [],
+        "options": [
+          {
+            "value": "",
+            "text": "Choose an option",
+            "price": null,
+            "pricetype": null
+          },
+          {
+            "value": "a",
+            "text": "a (+ &#36;42)",
+            "price": "(dow([field.d])*7*[qty])",
+            "pricetype": "fx"
+          }
+        ],
+        "price_data": [
+          {
+            "tag": "OPTION",
+            "id": null,
+            "price": "(dow([field.d])*7*[qty])",
+            "pricetype": "fx"
+          }
+        ],
+        "preview_totals": "Product total $10.00 Options total $42.00 Grand total $52.00",
+        "totals_price_attr": "10"
+      },
+      "after": {
+        "choice_hints": [
+          "a (+ &#36;42)"
+        ],
+        "pills": [],
+        "options": [
+          {
+            "value": "",
+            "text": "Choose an option",
+            "price": null,
+            "pricetype": null
+          },
+          {
+            "value": "a",
+            "text": "a (+ &#36;42)",
+            "price": "(dow([field.d])*7*[qty])",
+            "pricetype": "fx"
+          }
+        ],
+        "price_data": [
+          {
+            "tag": "OPTION",
+            "id": null,
+            "price": "(dow([field.d])*7*[qty])",
+            "pricetype": "fx"
+          }
+        ],
+        "preview_totals": "Product total $10.00 Options total $42.00 Grand total $52.00",
+        "totals_price_attr": "10"
+      },
+      "identical": true
+    }
+  }
+}

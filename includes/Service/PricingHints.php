@@ -233,6 +233,40 @@ final class PricingHints {
 	}
 
 	/**
+	 * The shop→display conversion factor the storefront's JS-populated choice
+	 * hint applies to its live amount.
+	 *
+	 * The storefront hint (`span.opf-choice__hint`) is recomputed in the browser
+	 * on every edit, so it cannot read a single server-rendered figure; the
+	 * server instead publishes this scalar and the module scales its live
+	 * amount by it. The factor is derived from `convert_via_product_price`
+	 * applied to the same shop-currency amount the cart line is built from, so
+	 * it cannot diverge from the conversion the line total receives. Returns
+	 * 1.0 when nothing converts (no currency plugin, unknown product, or a
+	 * zero/negative reference).
+	 *
+	 * Percent-derived hints are never converted (WAPF Helper::adjust_addon_price
+	 * early-returns percent), so the frontend keeps their factor at 1.
+	 *
+	 * @param float|int|string     $amount  Shop-currency reference amount (>0).
+	 * @param \WC_Product|int|null $product Product whose price filter converts.
+	 */
+	public static function hint_conversion_factor( $amount, $product ): float {
+		$amount = (float) $amount;
+		if ( $amount <= 0 || ! function_exists( 'apply_filters' ) ) {
+			return 1.0;
+		}
+
+		$converted = self::convert_via_product_price( $amount, $product );
+		if ( ! is_numeric( $converted ) ) {
+			return 1.0;
+		}
+
+		$factor = (float) $converted / $amount;
+		return is_finite( $factor ) && $factor > 0 ? $factor : 1.0;
+	}
+
+	/**
 	 * WAPF Helper::format_price parity — Woo display options verbatim:
 	 * absolute value → number_format(decimals, decimal_separator,
 	 * thousand_separator) → optional wc_trim_zeros → sign +

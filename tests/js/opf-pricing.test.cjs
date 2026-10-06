@@ -261,6 +261,40 @@ test('price hints follow flat, quantity and formula line math with Woo price for
 	sandbox.window.OPF_PRICE_DISPLAY = undefined;
 });
 
+test('storefront hint conversion scales live choices by the server-published factor', () => {
+	const choices = [
+		{ slug: 'flat', disabled: false, pricing: { type: 'fixed', amount: 2, per_unit: true } },
+		{ slug: 'pct', disabled: false, pricing: { type: 'percent', amount: 10, per_unit: true } },
+		{ slug: 'half-price', disabled: false, pricing: { type: 'formula', formula: '[price] / 2' } },
+		{ slug: 'qty-formula', disabled: false, pricing: { type: 'formula', formula: '5 * [qty]' } },
+	];
+	const field = { type: 'select', conditionals: [], choices };
+	const definitions = { pricing: field };
+	const hints = choices.map((choice) => ({ dataset: { opfChoiceHint: choice.slug }, textContent: '' }));
+	const fieldEl = { querySelectorAll: (selector) => selector === '[data-opf-choice-hint]' ? hints : [], querySelector: () => null };
+	sandbox.window.OPF_PRICE_HINTS = { show: true, brackets: true, plus: true };
+	sandbox.window.OPF_PRICE_DISPLAY = { symbol: '$', thousand: ',', decimal: '.', decimals: 2, price_format: 'symbolprice' };
+
+	// Display base 15 equals shop base 10 × factor 1.5 — the live CURCY case.
+	const prices = sandbox.resolveFieldPrices(definitions, {}, 10, 1, 0, {}, {});
+	sandbox.updateChoicePriceHints(fieldEl, definitions, 'pricing', field, {}, 15, 1, 0, {}, {}, prices, true, 1.5);
+	assert.deepEqual(
+		hints.map((node) => node.textContent),
+		['(+ $3)', '(+ $1)', '(+ $7.5)', '(+ $7.5)'],
+		'fixed and formula convert once; percent-derived hints never convert; [price] formulas use the shop base'
+	);
+
+	// No published factor (and the default argument) keep the pre-fix output.
+	sandbox.updateChoicePriceHints(fieldEl, definitions, 'pricing', field, {}, 15, 1, 0, {}, {}, prices, true, 1);
+	const withFactorOne = hints.map((node) => node.textContent);
+	sandbox.updateChoicePriceHints(fieldEl, definitions, 'pricing', field, {}, 15, 1, 0, {}, {}, prices);
+	assert.deepEqual(hints.map((node) => node.textContent), withFactorOne, 'factor 1 and the default argument are identical');
+	assert.equal(withFactorOne[0], '(+ $2)', 'no conversion leaves the base-currency fixed hint');
+	assert.equal(withFactorOne[1], '(+ $1.5)', 'no conversion leaves the base-currency percent hint');
+	sandbox.window.OPF_PRICE_HINTS = undefined;
+	sandbox.window.OPF_PRICE_DISPLAY = undefined;
+});
+
 test('scalar and price-calculation hints use the same live line math', () => {
 	sandbox.window.OPF_PRICE_HINTS = { show: true, brackets: true, plus: true };
 	sandbox.window.OPF_PRICE_DISPLAY = { symbol: '$', thousand: ',', decimal: '.', decimals: 2, price_format: 'symbolprice' };

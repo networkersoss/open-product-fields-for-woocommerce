@@ -1,0 +1,15 @@
+Served markup evidence (OPF product page, group tag + JS hint targets)
+generated: 2026-10-06T08:11:12Z
+
+== CURCY active (EUR, rate 1.5) — group tag ==
+<div class="opf-field-group label-above" data-group="70" data-variables="[]" data-opf-product-price="10" data-opf-hint-conversion="1.5" data-opf-group="70">
+
+== CURCY active (EUR) — JS hint targets (<option data-opf-choice-hint>) ==
+<option value="a" data-opf-choice-hint="a" data-opf-base-label="a" data-opf-pricetype="fx" data-opf-price="(max(3;min([field.x];7))*[qty])">a + &euro;4.50</option>
+
+== CURCY inactive (USD) — group tag (no data-opf-hint-conversion) ==
+<div class="opf-field-group label-above" data-group="70" data-variables="[]" data-opf-product-price="10" data-opf-group="70">
+
+== attribute deltas ==
+EUR group attrs: data-opf-hint-conversion="1.5" data-opf-product-price="10" data-product-price="15" 
+USD group attrs: data-opf-product-price="10" data-product-price="10" 

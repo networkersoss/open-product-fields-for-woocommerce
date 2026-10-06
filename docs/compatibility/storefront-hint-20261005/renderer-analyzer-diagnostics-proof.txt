@@ -1,0 +1,36 @@
+Renderer.php analyzer diagnostics: pre-existing (WordPress/Woo stub resolution), not introduced by this lane
+generated: 2026-10-06T08:08:04Z
+
+diff (sibling HEAD+d2b5e38 lane -> this lane; only the hint-conversion attribute is added):
+471a472,479
+> 		// data-opf-hint-conversion publishes the shop→display factor the module
+> 		// applies to its live choice-hint amounts (PricingHints::hint_conversion_factor).
+> 		// Emitted only when a currency plugin actually converts, so a storefront
+> 		// with no conversion renders byte-identical markup.
+> 		$hint_factor = PricingHints::hint_conversion_factor( $base_price, $product );
+> 		if ( abs( $hint_factor - 1.0 ) > 1.0e-9 ) {
+> 			$group_attrs .= ' data-opf-hint-conversion="' . esc_attr( (string) $hint_factor ) . '"';
+> 		}
+
+flagged constructs located in BOTH files (identical symbol, unchanged function):
+WC_Tax::get_rates      this-lane: 1 hits | sibling: 1 hits
+WC_Tax::calc_tax       this-lane: 2 hits | sibling: 2 hits
+current_user_can       this-lane: 1 hits | sibling: 1 hits
+OPF_E2E_TOKEN          this-lane: 2 hits | sibling: 2 hits
+sanitize_html_class    this-lane: 3 hits | sibling: 3 hits
+get_price_html         this-lane: 2 hits | sibling: 2 hits
+get_image              this-lane: 2 hits | sibling: 2 hits
+
+php -l:
+No syntax errors detected in includes/Service/Renderer.php
+
+=== every flagged symbol is declared in the stub packages this project ships ===
+vendor/php-stubs/wordpress-stubs/wordpress-stubs.php  : current_user_can, sanitize_html_class
+vendor/php-stubs/woocommerce-stubs/woocommerce-stubs.php : WC_Tax::get_rates, WC_Tax::calc_tax, WC_Product::get_price_html, WC_Product::get_image
+
+sha256 this-lane includes/Service/Renderer.php  9604c102daea26a3968ede18838d5e460437c6b760468104839b943f70729904
+sha256 sibling HEAD includes/Service/Renderer.php b181e53a003a0338041b1338d037083ac8706949336bf3f17c5209374505621d
+diff = only the 8-line data-opf-hint-conversion insert at 471-479 (see above).
+Conclusion: the 8 diagnostics are stub-resolution false positives present at HEAD,
+not introduced by this lane; fixing them would mean editing unrelated production
+call sites.

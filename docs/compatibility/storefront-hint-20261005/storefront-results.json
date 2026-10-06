@@ -1,0 +1,584 @@
+{
+  "utc": "2026-10-06T08:10:16.407Z",
+  "clone": {
+    "base": "http://127.0.0.1:8293",
+    "clone": "/tmp/opf-lane-jshint-wp/",
+    "database": "/tmp/opf-lane-jshint-wp/wp-content/database/.ht.sqlite",
+    "wordpress": "7.1.2",
+    "woocommerce": "11.1.0",
+    "php": "8.5.11",
+    "extended": "3.1.5",
+    "curcy": "2.4.3",
+    "opf": "0.1.0",
+    "eur_rate": 1.5,
+    "taxes": "off"
+  },
+  "legs": {
+    "opf": {
+      "leg": "opf",
+      "provider": "opf",
+      "curcy": true,
+      "currency": "EUR",
+      "cases": {
+        "fixed": {
+          "product": 69,
+          "group": 70,
+          "http_status": 200,
+          "kind": "fixed choice + fixed scalar",
+          "addon_base": 4,
+          "unit_eur": 21,
+          "pills": [
+            "+ €3.00",
+            "+ €3.00",
+            "(+ &euro;3)"
+          ],
+          "choiceHints": [
+            {
+              "slug": "a",
+              "text": "(+ &euro;3)"
+            }
+          ],
+          "options": [],
+          "priceData": [
+            {
+              "tag": "INPUT",
+              "id": "opf-70-fee-a",
+              "price": "2",
+              "pricetype": "fixed"
+            },
+            {
+              "tag": "INPUT",
+              "id": "opf-70-engrave",
+              "price": "2",
+              "pricetype": "fixed"
+            }
+          ],
+          "totals": "Product total €15.00 Options total €4.00 Grand total €19.00",
+          "totalsPriceAttr": "15",
+          "hintConversionAttr": "1.5",
+          "currency": null,
+          "config": {
+            "product_base_price": null,
+            "currency_rate": null,
+            "hint_conversion": null,
+            "display_options": {
+              "symbol": "&euro;",
+              "thousand": ",",
+              "decimal": ".",
+              "decimals": 2,
+              "price_format": "symbolprice"
+            }
+          }
+        },
+        "percent": {
+          "product": 71,
+          "group": 72,
+          "http_status": 200,
+          "kind": "percent choice",
+          "addon_base": 1,
+          "unit_eur": 16.5,
+          "pills": [
+            "+ €1.00"
+          ],
+          "choiceHints": [
+            {
+              "slug": "a",
+              "text": "(+ &euro;1)"
+            }
+          ],
+          "options": [],
+          "priceData": [
+            {
+              "tag": "INPUT",
+              "id": "opf-72-fee-a",
+              "price": "10",
+              "pricetype": "percent"
+            }
+          ],
+          "totals": "Product total €15.00 Options total €1.50 Grand total €16.50",
+          "totalsPriceAttr": "15",
+          "hintConversionAttr": "1.5",
+          "currency": null,
+          "config": {
+            "product_base_price": null,
+            "currency_rate": null,
+            "hint_conversion": null,
+            "display_options": {
+              "symbol": "&euro;",
+              "thousand": ",",
+              "decimal": ".",
+              "decimals": 2,
+              "price_format": "symbolprice"
+            }
+          }
+        },
+        "minmax": {
+          "product": 73,
+          "group": 74,
+          "http_status": 200,
+          "kind": "formula min/max choice",
+          "addon_base": 5,
+          "unit_eur": 22.5,
+          "pills": [],
+          "choiceHints": [
+            {
+              "slug": "a",
+              "text": "a (+ &euro;7.5)"
+            }
+          ],
+          "options": [
+            {
+              "value": "",
+              "text": "Choose an option",
+              "price": null,
+              "pricetype": null
+            },
+            {
+              "value": "a",
+              "text": "a (+ &euro;7.5)",
+              "price": "(max(3;min([field.x];7))*[qty])",
+              "pricetype": "fx"
+            }
+          ],
+          "priceData": [
+            {
+              "tag": "OPTION",
+              "id": null,
+              "price": "(max(3;min([field.x];7))*[qty])",
+              "pricetype": "fx"
+            }
+          ],
+          "totals": "Product total €15.00 Options total €5.00 Grand total €20.00",
+          "totalsPriceAttr": "15",
+          "hintConversionAttr": "1.5",
+          "currency": null,
+          "config": {
+            "product_base_price": null,
+            "currency_rate": null,
+            "hint_conversion": null,
+            "display_options": {
+              "symbol": "&euro;",
+              "thousand": ",",
+              "decimal": ".",
+              "decimals": 2,
+              "price_format": "symbolprice"
+            }
+          }
+        },
+        "date": {
+          "product": 75,
+          "group": 76,
+          "http_status": 200,
+          "kind": "formula date choice",
+          "addon_base": 42,
+          "unit_eur": 78,
+          "pills": [],
+          "choiceHints": [
+            {
+              "slug": "a",
+              "text": "a (+ &euro;63)"
+            }
+          ],
+          "options": [
+            {
+              "value": "",
+              "text": "Choose an option",
+              "price": null,
+              "pricetype": null
+            },
+            {
+              "value": "a",
+              "text": "a (+ &euro;63)",
+              "price": "(dow([field.d])*7*[qty])",
+              "pricetype": "fx"
+            }
+          ],
+          "priceData": [
+            {
+              "tag": "OPTION",
+              "id": null,
+              "price": "(dow([field.d])*7*[qty])",
+              "pricetype": "fx"
+            }
+          ],
+          "totals": "Product total €15.00 Options total €42.00 Grand total €57.00",
+          "totalsPriceAttr": "15",
+          "hintConversionAttr": "1.5",
+          "currency": null,
+          "config": {
+            "product_base_price": null,
+            "currency_rate": null,
+            "hint_conversion": null,
+            "display_options": {
+              "symbol": "&euro;",
+              "thousand": ",",
+              "decimal": ".",
+              "decimals": 2,
+              "price_format": "symbolprice"
+            }
+          }
+        }
+      },
+      "pageErrors": [],
+      "consoleErrors": [],
+      "cookie": [
+        {
+          "name": "wmc_current_currency",
+          "value": "EUR"
+        },
+        {
+          "name": "wmc_current_currency_old",
+          "value": "EUR"
+        }
+      ]
+    },
+    "wapf": {
+      "leg": "wapf",
+      "provider": "wapf",
+      "curcy": true,
+      "currency": "EUR",
+      "cases": {
+        "fixed": {
+          "product": 69,
+          "group": 70,
+          "http_status": 200,
+          "kind": "fixed choice + fixed scalar",
+          "addon_base": 4,
+          "unit_eur": 21,
+          "pills": [
+            "(+€3.00)",
+            "(+€3.00)"
+          ],
+          "choiceHints": [],
+          "options": [],
+          "priceData": [],
+          "totals": "Product total €15.00 Options total €4.00 Grand total €19.00",
+          "totalsPriceAttr": "15",
+          "hintConversionAttr": null,
+          "currency": null,
+          "config": {
+            "product_base_price": null,
+            "currency_rate": null,
+            "hint_conversion": null,
+            "display_options": null
+          }
+        },
+        "percent": {
+          "product": 71,
+          "group": 72,
+          "http_status": 200,
+          "kind": "percent choice",
+          "addon_base": 1,
+          "unit_eur": 16.5,
+          "pills": [
+            "(+10%)"
+          ],
+          "choiceHints": [],
+          "options": [],
+          "priceData": [],
+          "totals": "Product total €15.00 Options total €1.50 Grand total €16.50",
+          "totalsPriceAttr": "15",
+          "hintConversionAttr": null,
+          "currency": null,
+          "config": {
+            "product_base_price": null,
+            "currency_rate": null,
+            "hint_conversion": null,
+            "display_options": null
+          }
+        },
+        "minmax": {
+          "product": 73,
+          "group": 74,
+          "http_status": 200,
+          "kind": "formula min/max choice",
+          "addon_base": 5,
+          "unit_eur": 22.5,
+          "pills": [],
+          "choiceHints": [],
+          "options": [
+            {
+              "value": "",
+              "text": "Choose an option",
+              "price": null,
+              "pricetype": null
+            },
+            {
+              "value": "a",
+              "text": "a (+€5.00)",
+              "price": null,
+              "pricetype": null
+            }
+          ],
+          "priceData": [],
+          "totals": "Product total €15.00 Options total €5.00 Grand total €20.00",
+          "totalsPriceAttr": "15",
+          "hintConversionAttr": null,
+          "currency": null,
+          "config": {
+            "product_base_price": null,
+            "currency_rate": null,
+            "hint_conversion": null,
+            "display_options": null
+          }
+        },
+        "date": {
+          "product": 75,
+          "group": 76,
+          "http_status": 200,
+          "kind": "formula date choice",
+          "addon_base": 42,
+          "unit_eur": 78,
+          "pills": [],
+          "choiceHints": [],
+          "options": [
+            {
+              "value": "",
+              "text": "Choose an option",
+              "price": null,
+              "pricetype": null
+            },
+            {
+              "value": "a",
+              "text": "a (+€42.00)",
+              "price": null,
+              "pricetype": null
+            }
+          ],
+          "priceData": [],
+          "totals": "Product total €15.00 Options total €42.00 Grand total €57.00",
+          "totalsPriceAttr": "15",
+          "hintConversionAttr": null,
+          "currency": null,
+          "config": {
+            "product_base_price": null,
+            "currency_rate": null,
+            "hint_conversion": null,
+            "display_options": null
+          }
+        }
+      },
+      "pageErrors": [],
+      "consoleErrors": [],
+      "cookie": [
+        {
+          "name": "wmc_current_currency",
+          "value": "EUR"
+        },
+        {
+          "name": "wmc_current_currency_old",
+          "value": "EUR"
+        }
+      ]
+    },
+    "opf_nocurcy": {
+      "leg": "opf_nocurcy",
+      "provider": "opf",
+      "curcy": false,
+      "currency": "USD",
+      "cases": {
+        "fixed": {
+          "product": 69,
+          "group": 70,
+          "http_status": 200,
+          "kind": "fixed choice + fixed scalar",
+          "addon_base": 4,
+          "unit_eur": 21,
+          "pills": [
+            "+ $2.00",
+            "+ $2.00",
+            "(+ &#36;2)"
+          ],
+          "choiceHints": [
+            {
+              "slug": "a",
+              "text": "(+ &#36;2)"
+            }
+          ],
+          "options": [],
+          "priceData": [
+            {
+              "tag": "INPUT",
+              "id": "opf-70-fee-a",
+              "price": "2",
+              "pricetype": "fixed"
+            },
+            {
+              "tag": "INPUT",
+              "id": "opf-70-engrave",
+              "price": "2",
+              "pricetype": "fixed"
+            }
+          ],
+          "totals": "Product total $10.00 Options total $4.00 Grand total $14.00",
+          "totalsPriceAttr": "10",
+          "hintConversionAttr": null,
+          "currency": null,
+          "config": {
+            "product_base_price": null,
+            "currency_rate": null,
+            "hint_conversion": null,
+            "display_options": {
+              "symbol": "&#36;",
+              "thousand": ",",
+              "decimal": ".",
+              "decimals": 2,
+              "price_format": "symbolprice"
+            }
+          }
+        },
+        "percent": {
+          "product": 71,
+          "group": 72,
+          "http_status": 200,
+          "kind": "percent choice",
+          "addon_base": 1,
+          "unit_eur": 16.5,
+          "pills": [
+            "+ $1.00"
+          ],
+          "choiceHints": [
+            {
+              "slug": "a",
+              "text": "(+ &#36;1)"
+            }
+          ],
+          "options": [],
+          "priceData": [
+            {
+              "tag": "INPUT",
+              "id": "opf-72-fee-a",
+              "price": "10",
+              "pricetype": "percent"
+            }
+          ],
+          "totals": "Product total $10.00 Options total $1.00 Grand total $11.00",
+          "totalsPriceAttr": "10",
+          "hintConversionAttr": null,
+          "currency": null,
+          "config": {
+            "product_base_price": null,
+            "currency_rate": null,
+            "hint_conversion": null,
+            "display_options": {
+              "symbol": "&#36;",
+              "thousand": ",",
+              "decimal": ".",
+              "decimals": 2,
+              "price_format": "symbolprice"
+            }
+          }
+        },
+        "minmax": {
+          "product": 73,
+          "group": 74,
+          "http_status": 200,
+          "kind": "formula min/max choice",
+          "addon_base": 5,
+          "unit_eur": 22.5,
+          "pills": [],
+          "choiceHints": [
+            {
+              "slug": "a",
+              "text": "a (+ &#36;5)"
+            }
+          ],
+          "options": [
+            {
+              "value": "",
+              "text": "Choose an option",
+              "price": null,
+              "pricetype": null
+            },
+            {
+              "value": "a",
+              "text": "a (+ &#36;5)",
+              "price": "(max(3;min([field.x];7))*[qty])",
+              "pricetype": "fx"
+            }
+          ],
+          "priceData": [
+            {
+              "tag": "OPTION",
+              "id": null,
+              "price": "(max(3;min([field.x];7))*[qty])",
+              "pricetype": "fx"
+            }
+          ],
+          "totals": "Product total $10.00 Options total $5.00 Grand total $15.00",
+          "totalsPriceAttr": "10",
+          "hintConversionAttr": null,
+          "currency": null,
+          "config": {
+            "product_base_price": null,
+            "currency_rate": null,
+            "hint_conversion": null,
+            "display_options": {
+              "symbol": "&#36;",
+              "thousand": ",",
+              "decimal": ".",
+              "decimals": 2,
+              "price_format": "symbolprice"
+            }
+          }
+        },
+        "date": {
+          "product": 75,
+          "group": 76,
+          "http_status": 200,
+          "kind": "formula date choice",
+          "addon_base": 42,
+          "unit_eur": 78,
+          "pills": [],
+          "choiceHints": [
+            {
+              "slug": "a",
+              "text": "a (+ &#36;42)"
+            }
+          ],
+          "options": [
+            {
+              "value": "",
+              "text": "Choose an option",
+              "price": null,
+              "pricetype": null
+            },
+            {
+              "value": "a",
+              "text": "a (+ &#36;42)",
+              "price": "(dow([field.d])*7*[qty])",
+              "pricetype": "fx"
+            }
+          ],
+          "priceData": [
+            {
+              "tag": "OPTION",
+              "id": null,
+              "price": "(dow([field.d])*7*[qty])",
+              "pricetype": "fx"
+            }
+          ],
+          "totals": "Product total $10.00 Options total $42.00 Grand total $52.00",
+          "totalsPriceAttr": "10",
+          "hintConversionAttr": null,
+          "currency": null,
+          "config": {
+            "product_base_price": null,
+            "currency_rate": null,
+            "hint_conversion": null,
+            "display_options": {
+              "symbol": "&#36;",
+              "thousand": ",",
+              "decimal": ".",
+              "decimals": 2,
+              "price_format": "symbolprice"
+            }
+          }
+        }
+      },
+      "pageErrors": [],
+      "consoleErrors": [],
+      "cookie": []
+    }
+  }
+}

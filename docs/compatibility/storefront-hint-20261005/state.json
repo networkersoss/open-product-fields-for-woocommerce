@@ -1,0 +1,320 @@
+{
+    "owned": [
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76
+    ],
+    "options": {
+        "active_plugins": {
+            "exists": true,
+            "value": {
+                "0": "advanced-product-fields-for-woocommerce-extended/advanced-product-fields-for-woocommerce-extended.php",
+                "1": "open-product-fields-for-woocommerce/open-product-fields-for-woocommerce.php",
+                "3": "woocommerce/woocommerce.php"
+            }
+        },
+        "opf_admin_only": {
+            "exists": false,
+            "value": "__opf_shint_missing__"
+        },
+        "opf_show_totals": {
+            "exists": false,
+            "value": "__opf_shint_missing__"
+        },
+        "opf_show_price_hints": {
+            "exists": false,
+            "value": "__opf_shint_missing__"
+        },
+        "opf_hint_format": {
+            "exists": false,
+            "value": "__opf_shint_missing__"
+        },
+        "woocommerce_calc_taxes": {
+            "exists": true,
+            "value": "no"
+        },
+        "woocommerce_enable_guest_checkout": {
+            "exists": true,
+            "value": "yes"
+        },
+        "woocommerce_default_country": {
+            "exists": true,
+            "value": "US:CA"
+        },
+        "woocommerce_currency": {
+            "exists": true,
+            "value": "USD"
+        },
+        "woocommerce_cod_settings": {
+            "exists": false,
+            "value": "__opf_shint_missing__"
+        },
+        "woocommerce_cheque_settings": {
+            "exists": false,
+            "value": "__opf_shint_missing__"
+        },
+        "woocommerce_prices_include_tax": {
+            "exists": true,
+            "value": "no"
+        },
+        "woocommerce_tax_display_cart": {
+            "exists": true,
+            "value": "excl"
+        },
+        "woocommerce_tax_display_shop": {
+            "exists": true,
+            "value": "excl"
+        },
+        "wapf_datepicker": {
+            "exists": false,
+            "value": "__opf_shint_missing__"
+        },
+        "wapf_show_pricing_hints": {
+            "exists": false,
+            "value": "__opf_shint_missing__"
+        },
+        "wapf_hint_format": {
+            "exists": false,
+            "value": "__opf_shint_missing__"
+        },
+        "woo_multi_currency_params": {
+            "exists": false,
+            "value": ""
+        },
+        "woocommerce_currency_pos": {
+            "exists": true,
+            "value": "left"
+        },
+        "woocommerce_coming_soon": {
+            "exists": true,
+            "value": "yes"
+        },
+        "woocommerce_store_pages_only": {
+            "exists": true,
+            "value": "yes"
+        },
+        "permalink_structure": {
+            "exists": true,
+            "value": "/%postname%/"
+        }
+    },
+    "products": {
+        "fixed": 69,
+        "percent": 71,
+        "minmax": 73,
+        "date": 75
+    },
+    "groups": {
+        "fixed": 70,
+        "percent": 72,
+        "minmax": 74,
+        "date": 76
+    },
+    "pages": {
+        "6": "<!-- wp:woocommerce/cart -->\n<div class=\"wp-block-woocommerce-cart alignwide is-loading\"><!-- wp:woocommerce/filled-cart-block -->\n<div class=\"wp-block-woocommerce-filled-cart-block\"><!-- wp:woocommerce/cart-items-block -->\n<div class=\"wp-block-woocommerce-cart-items-block\"><!-- wp:woocommerce/cart-line-items-block -->\n<div class=\"wp-block-woocommerce-cart-line-items-block\"></div>\n<!-- /wp:woocommerce/cart-line-items-block -->\n\n<!-- wp:woocommerce/product-collection {\"queryId\":0,\"query\":{\"perPage\":3,\"pages\":1,\"offset\":0,\"postType\":\"product\",\"order\":\"asc\",\"orderBy\":\"title\",\"search\":\"\",\"exclude\":[],\"inherit\":false,\"taxQuery\":{},\"isProductCollectionBlock\":true,\"featured\":false,\"woocommerceOnSale\":false,\"woocommerceStockStatus\":[\"instock\",\"outofstock\",\"onbackorder\"],\"woocommerceAttributes\":[],\"woocommerceHandPickedProducts\":[],\"filterable\":false,\"relatedBy\":{\"categories\":true,\"tags\":true}},\"tagName\":\"div\",\"displayLayout\":{\"type\":\"flex\",\"columns\":3,\"shrinkColumns\":true},\"dimensions\":{\"widthType\":\"fill\"},\"collection\":\"woocommerce/product-collection/cross-sells\",\"hideControls\":[\"filterable\"],\"queryContextIncludes\":[\"collection\"]} -->\n<div class=\"wp-block-woocommerce-product-collection\"><!-- wp:heading {\"textAlign\":\"left\",\"style\":{\"spacing\":{\"margin\":{\"bottom\":\"1rem\"}}}} -->\n<h2 class=\"wp-block-heading has-text-align-left\" style=\"margin-bottom:1rem\">You may be interested in&hellip;</h2>\n\n<!-- /wp:heading -->\n\n<!-- wp:woocommerce/product-template -->\n<!-- wp:woocommerce/product-image {\"showSaleBadge\":false,\"imageSizing\":\"thumbnail\",\"isDescendentOfQueryLoop\":true} -->\n<!-- wp:woocommerce/product-sale-badge {\"align\":\"right\"} /-->\n<!-- /wp:woocommerce/product-image -->\n\n<!-- wp:post-title {\"textAlign\":\"center\",\"isLink\":true,\"style\":{\"spacing\":{\"margin\":{\"bottom\":\"0.75rem\",\"top\":\"0\"}},\"typography\":{\"lineHeight\":\"1.4\"}},\"fontSize\":\"medium\",\"__woocommerceNamespace\":\"woocommerce/product-collection/product-title\"} /-->\n\n<!-- wp:woocommerce/product-price {\"isDescendentOfQueryLoop\":true,\"textAlign\":\"center\",\"fontSize\":\"small\"} /-->\n\n<!-- wp:woocommerce/product-button {\"textAlign\":\"center\",\"isDescendentOfQueryLoop\":true,\"fontSize\":\"small\"} /-->\n<!-- /wp:woocommerce/product-template --></div>\n<!-- /wp:woocommerce/product-collection --></div>\n\n<!-- /wp:woocommerce/cart-items-block -->\n\n<!-- wp:woocommerce/cart-totals-block -->\n<div class=\"wp-block-woocommerce-cart-totals-block\"><!-- wp:woocommerce/cart-order-summary-block -->\n<div class=\"wp-block-woocommerce-cart-order-summary-block\"><!-- wp:woocommerce/cart-order-summary-heading-block -->\n<div class=\"wp-block-woocommerce-cart-order-summary-heading-block\"></div>\n<!-- /wp:woocommerce/cart-order-summary-heading-block -->\n\n<!-- wp:woocommerce/cart-order-summary-coupon-form-block -->\n<div class=\"wp-block-woocommerce-cart-order-summary-coupon-form-block\"></div>\n<!-- /wp:woocommerce/cart-order-summary-coupon-form-block -->\n\n<!-- wp:woocommerce/cart-order-summary-subtotal-block -->\n<div class=\"wp-block-woocommerce-cart-order-summary-subtotal-block\"></div>\n<!-- /wp:woocommerce/cart-order-summary-subtotal-block -->\n\n<!-- wp:woocommerce/cart-order-summary-fee-block -->\n<div class=\"wp-block-woocommerce-cart-order-summary-fee-block\"></div>\n<!-- /wp:woocommerce/cart-order-summary-fee-block -->\n\n<!-- wp:woocommerce/cart-order-summary-discount-block -->\n<div class=\"wp-block-woocommerce-cart-order-summary-discount-block\"></div>\n<!-- /wp:woocommerce/cart-order-summary-discount-block -->\n\n<!-- wp:woocommerce/cart-order-summary-shipping-block -->\n<div class=\"wp-block-woocommerce-cart-order-summary-shipping-block\"></div>\n<!-- /wp:woocommerce/cart-order-summary-shipping-block -->\n\n<!-- wp:woocommerce/cart-order-summary-taxes-block -->\n<div class=\"wp-block-woocommerce-cart-order-summary-taxes-block\"></div>\n<!-- /wp:woocommerce/cart-order-summary-taxes-block --></div>\n<!-- /wp:woocommerce/cart-order-summary-block -->\n\n<!-- wp:woocommerce/cart-express-payment-block -->\n<div class=\"wp-block-woocommerce-cart-express-payment-block\"></div>\n<!-- /wp:woocommerce/cart-express-payment-block -->\n\n<!-- wp:woocommerce/proceed-to-checkout-block -->\n<div class=\"wp-block-woocommerce-proceed-to-checkout-block\"></div>\n<!-- /wp:woocommerce/proceed-to-checkout-block -->\n\n<!-- wp:woocommerce/cart-accepted-payment-methods-block -->\n<div class=\"wp-block-woocommerce-cart-accepted-payment-methods-block\"></div>\n<!-- /wp:woocommerce/cart-accepted-payment-methods-block --></div>\n<!-- /wp:woocommerce/cart-totals-block --></div>\n<!-- /wp:woocommerce/filled-cart-block -->\n\n<!-- wp:woocommerce/empty-cart-block -->\n<div class=\"wp-block-woocommerce-empty-cart-block\"><!-- wp:heading {\"textAlign\":\"center\",\"className\":\"with-empty-cart-icon wc-block-cart__empty-cart__title\"} -->\n<h2 class=\"wp-block-heading has-text-align-center with-empty-cart-icon wc-block-cart__empty-cart__title\">Your cart is currently empty!</h2>\n<!-- /wp:heading -->\n\n<!-- wp:separator {\"className\":\"is-style-dots\"} -->\n<hr class=\"wp-block-separator has-alpha-channel-opacity is-style-dots\"/>\n<!-- /wp:separator -->\n\n<!-- wp:heading {\"textAlign\":\"center\"} -->\n<h2 class=\"wp-block-heading has-text-align-center\">New in store</h2>\n<!-- /wp:heading -->\n\n<!-- wp:woocommerce/product-new {\"columns\":4,\"rows\":1} /--></div>\n<!-- /wp:woocommerce/empty-cart-block --></div>\n<!-- /wp:woocommerce/cart -->",
+        "7": "<!-- wp:woocommerce/checkout -->\n<div class=\"wp-block-woocommerce-checkout alignwide wc-block-checkout is-loading\"><!-- wp:woocommerce/checkout-fields-block -->\n<div class=\"wp-block-woocommerce-checkout-fields-block\"><!-- wp:woocommerce/checkout-express-payment-block -->\n<div class=\"wp-block-woocommerce-checkout-express-payment-block\"></div>\n<!-- /wp:woocommerce/checkout-express-payment-block -->\n\n<!-- wp:woocommerce/checkout-contact-information-block -->\n<div class=\"wp-block-woocommerce-checkout-contact-information-block\"></div>\n<!-- /wp:woocommerce/checkout-contact-information-block -->\n\n<!-- wp:woocommerce/checkout-shipping-method-block -->\n<div class=\"wp-block-woocommerce-checkout-shipping-method-block\"></div>\n<!-- /wp:woocommerce/checkout-shipping-method-block -->\n\n<!-- wp:woocommerce/checkout-pickup-options-block -->\n<div class=\"wp-block-woocommerce-checkout-pickup-options-block\"></div>\n<!-- /wp:woocommerce/checkout-pickup-options-block -->\n\n<!-- wp:woocommerce/checkout-shipping-address-block -->\n<div class=\"wp-block-woocommerce-checkout-shipping-address-block\"></div>\n<!-- /wp:woocommerce/checkout-shipping-address-block -->\n\n<!-- wp:woocommerce/checkout-billing-address-block -->\n<div class=\"wp-block-woocommerce-checkout-billing-address-block\"></div>\n<!-- /wp:woocommerce/checkout-billing-address-block -->\n\n<!-- wp:woocommerce/checkout-shipping-methods-block -->\n<div class=\"wp-block-woocommerce-checkout-shipping-methods-block\"></div>\n<!-- /wp:woocommerce/checkout-shipping-methods-block -->\n\n<!-- wp:woocommerce/checkout-payment-block -->\n<div class=\"wp-block-woocommerce-checkout-payment-block\"></div>\n<!-- /wp:woocommerce/checkout-payment-block -->\n\n<!-- wp:woocommerce/checkout-additional-information-block -->\n<div class=\"wp-block-woocommerce-checkout-additional-information-block\"></div>\n<!-- /wp:woocommerce/checkout-additional-information-block -->\n\n<!-- wp:woocommerce/checkout-order-note-block -->\n<div class=\"wp-block-woocommerce-checkout-order-note-block\"></div>\n<!-- /wp:woocommerce/checkout-order-note-block -->\n\n<!-- wp:woocommerce/checkout-terms-block -->\n<div class=\"wp-block-woocommerce-checkout-terms-block\"></div>\n<!-- /wp:woocommerce/checkout-terms-block -->\n\n<!-- wp:woocommerce/checkout-actions-block -->\n<div class=\"wp-block-woocommerce-checkout-actions-block\"></div>\n<!-- /wp:woocommerce/checkout-actions-block --></div>\n<!-- /wp:woocommerce/checkout-fields-block -->\n\n<!-- wp:woocommerce/checkout-totals-block -->\n<div class=\"wp-block-woocommerce-checkout-totals-block\"><!-- wp:woocommerce/checkout-order-summary-block -->\n<div class=\"wp-block-woocommerce-checkout-order-summary-block\"><!-- wp:woocommerce/checkout-order-summary-cart-items-block -->\n<div class=\"wp-block-woocommerce-checkout-order-summary-cart-items-block\"></div>\n<!-- /wp:woocommerce/checkout-order-summary-cart-items-block -->\n\n<!-- wp:woocommerce/checkout-order-summary-coupon-form-block -->\n<div class=\"wp-block-woocommerce-checkout-order-summary-coupon-form-block\"></div>\n<!-- /wp:woocommerce/checkout-order-summary-coupon-form-block -->\n\n<!-- wp:woocommerce/checkout-order-summary-subtotal-block -->\n<div class=\"wp-block-woocommerce-checkout-order-summary-subtotal-block\"></div>\n<!-- /wp:woocommerce/checkout-order-summary-subtotal-block -->\n\n<!-- wp:woocommerce/checkout-order-summary-fee-block -->\n<div class=\"wp-block-woocommerce-checkout-order-summary-fee-block\"></div>\n<!-- /wp:woocommerce/checkout-order-summary-fee-block -->\n\n<!-- wp:woocommerce/checkout-order-summary-discount-block -->\n<div class=\"wp-block-woocommerce-checkout-order-summary-discount-block\"></div>\n<!-- /wp:woocommerce/checkout-order-summary-discount-block -->\n\n<!-- wp:woocommerce/checkout-order-summary-shipping-block -->\n<div class=\"wp-block-woocommerce-checkout-order-summary-shipping-block\"></div>\n<!-- /wp:woocommerce/checkout-order-summary-shipping-block -->\n\n<!-- wp:woocommerce/checkout-order-summary-taxes-block -->\n<div class=\"wp-block-woocommerce-checkout-order-summary-taxes-block\"></div>\n<!-- /wp:woocommerce/checkout-order-summary-taxes-block --></div>\n<!-- /wp:woocommerce/checkout-order-summary-block --></div>\n<!-- /wp:woocommerce/checkout-totals-block --></div>\n<!-- /wp:woocommerce/checkout -->"
+    },
+    "user": 4,
+    "cases": [
+        {
+            "id": "fixed",
+            "addon": 4,
+            "unit_eur": 21,
+            "kind": "fixed choice + fixed scalar",
+            "fields": [
+                {
+                    "id": "fee",
+                    "label": "fee",
+                    "type": "radio",
+                    "required": true,
+                    "pricing": {
+                        "type": "none",
+                        "amount": 0,
+                        "formula": ""
+                    },
+                    "choices": [
+                        {
+                            "slug": "a",
+                            "label": "a",
+                            "pricing": {
+                                "type": "fixed",
+                                "amount": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "engrave",
+                    "label": "engrave",
+                    "type": "text",
+                    "pricing": {
+                        "type": "fixed",
+                        "amount": 2
+                    }
+                }
+            ],
+            "values": {
+                "fee": "a",
+                "engrave": "Monogram"
+            },
+            "wapf_values": {
+                "field_engrave": "Monogram"
+            },
+            "wapf_radio": {
+                "field_fee": "a"
+            }
+        },
+        {
+            "id": "percent",
+            "addon": 1,
+            "unit_eur": 16.5,
+            "kind": "percent choice",
+            "fields": [
+                {
+                    "id": "fee",
+                    "label": "fee",
+                    "type": "radio",
+                    "required": true,
+                    "pricing": {
+                        "type": "none",
+                        "amount": 0,
+                        "formula": ""
+                    },
+                    "choices": [
+                        {
+                            "slug": "a",
+                            "label": "a",
+                            "pricing": {
+                                "type": "percent",
+                                "amount": 10
+                            }
+                        }
+                    ]
+                }
+            ],
+            "values": {
+                "fee": "a"
+            },
+            "wapf_values": [],
+            "wapf_radio": {
+                "field_fee": "a"
+            }
+        },
+        {
+            "id": "minmax",
+            "addon": 5,
+            "unit_eur": 22.5,
+            "kind": "formula min/max choice",
+            "fields": [
+                {
+                    "id": "x",
+                    "label": "x",
+                    "type": "text",
+                    "pricing": {
+                        "type": "none",
+                        "amount": 0,
+                        "formula": ""
+                    }
+                },
+                {
+                    "id": "fee",
+                    "label": "fee",
+                    "type": "select",
+                    "required": true,
+                    "pricing": {
+                        "type": "none",
+                        "amount": 0,
+                        "formula": ""
+                    },
+                    "choices": [
+                        {
+                            "slug": "a",
+                            "label": "a",
+                            "pricing": {
+                                "type": "formula",
+                                "amount": 0,
+                                "formula": "max(3;min([field.x];7))*[qty]",
+                                "per_unit": true
+                            }
+                        }
+                    ]
+                }
+            ],
+            "values": {
+                "x": "5",
+                "fee": "a"
+            },
+            "wapf_values": {
+                "field_x": "5"
+            },
+            "wapf_radio": []
+        },
+        {
+            "id": "date",
+            "addon": 42,
+            "unit_eur": 78,
+            "kind": "formula date choice",
+            "fields": [
+                {
+                    "id": "d",
+                    "label": "d",
+                    "type": "date",
+                    "pricing": {
+                        "type": "none",
+                        "amount": 0,
+                        "formula": ""
+                    }
+                },
+                {
+                    "id": "fee",
+                    "label": "fee",
+                    "type": "select",
+                    "required": true,
+                    "pricing": {
+                        "type": "none",
+                        "amount": 0,
+                        "formula": ""
+                    },
+                    "choices": [
+                        {
+                            "slug": "a",
+                            "label": "a",
+                            "pricing": {
+                                "type": "formula",
+                                "amount": 0,
+                                "formula": "dow([field.d])*7*[qty]",
+                                "per_unit": true
+                            }
+                        }
+                    ]
+                }
+            ],
+            "values": {
+                "d": "2026-10-03",
+                "fee": "a"
+            },
+            "wapf_values": {
+                "field_d": "10-03-2026"
+            },
+            "wapf_radio": []
+        }
+    ],
+    "runtime": {
+        "base": "http://127.0.0.1:8293",
+        "clone": "/tmp/opf-lane-jshint-wp/",
+        "database": "/tmp/opf-lane-jshint-wp/wp-content/database/.ht.sqlite",
+        "wordpress": "7.1.2",
+        "woocommerce": "11.1.0",
+        "php": "8.5.11",
+        "extended": "3.1.5",
+        "curcy": "2.4.3",
+        "opf": "0.1.0",
+        "eur_rate": 1.5,
+        "taxes": "off"
+    }
+}

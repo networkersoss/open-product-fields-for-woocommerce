@@ -1,0 +1,193 @@
+{
+  "currency": "EUR",
+  "rate": 1.5,
+  "note": "choice_hints only exist on OPF; WAPF has no JS-populated per-choice hint",
+  "cases": {
+    "fixed": {
+      "opf": {
+        "choice_hints": [
+          "(+ &euro;3)"
+        ],
+        "pills": [
+          "+ €3.00",
+          "+ €3.00",
+          "(+ &euro;3)"
+        ],
+        "options": [],
+        "price_data": [
+          {
+            "tag": "INPUT",
+            "id": "opf-70-fee-a",
+            "price": "2",
+            "pricetype": "fixed"
+          },
+          {
+            "tag": "INPUT",
+            "id": "opf-70-engrave",
+            "price": "2",
+            "pricetype": "fixed"
+          }
+        ],
+        "preview_totals": "Product total €15.00 Options total €4.00 Grand total €19.00",
+        "totals_price_attr": "15"
+      },
+      "wapf": {
+        "choice_hints": [],
+        "pills": [
+          "(+€3.00)",
+          "(+€3.00)"
+        ],
+        "options": [],
+        "price_data": [],
+        "preview_totals": "Product total €15.00 Options total €4.00 Grand total €19.00",
+        "totals_price_attr": "15"
+      },
+      "preview_totals_match": true,
+      "opf_static_pills_match_wapf_pills": false
+    },
+    "percent": {
+      "opf": {
+        "choice_hints": [
+          "(+ &euro;1)"
+        ],
+        "pills": [
+          "+ €1.00"
+        ],
+        "options": [],
+        "price_data": [
+          {
+            "tag": "INPUT",
+            "id": "opf-72-fee-a",
+            "price": "10",
+            "pricetype": "percent"
+          }
+        ],
+        "preview_totals": "Product total €15.00 Options total €1.50 Grand total €16.50",
+        "totals_price_attr": "15"
+      },
+      "wapf": {
+        "choice_hints": [],
+        "pills": [
+          "(+10%)"
+        ],
+        "options": [],
+        "price_data": [],
+        "preview_totals": "Product total €15.00 Options total €1.50 Grand total €16.50",
+        "totals_price_attr": "15"
+      },
+      "preview_totals_match": true,
+      "opf_static_pills_match_wapf_pills": false
+    },
+    "minmax": {
+      "opf": {
+        "choice_hints": [
+          "a (+ &euro;7.5)"
+        ],
+        "pills": [],
+        "options": [
+          {
+            "value": "",
+            "text": "Choose an option",
+            "price": null,
+            "pricetype": null
+          },
+          {
+            "value": "a",
+            "text": "a (+ &euro;7.5)",
+            "price": "(max(3;min([field.x];7))*[qty])",
+            "pricetype": "fx"
+          }
+        ],
+        "price_data": [
+          {
+            "tag": "OPTION",
+            "id": null,
+            "price": "(max(3;min([field.x];7))*[qty])",
+            "pricetype": "fx"
+          }
+        ],
+        "preview_totals": "Product total €15.00 Options total €5.00 Grand total €20.00",
+        "totals_price_attr": "15"
+      },
+      "wapf": {
+        "choice_hints": [],
+        "pills": [],
+        "options": [
+          {
+            "value": "",
+            "text": "Choose an option",
+            "price": null,
+            "pricetype": null
+          },
+          {
+            "value": "a",
+            "text": "a (+€5.00)",
+            "price": null,
+            "pricetype": null
+          }
+        ],
+        "price_data": [],
+        "preview_totals": "Product total €15.00 Options total €5.00 Grand total €20.00",
+        "totals_price_attr": "15"
+      },
+      "preview_totals_match": true,
+      "opf_static_pills_match_wapf_pills": true
+    },
+    "date": {
+      "opf": {
+        "choice_hints": [
+          "a (+ &euro;63)"
+        ],
+        "pills": [],
+        "options": [
+          {
+            "value": "",
+            "text": "Choose an option",
+            "price": null,
+            "pricetype": null
+          },
+          {
+            "value": "a",
+            "text": "a (+ &euro;63)",
+            "price": "(dow([field.d])*7*[qty])",
+            "pricetype": "fx"
+          }
+        ],
+        "price_data": [
+          {
+            "tag": "OPTION",
+            "id": null,
+            "price": "(dow([field.d])*7*[qty])",
+            "pricetype": "fx"
+          }
+        ],
+        "preview_totals": "Product total €15.00 Options total €42.00 Grand total €57.00",
+        "totals_price_attr": "15"
+      },
+      "wapf": {
+        "choice_hints": [],
+        "pills": [],
+        "options": [
+          {
+            "value": "",
+            "text": "Choose an option",
+            "price": null,
+            "pricetype": null
+          },
+          {
+            "value": "a",
+            "text": "a (+€42.00)",
+            "price": null,
+            "pricetype": null
+          }
+        ],
+        "price_data": [],
+        "preview_totals": "Product total €15.00 Options total €42.00 Grand total €57.00",
+        "totals_price_attr": "15"
+      },
+      "preview_totals_match": true,
+      "opf_static_pills_match_wapf_pills": true
+    }
+  },
+  "all_preview_totals_match": true
+}

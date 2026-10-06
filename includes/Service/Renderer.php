@@ -467,6 +467,14 @@ final class Renderer {
 		// data-opf-product-price seeds the frontend pricing module's base price
 		// (WAPF data-product-price parity).
 		$group_attrs .= ' data-opf-product-price="' . esc_attr( (string) $base_price ) . '"';
+		// data-opf-hint-conversion publishes the shop→display factor the module
+		// applies to its live choice-hint amounts (PricingHints::hint_conversion_factor).
+		// Emitted only when a currency plugin actually converts, so a storefront
+		// with no conversion renders byte-identical markup.
+		$hint_factor = PricingHints::hint_conversion_factor( $base_price, $product );
+		if ( abs( $hint_factor - 1.0 ) > 1.0e-9 ) {
+			$group_attrs .= ' data-opf-hint-conversion="' . esc_attr( (string) $hint_factor ) . '"';
+		}
 		echo '<div class="' . esc_attr( $group_class ) . '" data-group="' . esc_attr( (string) $gid ) . '"' . $group_attrs . ' data-opf-group="' . esc_attr( (string) $gid ) . '">';
 
 		$section_stack = [];

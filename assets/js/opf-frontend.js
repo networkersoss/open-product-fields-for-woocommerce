@@ -2413,7 +2413,17 @@ const formatPriceHint = ( amount, pricingType ) => {
 
 // Per-choice live price hints (+ field-level hint) — the legacy
 // wapf_field's "show pricing next to options" behaviour.
-const updateChoicePriceHints = ( fieldEl, definitions, fid, def, values, base, qty, addons, lookupTables, formulaVariables, fieldPrices, visible = true ) => {
+//
+// `hintConversion` is the shop→display factor the server publishes on the
+// field group (Renderer → PricingHints::hint_conversion_factor). The module
+// evaluates against the shop-currency base (base / factor) and scales the
+// result by the factor, so a live formula/qty hint converts exactly like the
+// server-rendered static pill and the converted cart line. Percent-derived
+// hints stay unconverted, exactly like WAPF's Helper::adjust_addon_price.
+const updateChoicePriceHints = ( fieldEl, definitions, fid, def, values, base, qty, addons, lookupTables, formulaVariables, fieldPrices, visible = true, hintConversion = 1 ) => {
+	const conversion = Number.isFinite( Number( hintConversion ) ) && Number( hintConversion ) > 0 ? Number( hintConversion ) : 1;
+	const hintBase = conversion !== 1 ? base / conversion : base;
+	const convertHint = ( amount, pricingType ) => ( pricingType === 'percent' ? amount : amount * conversion );
 	const nodes = Array.from( fieldEl.querySelectorAll( '[data-opf-choice-hint]' ) );
 	const settings = window.OPF_PRICE_HINTS || {};
 	const enabled = settings.show !== false && visible;
@@ -2424,12 +2434,12 @@ const updateChoicePriceHints = ( fieldEl, definitions, fid, def, values, base, q
 		if ( enabled && choice && ! choice.disabled ) {
 			const candidateValue = def.image_quantities ? { [ slug ]: '1' } : slug;
 			const candidateValues = { ...values, [ fid ]: candidateValue };
-			const candidatePrices = resolveFieldPrices( definitions, candidateValues, base, qty, addons, lookupTables, formulaVariables );
+			const candidatePrices = resolveFieldPrices( definitions, candidateValues, hintBase, qty, addons, lookupTables, formulaVariables );
 			const candidateDef = { ...def, choices: [ choice ] };
 			const amountPerUnit = choiceOrFieldAddon(
 				candidateDef,
 				candidateValue,
-				base,
+				hintBase,
 				qty,
 				addons,
 				slug,
@@ -2438,7 +2448,7 @@ const updateChoicePriceHints = ( fieldEl, definitions, fid, def, values, base, q
 				formulaVariables,
 				candidatePrices
 			);
-			hint = formatPriceHint( amountPerUnit * qty, ( choice.pricing || {} ).type );
+			hint = formatPriceHint( convertHint( amountPerUnit * qty, ( choice.pricing || {} ).type ), ( choice.pricing || {} ).type );
 		}
 		if ( String( node.tagName || '' ).toLowerCase() === 'option' ) {
 			const baseLabel = node.dataset.opfBaseLabel || node.getAttribute( 'data-opf-base-label' ) || node.textContent;
@@ -2458,9 +2468,9 @@ const updateChoicePriceHints = ( fieldEl, definitions, fid, def, values, base, q
 				const currentValue = values[ fid ];
 				const candidateValue = currentValue == null || currentValue === '' ? ( def.default || '1' ) : currentValue;
 				const candidateValues = { ...values, [ fid ]: candidateValue };
-				const candidatePrices = resolveFieldPrices( definitions, candidateValues, base, qty, addons, lookupTables, formulaVariables );
-				const amountPerUnit = choiceOrFieldAddon( def, candidateValue, base, qty, addons, String( candidateValue ), candidateValues, lookupTables, formulaVariables, candidatePrices );
-				hint = formatPriceHint( amountPerUnit * qty, def.pricing.type );
+				const candidatePrices = resolveFieldPrices( definitions, candidateValues, hintBase, qty, addons, lookupTables, formulaVariables );
+				const amountPerUnit = choiceOrFieldAddon( def, candidateValue, hintBase, qty, addons, String( candidateValue ), candidateValues, lookupTables, formulaVariables, candidatePrices );
+				hint = formatPriceHint( convertHint( amountPerUnit * qty, def.pricing.type ), def.pricing.type );
 			}
 		}
 		fieldHint.textContent = hint;
@@ -3072,6 +3082,13 @@ const writeTotals = async () => {
   const productImageEvaluations = [];
   groupEls.forEach((groupEl) => {
     const gid = groupEl.getAttribute('data-opf-group');
+    // Shop→display factor published by the server (Renderer::render_group →
+    // PricingHints::hint_conversion_factor); 1 when no currency plugin
+    // converts. It scales the live choice hints only — never the preview
+    // totals, which keep their own converted/parity math.
+    const rawHintConversion = typeof groupEl.getAttribute === 'function' ? groupEl.getAttribute('data-opf-hint-conversion') : null;
+    const parsedHintConversion = parseFloat(rawHintConversion);
+    const hintConversion = Number.isFinite(parsedHintConversion) && parsedHintConversion > 0 ? parsedHintConversion : 1;
     const definitions = (window.OPF_FIELDS || {})[gid] || {};
     const values = {};
     const fileCounts = {};
@@ -3254,7 +3271,7 @@ const writeTotals = async () => {
       const hasHideClass = !!(container.classList && typeof container.classList.contains === 'function' && container.classList.contains('opf-hide'));
       const attrHidden = typeof container.hasAttribute === 'function' && container.hasAttribute('hidden');
       const isFieldVisible = !attrHidden && !hasHideClass && isVisible(def, values);
-      updateChoicePriceHints(container, definitions, fid, def, values, base, qty, addonsPU, lookupTables, formulaVariables, fieldPrices, isFieldVisible);
+      updateChoicePriceHints(container, definitions, fid, def, values, base, qty, addonsPU, lookupTables, formulaVariables, fieldPrices, isFieldVisible, hintConversion);
       if (!isFieldVisible) {
         // WAPF resolves [price.ID] from the first matching source, even when
         // that source is hidden. Do not promote a later duplicate's price.

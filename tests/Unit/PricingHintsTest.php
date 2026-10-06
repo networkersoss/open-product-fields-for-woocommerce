@@ -719,5 +719,35 @@ namespace OPF\Tests\Unit {
 				Renderer::pricing_hint_html( [ 'type' => 'fixed', 'amount' => 2 ], 10.0, $this->product() )
 			);
 		}
+
+		public function test_hint_conversion_factor_is_the_store_price_ratio(): void {
+			// No conversion: identity, so the module keeps the shop-currency value.
+			$this->assertSame( 1.0, PricingHints::hint_conversion_factor( 10.0, $this->product() ) );
+			$this->assertSame( 1.0, PricingHints::hint_conversion_factor( 0.0, $this->product() ), 'Zero reference degrades to identity.' );
+			$this->assertSame( 1.0, PricingHints::hint_conversion_factor( 10.0, null ), 'No product context degrades to identity.' );
+
+			$this->currency_plugin( 1.5 );
+			$this->assertSame( 1.5, PricingHints::hint_conversion_factor( 10.0, $this->product() ) );
+		}
+
+		public function test_storefront_group_publishes_the_hint_conversion_factor(): void {
+			$group = new FieldGroup( [ 'fields' => [
+				[ 'id' => 'finish', 'type' => 'select', 'label' => 'Finish', 'choices' => [
+					[ 'slug' => 'a', 'label' => 'a', 'pricing' => [ 'type' => 'fixed', 'amount' => 2 ] ],
+				] ],
+			] ] );
+
+			ob_start();
+			Renderer::render_group( '77', 'Group', $group, 10.0, $this->product() );
+			$plain = (string) ob_get_clean();
+			$this->assertStringNotContainsString( 'data-opf-hint-conversion', $plain, 'No currency plugin → no extra markup.' );
+
+			$this->currency_plugin( 1.5 );
+			ob_start();
+			Renderer::render_group( '77', 'Group', $group, 10.0, $this->product() );
+			$converted = (string) ob_get_clean();
+			$this->assertStringContainsString( 'data-opf-hint-conversion="1.5"', $converted );
+			$this->assertStringContainsString( 'data-opf-product-price="10"', $converted, 'The preview base the totals depend on is unchanged.' );
+		}
 	}
 }
