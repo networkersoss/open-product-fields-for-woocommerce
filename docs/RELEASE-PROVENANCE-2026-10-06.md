@@ -11,16 +11,21 @@ repository on 2026-10-06. Absolute artifact paths under `/tmp` are build
 scratch space only; no source file lives there.
 
 - Repository: `open-product-fields-for-woocommerce` (branch `master`)
-- Audited commit: `01577e8`, plus the release-hardening edits present in the
-  working tree this archive was built from (the rewritten `readme.txt`
-  description, the CHANGELOG 0.1.1 `Removed` entry, the regenerated
-  `languages/open-product-fields-for-woocommerce.pot`, and the deletion of
-  `assets/js/opf-frontend.min.js`). The previous revision of this record audited
-  `fd42ab5` (`fix(frontend): resolve image-change fallback to the selected
-  variation image`) plus the then-uncommitted 0.1.1 version metadata.
+- Audited commit: `9feaa13` (`chore(i18n): reconcile public claims, refresh
+  es_ES catalogs, and make upload messages translatable`), the final 0.1.1
+  archive. Earlier same-day revisions audited `01577e8` (release hygiene: the
+  rewritten `readme.txt` description, the CHANGELOG 0.1.1 `Removed` entry, the
+  regenerated POT, and the `assets/js/opf-frontend.min.js` deletion) and
+  `fd42ab5` (the image-change variation fallback fix).
 - Build host PHP: `8.5.11` (the shipped code declares `Requires PHP: 7.4`)
 - Archive version inspected: **0.1.1** (this is the current baseline, not a 1.0
   release candidate)
+- Final 0.1.1 archive at `9feaa13`: **200 files / 2,621,471 bytes**; manifest
+  200 lines, file SHA-256 `7c14cb2f…`. WordPress **Plugin Check 2.1.0** reports
+  **235 findings (191 errors / 44 warnings)** against this archive; the full
+  classification (real/fixed, intentional/documented, false positive) is in
+  [`PLUGIN-CHECK-TRIAGE-2026-10-06.md`](PLUGIN-CHECK-TRIAGE-2026-10-06.md) —
+  no real security defect was found.
 
 ## 1. Reproducible build command
 
@@ -39,7 +44,7 @@ rsyncs the plugin with development artifacts excluded.
 | Metric | Value |
 | --- | --- |
 | Total files | **200** |
-| Total bytes (`du -sb`) | **2,574,595** |
+| Total bytes (`du -sb`) | **2,621,471** |
 | Top-level entries | 10 (`assets/`, `includes/`, `languages/` + 6 files) |
 
 Files by top-level location:
@@ -157,7 +162,7 @@ root.
 - Manifest: [`RELEASE-PROVENANCE-2026-10-06-manifest.sha256`](RELEASE-PROVENANCE-2026-10-06-manifest.sha256)
   (200 lines, one per shipped file)
 - Manifest file SHA-256:
-  `b840e3101c39e742c364598b2a37a84f43242a2db4cfbfff6890fb2cb06e33bc`
+  `7c14cb2f21f3cf78754debd29d0c535c195897d67065e491813c3c12e799fe43`
 - `bin/build.sh` (fixed) SHA-256:
   `28e7b2cc4bd819b951d219a10339519c009a7a650ecfa96bb5170be290718b18`
 
@@ -197,7 +202,7 @@ grepping the repository, not by hand:
 grep -l '/tmp/' docs/compatibility/*.md
 ```
 
-**105** top-level `docs/compatibility/*.md` files cite `/tmp/...` paths (one more
+**109** top-level `docs/compatibility/*.md` files cite `/tmp/...` paths (one more
 nested file, `docs/compatibility/wapf-reference-proof-20261005/README.md`, also
 matches, but that directory is the committed-artifact set that fixed
 reproducibility for its rows):
