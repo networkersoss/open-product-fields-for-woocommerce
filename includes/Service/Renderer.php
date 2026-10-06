@@ -276,7 +276,8 @@ final class Renderer {
 			return;
 		}
 
-		Assets::enqueue_frontend( self::registry( $groups, $product ) );
+		$registry = self::registry( $groups, $product );
+		Assets::enqueue_frontend( $registry );
 
 		// WAPF alias bridge: wapf/pricing/product.
 		$base_price = (float) \OPF\Compat\WapfHooks::pricing_product( (float) $product->get_price( 'edit' ), $product );
@@ -295,7 +296,7 @@ final class Renderer {
 
 		foreach ( $groups as $entry ) {
 			$gids[] = (string) $entry['id'];
-			self::render_group( $entry['id'], $entry['title'], $entry['group'], $base_price, $product, $edit_values[ (string) $entry['id'] ] ?? null, $edit_qty );
+			self::render_group( $entry['id'], $entry['title'], $entry['group'], $base_price, $product, $edit_values[ (string) $entry['id'] ] ?? null, $edit_qty, $registry[ (string) $entry['id'] ] ?? null );
 		}
 
 		echo '<input type="hidden" value="' . esc_attr( implode( ',', $gids ) ) . '" name="opf_field_groups"/>';
@@ -312,80 +313,118 @@ final class Renderer {
 	private static function registry( array $groups, ?\WC_Product $product = null ): array {
 		$registry = [];
 		foreach ( $groups as $entry ) {
-			$gid = (string) $entry['id'];
-			// WAPF field-group carries its custom variables + field defs so the
-			// browser can expand [var_name] (and evaluate variables' own rules)
-			// while the shopper edits the form. The keys are prefixed to avoid
-			// colliding with field ids (`__opf_variables`, `__opf_fields`).
-			$variables = is_array( $entry['group']->data['variables'] ?? null ) ? $entry['group']->data['variables'] : [];
-			if ( $variables ) {
-				$registry[ $gid ]['__opf_variables'] = $variables;
+			$registry[ (string) $entry['id'] ] = self::group_registry( $entry['group'], $product );
+		}
+		return $registry;
+	}
+
+	/**
+	 * Client registry entry for one group: fid => {type, conditionals, choices}.
+	 *
+	 * @param FieldGroup       $group   Group data.
+	 * @param \WC_Product|null $product Product.
+	 * @return array<string,mixed>
+	 */
+	private static function group_registry( FieldGroup $group, ?\WC_Product $product = null ): array {
+		$entry = [];
+		// WAPF field-group carries its custom variables + field defs so the
+		// browser can expand [var_name] (and evaluate variables' own rules)
+		// while the shopper edits the form. The keys are prefixed to avoid
+		// colliding with field ids (`__opf_variables`, `__opf_fields`).
+		$variables = is_array( $group->data['variables'] ?? null ) ? $group->data['variables'] : [];
+		if ( $variables ) {
+			$entry['__opf_variables'] = $variables;
+		}
+		$field_defs = [];
+		foreach ( $group->data['fields'] as $field ) {
+			if ( ! in_array( $field['type'], [ 'section', 'section_end' ], true ) ) {
+				$field_defs[] = [ 'id' => $field['id'], 'type' => $field['type'] ];
 			}
-			$field_defs = [];
-			foreach ( $entry['group']->data['fields'] as $field ) {
-				if ( ! in_array( $field['type'], [ 'section', 'section_end' ], true ) ) {
-					$field_defs[] = [ 'id' => $field['id'], 'type' => $field['type'] ];
-				}
-			}
-			if ( $field_defs ) {
-				$registry[ $gid ]['__opf_formula_fields'] = $field_defs;
-			}
-			foreach ( $entry['group']->data['fields'] as $field ) {
-				$choices = 'products' === $field['type']
-					? LinkedProducts::product_choices( $field, $product )
-					: (array) ( $field['choices'] ?? [] );
-				$registry[ $gid ][ $field['id'] ] = [
-					'type'         => $field['type'],
-					'subtype'      => $field['subtype'] ?? null,
-					'qty_selector' => 'products' === $field['type'] && LinkedProducts::is_qty_subtype( $field ),
-					'repeat'       => $field['repeat'] ?? null,
-					'multiple'     => ! empty( $field['multiple'] ) || ( 'products' === $field['type'] && in_array( $field['subtype'] ?? '', [ 'checkbox', 'image', 'card', 'vcard' ], true ) ),
-					'min_choices'  => $field['min_choices'] ?? null,
-					'max_choices'  => $field['max_choices'] ?? null,
-					'conditionals' => $field['conditionals'],
-					'choices'      => array_map( static function ( $c ) {
-						if ( isset( $c['product'] ) ) {
-							// Child prices belong to their own cart lines. Expose only
-							// catalog pricing for the preview, never the product object.
-							return [
-								'slug'             => (string) $c['slug'],
-								'label'            => (string) $c['label'],
-								'disabled'         => ! empty( $c['disabled'] ),
-								'child_price_type' => (string) $c['pricing_type'],
-								'child_price'      => (float) $c['pricing_amount'],
-							];
-						}
+		}
+		if ( $field_defs ) {
+			$entry['__opf_formula_fields'] = $field_defs;
+		}
+		foreach ( $group->data['fields'] as $field ) {
+			$choices = 'products' === $field['type']
+				? LinkedProducts::product_choices( $field, $product )
+				: (array) ( $field['choices'] ?? [] );
+			$entry[ $field['id'] ] = [
+				'type'         => $field['type'],
+				'subtype'      => $field['subtype'] ?? null,
+				'qty_selector' => 'products' === $field['type'] && LinkedProducts::is_qty_subtype( $field ),
+				'repeat'       => $field['repeat'] ?? null,
+				'multiple'     => ! empty( $field['multiple'] ) || ( 'products' === $field['type'] && in_array( $field['subtype'] ?? '', [ 'checkbox', 'image', 'card', 'vcard' ], true ) ),
+				'min_choices'  => $field['min_choices'] ?? null,
+				'max_choices'  => $field['max_choices'] ?? null,
+				'conditionals' => $field['conditionals'],
+				'choices'      => array_map( static function ( $c ) {
+					if ( isset( $c['product'] ) ) {
+						// Child prices belong to their own cart lines. Expose only
+						// catalog pricing for the preview, never the product object.
+						return [
+							'slug'             => (string) $c['slug'],
+							'label'            => (string) $c['label'],
+							'disabled'         => ! empty( $c['disabled'] ),
+							'child_price_type' => (string) $c['pricing_type'],
+							'child_price'      => (float) $c['pricing_amount'],
+						];
+					}
 					return [
 						'slug'     => $c['slug'],
 						'label'    => $c['label'],
 						'disabled' => ! empty( $c['disabled'] ),
 						'quantity' => $c['quantity'] ?? null,
 						'pricing'  => [
-								'type'       => $c['pricing']['type'],
-								'amount'     => (float) $c['pricing']['amount'],
-								'formula'    => (string) $c['pricing']['formula'],
-								'formula_raw' => (string) ( $c['pricing']['formula_raw'] ?? '' ),
-								'per_unit'   => ! empty( $c['pricing']['per_unit'] ),
-							],
-						];
-					}, $choices ),
-					'pricing'      => [
-						'type'    => $field['pricing']['type'],
-						'amount'  => (float) $field['pricing']['amount'],
-						'formula' => (string) ( $field['pricing']['formula'] ?? '' ),
-						'formula_raw' => (string) ( $field['pricing']['formula_raw'] ?? '' ),
-						'per_unit' => ! empty( $field['pricing']['per_unit'] ),
-					],
-				];
-				if ( 'calc' === $field['type'] ) {
-					$registry[ $gid ][ $field['id'] ]['calc_type']     = $field['calc_type'] ?? 'default';
-					$registry[ $gid ][ $field['id'] ]['formula']       = (string) ( $field['formula'] ?? '' );
-					$registry[ $gid ][ $field['id'] ]['result_format'] = $field['result_format'] ?? 'number';
-					$registry[ $gid ][ $field['id'] ]['result_text']   = (string) ( $field['result_text'] ?? '{result}' );
-				}
+							'type'       => $c['pricing']['type'],
+							'amount'     => (float) $c['pricing']['amount'],
+							'formula'    => (string) $c['pricing']['formula'],
+							'formula_raw' => (string) ( $c['pricing']['formula_raw'] ?? '' ),
+							'per_unit'   => ! empty( $c['pricing']['per_unit'] ),
+						],
+					];
+				}, $choices ),
+				'pricing'      => [
+					'type'    => $field['pricing']['type'],
+					'amount'  => (float) $field['pricing']['amount'],
+					'formula' => (string) ( $field['pricing']['formula'] ?? '' ),
+					'formula_raw' => (string) ( $field['pricing']['formula_raw'] ?? '' ),
+					'per_unit' => ! empty( $field['pricing']['per_unit'] ),
+				],
+			];
+			if ( 'calc' === $field['type'] ) {
+				$entry[ $field['id'] ]['calc_type']     = $field['calc_type'] ?? 'default';
+				$entry[ $field['id'] ]['formula']       = (string) ( $field['formula'] ?? '' );
+				$entry[ $field['id'] ]['result_format'] = $field['result_format'] ?? 'number';
+				$entry[ $field['id'] ]['result_text']   = (string) ( $field['result_text'] ?? '{result}' );
 			}
 		}
-		return $registry;
+		return $entry;
+	}
+
+	/**
+	 * Per-group payload printed on the group element (`data-opf-registry`): the
+	 * group's client registry plus its OPF-native image rules. A quick-view modal
+	 * injects this markup through Ajax, and some themes sanitize the fragment
+	 * before inserting it (Astra Pro: DOMPurify + innerHTML), which drops the
+	 * inline `window.OPF_FIELDS` script the fragment also carries. Reading the
+	 * data back from the injected DOM is what lets
+	 * `window.OPF_FRONTEND.reinit( root )` price a modal whose page never
+	 * rendered fields.
+	 *
+	 * @param FieldGroup       $group    Group data.
+	 * @param \WC_Product|null $product  Product.
+	 * @param array|null       $registry Precomputed `group_registry()` entry.
+	 * @return array<string,mixed>
+	 */
+	private static function inline_group_data( FieldGroup $group, ?\WC_Product $product = null, ?array $registry = null ): array {
+		$data  = [ 'fields' => null !== $registry ? $registry : self::group_registry( $group, $product ) ];
+		$rules = $group->data['image_rules'] ?? [];
+		if ( is_array( $rules ) && $rules ) {
+			// JSON must see a list; a sparse stored map would serialize as an object.
+			$data['image_rules']     = array_values( $rules );
+			$data['image_rule_mode'] = 'last' === ( $group->data['image_rule_mode'] ?? '' ) ? 'last' : 'rules';
+		}
+		return $data;
 	}
 
 	/**
@@ -398,6 +437,7 @@ final class Renderer {
 	 * @param \WC_Product|null $product  Product.
 	 * @param array|null $prefill    Cart-edit stored values `fid => value` (null = normal render).
 	 * @param int        $edit_qty   Edited cart line quantity (quantity-mode row padding).
+	 * @param array|null $registry   Precomputed `group_registry()` entry; computed here when null.
 	 */
 	/** Settings hash of the WAPF design CSS already printed this request. */
 	private static $design_css_hash = null;
@@ -419,7 +459,7 @@ final class Renderer {
 		echo '<style id="opf-wapf-design-css">' . $css . '</style>'; // phpcs:ignore WordPress.Security.EscapeOutput -- generated from sanitized WAPF design keys.
 	}
 
-	public static function render_group( $gid, string $title, FieldGroup $group, float $base_price, ?\WC_Product $product = null, ?array $prefill = null, int $edit_qty = 1 ): void {
+	public static function render_group( $gid, string $title, FieldGroup $group, float $base_price, ?\WC_Product $product = null, ?array $prefill = null, int $edit_qty = 1, ?array $registry = null ): void {
 		$group_fields = $group->data['fields'];
 		// fid => repeat mode for fields nested inside a repeating section
 		// (mirrors CartIntegration::section_repeat_context semantics).
@@ -475,6 +515,11 @@ final class Renderer {
 		if ( abs( $hint_factor - 1.0 ) > 1.0e-9 ) {
 			$group_attrs .= ' data-opf-hint-conversion="' . esc_attr( (string) $hint_factor ) . '"';
 		}
+		// Per-group registry + image rules, read back by the frontend when a
+		// modal injects this markup without executing its inline
+		// `window.OPF_FIELDS` script (see inline_group_data()).
+		$inline = self::attr_json( self::inline_group_data( $group, $product, $registry ) );
+		$group_attrs .= ' data-opf-registry="' . $inline . '"';
 		echo '<div class="' . esc_attr( $group_class ) . '" data-group="' . esc_attr( (string) $gid ) . '"' . $group_attrs . ' data-opf-group="' . esc_attr( (string) $gid ) . '">';
 
 		$section_stack = [];

@@ -1,5 +1,5 @@
 # Static integration evidence — theme=flatsome engine=wapf
-# captured: 2026-10-06T21:36:27Z
+# captured: 2026-10-06T22:47:10Z
 # base_url: http://127.0.0.1:8420
 # product_url: http://127.0.0.1:8420/product/wapf-theme-fields/
 

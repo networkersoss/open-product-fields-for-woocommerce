@@ -1,10 +1,10 @@
 # Static integration evidence — theme=flatsome engine=opf
-# captured: 2026-10-06T21:36:58Z
+# captured: 2026-10-06T22:47:41Z
 # base_url: http://127.0.0.1:8420
 # product_url: http://127.0.0.1:8420/product/opf-theme-fields/
 
 ## engine frontend script served
-opf-frontend on /shop/          : 0
+opf-frontend on /shop/          : 2
 opf-frontend on product page    : 2
 wapf-frontend on /shop/         : 0
 wapf-frontend on product page   : 0
@@ -25,3 +25,5 @@ class="woocommerce-product-gallery__wrapper product-gallery-slider slider slider
 
 ## quick view markup markers on the archive
 quick-view
+quick-view-js
+quick-view.js?ver=0.1.1

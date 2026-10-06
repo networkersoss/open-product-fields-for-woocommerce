@@ -1,5 +1,5 @@
 {
-    "utc": "2026-10-06T21:42:50+00:00",
+    "utc": "2026-10-06T22:35:25+00:00",
     "base_url": "http://127.0.0.1:8511",
     "shop_url": "http://127.0.0.1:8511/shop/",
     "store_api": {
@@ -31,11 +31,11 @@
         "ruleb": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-rule-b.png"
     },
     "attachment_ids": {
-        "main": 91,
-        "vsmall": 92,
-        "vlarge": 93,
-        "rulea": 94,
-        "ruleb": 95
+        "main": 112,
+        "vsmall": 113,
+        "vlarge": 114,
+        "rulea": 115,
+        "ruleb": 116
     },
     "options_before": {
         "astra-settings": {
@@ -56,35 +56,17 @@
     "products": {
         "opf": {
             "engine": "opf",
-            "product": 96,
-            "group": 99,
+            "product": 117,
+            "group": 120,
             "url": "http://127.0.0.1:8511/product/opf-astra-compat/",
             "variations": [
                 {
-                    "variation_id": 97,
+                    "variation_id": 118,
                     "size": "small",
                     "image_url": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-v-small.png"
                 },
                 {
-                    "variation_id": 98,
-                    "size": "large",
-                    "image_url": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-v-large.png"
-                }
-            ]
-        },
-        "wapf": {
-            "engine": "wapf",
-            "product": 100,
-            "group": 0,
-            "url": "http://127.0.0.1:8511/product/wapf-astra-compat/",
-            "variations": [
-                {
-                    "variation_id": 101,
-                    "size": "small",
-                    "image_url": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-v-small.png"
-                },
-                {
-                    "variation_id": 102,
+                    "variation_id": 119,
                     "size": "large",
                     "image_url": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-v-large.png"
                 }
@@ -92,10 +74,9 @@
         }
     },
     "product_ids": [
-        96,
-        100
+        117
     ],
     "group_ids": [
-        99
+        120
     ]
 }

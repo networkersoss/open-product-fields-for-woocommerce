@@ -77,6 +77,7 @@ use OPF\Service\Importer;
 use OPF\Service\LinkedProducts;
 use OPF\Service\MetaPrettifier;
 use OPF\Service\ProductPriceDisplay;
+use OPF\Service\QuickView;
 use OPF\Service\Renderer;
 use OPF\Service\Rest;
 use OPF\Service\SubscriptionIntegration;
@@ -142,6 +143,7 @@ function opf_boot(): void {
 	CartIntegration::init();
 	LinkedProducts::init();
 	Assets::init();
+	QuickView::init();
 	WoocsIntegration::init();
 	WpmlIntegration::init();
 	AeliaIntegration::init();

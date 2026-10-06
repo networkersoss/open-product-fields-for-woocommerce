@@ -9,7 +9,7 @@
     "wapf": "3.1.5",
     "php": "8.5.11"
   },
-  "started_utc": "2026-10-06T21:44:13.089Z",
+  "started_utc": "2026-10-06T22:46:06.634Z",
   "base_url": "http://127.0.0.1:8511",
   "checks": [
     {
@@ -20,7 +20,7 @@
     {
       "label": "opf/single: priced choices carry their price hints",
       "pass": true,
-      "detail": "[\"Choose an option\",\"None\",\"Gold (+ &#36;10)\",\"Silver (+ &#36;5)\"]"
+      "detail": "[\"Choose an option\",\"None\",\"Gold (+ $10)\",\"Silver (+ $5)\"]"
     },
     {
       "label": "opf/single: totals block present",
@@ -39,8 +39,8 @@
     },
     {
       "label": "opf/single: clearing the rules restores the original image",
-      "pass": false,
-      "detail": "opf-astra-rule-b.png"
+      "pass": true,
+      "detail": "opf-astra-main.png"
     },
     {
       "label": "opf/single: selecting a +10.00 choice updates the options total",
@@ -79,18 +79,18 @@
     },
     {
       "label": "opf/modal: engine marked the injected group as initialized",
-      "pass": false,
-      "detail": "data-opf-initialized=false"
+      "pass": true,
+      "detail": "data-opf-initialized=true"
     },
     {
       "label": "opf/modal: priced choice updates the modal totals",
-      "pass": false,
-      "detail": "options= grand="
+      "pass": true,
+      "detail": "options=$10.00 grand=$110.00"
     },
     {
       "label": "opf/modal: image rule swaps the modal image to rule-a",
-      "pass": false,
-      "detail": "opf-astra-v-small.png"
+      "pass": true,
+      "detail": "opf-astra-rule-a.png"
     },
     {
       "label": "opf/modal: add-to-cart from the modal carries the field value",
@@ -109,8 +109,8 @@
       "choiceTexts": [
         "Choose an option",
         "None",
-        "Gold (+ &#36;10)",
-        "Silver (+ &#36;5)"
+        "Gold (+ $10)",
+        "Silver (+ $5)"
       ],
       "hasWrapper": true,
       "hasGroup": true,
@@ -153,8 +153,8 @@
       "choiceTexts": [
         "Choose an option",
         "None",
-        "Gold (+ &#36;10)",
-        "Silver (+ &#36;5)"
+        "Gold (+ $10)",
+        "Silver (+ $5)"
       ],
       "hasWrapper": true,
       "hasGroup": true,
@@ -185,8 +185,8 @@
       "choiceTexts": [
         "Choose an option",
         "None",
-        "Gold (+ &#36;10)",
-        "Silver (+ &#36;5)"
+        "Gold (+ $10)",
+        "Silver (+ $5)"
       ],
       "hasWrapper": true,
       "hasGroup": true,
@@ -201,10 +201,10 @@
       "opfFieldsGlobal": "object",
       "wapfClass": "undefined",
       "images": {
-        "activeSlide": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-v-small.png",
+        "activeSlide": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-rule-a.png",
         "postImage": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png",
         "firstImg": "https://s.w.org/images/core/emoji/17.0.2/svg/1f50d.svg",
-        "visible": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-v-small.png"
+        "visible": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-rule-a.png"
       }
     },
     "cart": {
@@ -240,31 +240,10 @@
     "console": [
       {
         "phase": "single",
-        "kind": "pageerror",
-        "text": "Cannot read properties of undefined (reading 'animating')",
-        "source": "TypeError: Cannot read properties of undefined (reading 'animating') |     at HTMLDivElement.<anonymous> (http://127.0.0.1:8511/wp-content/plugins/woocommerce/assets/js/flexslider/jquery.flexslider.min.js?ver=2.7.2-wc.11.1.0:1:4675) |     at HTMLDivElement.dispatch (http://127.0.0.1:8511/wp-includes/js/jquery/jquery.min.js?ver=3.7.1:2:40035)",
-        "attributed_to": "woocommerce-flexslider"
-      },
-      {
-        "phase": "single",
         "kind": "requestfailed",
         "text": "net::ERR_ABORTED http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png",
         "source": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png",
         "attributed_to": "media"
-      },
-      {
-        "phase": "single",
-        "kind": "pageerror",
-        "text": "Cannot read properties of undefined (reading 'animating')",
-        "source": "TypeError: Cannot read properties of undefined (reading 'animating') |     at HTMLDivElement.<anonymous> (http://127.0.0.1:8511/wp-content/plugins/woocommerce/assets/js/flexslider/jquery.flexslider.min.js?ver=2.7.2-wc.11.1.0:1:4675) |     at HTMLDivElement.dispatch (http://127.0.0.1:8511/wp-includes/js/jquery/jquery.min.js?ver=3.7.1:2:40035)",
-        "attributed_to": "woocommerce-flexslider"
-      },
-      {
-        "phase": "single",
-        "kind": "pageerror",
-        "text": "Cannot read properties of undefined (reading 'animating')",
-        "source": "TypeError: Cannot read properties of undefined (reading 'animating') |     at HTMLDivElement.<anonymous> (http://127.0.0.1:8511/wp-content/plugins/woocommerce/assets/js/flexslider/jquery.flexslider.min.js?ver=2.7.2-wc.11.1.0:1:4675) |     at HTMLDivElement.dispatch (http://127.0.0.1:8511/wp-includes/js/jquery/jquery.min.js?ver=3.7.1:2:40035)",
-        "attributed_to": "woocommerce-flexslider"
       },
       {
         "phase": "single",
@@ -286,18 +265,18 @@
       "choiceTexts": [
         "Choose an option",
         "None",
-        "Gold + $10.00",
-        "Silver + $5.00"
+        "Gold (+ $10)",
+        "Silver (+ $5)"
       ],
       "hasWrapper": true,
       "hasGroup": true,
       "hasFinish": true,
       "hasEdge": true,
-      "startedFlag": false,
-      "totalsText": "Product total Options total Grand total",
+      "startedFlag": true,
+      "totalsText": "Product total $100.00Options total $0.00Grand total $100.00",
       "totalsVisible": true,
-      "optionsTotal": "",
-      "grandTotal": "",
+      "optionsTotal": "$0.00",
+      "grandTotal": "$100.00",
       "engineGlobal": "undefined",
       "opfFieldsGlobal": "undefined",
       "wapfClass": "undefined",
@@ -318,18 +297,18 @@
       "choiceTexts": [
         "Choose an option",
         "None",
-        "Gold + $10.00",
-        "Silver + $5.00"
+        "Gold (+ $10)",
+        "Silver (+ $5)"
       ],
       "hasWrapper": true,
       "hasGroup": true,
       "hasFinish": true,
       "hasEdge": true,
-      "startedFlag": false,
-      "totalsText": "Product total Options total Grand total",
+      "startedFlag": true,
+      "totalsText": "Product total $100.00Options total $0.00Grand total $100.00",
       "totalsVisible": true,
-      "optionsTotal": "",
-      "grandTotal": "",
+      "optionsTotal": "$0.00",
+      "grandTotal": "$100.00",
       "engineGlobal": "undefined",
       "opfFieldsGlobal": "undefined",
       "wapfClass": "undefined",
@@ -350,38 +329,38 @@
       "choiceTexts": [
         "Choose an option",
         "None",
-        "Gold + $10.00",
-        "Silver + $5.00"
+        "Gold (+ $10)",
+        "Silver (+ $5)"
       ],
       "hasWrapper": true,
       "hasGroup": true,
       "hasFinish": true,
       "hasEdge": true,
-      "startedFlag": false,
-      "totalsText": "Product total Options total Grand total",
+      "startedFlag": true,
+      "totalsText": "Product total $100.00Options total $10.00Grand total $110.00",
       "totalsVisible": true,
-      "optionsTotal": "",
-      "grandTotal": "",
+      "optionsTotal": "$10.00",
+      "grandTotal": "$110.00",
       "engineGlobal": "undefined",
       "opfFieldsGlobal": "undefined",
       "wapfClass": "undefined",
       "images": {
-        "activeSlide": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-v-small.png",
-        "postImage": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-v-small.png",
-        "firstImg": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-v-small.png",
-        "visible": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-v-small.png"
+        "activeSlide": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-rule-a.png",
+        "postImage": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-rule-a.png",
+        "firstImg": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-rule-a.png",
+        "visible": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-rule-a.png"
       }
     },
     "ruleA": {
-      "activeSlide": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-v-small.png",
-      "postImage": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-v-small.png",
-      "firstImg": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-v-small.png",
-      "visible": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-v-small.png"
+      "activeSlide": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-rule-a.png",
+      "postImage": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-rule-a.png",
+      "firstImg": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-rule-a.png",
+      "visible": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-rule-a.png"
     },
     "image_after_idle_6s": {
       "activeSlide": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-v-small.png",
-      "postImage": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-v-small.png",
-      "firstImg": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-v-small.png",
+      "postImage": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-rule-a.png",
+      "firstImg": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-rule-a.png",
       "visible": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-v-small.png"
     },
     "cart": {
@@ -426,43 +405,22 @@
   },
   "quick_view_ajax": {
     "status": 200,
-    "length": 20062,
+    "length": 23146,
     "has_opf_markup": true,
     "has_wapf_markup": false,
     "has_inline_registry_script": true,
     "has_script_tag": true,
     "has_wapf_config": false,
-    "excerpt": ".0.0.1:8511\\/wp-admin\\/admin-ajax.php\",\"currency\":\"USD\",\"display_options\":{\"symbol\":\"&#36;\",\"thousand\":\",\",\"decimal\":\".\",\"decimals\":2,\"price_format\":\"symbolprice\"}}; </script> <div class=\"opf-fields\" data-opf-fields=\"1\"><div class=\"opf\" id=\"opf_96\"><div class=\"opf-wrapper\"><style id=\"opf-wapf-design-css\">:root{--apf-ts-border:1px solid #ccc;--apf-ts-border-color-hov:#353c4e;--apf-ts-border-color-sel:#353c4e;--apf-ts-bg-sel:#353c4e;--apf-ts-color-sel:#fff;--apf-ts-radius:4px}</style><div class=\"opf-field-group label-above\" data-group=\"99\" data-variables=\"[]\" data-opf-product-price=\"100\" data-opf-group=\"99\"><div class=\"opf-field-container opf-field-select field-finish\" data-opf-field=\"finish\" style=\"width:100%;\" for=\"finish\"><div class=\"opf-field-label\"><label for=\"opf-99-finish\"><span>Finish</span> </label></div><div class=\"opf-field-input\"><select name=\"opf[99][finish]\" id=\"opf-99-finish"
+    "excerpt": ".0.0.1:8511\\/wp-admin\\/admin-ajax.php\",\"currency\":\"USD\",\"display_options\":{\"symbol\":\"&#36;\",\"thousand\":\",\",\"decimal\":\".\",\"decimals\":2,\"price_format\":\"symbolprice\"}}; </script> <div class=\"opf-fields\" data-opf-fields=\"1\"><div class=\"opf\" id=\"opf_117\"><div class=\"opf-wrapper\"><style id=\"opf-wapf-design-css\">:root{--apf-ts-border:1px solid #ccc;--apf-ts-border-color-hov:#353c4e;--apf-ts-border-color-sel:#353c4e;--apf-ts-bg-sel:#353c4e;--apf-ts-color-sel:#fff;--apf-ts-radius:4px}</style><div class=\"opf-field-group label-above\" data-group=\"120\" data-variables=\"[]\" data-opf-product-price=\"100\" data-opf-registry=\"{&quot;fields&quot;:{&quot;__opf_formula_fields&quot;:[{&quot;id&quot;:&quot;finish&quot;,&quot;type&quot;:&quot;select&quot;},{&quot;id&quot;:&quot;edge&quot;,&quot;type&quot;:&quot;select&quot;}],&quot;finish&quot;:{&quot;type&quot;:&quot;select&quot;,&quot;subtype&quot;:null,&quot;q"
   },
-  "finished_utc": "2026-10-06T21:44:47.959Z",
+  "finished_utc": "2026-10-06T22:46:33.355Z",
   "console_attribution": [
-    {
-      "phase": "single",
-      "kind": "pageerror",
-      "text": "Cannot read properties of undefined (reading 'animating')",
-      "source": "TypeError: Cannot read properties of undefined (reading 'animating') |     at HTMLDivElement.<anonymous> (http://127.0.0.1:8511/wp-content/plugins/woocommerce/assets/js/flexslider/jquery.flexslider.min.js?ver=2.7.2-wc.11.1.0:1:4675) |     at HTMLDivElement.dispatch (http://127.0.0.1:8511/wp-includes/js/jquery/jquery.min.js?ver=3.7.1:2:40035)",
-      "attributed_to": "woocommerce-flexslider"
-    },
     {
       "phase": "single",
       "kind": "requestfailed",
       "text": "net::ERR_ABORTED http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png",
       "source": "http://127.0.0.1:8511/wp-content/uploads/opf-astra-main.png",
       "attributed_to": "media"
-    },
-    {
-      "phase": "single",
-      "kind": "pageerror",
-      "text": "Cannot read properties of undefined (reading 'animating')",
-      "source": "TypeError: Cannot read properties of undefined (reading 'animating') |     at HTMLDivElement.<anonymous> (http://127.0.0.1:8511/wp-content/plugins/woocommerce/assets/js/flexslider/jquery.flexslider.min.js?ver=2.7.2-wc.11.1.0:1:4675) |     at HTMLDivElement.dispatch (http://127.0.0.1:8511/wp-includes/js/jquery/jquery.min.js?ver=3.7.1:2:40035)",
-      "attributed_to": "woocommerce-flexslider"
-    },
-    {
-      "phase": "single",
-      "kind": "pageerror",
-      "text": "Cannot read properties of undefined (reading 'animating')",
-      "source": "TypeError: Cannot read properties of undefined (reading 'animating') |     at HTMLDivElement.<anonymous> (http://127.0.0.1:8511/wp-content/plugins/woocommerce/assets/js/flexslider/jquery.flexslider.min.js?ver=2.7.2-wc.11.1.0:1:4675) |     at HTMLDivElement.dispatch (http://127.0.0.1:8511/wp-includes/js/jquery/jquery.min.js?ver=3.7.1:2:40035)",
-      "attributed_to": "woocommerce-flexslider"
     },
     {
       "phase": "single",

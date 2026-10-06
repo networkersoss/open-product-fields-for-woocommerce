@@ -1,5 +1,5 @@
 # Static integration evidence — theme=woodmart engine=wapf
-# captured: 2026-10-06T21:37:34Z
+# captured: 2026-10-06T22:48:20Z
 # base_url: http://127.0.0.1:8421
 # product_url: http://127.0.0.1:8421/product/wapf-theme-fields/
 

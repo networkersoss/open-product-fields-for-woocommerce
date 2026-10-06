@@ -15,7 +15,7 @@
         {
           "label": "product/opf: priced choices are rendered in the control",
           "pass": true,
-          "detail": "Choose an option None Gold (+ &#36;10) Silver (+ &#36;5)"
+          "detail": "Choose an option None Gold (+ $10) Silver (+ $5)"
         },
         {
           "label": "product/opf: selecting the +10.00 choice moves the options total to 10",
@@ -29,8 +29,8 @@
         },
         {
           "label": "product/opf: finish=gold swaps the visible woodmart gallery image to rule-a",
-          "pass": false,
-          "detail": "opf-tfw-main.png (area 201601)"
+          "pass": true,
+          "detail": "opf-tfw-rule-a.png (area 201601)"
         },
         {
           "label": "product/opf: the woodmart cart line carries the field value (Finish: Gold)",
@@ -65,7 +65,7 @@
           "WAPF": "undefined"
         },
         "engine_scripts": [
-          "http://127.0.0.1:8421/wp-content/plugins/open-product-fields-for-woocommerce/assets/js/opf-frontend.js?ver=0.1.0"
+          "http://127.0.0.1:8421/wp-content/plugins/open-product-fields-for-woocommerce/assets/js/opf-frontend.js?ver=0.1.1"
         ]
       }
     },
@@ -83,18 +83,18 @@
         },
         {
           "label": "quickview/opf: priced choice moves the quick-view options total to 10",
-          "pass": false,
-          "detail": "options=null"
+          "pass": true,
+          "detail": "options=10"
         },
         {
           "label": "quickview/opf: quick-view grand total = 100 + 10",
-          "pass": false,
-          "detail": "grand=null"
+          "pass": true,
+          "detail": "grand=110"
         },
         {
           "label": "quickview/opf: finish=gold swaps the woodmart quick-view gallery image to rule-a",
-          "pass": false,
-          "detail": "opf-tfw-v-small.png via .mfp-content .product-quick-view .woocommerce-product-gallery"
+          "pass": true,
+          "detail": "opf-tfw-rule-a.png via .mfp-content .product-quick-view .woocommerce-product-gallery"
         },
         {
           "label": "quickview/opf: add-to-cart from the woodmart quick view carries the field value into the cart line",
@@ -129,7 +129,9 @@
           "wapf_config": "undefined",
           "WAPF": "undefined"
         },
-        "engine_scripts": []
+        "engine_scripts": [
+          "http://127.0.0.1:8421/wp-content/plugins/open-product-fields-for-woocommerce/assets/js/opf-frontend.js?ver=0.1.1"
+        ]
       }
     }
   }

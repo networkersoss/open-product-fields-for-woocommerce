@@ -9,6 +9,16 @@
  *
  * The server embeds the field metadata as window.OPF_FIELDS:
  *   { "<group_id>": { "<field_id>": { type, conditionals } } }
+ *
+ * Public entry points (for markup injected after load — quick-view modals):
+ *   window.OPF_FRONTEND.init( root )       — scan one subtree for field groups
+ *   window.OPF_FRONTEND.initTotals( root ) — bind that subtree's totals pass
+ *   window.OPF_FRONTEND.reinit( root )     — both; safe to call repeatedly
+ *   document event `opf:reinit`            — { detail: { root } }
+ * A group with no page-level `window.OPF_FIELDS[gid]` entry reads its own
+ * `data-opf-registry` payload instead, so an AJAX fragment survives themes that
+ * sanitize away its inline <script>. The theme/plugin modal events are wired by
+ * assets/js/opf-quick-view.js.
  */
 
 const REGISTRY = window.OPF_FIELDS || {};
@@ -176,6 +186,10 @@ const qtyRulePasses = ( rule, map ) => {
 // ---------------------------------------------------------------------------
 
 let lastFoundVariation = null;
+
+// The delegated variation lifecycle listeners are document-level and cover
+// modal-injected variation forms, so they are bound once per page.
+let variationLifecycleBound = false;
 
 const selectedAttributes = ( form ) => {
 	const attributes = {};
@@ -607,24 +621,65 @@ const updateNumberStepperButtons = ( fieldEl ) => {
 // 'blocked' terms (master's earlier helper name).
 const dateIsBlocked = ( input, isoDate ) => ! dateSelectionAllowed( input, isoDate );
 
+// Per-group registry the server prints inside the group markup
+// (Renderer::inline_group_data → `data-opf-registry`), so a group injected
+// after page load still carries its own field metadata and image rules. Themes
+// that inject an Ajax fragment with DOMPurify.sanitize() + innerHTML destroy
+// the fragment's inline <script> (window.OPF_FIELDS), so the page-level global
+// is not a reliable source for an injected root.
+const readGroupInlineData = ( groupEl ) => {
+	if ( ! groupEl || typeof groupEl.getAttribute !== 'function' ) return null;
+	const raw = groupEl.getAttribute( 'data-opf-registry' );
+	if ( typeof raw !== 'string' || '{' !== raw.charAt( 0 ) ) return null;
+	let parsed = null;
+	try { parsed = JSON.parse( raw ); } catch { parsed = null; }
+	return parsed && 'object' === typeof parsed ? parsed : null;
+};
+
+// Field registry for one group: the page-level global first (it is the full
+// registry for a normally rendered page), then the group's inline payload.
+const groupFields = ( groupEl, gid ) => {
+	const global = ( window.OPF_FIELDS || {} )[ gid ];
+	if ( global ) return global;
+	const inline = readGroupInlineData( groupEl );
+	return inline && inline.fields && 'object' === typeof inline.fields ? inline.fields : {};
+};
+
+// Image rules for one group, same precedence. Without them a modal-injected
+// group keeps the base image when a rule matches.
+const groupImageRules = ( groupEl, gid ) => {
+	const global = ( window.OPF_IMAGE_RULES || {} )[ gid ];
+	if ( global ) {
+		return { rules: global, mode: ( window.OPF_IMAGE_RULE_MODES || {} )[ gid ] || 'rules' };
+	}
+	const inline = readGroupInlineData( groupEl );
+	return {
+		rules: inline && Array.isArray( inline.image_rules ) ? inline.image_rules : [],
+		mode: ( inline && inline.image_rule_mode ) || 'rules',
+	};
+};
+
 const init = ( root = document ) => {
 	// Woo variation lifecycle → notify every group so variation-scoped rules
 	// (product_var/var_att subjects, generated `var` gates) re-evaluate.
 	// Notifications are deferred to the next tick: WooCommerce writes
 	// `.variation_id` from its own `found_variation` handler, and our handler
 	// may run first, so evaluating synchronously would read a stale/empty ID.
-	if ( window.jQuery ) {
+	// Bound once per document, delegated: a modal's variation form is injected
+	// after this runs, and a delegated handler covers it without re-binding.
+	if ( window.jQuery && ! variationLifecycleBound ) {
+		variationLifecycleBound = true;
 		const notifyVariationChanged = () => {
 			window.setTimeout( () => document.dispatchEvent( new CustomEvent( 'opf:variation-changed' ) ), 0 );
 		};
-		window.jQuery( 'form.variations_form' )
-			.on( 'found_variation.opfvisibility', function ( _event, variation ) {
+		window.jQuery( document )
+			.on( 'found_variation.opfvisibility', 'form.variations_form', function ( _event, variation ) {
 				lastFoundVariation = variation && variation.variation_id
 					? { id: variation.variation_id, attributes: variation.attributes || {} }
 					: null;
 				notifyVariationChanged();
 			} )
-			.on( 'hide_variation.opfvisibility reset_data.opfvisibility', function () {
+			.on( 'hide_variation.opfvisibility reset_data.opfvisibility', 'form.variations_form', function () {
 				lastFoundVariation = null;
 				notifyVariationChanged();
 			} );
@@ -639,7 +694,7 @@ const init = ( root = document ) => {
 		if ( groupEl.dataset && groupEl.dataset.opfInitialized ) return;
 		if ( groupEl.dataset ) groupEl.dataset.opfInitialized = '1';
 		const gid = groupEl.getAttribute( 'data-opf-group' );
-		const registry = REGISTRY[ gid ] || {};
+		const registry = REGISTRY[ gid ] || groupFields( groupEl, gid );
 		const readInstanceValue = ( instance, def ) => {
 			if ( 'calc' === def.type ) {
 				const raw = instance.querySelector( '.opf-calc-raw' );
@@ -2774,12 +2829,14 @@ const readCalcControl = (fieldEl, def) => {
   return input ? input.value : '';
 };
 
-// Recompute every calc field on the page in dependency order, writing the raw
-// result (submitted value + condition subject) and the templated display.
-const syncCalcFields = () => {
-  document.querySelectorAll('[data-opf-group]').forEach((groupEl) => {
+// Recompute every calc field in scope in dependency order, writing the raw
+// result (submitted value + condition subject) and the templated display. A
+// quick-view re-init passes the injected root so only that subtree is scanned.
+const syncCalcFields = ( root = document ) => {
+  const scope = root && typeof root.querySelectorAll === 'function' ? root : document;
+  scope.querySelectorAll('[data-opf-group]').forEach((groupEl) => {
     const gid = groupEl.getAttribute('data-opf-group');
-    const registry = (window.OPF_FIELDS || {})[gid] || {};
+    const registry = groupFields(groupEl, gid);
     const fieldEls = Array.from(groupEl.querySelectorAll('[data-opf-field]'));
     const defs = {};
     const values = {};
@@ -2798,7 +2855,7 @@ const syncCalcFields = () => {
     if (!Object.keys(defs).some((id) => defs[id] && defs[id].type === 'calc')) return;
     values.__opf_labels = labels;
 
-    const qtyInput = typeof document.querySelector === 'function' ? document.querySelector('form.cart input[name="quantity"], form.cart .qty') : null;
+    const qtyInput = scope.querySelector('form.cart input[name="quantity"], form.cart .qty');
     const qty = Math.max(1, parseInt(qtyInput && qtyInput.value, 10) || 1);
     const config = window.opf_config || {};
     const base = Number.isFinite(Number(config.product_base_price))
@@ -2846,7 +2903,7 @@ const syncCalcFields = () => {
 // (`__opf_formula_fields`); the group's `data-variables` attribute is the
 // fallback so WAPF-rendered groups still resolve [var_*].
 const groupFormulaOptions = (groupEl, gid) => {
-  const registryGroup = (window.OPF_FIELDS || {})[gid] || {};
+  const registryGroup = groupFields(groupEl, gid);
   let variables = Array.isArray(registryGroup.__opf_variables) ? registryGroup.__opf_variables : null;
   if (!variables && groupEl && typeof groupEl.getAttribute === 'function') {
     try { variables = JSON.parse(groupEl.getAttribute('data-variables') || '[]') || []; } catch { variables = []; }
@@ -2940,7 +2997,7 @@ const updateProductImage = ( doc, evaluations, legacyValues = null ) => {
 	if ( ! doc || typeof doc.querySelector !== 'function' ) return;
 	// Keep the helper's earlier field-map signature for migrations and focused callers.
 	if ( ! Array.isArray( evaluations ) ) evaluations = [ { definitions: evaluations || {}, values: legacyValues || {}, rules: [] } ];
-	const gallery = doc.querySelector( '.woocommerce-product-gallery' );
+	const gallery = doc.querySelector( '.woocommerce-product-gallery' ) || doc.querySelector( '.images' );
 	const slides = gallery && typeof gallery.querySelectorAll === 'function'
 		? Array.from( gallery.querySelectorAll( '.woocommerce-product-gallery__image' ) ) : [];
 	const baseUrl = doc.location && doc.location.href;
@@ -2973,7 +3030,14 @@ const updateProductImage = ( doc, evaluations, legacyValues = null ) => {
 	const activeSlideIndex = activeSlide ? slides.indexOf( activeSlide ) : -1;
 	const activeIndex = activeSlideIndex >= 0 ? activeSlideIndex : 0;
 	const currentImage = slides[ activeIndex ] && slides[ activeIndex ].querySelector( 'img' );
-	const image = currentImage || doc.querySelector( '.woocommerce-product-gallery img.wp-post-image' ) || doc.querySelector( '.woocommerce-product-gallery img' );
+	const image = currentImage || doc.querySelector( '.woocommerce-product-gallery img.wp-post-image' ) || doc.querySelector( '.woocommerce-product-gallery img' )
+		// Modal galleries: Astra Pro renders `.ast-qv-image-slider.images` and
+		// Woodmart `.quick-view-gallery.images` without WooCommerce's gallery
+		// wrapper. The `.images` + `.wp-post-image` pair is the contract WAPF's
+		// image engine arms on, resolved inside this root so a modal subtree swaps
+		// its own image and never the page gallery's.
+		|| doc.querySelector( '.images .wp-post-image' )
+		|| ( gallery && typeof gallery.querySelector === 'function' ? gallery.querySelector( 'img' ) : null );
 	if ( ! image ) return;
 	const stateKey = gallery || image;
 	if ( ! productImageSnapshots.has( stateKey ) ) {
@@ -3070,10 +3134,11 @@ const updateProductImage = ( doc, evaluations, legacyValues = null ) => {
 
 let pricePreviewRequestId = 0;
 
-const writeTotals = async () => {
-  syncCalcFields();
-  const totalsEl = typeof document.querySelector === 'function' ? document.querySelector('.opf-product-totals, .wapf-product-totals') : null;
-  const groupEls = Array.from(document.querySelectorAll('[data-opf-group]'));
+const writeTotals = async ( root = document ) => {
+  const scope = root && typeof root.querySelector === 'function' ? root : document;
+  syncCalcFields( scope );
+  const totalsEl = scope.querySelector('.opf-product-totals, .wapf-product-totals');
+  const groupEls = Array.from(scope.querySelectorAll('[data-opf-group]'));
   // WAPF fallback: with no totals node rendered, the first priced field group
   // still drives the opf:pricing event, hints, images and calc displays.
   const baseNode = totalsEl || groupEls.find((groupEl) => typeof groupEl.hasAttribute === 'function' && groupEl.hasAttribute('data-opf-product-price'));
@@ -3083,7 +3148,7 @@ const writeTotals = async () => {
   if (!isFinite(base)) return;
   const formulaBase = Number.isFinite(Number(config.formula_base_price)) ? Number(config.formula_base_price) : base;
   const rate = Number.isFinite(Number(config.currency_rate)) && Number(config.currency_rate) > 0 ? Number(config.currency_rate) : 1;
-  const qtyInput = typeof document.querySelector === 'function' ? document.querySelector('form.cart input[name="quantity"], form.cart .qty') : null;
+  const qtyInput = scope.querySelector('form.cart input[name="quantity"], form.cart .qty');
   const qty = Math.max(1, parseInt(qtyInput && qtyInput.value, 10) || 1);
 
   // The server validates every quantity repeater against product quantity
@@ -3105,7 +3170,7 @@ const writeTotals = async () => {
           return !match || Number(match[1]) !== index;
         })) invalidQuantityRows = true;
       });
-      quantityRepeaters.push({ gid, repeater, instances });
+      quantityRepeaters.push({ gid, groupEl, repeater, instances });
     });
   });
   if (invalidQuantityRows) {
@@ -3134,7 +3199,7 @@ const writeTotals = async () => {
   // Match the product-wide server split signature. Repeater labels are
   // presentation only; cart unit identity is group id + field id + row value.
   const unitSigs = quantityRepeaters.length
-    ? Array.from({ length: qty }, (_, unitIndex) => JSON.stringify(quantityRepeaters.map(({ gid, repeater, instances }) => {
+    ? Array.from({ length: qty }, (_, unitIndex) => JSON.stringify(quantityRepeaters.map(({ gid, groupEl, repeater, instances }) => {
       const fid = repeater.getAttribute('data-opf-field');
       const instance = instances[unitIndex];
       if (repeater.hasAttribute('data-opf-section-repeat')) {
@@ -3143,12 +3208,12 @@ const writeTotals = async () => {
           instance.querySelectorAll('[data-opf-field]').forEach((scopedField) => {
             const scopedId = scopedField.getAttribute('data-opf-field');
             if (!scopedId || scopedField.hasAttribute('data-opf-section-repeat')) return;
-            scoped[scopedId] = readRepeatControl(scopedField, (window.OPF_FIELDS || {})[gid]?.[scopedId] || {});
+            scoped[scopedId] = readRepeatControl(scopedField, groupFields(groupEl, gid)[scopedId] || {});
           });
         }
         return [gid + ':' + fid, scoped];
       }
-      return [gid + ':' + fid, instance ? readRepeatControl(instance, (window.OPF_FIELDS || {})[gid]?.[fid] || {}) : null];
+      return [gid + ':' + fid, instance ? readRepeatControl(instance, groupFields(groupEl, gid)[fid] || {}) : null];
     })))
     : [];
 
@@ -3166,7 +3231,7 @@ const writeTotals = async () => {
     const rawHintConversion = typeof groupEl.getAttribute === 'function' ? groupEl.getAttribute('data-opf-hint-conversion') : null;
     const parsedHintConversion = parseFloat(rawHintConversion);
     const hintConversion = Number.isFinite(parsedHintConversion) && parsedHintConversion > 0 ? parsedHintConversion : 1;
-    const definitions = (window.OPF_FIELDS || {})[gid] || {};
+    const definitions = groupFields(groupEl, gid);
     const values = {};
     const fileCounts = {};
     const lookupTables = (window.OPF_LOOKUP_TABLES || {})[gid] || {};
@@ -3207,7 +3272,7 @@ const writeTotals = async () => {
         sectionInstance.querySelectorAll('[data-opf-field]').forEach((scopedField) => {
           if (typeof scopedField.hasAttribute === 'function' && scopedField.hasAttribute('data-opf-section-repeat')) return;
           const scopedId = scopedField.getAttribute('data-opf-field');
-          const scopedDef = (window.OPF_FIELDS || {})[gid]?.[scopedId] || {};
+          const scopedDef = definitions[scopedId] || {};
           scoped[scopedId] = readFieldControl(scopedField, scopedDef);
         });
       }
@@ -3217,7 +3282,7 @@ const writeTotals = async () => {
           const instances = scopedField.querySelectorAll('.opf-field-repeat__rows > [data-opf-repeat-instance]');
           if (!instances[rowIndex]) return;
           const scopedId = scopedField.getAttribute('data-opf-field');
-          const scopedDef = (window.OPF_FIELDS || {})[gid]?.[scopedId] || {};
+          const scopedDef = definitions[scopedId] || {};
           const instance = instances[rowIndex];
           scoped[scopedId] = readControlValue(instance, scopedDef);
         });
@@ -3312,15 +3377,15 @@ const writeTotals = async () => {
     // WAPF product-image rules: evaluated once per group against the same
     // resolved values; 'last' mode uses the last-changed field recorded by
     // initTotals' change listener.
-    const imageRules = (window.OPF_IMAGE_RULES || {})[gid] || [];
-    const imageRuleMode = (window.OPF_IMAGE_RULE_MODES || {})[gid] || 'rules';
+    const imageRules = groupImageRules(groupEl, gid);
+    const imageRuleMode = imageRules.mode;
     let lastChangedField = lastImageFieldByGroup.get(gid);
-    if (undefined === lastChangedField) lastChangedField = initialImageField(groupEl, imageRules);
+    if (undefined === lastChangedField) lastChangedField = initialImageField(groupEl, imageRules.rules);
     productImageEvaluations.push({
       groupId: gid,
       definitions,
       values,
-      rules: imageRules,
+      rules: imageRules.rules,
       imageRuleMode,
       lastChangedField,
     });
@@ -3423,7 +3488,7 @@ const writeTotals = async () => {
     });
   });
 
-  updateProductImage(document, productImageEvaluations);
+  updateProductImage(scope, productImageEvaluations);
 
   // WAPF calculation displays run after the pricing pass (they consume the
   // running addons context); 'price' calculations add their line-space
@@ -3533,13 +3598,28 @@ const writeTotals = async () => {
   }
 };
 
-const initTotals = () => {
-  const container = document.querySelector('[data-opf-fields]');
+// Totals pass for one container. `root` is the subtree to bind (the document
+// for a normally rendered page, the modal root for a quick-view re-init): the
+// totals node, the quantity input and every pricing write are resolved inside
+// it, so two groups on one page never share a totals writer.
+
+const initTotals = ( root = document ) => {
+  const scope = root && typeof root.querySelector === 'function' ? root : document;
+  const container = typeof scope.matches === 'function' && scope.matches('[data-opf-fields]')
+    ? scope
+    : scope.querySelector('[data-opf-fields]');
   if (!container) return;
+  // Re-running the pass for an injected subtree must not double-bind the
+  // container listeners (a modal root is a different container, so it binds
+  // once on its own).
+  if (container.dataset) {
+    if (container.dataset.opfTotalsInitialized) return;
+    container.dataset.opfTotalsInitialized = '1';
+  }
   if (window.jQuery) {
     const originalBase = (window.opf_config || {}).product_base_price;
     const originalFormulaBase = (window.opf_config || {}).formula_base_price;
-    window.jQuery('form.variations_form').on('found_variation.opf', (_event, variation) => {
+    window.jQuery(scope).find('form.variations_form').on('found_variation.opf', (_event, variation) => {
       const config = window.opf_config = window.opf_config || {};
       config.product_base_price = variation.opf_base_price ?? variation.display_price;
       config.formula_base_price = variation.opf_formula_base_price ?? config.product_base_price;
@@ -3557,7 +3637,7 @@ const initTotals = () => {
   // already emits after WooCommerce has written `.variation_id` and its variant
   // gallery image, so re-running totals from it (the single entry point that
   // also refreshes images) sees the settled state.
-  document.addEventListener('opf:variation-changed', () => writeTotals());
+  document.addEventListener('opf:variation-changed', () => writeTotals(scope));
   let timer = null;
   const schedule = (event) => {
     // WAPF 'last' image-rule mode needs the last-changed field per group.
@@ -3567,15 +3647,15 @@ const initTotals = () => {
       if (field && group) lastImageFieldByGroup.set(group.getAttribute('data-opf-group'), field.getAttribute('data-opf-field'));
     }
     clearTimeout(timer);
-    timer = setTimeout(writeTotals, 50);
+    timer = setTimeout(() => writeTotals(scope), 50);
   };
   container.addEventListener('input', schedule);
   container.addEventListener('change', schedule);
-  document.querySelectorAll('form.cart input[name="quantity"], form.cart .qty').forEach((input) => {
+  scope.querySelectorAll('form.cart input[name="quantity"], form.cart .qty').forEach((input) => {
     input.addEventListener('input', schedule);
     input.addEventListener('change', schedule);
   });
-  writeTotals();
+  writeTotals(scope);
 };
 
 const initAll = () => {
@@ -3583,8 +3663,38 @@ const initAll = () => {
   initTotals();
 };
 
+// Public re-initialisation entry for markup injected after load (quick-view and
+// theme modals). `init(root)` scans one subtree, `initTotals(root)` binds that
+// subtree's totals and quantity controls, and `reinit(root)` runs both. Every
+// pass is idempotent: a group already carrying `data-opf-initialized` and a
+// container already carrying `data-opf-totals-initialized` are skipped, so
+// calling `reinit(document)` after an unrelated injection is harmless.
+// Integrations that cannot reach the global (inline theme JS) dispatch a
+// native `opf:reinit` event on document with `detail.root`.
+// `opf:frontend-ready` fires once the entry point exists.
+//
+// Quick-view adapters: assets/js/opf-quick-view.js.
+const reinit = ( root = document ) => {
+  init( root );
+  initTotals( root );
+};
+
 // Top-level side effects live AFTER `const initAll` so test source slices that
 // end at that marker evaluate without touching the document.
+
+window.OPF_FRONTEND = { init, initTotals, reinit };
+
+document.addEventListener( 'opf:reinit', ( event ) => {
+  reinit( ( event && event.detail && event.detail.root ) || document );
+} );
+
+if ( typeof document.dispatchEvent === 'function' && typeof CustomEvent === 'function' ) {
+  try {
+    document.dispatchEvent( new CustomEvent( 'opf:frontend-ready' ) );
+  } catch {
+    // A consumer-side failure must never break module evaluation.
+  }
+}
 
 // Cart-edit upload prefill: server-rendered `.opf-upload__file` rows keep
 // the line's session-owned tokens in hidden inputs. Removing a row is a

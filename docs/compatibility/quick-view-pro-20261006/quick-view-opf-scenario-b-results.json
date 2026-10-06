@@ -27,33 +27,33 @@
     },
     {
       "label": "totals node has a value",
-      "pass": false,
-      "detail": "text=\"\""
+      "pass": true,
+      "detail": "text=\"$100.00\""
     },
     {
       "label": "priced choice raises the modal total by the choice price (+15)",
-      "pass": false,
-      "detail": "NaN -> NaN"
+      "pass": true,
+      "detail": "100 -> 115"
     },
     {
       "label": "a second priced choice prices independently (+5)",
-      "pass": false,
-      "detail": "NaN -> NaN"
+      "pass": true,
+      "detail": "100 -> 105"
     },
     {
       "label": "clearing the choice restores the base total",
-      "pass": false,
-      "detail": "NaN -> NaN"
+      "pass": true,
+      "detail": "115 -> 100"
     },
     {
       "label": "rule finish=gold swaps the modal image to rule-a",
-      "pass": false,
-      "detail": "opf-qv-v-small.png -> opf-qv-v-small.png"
+      "pass": true,
+      "detail": "opf-qv-v-small.png -> opf-qv-rule-a.png"
     },
     {
       "label": "rule edge=xl swaps the modal image to rule-b",
-      "pass": false,
-      "detail": "-> opf-qv-v-small.png"
+      "pass": true,
+      "detail": "-> opf-qv-rule-b.png"
     },
     {
       "label": "variation image resolves when no rule matches",
@@ -62,8 +62,8 @@
     },
     {
       "label": "quick-view add-to-cart request carries the field payload",
-      "pass": false,
-      "detail": "no request captured"
+      "pass": true,
+      "detail": "attribute_size=small&opf[18][finish]=gold&opf[18][edge]=none&opf[18][extras][]=0&opf[18][extras][]=gift&opf_field_groups=18&quantity=1&product_id=15&variation_id=16"
     },
     {
       "label": "cart line carries the submitted field values",
@@ -82,20 +82,18 @@
     }
   ],
   "console_messages": [],
-  "page_errors": [
-    {
-      "message": "t[o].push is not a function",
-      "stack": "TypeError: t[o].push is not a function |     at http://127.0.0.1:8425/wp-content/plugins/woocommerce-quick-view-pro/assets/js/wc-quick-view-pro.js?ver=1.7.17:1:8706 |     at http://127.0.0.1:8425/wp-content/plugins/woocommerce-quick-view-pro/assets/js/wc-quick-view-pro.js?ver=1.7.17:1:8757"
-    }
-  ],
+  "page_errors": [],
   "request_failures": [],
-  "add_to_cart_request": null,
+  "add_to_cart_request": {
+    "url": "http://127.0.0.1:8425/wp-json/wc-quick-view-pro/v1/cart",
+    "postData": "attribute_size=small&opf%5B18%5D%5Bfinish%5D=gold&opf%5B18%5D%5Bedge%5D=none&opf%5B18%5D%5Bextras%5D%5B%5D=0&opf%5B18%5D%5Bextras%5D%5B%5D=gift&opf_field_groups=18&quantity=1&product_id=15&variation_id=16"
+  },
   "add_to_cart_response": null,
   "non_get_requests": [
     {
       "method": "POST",
-      "url": "http://127.0.0.1:8425/product/qv-opf-product/",
-      "postData": "------WebKitFormBoundaryABDNS6ZnQrb8hAcs\r\nContent-Disposition: form-data; name=\"attribute_size\"\r\n\r\nsmall\r\n------WebKitFormBoundaryABDNS6ZnQrb8hAcs\r\nContent-Disposition: form-data; name=\"opf[18][finish]\"\r\n\r\ngold\r\n------WebKitFormBoundaryABDNS6ZnQrb8hAcs\r\nContent-Disposition: form-data; name=\"opf[18][edge]\"\r\n\r\nnone\r\n------WebKitFormBoundaryABDNS6ZnQrb8hAcs\r\nContent-Disposition: form-data; name=\"opf["
+      "url": "http://127.0.0.1:8425/wp-json/wc-quick-view-pro/v1/cart",
+      "postData": "attribute_size=small&opf%5B18%5D%5Bfinish%5D=gold&opf%5B18%5D%5Bedge%5D=none&opf%5B18%5D%5Bextras%5D%5B%5D=0&opf%5B18%5D%5Bextras%5D%5B%5D=gift&opf_field_groups=18&quantity=1&product_id=15&variation_id=16"
     }
   ],
   "cart": [
@@ -111,8 +109,8 @@
   "totals_trace": [
     {
       "step": "initial (finish=none, edge=none, size=small)",
-      "text": "",
-      "options_text": "",
+      "text": "$100.00",
+      "options_text": "$0.00",
       "display": "block",
       "visibility": "visible",
       "inline_style": "",
@@ -120,8 +118,8 @@
     },
     {
       "step": "finish=gold",
-      "text": "",
-      "options_text": "",
+      "text": "$115.00",
+      "options_text": "$15.00",
       "display": "block",
       "visibility": "visible",
       "inline_style": "",
@@ -129,8 +127,8 @@
     },
     {
       "step": "finish=silver",
-      "text": "",
-      "options_text": "",
+      "text": "$105.00",
+      "options_text": "$5.00",
       "display": "block",
       "visibility": "visible",
       "inline_style": "",
@@ -138,8 +136,8 @@
     },
     {
       "step": "finish=none again",
-      "text": "",
-      "options_text": "",
+      "text": "$100.00",
+      "options_text": "$0.00",
       "display": "block",
       "visibility": "visible",
       "inline_style": "",
@@ -149,11 +147,11 @@
   "image_trace": [
     {
       "step": "finish=gold",
-      "image": "opf-qv-v-small.png"
+      "image": "opf-qv-rule-a.png"
     },
     {
       "step": "finish=none edge=xl",
-      "image": "opf-qv-v-small.png"
+      "image": "opf-qv-rule-b.png"
     },
     {
       "step": "size=large",
@@ -174,8 +172,8 @@
     "has_wapf_frontend_script": false,
     "fields_on_page_before_modal": 1
   },
-  "url_after_add": "http://127.0.0.1:8425/product/qv-opf-product/",
+  "url_after_add": "http://127.0.0.1:8425/qv-shop-inline/",
   "modal_open_after_add": false,
-  "passed": 8,
-  "failed": 7
+  "passed": 15,
+  "failed": 0
 }

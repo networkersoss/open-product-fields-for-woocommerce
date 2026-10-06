@@ -45,14 +45,21 @@ final class Assets {
 
 		wp_register_style( 'opf-frontend', OPF_URL . 'assets/css/opf-frontend.css', [], $ver );
 		wp_register_script( 'opf-uploads', OPF_URL . 'assets/js/opf-uploads.js', [], $ver, true );
+		// Modal re-init adapter, shipped only by QuickView (see Service/QuickView.php).
+		wp_register_script( 'opf-quick-view', OPF_URL . 'assets/js/opf-quick-view.js', [ 'jquery' ], $ver, true );
 	}
 
 	/**
 	 * Enqueue what the renderer needs. Only called when fields exist on page.
 	 *
-	 * @param array<string,mixed> $registry Field metadata for the client.
+	 * @param array<string,mixed> $registry       Field metadata for the client.
+	 * @param bool                $product_config Whether the page-level config may
+	 *   publish the current product's base price. False on a page that ships the
+	 *   runtime for markup injected later (quick view): the group carries its own
+	 *   `data-opf-product-price`, and whichever product the loop happened to
+	 *   render must never outrank it once the modal is open.
 	 */
-	public static function enqueue_frontend( array $registry = [] ): void {
+	public static function enqueue_frontend( array $registry = [], bool $product_config = true ): void {
 		foreach ( $registry as $fields ) {
 			if ( in_array( 'upload', array_column( $fields, 'type' ), true ) ) { wp_enqueue_script( 'opf-uploads' ); break; }
 		}
@@ -97,8 +104,15 @@ final class Assets {
 		}
 		if ( Renderer::compat() || null !== WoocsIntegration::frontend_config() ) {
 			// Theme integration reads this global for price formatting (opf_config; wapf_config fallback lives in the theme JS).
+			$config = self::compat_config();
+			if ( ! $product_config ) {
+				// Quick-view page: currency/formatting only. A base price captured from
+				// the loop would otherwise price the next opened modal. The renderer
+				// still prints the full config when it renders fields on this request.
+				unset( $config['product_base_price'], $config['formula_base_price'] );
+			}
 			wp_print_inline_script_tag(
-				'window.opf_config = ' . wp_json_encode( self::compat_config() ) . ';'
+				'window.opf_config = ' . wp_json_encode( $config ) . ';'
 			);
 		}
 		wp_enqueue_style( 'opf-frontend' );
