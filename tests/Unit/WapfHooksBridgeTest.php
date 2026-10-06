@@ -935,6 +935,14 @@ final class WapfHooksBridgeTest extends TestCase {
 
 		$GLOBALS['wp_hooks'] = []; // Drop every listener, including the bridge shims.
 
+		// `Renderer` prints the WAPF design stylesheet once per settings revision
+		// (`Renderer::$design_css_hash`), so prime that first print before
+		// capturing: both captures below must see the same already-printed state
+		// for the comparison to be about the bridge alone.
+		ob_start();
+		Renderer::render_group( 77, 'Group', $this->group_entry()['group'], 20.0, $GLOBALS['product'] );
+		ob_end_clean();
+
 		ob_start();
 		Renderer::render_group( 77, 'Group', $this->group_entry()['group'], 20.0, $GLOBALS['product'] );
 		$without_bridge = ob_get_clean();

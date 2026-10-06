@@ -12,6 +12,12 @@
  * select-arrow / card-icon fragments target WAPF-specific markup OPF does not
  * emit.
  *
+ * WAPF ships two chip regimes and this class reproduces both: with no design
+ * settings WAPF serves its default stylesheet, whose plain-declaration chip is
+ * re-emitted here as `--apf-ts-*` variables, and as soon as any design setting
+ * is saved it serves a generated stylesheet whose variables come from the
+ * option and whose own fallbacks apply to whatever was left empty.
+ *
  * @package open-product-fields-for-woocommerce
  */
 
@@ -42,6 +48,27 @@ final class WapfDesign {
 		'apf-date-color', 'apf-date-color-hov', 'apf-date-color-sel', 'apf-date-bg', 'apf-date-bg-hov', 'apf-date-bg-sel',
 	];
 
+	/**
+	 * WAPF's default stylesheet values for the text-swatch chip, keyed by the
+	 * `--apf-*` variable OPF's chip rules read.
+	 *
+	 * `set_default_css()` serves `assets/css/frontend-default.min.css`
+	 * (class-design-helper.php:1308-1311) when the design option is empty; that
+	 * file states the chip as plain declarations on `.wapf-swatch--text`
+	 * (`border:1px solid #ccc` at char 4976, `:hover{border-color:#353c4e}` at
+	 * char 5098, `.wapf-checked{border-color:#353c4e;background:#353c4e;
+	 * color:#fff}` at char 5144) and never as variables. Emitting those values as
+	 * the variables lets one pair of OPF rules serve both WAPF regimes.
+	 */
+	private const DEFAULT_CHIP_VARIABLES = [
+		'apf-ts-border'            => '1px solid #ccc',
+		'apf-ts-border-color-hov'  => '#353c4e',
+		'apf-ts-border-color-sel'  => '#353c4e',
+		'apf-ts-bg-sel'            => '#353c4e',
+		'apf-ts-color-sel'         => '#fff',
+		'apf-ts-radius'            => '4px',
+	];
+
 	/** Current `wapf_design_settings` option as an array (empty when unset). */
 	public static function settings(): array {
 		$settings = get_option( 'wapf_design_settings', [] );
@@ -53,13 +80,38 @@ final class WapfDesign {
 		return 'styled' === (string) ( self::settings()[ 'apf-' . $control . '-display' ] ?? '' );
 	}
 
-	/** The complete `:root` + checkbox/radio skin CSS, or '' when unconfigured. */
+	/**
+	 * Whether WAPF serves its default stylesheet instead of a generated one.
+	 *
+	 * `Design_Helper::generate_css()` decides on the raw option
+	 * (class-design-helper.php:1139-1144): `$raw_settings = get_option(
+	 * 'wapf_design_settings', false ); if( empty( $raw_settings ) ) {
+	 * self::set_default_css(); return true; }`. So a missing option and a
+	 * *saved-but-empty* array both select the default stylesheet, while any saved
+	 * key -- a state key or not -- selects the generated one. The option is
+	 * always a flat array (`class-admin-controller.php:647` stores the sanitized
+	 * settings), and `settings()` normalizes a non-array option to an empty
+	 * array, so `! self::settings()` is that predicate.
+	 */
+	private static function serves_default_stylesheet(): bool {
+		return ! self::settings();
+	}
+
+	/**
+	 * The complete `:root` + checkbox/radio skin CSS. Never empty: with no design
+	 * settings it is the default-chip variable block, which is what makes the
+	 * chip rules resolve the default stylesheet's values in that regime.
+	 */
 	public static function css(): string {
-		$settings = self::settings();
-		if ( ! $settings ) {
-			return '';
+		if ( self::serves_default_stylesheet() ) {
+			$defaults = [];
+			foreach ( self::DEFAULT_CHIP_VARIABLES as $key => $value ) {
+				$defaults[] = '--' . $key . ':' . $value;
+			}
+			return ':root{' . implode( ';', $defaults ) . '}';
 		}
 
+		$settings = self::settings();
 		$vars = [];
 		foreach ( self::VARIABLE_KEYS as $key ) {
 			$value = self::safe_value( $settings[ $key ] ?? null );

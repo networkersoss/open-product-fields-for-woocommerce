@@ -35,19 +35,29 @@ use PHPUnit\Framework\TestCase;
  * **Without design settings** `generate_css()` defers to `set_default_css()`
  * (`class-design-helper.php:1137-1146`, `:1308-1311`), which byte-copies
  * `assets/css/frontend-default.min.css` over `frontend.min.css`; the public
- * controller enqueues that file (`class-public-controller.php:182-186`). OPF
- * emits no `--apf-ts-*` at all in that case (`WapfDesign::css()` returns ''), so
- * the variable fallbacks below carry the whole unconfigured appearance. The
- * owner decided 2026-10-06 that OPF matches that default chip, i.e. the
- * fallbacks are the default stylesheet's values (single line, char offsets):
+ * controller enqueues that file (`class-public-controller.php:182-186`). That
+ * stylesheet states the chip as plain declarations (single line, char offsets):
  *
  *   char 4976 `.wapf-swatch--text{…;border-radius:4px;border:1px solid #ccc}`
  *   char 5098 `.wapf-swatch--text:hover{border-color:#353c4e}`
  *   char 5144 `.wapf-swatch--text.wapf-checked{border-color:#353c4e;background:#353c4e;color:#fff}`
  *
- * The default stylesheet's hover rule re-colours the border only, so the hover
- * colour and background keep the themed `inherit`/`transparent` fallbacks; the
- * radius fallback stays 4px, matching both stylesheets.
+ * OPF reproduces that regime from the emit side instead of from the fallbacks:
+ * while the design option is empty `WapfDesign::css()` returns those values as
+ * `--apf-ts-*` variables, so both regimes drive the same rules and the fallbacks
+ * stay WAPF's themed ones. The default stylesheet's hover rule re-colours the
+ * border only, so the hover colour and background resolve to
+ * `inherit`/`transparent` there too; the radius fallback stays 4px, matching both
+ * stylesheets.
+ *
+ * **The regime decision is WAPF's own `empty()` on the option**:
+ * `generate_css()` takes `$raw_settings = get_option( 'wapf_design_settings',
+ * false )` and calls `set_default_css()` when `empty( $raw_settings )`
+ * (`class-design-helper.php:1139-1144`). A missing option and a saved-but-empty
+ * array both serve the default stylesheet; any saved key, whether it is a chip
+ * state key or not, serves the generated one. A variable whose setting is empty
+ * is not emitted (`class-design-helper.php:1527`), so that state resolves through
+ * the themed fallbacks asserted below.
  *
  * The `--apf-ts-*` values come from the migrated `wapf_design_settings` option
  * (`includes/classes/class-design-helper.php:1514-1516`; OPF re-emits them in
@@ -91,12 +101,14 @@ final class TextSwatchChipCssTest extends TestCase {
 		return substr( $css, $start, (int) strpos( $css, '}', $start ) - $start );
 	}
 
-	public function test_base_rule_consumes_the_wapf_text_swatch_variables_with_the_wapf_default_chip(): void {
+	public function test_base_rule_consumes_the_wapf_text_swatch_variables_with_the_wapf_themed_fallbacks(): void {
 		$rule = $this->declarations( self::CHIP_SELECTOR );
 
-		// `1px solid #ccc` is `frontend-default.min.css` char 4976: with no design
-		// settings WAPF serves that stylesheet and OPF emits no `--apf-ts-border`.
-		$this->assertStringContainsString( 'border: var(--apf-ts-border, 1px solid #ccc);', $rule );
+		// Themed fallbacks: a chip setting left empty resolves to the element's own
+		// initial values, exactly as `frontend-themed.min.css` does. With no design
+		// settings the default chip arrives as the variables instead (see
+		// test_a_missing_design_settings_option_emits_the_wapf_default_chip_variables).
+		$this->assertStringContainsString( 'border: var(--apf-ts-border, none);', $rule );
 		$this->assertStringContainsString( 'background: var(--apf-ts-bg, transparent);', $rule );
 		$this->assertStringContainsString( 'color: var(--apf-ts-color, inherit);', $rule );
 
@@ -108,14 +120,13 @@ final class TextSwatchChipCssTest extends TestCase {
 		);
 	}
 
-	public function test_hover_rule_consumes_the_wapf_hover_variables_with_the_wapf_default_chip(): void {
+	public function test_hover_rule_consumes_the_wapf_hover_variables_with_the_wapf_themed_fallbacks(): void {
 		$rule = $this->declarations( self::HOVER_SELECTOR );
 
 		$this->assertStringContainsString( 'color: var(--apf-ts-color-hov, inherit);', $rule );
-		// `#353c4e` is `frontend-default.min.css` char 5098. The default stylesheet's
-		// hover rule re-colours the border only, so colour/background keep the
-		// themed fallbacks.
-		$this->assertStringContainsString( 'border-color: var(--apf-ts-border-color-hov, #353c4e);', $rule );
+		// Themed fallback; with no design settings the default stylesheet's
+		// `border-color:#353c4e` (char 5098) is the emitted `--apf-ts-border-color-hov`.
+		$this->assertStringContainsString( 'border-color: var(--apf-ts-border-color-hov, transparent);', $rule );
 		$this->assertStringContainsString( 'background: var(--apf-ts-bg-hov, transparent);', $rule );
 
 		// The hover state re-colours the chip; it never re-declares the base
@@ -124,14 +135,14 @@ final class TextSwatchChipCssTest extends TestCase {
 		$this->assertStringNotContainsString( 'border:', $rule );
 	}
 
-	public function test_selected_rule_consumes_the_wapf_selected_variables_with_the_wapf_default_chip(): void {
+	public function test_selected_rule_consumes_the_wapf_selected_variables_with_the_wapf_themed_fallbacks(): void {
 		$rule = $this->declarations( self::CHECKED_SELECTOR );
 
-		// `#353c4e` background/border and white text are
-		// `frontend-default.min.css` char 5144.
-		$this->assertStringContainsString( 'border-color: var(--apf-ts-border-color-sel, #353c4e);', $rule );
-		$this->assertStringContainsString( 'background: var(--apf-ts-bg-sel, #353c4e);', $rule );
-		$this->assertStringContainsString( 'color: var(--apf-ts-color-sel, #fff);', $rule );
+		// Themed fallbacks; the default stylesheet's char 5144 values are the
+		// emitted `--apf-ts-*-sel` variables while the design option is empty.
+		$this->assertStringContainsString( 'border-color: var(--apf-ts-border-color-sel, transparent);', $rule );
+		$this->assertStringContainsString( 'background: var(--apf-ts-bg-sel, transparent);', $rule );
+		$this->assertStringContainsString( 'color: var(--apf-ts-color-sel, inherit);', $rule );
 
 		$this->assertStringNotContainsString( 'border-radius', $rule );
 		$this->assertStringNotContainsString( 'border:', $rule );
@@ -223,6 +234,85 @@ final class TextSwatchChipCssTest extends TestCase {
 		$this->assertStringContainsString( '--apf-ts-bg-sel:#121212', $css );
 		$this->assertStringContainsString( '--apf-ts-color-sel:#ffffff', $css );
 		$this->assertStringContainsString( '--apf-ts-border-color-sel:#353c4e', $css );
+
+		// Regime B emits the configured values only; the default chip must be gone.
+		$this->assertStringNotContainsString( '--apf-ts-border:1px solid #ccc', $css );
+		$this->assertStringNotContainsString( '--apf-ts-radius:4px', $css );
+	}
+
+	public function test_a_missing_design_settings_option_emits_the_wapf_default_chip_variables(): void {
+		unset( $GLOBALS['opf_test_options']['wapf_design_settings'] );
+
+		$css = WapfDesign::css();
+
+		// `frontend-default.min.css` chars 4976/5098/5144, emitted as the variables
+		// the three scoped rules read: `generate_css()` calls `set_default_css()`
+		// when `empty( get_option( 'wapf_design_settings', false ) )`
+		// (class-design-helper.php:1139-1144).
+		$this->assertStringContainsString( '--apf-ts-border:1px solid #ccc', $css );
+		$this->assertStringContainsString( '--apf-ts-border-color-hov:#353c4e', $css );
+		$this->assertStringContainsString( '--apf-ts-border-color-sel:#353c4e', $css );
+		$this->assertStringContainsString( '--apf-ts-bg-sel:#353c4e', $css );
+		$this->assertStringContainsString( '--apf-ts-color-sel:#fff', $css );
+		$this->assertStringContainsString( '--apf-ts-radius:4px', $css );
+
+		// The default stylesheet re-colours the border on hover and says nothing
+		// about the base background/colour, so those variables stay unset and the
+		// rules resolve `transparent`/`inherit` exactly as that stylesheet does.
+		$this->assertStringNotContainsString( '--apf-ts-color:', $css );
+		$this->assertStringNotContainsString( '--apf-ts-bg:', $css );
+		$this->assertStringNotContainsString( '--apf-ts-color-hov:', $css );
+		$this->assertStringNotContainsString( '--apf-ts-bg-hov:', $css );
+
+		// Nothing else from the design layer is emitted in this regime.
+		$this->assertStringNotContainsString( '.wapf-custom', $css );
+		$this->assertStringNotContainsString( '--apf-radius', $css );
+	}
+
+	public function test_a_saved_but_empty_design_settings_option_is_the_default_chip_regime(): void {
+		// WAPF decides with `empty( get_option( 'wapf_design_settings', false ) )`
+		// (class-design-helper.php:1139-1144), so a saved-but-empty array serves the
+		// default stylesheet just like a missing option does.
+		$GLOBALS['opf_test_options']['wapf_design_settings'] = [];
+
+		$this->assertStringContainsString( '--apf-ts-border:1px solid #ccc', WapfDesign::css() );
+	}
+
+	public function test_a_saved_non_state_design_setting_switches_to_the_themed_regime(): void {
+		// Any saved key selects the generated stylesheet, even one that has nothing
+		// to do with the chip, so no default-chip value may be emitted.
+		$GLOBALS['opf_test_options']['wapf_design_settings'] = [ 'apf-radius' => '6px' ];
+
+		$css = WapfDesign::css();
+
+		// `create_border()` with no width/colour (class-design-helper.php:1652-1666).
+		$this->assertStringContainsString( '--apf-ts-border:none', $css );
+		$this->assertStringContainsString( '--apf-radius:6px', $css );
+		$this->assertStringNotContainsString( '#353c4e', $css );
+		$this->assertStringNotContainsString( '--apf-ts-radius:4px', $css );
+	}
+
+	public function test_state_keys_left_empty_do_not_emit_a_variable(): void {
+		// WAPF skips a variable whose setting is empty (class-design-helper.php:1527),
+		// so such a state resolves through the themed CSS fallbacks.
+		$GLOBALS['opf_test_options']['wapf_design_settings'] = [
+			'apf-radius'              => '6px',
+			'apf-ts-border-color-hov' => '',
+			'apf-ts-bg-hov'           => '',
+			'apf-ts-color-hov'        => '',
+			'apf-ts-border-color-sel' => '',
+			'apf-ts-bg-sel'           => '',
+			'apf-ts-color-sel'        => '',
+		];
+
+		$css = WapfDesign::css();
+
+		$this->assertStringNotContainsString( '--apf-ts-border-color-hov', $css );
+		$this->assertStringNotContainsString( '--apf-ts-bg-hov', $css );
+		$this->assertStringNotContainsString( '--apf-ts-color-hov', $css );
+		$this->assertStringNotContainsString( '--apf-ts-border-color-sel', $css );
+		$this->assertStringNotContainsString( '--apf-ts-bg-sel', $css );
+		$this->assertStringNotContainsString( '--apf-ts-color-sel', $css );
 	}
 
 	public function test_only_real_text_swatches_receive_the_scoped_wrapper_class(): void {

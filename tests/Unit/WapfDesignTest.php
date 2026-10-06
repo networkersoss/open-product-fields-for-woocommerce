@@ -14,8 +14,15 @@ final class WapfDesignTest extends TestCase {
 		parent::tearDown();
 	}
 
-	public function test_empty_option_produces_no_css(): void {
-		$this->assertSame( '', WapfDesign::css() );
+	public function test_empty_option_emits_only_the_wapf_default_chip_variables(): void {
+		// With no design settings WAPF serves `assets/css/frontend-default.min.css`
+		// (`class-design-helper.php:1139-1144` → `set_default_css()` at :1308-1311),
+		// whose chip OPF reproduces as these variables and nothing else: no other
+		// `--apf-*` variable and no `.wapf-custom` skin.
+		$this->assertSame(
+			':root{--apf-ts-border:1px solid #ccc;--apf-ts-border-color-hov:#353c4e;--apf-ts-border-color-sel:#353c4e;--apf-ts-bg-sel:#353c4e;--apf-ts-color-sel:#fff;--apf-ts-radius:4px}',
+			WapfDesign::css()
+		);
 	}
 
 	public function test_styled_checkbox_and_radio_emit_variables_and_the_wapf_custom_skin(): void {

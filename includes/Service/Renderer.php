@@ -250,7 +250,7 @@ final class Renderer {
 		if ( current_user_can( 'manage_woocommerce' ) ) {
 			return true;
 		}
-		$token = defined( 'OPF_E2E_TOKEN' ) ? (string) OPF_E2E_TOKEN : '';
+		$token = defined( 'OPF_E2E_TOKEN' ) ? (string) \OPF_E2E_TOKEN : '';
 		if ( '' === $token ) {
 			return false;
 		}
@@ -403,16 +403,14 @@ final class Renderer {
 	private static $design_css_hash = null;
 
 	/**
-	 * Print the migrated WAPF `wapf_design_settings` stylesheet once per
-	 * distinct settings revision. Emitting `:root` + `.wapf-custom` rules lets
-	 * theme/add-on CSS written for WAPF (`--apf-*`, `.wapf-custom`) apply to
-	 * OPF's native controls.
+	 * Print the WAPF design stylesheet once per distinct revision. Emitting
+	 * `:root` + `.wapf-custom` rules lets theme/add-on CSS written for WAPF
+	 * (`--apf-*`, `.wapf-custom`) apply to OPF's native controls. With no design
+	 * settings `WapfDesign::css()` returns WAPF's default-chip variables, so the
+	 * served chip never depends on a signature-level CSS fallback.
 	 */
 	private static function emit_wapf_design_css(): void {
 		$css = WapfDesign::css();
-		if ( '' === $css ) {
-			return;
-		}
 		$hash = md5( $css );
 		if ( $hash === self::$design_css_hash ) {
 			return;

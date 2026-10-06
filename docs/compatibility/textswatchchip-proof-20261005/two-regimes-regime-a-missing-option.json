@@ -1,0 +1,210 @@
+{
+  "label": "two-regimes-regime-a-missing-option",
+  "url": "http://127.0.0.1:8090/product/opf-text-swatch-chip/",
+  "generatedAt": "2026-10-06T08:19:27.641Z",
+  "expected": {
+    "border": "1px solid rgb(204, 204, 204)",
+    "background": "rgba(0, 0, 0, 0)",
+    "color": "inherit",
+    "radius": "4px",
+    "hover": {
+      "borderColor": "rgb(53, 60, 78)",
+      "background": "rgba(0, 0, 0, 0)",
+      "color": "inherit"
+    },
+    "selected": {
+      "borderColor": "rgb(53, 60, 78)",
+      "background": "rgb(53, 60, 78)",
+      "color": "rgb(255, 255, 255)"
+    }
+  },
+  "assertedStates": [
+    "base",
+    "hover",
+    "selected"
+  ],
+  "stylesheets": [
+    "http://127.0.0.1:8090/wp-content/plugins/open-product-fields-for-woocommerce/assets/css/opf-frontend.css?ver=0.1.0"
+  ],
+  "designCss": ":root{--apf-ts-border:1px solid #ccc;--apf-ts-border-color-hov:#353c4e;--apf-ts-border-color-sel:#353c4e;--apf-ts-bg-sel:#353c4e;--apf-ts-color-sel:#fff;--apf-ts-radius:4px}",
+  "chip": {
+    "border": "1px solid rgb(204, 204, 204)",
+    "borderTopWidth": "1px",
+    "borderTopStyle": "solid",
+    "borderTopColor": "rgb(204, 204, 204)",
+    "background": "rgba(0, 0, 0, 0)",
+    "color": "rgb(17, 17, 17)",
+    "inheritedColor": "rgb(17, 17, 17)",
+    "radius": "4px",
+    "classes": "opf-swatch opf-swatch--text opf-single-select",
+    "wrapperClasses": "opf-swatch-wrapper opf-text-swatch-wrapper"
+  },
+  "multiBase": {
+    "border": "1px solid rgb(204, 204, 204)",
+    "borderTopWidth": "1px",
+    "borderTopStyle": "solid",
+    "borderTopColor": "rgb(204, 204, 204)",
+    "background": "rgba(0, 0, 0, 0)",
+    "color": "rgb(17, 17, 17)",
+    "inheritedColor": "rgb(17, 17, 17)",
+    "radius": "4px",
+    "classes": "opf-swatch opf-swatch--text",
+    "wrapperClasses": "opf-swatch-wrapper opf-text-swatch-wrapper"
+  },
+  "baseHoverTarget": {
+    "border": "1px solid rgb(204, 204, 204)",
+    "borderTopWidth": "1px",
+    "borderTopStyle": "solid",
+    "borderTopColor": "rgb(204, 204, 204)",
+    "background": "rgba(0, 0, 0, 0)",
+    "color": "rgb(17, 17, 17)",
+    "inheritedColor": "rgb(17, 17, 17)",
+    "radius": "4px",
+    "classes": "opf-swatch opf-swatch--text opf-single-select",
+    "wrapperClasses": "opf-swatch-wrapper opf-text-swatch-wrapper"
+  },
+  "baseMultiHoverTarget": {
+    "border": "1px solid rgb(204, 204, 204)",
+    "borderTopWidth": "1px",
+    "borderTopStyle": "solid",
+    "borderTopColor": "rgb(204, 204, 204)",
+    "background": "rgba(0, 0, 0, 0)",
+    "color": "rgb(17, 17, 17)",
+    "inheritedColor": "rgb(17, 17, 17)",
+    "radius": "4px",
+    "classes": "opf-swatch opf-swatch--text",
+    "wrapperClasses": "opf-swatch-wrapper opf-text-swatch-wrapper"
+  },
+  "baseCheckboxControl": {
+    "border": "0px none rgb(17, 17, 17)",
+    "borderTopWidth": "0px",
+    "borderTopStyle": "none",
+    "borderTopColor": "rgb(17, 17, 17)",
+    "background": "rgba(0, 0, 0, 0)",
+    "color": "rgb(17, 17, 17)",
+    "inheritedColor": "rgb(17, 17, 17)",
+    "radius": "0px",
+    "classes": "opf-swatch opf-swatch--text wapf-checkbox",
+    "wrapperClasses": "opf-swatch-wrapper wapf-checkboxes"
+  },
+  "baseRadioControl": {
+    "border": "0px none rgb(17, 17, 17)",
+    "borderTopWidth": "0px",
+    "borderTopStyle": "none",
+    "borderTopColor": "rgb(17, 17, 17)",
+    "background": "rgba(0, 0, 0, 0)",
+    "color": "rgb(17, 17, 17)",
+    "inheritedColor": "rgb(17, 17, 17)",
+    "radius": "0px",
+    "classes": "opf-swatch opf-swatch--text wapf-radio opf-single-select",
+    "wrapperClasses": "opf-swatch-wrapper wapf-radios"
+  },
+  "hovered": {
+    "border": "1px solid rgb(53, 60, 78)",
+    "borderTopWidth": "1px",
+    "borderTopStyle": "solid",
+    "borderTopColor": "rgb(53, 60, 78)",
+    "background": "rgba(0, 0, 0, 0)",
+    "color": "rgb(17, 17, 17)",
+    "inheritedColor": "rgb(17, 17, 17)",
+    "radius": "4px",
+    "classes": "opf-swatch opf-swatch--text opf-single-select",
+    "wrapperClasses": "opf-swatch-wrapper opf-text-swatch-wrapper"
+  },
+  "hoveredMulti": {
+    "border": "1px solid rgb(53, 60, 78)",
+    "borderTopWidth": "1px",
+    "borderTopStyle": "solid",
+    "borderTopColor": "rgb(53, 60, 78)",
+    "background": "rgba(0, 0, 0, 0)",
+    "color": "rgb(17, 17, 17)",
+    "inheritedColor": "rgb(17, 17, 17)",
+    "radius": "4px",
+    "classes": "opf-swatch opf-swatch--text",
+    "wrapperClasses": "opf-swatch-wrapper opf-text-swatch-wrapper"
+  },
+  "hoveredCheckboxControl": {
+    "border": "0px none rgb(17, 17, 17)",
+    "borderTopWidth": "0px",
+    "borderTopStyle": "none",
+    "borderTopColor": "rgb(17, 17, 17)",
+    "background": "rgba(0, 0, 0, 0)",
+    "color": "rgb(17, 17, 17)",
+    "inheritedColor": "rgb(17, 17, 17)",
+    "radius": "0px",
+    "classes": "opf-swatch opf-swatch--text wapf-checkbox",
+    "wrapperClasses": "opf-swatch-wrapper wapf-checkboxes"
+  },
+  "hoveredRadioControl": {
+    "border": "0px none rgb(17, 17, 17)",
+    "borderTopWidth": "0px",
+    "borderTopStyle": "none",
+    "borderTopColor": "rgb(17, 17, 17)",
+    "background": "rgba(0, 0, 0, 0)",
+    "color": "rgb(17, 17, 17)",
+    "inheritedColor": "rgb(17, 17, 17)",
+    "radius": "0px",
+    "classes": "opf-swatch opf-swatch--text wapf-radio opf-single-select",
+    "wrapperClasses": "opf-swatch-wrapper wapf-radios"
+  },
+  "selectedChip": {
+    "border": "1px solid rgb(53, 60, 78)",
+    "borderTopWidth": "1px",
+    "borderTopStyle": "solid",
+    "borderTopColor": "rgb(53, 60, 78)",
+    "background": "rgb(53, 60, 78)",
+    "color": "rgb(255, 255, 255)",
+    "inheritedColor": "rgb(17, 17, 17)",
+    "radius": "4px",
+    "classes": "opf-swatch opf-swatch--text opf-single-select opf-checked",
+    "wrapperClasses": "opf-swatch-wrapper opf-text-swatch-wrapper"
+  },
+  "selectedMultiChip": {
+    "border": "1px solid rgb(53, 60, 78)",
+    "borderTopWidth": "1px",
+    "borderTopStyle": "solid",
+    "borderTopColor": "rgb(53, 60, 78)",
+    "background": "rgb(53, 60, 78)",
+    "color": "rgb(255, 255, 255)",
+    "inheritedColor": "rgb(17, 17, 17)",
+    "radius": "4px",
+    "classes": "opf-swatch opf-swatch--text opf-checked",
+    "wrapperClasses": "opf-swatch-wrapper opf-text-swatch-wrapper"
+  },
+  "selectedHovered": {
+    "border": "1px solid rgb(53, 60, 78)",
+    "borderTopWidth": "1px",
+    "borderTopStyle": "solid",
+    "borderTopColor": "rgb(53, 60, 78)",
+    "background": "rgb(53, 60, 78)",
+    "color": "rgb(255, 255, 255)",
+    "inheritedColor": "rgb(17, 17, 17)",
+    "radius": "4px",
+    "classes": "opf-swatch opf-swatch--text opf-single-select opf-checked",
+    "wrapperClasses": "opf-swatch-wrapper opf-text-swatch-wrapper"
+  },
+  "checkedCheckboxControl": {
+    "border": "0px none rgb(17, 17, 17)",
+    "borderTopWidth": "0px",
+    "borderTopStyle": "none",
+    "borderTopColor": "rgb(17, 17, 17)",
+    "background": "rgba(0, 0, 0, 0)",
+    "color": "rgb(17, 17, 17)",
+    "inheritedColor": "rgb(17, 17, 17)",
+    "radius": "0px",
+    "classes": "opf-swatch opf-swatch--text wapf-checkbox opf-checked",
+    "wrapperClasses": "opf-swatch-wrapper wapf-checkboxes"
+  },
+  "checkedRadioControl": {
+    "border": "0px none rgb(17, 17, 17)",
+    "borderTopWidth": "0px",
+    "borderTopStyle": "none",
+    "borderTopColor": "rgb(17, 17, 17)",
+    "background": "rgba(0, 0, 0, 0)",
+    "color": "rgb(17, 17, 17)",
+    "inheritedColor": "rgb(17, 17, 17)",
+    "radius": "0px",
+    "classes": "opf-swatch opf-swatch--text wapf-radio opf-single-select opf-checked",
+    "wrapperClasses": "opf-swatch-wrapper wapf-radios"
+  }
+}

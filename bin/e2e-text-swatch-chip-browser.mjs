@@ -23,11 +23,13 @@
 // enqueued by `class-public-controller.php:182-186`), whose chip is
 // `border: 1px solid #ccc` (char 4976), `:hover{border-color:#353c4e}`
 // (char 5098) and `.wapf-checked{border-color:#353c4e;background:#353c4e;color:#fff}`
-// (char 5144). OPF emits no `--apf-ts-*` in that case, so its variable fallbacks
-// carry the whole unconfigured appearance and must equal those values (owner
-// decision 2026-10-06).
+// (char 5144). WAPF decides the regime with `empty( get_option(
+// 'wapf_design_settings', false ) )` (`class-design-helper.php:1139-1144`), so a
+// saved-but-empty array is the default regime too, and any saved key takes the
+// themed one. OPF re-emits the default chip as the `--apf-ts-*` variables
+// (`Engine/WapfDesign.php`) so the same CSS rules serve both regimes.
 //
-// OPF re-emits the `--apf-ts-*` values from the migrated `wapf_design_settings`
+// OPF emits the `--apf-ts-*` values from the migrated `wapf_design_settings`
 // option and must apply them on `.opf-text-swatch-wrapper .opf-swatch--text`
 // only: plain checkbox/radio choices also carry `.opf-swatch--text` in OPF.
 //
@@ -143,6 +145,16 @@ try {
 		stylesheets: await page.evaluate( () => Array.from( document.querySelectorAll( 'link[rel="stylesheet"]' ) ).map( ( link ) => link.href ).filter( ( href ) => /opf-frontend|advanced-product-fields/.test( href ) ) ),
 	};
 
+	// The regime lives in the emitted variables (`#opf-wapf-design-css`, printed
+	// once per settings revision by `Renderer::emit_wapf_design_css`): the default
+	// chip while the design option is empty, the migrated settings otherwise. In
+	// both regimes `--apf-ts-border` must be defined, i.e. the chip is never left
+	// to a CSS fallback alone.
+	const designCssBlocks = await page.locator( '#opf-wapf-design-css' ).allTextContents();
+	result.designCss = designCssBlocks[ 0 ] ?? null;
+	check( 'the page prints the WAPF design variables exactly once', 1 === designCssBlocks.length, String( designCssBlocks.length ) );
+	check( 'the emitted design block defines --apf-ts-border', /--apf-ts-border:/.test( result.designCss || '' ), result.designCss || 'absent' );
+
 	// Element screenshots are clipped with document coordinates from a full-page
 	// capture, so they never scroll a fresh element under the parked pointer and
 	// never disturb a hover state. The native radio/checkbox is hidden
@@ -168,6 +180,17 @@ try {
 		before === after ? 'identical clip' : 'different clip'
 	);
 
+	// WAPF only repaints a state when its decoration differs from the chip's base
+	// decoration. With the themed fallbacks and nothing configured a state
+	// resolves to the base values (no border, transparent, inherited colour), so
+	// the clip must stay identical; every other regime must repaint. A border
+	// colour difference only paints while the base actually has a border.
+	const paintsBorder = ( style ) => 'none' !== style.borderTopStyle && '0px' !== style.borderTopWidth;
+	const stateDiffersFromBase = ( baseStyle, state ) =>
+		( paintsBorder( baseStyle ) && state.borderColor !== baseStyle.borderTopColor )
+		|| state.background !== baseStyle.background
+		|| ( 'inherit' === state.color ? baseStyle.color !== baseStyle.inheritedColor : state.color !== baseStyle.color );
+
 	const singleChips = page.locator( '[data-opf-field="finish"] .opf-text-swatch-wrapper .opf-swatch--text' );
 	const multiChips = page.locator( '[data-opf-field="finish_multi"] .opf-text-swatch-wrapper .opf-swatch--text' );
 	check( 'single-select text swatch renders the text-swatch wrapper', 1 === await page.locator( '[data-opf-field="finish"] .opf-text-swatch-wrapper' ).count() );
@@ -182,16 +205,17 @@ try {
 	const chip = await chipStyle( singleChips.first() );
 	result.chip = chip;
 	if ( 'none' === expected.border ) {
-		// Unconfigured: WAPF's `border: var(--apf-ts-border, none)` fallback, i.e.
-		// the initial border the element already had.
-		check( 'chip border falls back to none (0px)', '0px' === chip.borderTopWidth && 'none' === chip.borderTopStyle, chip.border );
+		// The themed regime with the border setting left empty: `--apf-ts-border`
+		// is `none` (class-design-helper.php:1652-1666), so the base rule resolves
+		// to no border at all.
+		check( 'chip border resolves to none (0px)', '0px' === chip.borderTopWidth && 'none' === chip.borderTopStyle, chip.border );
 	} else {
 		check( `chip border is "${ expected.border }"`, expected.border === chip.border, chip.border );
 	}
 	check( `chip background is "${ expected.background }"`, expected.background === chip.background, chip.background );
 	if ( 'inherit' === expected.color ) {
-		// The unconfigured fallback is WAPF's `color: var(--apf-ts-color, inherit)`:
-		// the chip must resolve to the colour of its own container.
+		// `color: var(--apf-ts-color, inherit)` resolves to the colour of the
+		// chip's own container.
 		check( 'chip color falls back to inherit', chip.color === chip.inheritedColor, `${ chip.color } vs wrapper ${ chip.inheritedColor }` );
 	} else {
 		check( `chip color is "${ expected.color }"`, expected.color === chip.color, chip.color );
@@ -235,13 +259,13 @@ try {
 	checkVisibleState( 'hovered chip', hovered, hoverExpect );
 	check( 'hovered chip keeps the base border width', baseHoverTarget.borderTopWidth === hovered.borderTopWidth, hovered.borderTopWidth );
 	check( 'hovered chip keeps the base radius', baseHoverTarget.radius === hovered.radius, hovered.radius );
-	checkRendering( 'hovered chip', baseHoverTargetShot, await clipShot( hoverTarget ), true );
+	checkRendering( 'hovered chip', baseHoverTargetShot, await clipShot( hoverTarget ), stateDiffersFromBase( baseHoverTarget, hoverExpect ) );
 
 	await multiChips.nth( 1 ).hover();
 	const hoveredMulti = await chipStyle( multiChips.nth( 1 ) );
 	result.hoveredMulti = hoveredMulti;
 	checkVisibleState( 'hovered multi-choice chip', hoveredMulti, hoverExpect );
-	checkRendering( 'hovered multi-choice chip', baseMultiHoverTargetShot, await clipShot( multiChips.nth( 1 ) ), true );
+	checkRendering( 'hovered multi-choice chip', baseMultiHoverTargetShot, await clipShot( multiChips.nth( 1 ) ), stateDiffersFromBase( baseMultiHoverTarget, hoverExpect ) );
 
 	for ( const [ field, kind ] of [ [ 'extras', 'checkbox' ], [ 'size', 'radio' ] ] ) {
 		const locator = page.locator( `[data-opf-field="${ field }"] .opf-swatch--text` ).first();
@@ -261,7 +285,7 @@ try {
 	result.selectedChip = selected;
 	check( 'selected chip carries `.opf-checked` (the class the state rule consumes)', /(^|\s)opf-checked(\s|$)/.test( selected.classes ), selected.classes );
 	checkVisibleState( 'selected chip', selected, selectedExpect );
-	checkRendering( 'selected chip', baseChipShot, await clipShot( singleChips.first() ), true );
+	checkRendering( 'selected chip', baseChipShot, await clipShot( singleChips.first() ), stateDiffersFromBase( chip, selectedExpect ) );
 
 	await page.locator( '[data-opf-field="finish_multi"] input[value="matte"]' ).check();
 	await parkMouse();
@@ -269,7 +293,7 @@ try {
 	result.selectedMultiChip = selectedMulti;
 	check( 'selected multi-choice chip carries `.opf-checked`', /(^|\s)opf-checked(\s|$)/.test( selectedMulti.classes ), selectedMulti.classes );
 	checkVisibleState( 'selected multi-choice chip', selectedMulti, selectedExpect );
-	checkRendering( 'selected multi-choice chip', baseMultiChipShot, await clipShot( multiChips.first() ), true );
+	checkRendering( 'selected multi-choice chip', baseMultiChipShot, await clipShot( multiChips.first() ), stateDiffersFromBase( multiBase, selectedExpect ) );
 
 	// WAPF cascade: `.wapf-checked` is declared after `:hover`, so a selected
 	// chip that is also hovered keeps its selected values.

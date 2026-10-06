@@ -19,7 +19,9 @@
  *
  * Usage: wp --path=<disposable clone> eval-file this-file <phase>
  *   prepare                 create the product + field group, remember the option state
- *   design <json|unset>     set the migrated WAPF design settings
+ *   design <json|empty|unset>
+ *                           set the migrated WAPF design settings (`empty` saves an
+ *                           empty array, the saved-but-empty option)
  *   radius <px|unset>       set the OPF text-swatch radius option
  *   verify                  assert the served fixture exists
  *   cleanup                 delete the fixture and restore the option state
@@ -138,6 +140,11 @@ if ( 'design' === $phase ) {
 	$raw = (string) ( $args[1] ?? 'unset' );
 	if ( 'unset' === $raw ) {
 		delete_option( 'wapf_design_settings' );
+	} elseif ( 'empty' === $raw ) {
+		// WAPF's regime decision is `empty( get_option( 'wapf_design_settings',
+		// false ) )` (class-design-helper.php:1139-1144), so a *saved* but empty
+		// array must serve the default stylesheet exactly like a missing option.
+		update_option( 'wapf_design_settings', [] );
 	} else {
 		$design = json_decode( $raw, true );
 		$assert( 'design payload is a JSON object', is_array( $design ) && $design );
